@@ -269,7 +269,7 @@ function createRequestClient(baseURL: string) {
       // 指定接口返回的数据中装载了主要数据的字段名
       dataField: 'data',
       // 请求成功的 code 值，如果接口返回的 code 等于 successCode 则会认为是成功的请求
-      successCode: 0,
+      successCode: 200,
     }),
   );
 
