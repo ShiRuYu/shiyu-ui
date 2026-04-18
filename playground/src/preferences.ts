@@ -1,4 +1,14 @@
-import { defineOverridesPreferences } from '@vben/preferences';
+import {
+  defineOverridesPreferences,
+  definePreferencesExtension,
+} from '@vben/preferences';
+
+interface PlaygroundPreferencesExtension {
+  defaultVisibleRows: number;
+  enableQuickActions: boolean;
+  highlightTone: 'default' | 'success' | 'warning';
+  reportTitle: string;
+}
 
 /**
  * @description 项目配置文件
@@ -14,3 +24,64 @@ export const overridesPreferences = defineOverridesPreferences({
     enableRefreshToken: false,
   },
 });
+
+export type { PlaygroundPreferencesExtension };
+
+export const preferencesExtension =
+  definePreferencesExtension<PlaygroundPreferencesExtension>({
+    tabLabel: 'demos.preferencesExtensionConfig.tabLabel',
+    title: 'demos.preferencesExtensionConfig.title',
+    fields: [
+      {
+        component: 'input',
+        defaultValue: '',
+        key: 'reportTitle',
+        label: 'demos.preferencesExtensionConfig.fields.reportTitle.label',
+        placeholder:
+          'demos.preferencesExtensionConfig.fields.reportTitle.placeholder',
+      },
+      {
+        component: 'number',
+        componentProps: {
+          max: 8,
+          min: 1,
+          step: 1,
+        },
+        defaultValue: 4,
+        key: 'defaultVisibleRows',
+        label:
+          'demos.preferencesExtensionConfig.fields.defaultVisibleRows.label',
+        tip: 'demos.preferencesExtensionConfig.fields.defaultVisibleRows.tip',
+      },
+      {
+        component: 'switch',
+        defaultValue: true,
+        key: 'enableQuickActions',
+        label:
+          'demos.preferencesExtensionConfig.fields.enableQuickActions.label',
+      },
+      {
+        component: 'select',
+        defaultValue: 'default',
+        key: 'highlightTone',
+        label: 'demos.preferencesExtensionConfig.fields.highlightTone.label',
+        options: [
+          {
+            label:
+              'demos.preferencesExtensionConfig.fields.highlightTone.options.default',
+            value: 'default',
+          },
+          {
+            label:
+              'demos.preferencesExtensionConfig.fields.highlightTone.options.success',
+            value: 'success',
+          },
+          {
+            label:
+              'demos.preferencesExtensionConfig.fields.highlightTone.options.warning',
+            value: 'warning',
+          },
+        ],
+      },
+    ],
+  });

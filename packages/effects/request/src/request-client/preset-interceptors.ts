@@ -61,15 +61,15 @@ export const authenticateResponseInterceptor = ({
   return {
     rejected: async (error) => {
       const { config, response } = error;
-      
+
       // 检查是否是 401 错误（HTTP 状态码或响应体中的 code）
       const isHttp401 = response?.status === 401;
       const isBodyCode401 = response?.data?.code === 401;
-      
+
       if (!isHttp401 && !isBodyCode401) {
         throw error;
       }
-      
+
       // 判断是否启用了 refreshToken 功能
       // 如果没有启用或者已经是重试请求了，直接跳转到重新登录
       if (!enableRefreshToken || config.__isRetryRequest) {
