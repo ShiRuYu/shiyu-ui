@@ -118,6 +118,7 @@ function onActionClick({
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
+    submitOnChange: true,
   },
   gridEvents: {},
   gridOptions: {
@@ -130,10 +131,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
+          const params = Object.fromEntries(
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
+          );
           return await getUserList({
             page: page.currentPage,
             pageSize: page.pageSize,
-            ...formValues,
+            ...params,
           });
         },
       },
@@ -142,6 +148,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       custom: true,
       export: false,
       refresh: true,
+      search: true,
       zoom: true,
     },
   } as VxeTableGridOptions,

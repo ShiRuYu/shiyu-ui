@@ -10,11 +10,15 @@ export namespace SystemUserApi {
     deptId?: number;
     email?: string;
     id: number;
+    nickName?: string;
     nickname?: string;
+    password?: string;
     phone?: string;
+    postIds?: number[];
     remark?: string;
     roleIds?: number[];
-    status: 0 | 1;
+    sex?: string;
+    status: string;
     username: string;
   }
 
@@ -50,6 +54,15 @@ async function getUserList(params: Recordable<any>) {
   // 如果后端直接返回数组
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
+}
+
+/**
+ * 获取角色列表（用于用户表单中的角色选择）
+ */
+async function getRoleList() {
+  return requestClient.get<Array<{ code: string; id: number; name: string }>>(
+    '/role',
+  );
 }
 
 /**
@@ -92,4 +105,11 @@ async function resetUserPassword(id: number, password: string) {
   return requestClient.put(`/user/${id}/password`, { password });
 }
 
-export { createUser, deleteUser, getUserList, resetUserPassword, updateUser };
+export {
+  createUser,
+  deleteUser,
+  getRoleList,
+  getUserList,
+  resetUserPassword,
+  updateUser,
+};

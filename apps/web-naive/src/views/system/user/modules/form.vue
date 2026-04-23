@@ -40,9 +40,32 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       const data = await formApi.getValues();
       try {
+        const submitData = { ...data };
+        // 确保 status 是字符串类型
+        if (submitData.status !== undefined) {
+          submitData.status = String(submitData.status);
+        }
+        // 确保 sex 是字符串类型
+        if (submitData.sex !== undefined) {
+          submitData.sex = String(submitData.sex);
+        }
+        // 新增时必须有 password，编辑时如果没有 password 则删除该字段
+        if (!submitData.id && !submitData.password) {
+          message.error('请输入密码');
+          modalApi.unlock();
+          return;
+        }
+        if (submitData.id && !submitData.password) {
+          delete submitData.password;
+        }
+        // 处理 nickName 字段映射
+        if (submitData.nickname) {
+          submitData.nickName = submitData.nickname;
+          delete submitData.nickname;
+        }
         await (formData.value?.id
-          ? updateUser(formData.value.id, data)
-          : createUser(data));
+          ? updateUser(formData.value.id, submitData)
+          : createUser(submitData));
         message.success(
           formData.value?.id
             ? $t('ui.actionMessage.editSuccess', [$t('system.user.name')])
@@ -62,7 +85,15 @@ const [Modal, modalApi] = useVbenModal({
       const data = modalApi.getData<SystemUserApi.SystemUser>();
       if (data) {
         formData.value = data;
-        formApi.setValues(formData.value);
+        // 处理 nickName 字段映射
+        const formDataWithNickName = { ...data };
+        if (data.nickName && !data.nickname) {
+          formDataWithNickName.nickname = data.nickName;
+        }
+        formApi.setValues(formDataWithNickName);
+      } else {
+        formData.value = undefined;
+        formApi.resetForm();
       }
     }
   },

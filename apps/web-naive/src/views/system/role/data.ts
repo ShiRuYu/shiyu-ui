@@ -23,8 +23,8 @@ export function useGridFormSchema(): VbenFormSchema[] {
         buttonStyle: 'solid',
         options: [
           { label: $t('common.all'), value: '' },
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
@@ -42,6 +42,14 @@ export function useSchema(): VbenFormSchema[] {
   return [
     {
       component: 'Input',
+      fieldName: 'code',
+      label: $t('system.role.code'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('system.role.code')])),
+    },
+    {
+      component: 'Input',
       fieldName: 'name',
       label: $t('system.role.roleName'),
       rules: z
@@ -53,21 +61,22 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
+      defaultValue: '1',
       fieldName: 'status',
       label: $t('system.role.status'),
     },
     {
-      component: 'Textarea',
+      component: 'Input',
       componentProps: {
-        maxLength: 100,
+        maxlength: 100,
         rows: 3,
         showCount: true,
+        type: 'textarea',
       },
       fieldName: 'remark',
       label: $t('system.role.remark'),
@@ -75,6 +84,13 @@ export function useSchema(): VbenFormSchema[] {
         .string()
         .max(100, $t('ui.formRules.maxLength', [$t('system.role.remark'), 100]))
         .optional(),
+    },
+    {
+      component: 'Input',
+      fieldName: 'permissions',
+      formItemClass: 'items-start',
+      label: $t('system.role.setPermissions'),
+      modelPropName: 'modelValue',
     },
   ];
 }
@@ -92,12 +108,23 @@ export function useColumns(
       width: 100,
     },
     {
+      field: 'code',
+      title: $t('system.role.code'),
+      width: 150,
+    },
+    {
       field: 'name',
       title: $t('system.role.roleName'),
       width: 150,
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.normal'), value: '1' },
+          { color: 'error', label: $t('common.disabled'), value: '0' },
+        ],
+      },
       field: 'status',
       title: $t('system.role.status'),
       width: 100,

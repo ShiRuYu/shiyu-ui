@@ -59,7 +59,15 @@ function setupAccessGuard(router: Router) {
             preferences.app.defaultHomePath,
         );
       }
-      return true;
+      // 认证相关路由（/auth/*）直接放行，无需生成菜单
+      if (to.path.startsWith('/auth')) {
+        return true;
+      }
+      // 其他核心路由（如个人中心）：已完成访问检查时直接放行，否则继续执行后续逻辑（菜单生成）
+      if (accessStore.isAccessChecked) {
+        return true;
+      }
+      // 未完成访问检查，继续后续逻辑（token 检查、菜单生成）
     }
 
     // accessToken 检查

@@ -26,12 +26,20 @@ export namespace SystemMenuApi {
     [key: string]: any;
     /** 后端权限标识 */
     authCode: string;
+    /** 菜单编码 */
+    code?: string;
     /** 子级 */
     children?: SystemMenu[];
     /** 组件 */
     component?: string;
+    /** 描述 */
+    description?: string;
     /** 菜单ID */
     id: number;
+    /** 布局 */
+    layout?: string;
+    /** 请求方法 */
+    method?: string;
     /** 菜单元数据 */
     meta?: {
       /** 激活时显示的图标 */
@@ -79,14 +87,18 @@ export namespace SystemMenuApi {
     };
     /** 菜单名称 */
     name: string;
+    /** 排序 */
+    order?: number;
     /** 路由路径 */
     path: string;
     /** 父级ID */
     pid?: number;
     /** 重定向 */
     redirect?: string;
+    /** 是否显示 */
+    show?: boolean;
     /** 菜单状态 */
-    status: 0 | 1;
+    status: string;
     /** 菜单类型 */
     type: (typeof MenuTypes)[number];
   }

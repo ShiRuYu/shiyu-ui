@@ -11,11 +11,23 @@
 - [apps/web-naive/src/views/system/role/data.ts](file://apps/web-naive/src/views/system/role/data.ts)
 - [playground/src/views/system/role/data.ts](file://playground/src/views/system/role/data.ts)
 - [apps/web-naive/src/api/system/user.ts](file://apps/web-naive/src/api/system/user.ts)
+- [apps/web-naive/src/api/system/menu.ts](file://apps/web-naive/src/api/system/menu.ts)
+- [playground/src/api/system/menu.ts](file://playground/src/api/system/menu.ts)
 - [packages/effects/access/src/directive.ts](file://packages/effects/access/src/directive.ts)
 - [packages/effects/access/src/access-control.vue](file://packages/effects/access/src/access-control.vue)
 - [playground/src/views/demos/access/button-control.vue](file://playground/src/views/demos/access/button-control.vue)
 - [playground/src/locales/langs/zh-CN/system.json](file://playground/src/locales/langs/zh-CN/system.json)
+- [api-docs.json](file://api-docs.json)
 </cite>
+
+## 更新摘要
+
+**所做更改**
+
+- 新增树形权限分配系统，包括菜单树接口、动态加载菜单结构、自定义菜单项渲染等功能
+- 更新角色权限分配实现，支持基于菜单树的权限授权和按钮权限控制
+- 增强权限验证机制，支持角色和权限码双重验证模式
+- 完善角色管理的完整 CRUD 流程说明，包含树形权限分配的详细实现
 
 ## 目录
 
@@ -32,17 +44,18 @@
 
 ## 简介
 
-本文件为“角色管理 API”的详细技术文档，覆盖角色管理的完整接口能力与前端实现细节，包括：
+本文件为"角色管理 API"的详细技术文档，覆盖角色管理的完整接口能力与前端实现细节，包括：
 
 - 标准 CRUD：角色列表查询、角色详情、角色创建、角色更新、角色删除
 - 权限分配：菜单权限授权、按钮权限授权、数据权限配置（基于菜单树授权）
+- 树形权限系统：动态加载菜单树、自定义菜单项渲染、权限树授权
 - 数据模型：角色编码、角色名称、权限范围、状态管理等字段定义
 - 用户关联：角色与用户的关联管理（批量角色分配、角色权限继承）
 - 权限验证与动态控制：前端指令与组件级权限控制
 
 ## 项目结构
 
-角色管理模块由“API 层 + 视图层 + 数据层 + 权限控制层”构成，采用前后端分离的典型架构：
+角色管理模块由"API 层 + 视图层 + 数据层 + 权限控制层"构成，采用前后端分离的典型架构：
 
 - API 层：封装系统角色与菜单相关的请求方法
 - 视图层：列表页与表单页，支持分页、筛选、状态切换、权限树授权
@@ -59,17 +72,17 @@ end
 subgraph "API 层"
 RAPI["角色 API<br/>role.ts"]
 UAPI["用户 API<br/>user.ts"]
+MAPI["菜单 API<br/>menu.ts"]
+MPT["菜单权限树<br/>/menu/role/permissions/tree"]
 end
 subgraph "权限控制"
 DIR["权限指令<br/>directive.ts"]
 ACC["权限组件<br/>access-control.vue"]
 end
-subgraph "菜单服务"
-MAPI["菜单 API<br/>menu.ts"]
-end
 L --> RAPI
 F --> RAPI
 F --> MAPI
+F --> MPT
 L --> D
 F --> D
 L --> UAPI
@@ -80,49 +93,52 @@ L --> ACC
 F --> ACC
 ```
 
-图表来源
+**图表来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:1-132](file://apps/web-naive/src/views/system/role/list.vue#L1-L132)
-- [apps/web-naive/src/views/system/role/modules/form.vue:1-84](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L84)
-- [apps/web-naive/src/views/system/role/data.ts:1-132](file://apps/web-naive/src/views/system/role/data.ts#L1-L132)
-- [apps/web-naive/src/api/system/role.ts:1-56](file://apps/web-naive/src/api/system/role.ts#L1-L56)
-- [apps/web-naive/src/api/system/user.ts:1-99](file://apps/web-naive/src/api/system/user.ts#L1-L99)
-- [packages/effects/access/src/directive.ts:1-42](file://packages/effects/access/src/directive.ts#L1-L42)
-- [packages/effects/access/src/access-control.vue:1-47](file://packages/effects/access/src/access-control.vue#L1-L47)
+- [apps/web-naive/src/views/system/role/modules/form.vue:1-158](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L158)
+- [apps/web-naive/src/views/system/role/data.ts:1-161](file://apps/web-naive/src/views/system/role/data.ts#L1-L161)
+- [apps/web-naive/src/api/system/role.ts:1-59](file://apps/web-naive/src/api/system/role.ts#L1-L59)
+- [apps/web-naive/src/api/system/user.ts:1-96](file://apps/web-naive/src/api/system/user.ts#L1-L96)
+- [apps/web-naive/src/api/system/menu.ts:1-182](file://apps/web-naive/src/api/system/menu.ts#L1-L182)
+- [packages/effects/access/src/directive.ts:1-43](file://packages/effects/access/src/directive.ts#L1-L43)
+- [packages/effects/access/src/access-control.vue:1-48](file://packages/effects/access/src/access-control.vue#L1-L48)
 
-章节来源
+**章节来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:1-132](file://apps/web-naive/src/views/system/role/list.vue#L1-L132)
-- [apps/web-naive/src/views/system/role/modules/form.vue:1-84](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L84)
-- [apps/web-naive/src/views/system/role/data.ts:1-132](file://apps/web-naive/src/views/system/role/data.ts#L1-L132)
-- [apps/web-naive/src/api/system/role.ts:1-56](file://apps/web-naive/src/api/system/role.ts#L1-L56)
-- [apps/web-naive/src/api/system/user.ts:1-99](file://apps/web-naive/src/api/system/user.ts#L1-L99)
-- [packages/effects/access/src/directive.ts:1-42](file://packages/effects/access/src/directive.ts#L1-L42)
-- [packages/effects/access/src/access-control.vue:1-47](file://packages/effects/access/src/access-control.vue#L1-L47)
+- [apps/web-naive/src/views/system/role/modules/form.vue:1-158](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L158)
+- [apps/web-naive/src/views/system/role/data.ts:1-161](file://apps/web-naive/src/views/system/role/data.ts#L1-L161)
+- [apps/web-naive/src/api/system/role.ts:1-59](file://apps/web-naive/src/api/system/role.ts#L1-L59)
+- [apps/web-naive/src/api/system/user.ts:1-96](file://apps/web-naive/src/api/system/user.ts#L1-L96)
+- [apps/web-naive/src/api/system/menu.ts:1-182](file://apps/web-naive/src/api/system/menu.ts#L1-L182)
+- [packages/effects/access/src/directive.ts:1-43](file://packages/effects/access/src/directive.ts#L1-L43)
+- [packages/effects/access/src/access-control.vue:1-48](file://packages/effects/access/src/access-control.vue#L1-L48)
 
 ## 核心组件
 
 - 角色 API 模块：提供角色列表、创建、更新、删除等方法；在不同应用中存在两个实现版本（web-naive 与 playground），字段类型略有差异
 - 角色列表页：集成表格、分页、筛选、状态切换、操作按钮
-- 角色表单页：支持基础信息编辑与菜单权限树授权
+- 角色表单页：支持基础信息编辑与菜单权限树授权，包含动态加载菜单树功能
 - 数据配置：表格列、表单 Schema、国际化文案
 - 权限控制：全局指令与组件式权限控制，支持角色与权限码两种模式
+- 菜单权限树：支持基于 token 的菜单权限树查询接口
 
-章节来源
+**章节来源**
 
-- [apps/web-naive/src/api/system/role.ts:1-56](file://apps/web-naive/src/api/system/role.ts#L1-L56)
+- [apps/web-naive/src/api/system/role.ts:1-59](file://apps/web-naive/src/api/system/role.ts#L1-L59)
 - [playground/src/api/system/role.ts:1-55](file://playground/src/api/system/role.ts#L1-L55)
 - [apps/web-naive/src/views/system/role/list.vue:1-132](file://apps/web-naive/src/views/system/role/list.vue#L1-L132)
 - [playground/src/views/system/role/list.vue:1-165](file://playground/src/views/system/role/list.vue#L1-L165)
-- [apps/web-naive/src/views/system/role/modules/form.vue:1-84](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L84)
-- [playground/src/views/system/role/modules/form.vue:1-139](file://playground/src/views/system/role/modules/form.vue#L1-L139)
-- [apps/web-naive/src/views/system/role/data.ts:1-132](file://apps/web-naive/src/views/system/role/data.ts#L1-L132)
+- [apps/web-naive/src/views/system/role/modules/form.vue:1-158](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L158)
+- [playground/src/views/system/role/modules/form.vue:1-138](file://playground/src/views/system/role/modules/form.vue#L1-L138)
+- [apps/web-naive/src/views/system/role/data.ts:1-161](file://apps/web-naive/src/views/system/role/data.ts#L1-L161)
 - [playground/src/views/system/role/data.ts:1-128](file://playground/src/views/system/role/data.ts#L1-L128)
 - [playground/src/locales/langs/zh-CN/system.json:54-66](file://playground/src/locales/langs/zh-CN/system.json#L54-L66)
 
 ## 架构总览
 
-角色管理的前端架构围绕“视图组件 + API 客户端 + 权限控制”展开，数据流从页面到 API，再回填到视图；权限控制贯穿于渲染阶段。
+角色管理的前端架构围绕"视图组件 + API 客户端 + 权限控制"展开，数据流从页面到 API，再回填到视图；权限控制贯穿于渲染阶段。
 
 ```mermaid
 sequenceDiagram
@@ -139,15 +155,15 @@ UI->>API : 创建/更新角色含权限
 API-->>UI : 返回成功/失败
 ```
 
-图表来源
+**图表来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:79-110](file://apps/web-naive/src/views/system/role/list.vue#L79-L110)
 - [playground/src/views/system/role/list.vue:27-60](file://playground/src/views/system/role/list.vue#L27-L60)
-- [apps/web-naive/src/views/system/role/modules/form.vue:35-73](file://apps/web-naive/src/views/system/role/modules/form.vue#L35-L73)
-- [playground/src/views/system/role/modules/form.vue:35-83](file://playground/src/views/system/role/modules/form.vue#L35-L83)
+- [apps/web-naive/src/views/system/role/modules/form.vue:44-53](file://apps/web-naive/src/views/system/role/modules/form.vue#L44-L53)
+- [playground/src/views/system/role/modules/form.vue:51-58](file://playground/src/views/system/role/modules/form.vue#L51-L58)
 - [playground/src/api/system/role.ts:19-23](file://playground/src/api/system/role.ts#L19-L23)
 - [playground/src/api/system/role.ts:39-44](file://playground/src/api/system/role.ts#L39-L44)
-- [playground/src/api/system/role.ts:49-52](file://playground/src/api/system/role.ts#L49-L52)
+- [playground/src/api/system/role.ts:50-52](file://playground/src/api/system/role.ts#L50-L52)
 
 ## 详细组件分析
 
@@ -159,12 +175,12 @@ API-->>UI : 返回成功/失败
 - 删除角色：按 ID 删除角色
 - 字段差异：web-naive 版本使用数字 ID，playground 版本使用字符串 ID；权限字段在不同版本中存在差异
 
-章节来源
+**章节来源**
 
-- [apps/web-naive/src/api/system/role.ts:20-24](file://apps/web-naive/src/api/system/role.ts#L20-L24)
-- [apps/web-naive/src/api/system/role.ts:30-32](file://apps/web-naive/src/api/system/role.ts#L30-L32)
-- [apps/web-naive/src/api/system/role.ts:40-45](file://apps/web-naive/src/api/system/role.ts#L40-L45)
-- [apps/web-naive/src/api/system/role.ts:51-53](file://apps/web-naive/src/api/system/role.ts#L51-L53)
+- [apps/web-naive/src/api/system/role.ts:21-25](file://apps/web-naive/src/api/system/role.ts#L21-L25)
+- [apps/web-naive/src/api/system/role.ts:31-35](file://apps/web-naive/src/api/system/role.ts#L31-L35)
+- [apps/web-naive/src/api/system/role.ts:43-48](file://apps/web-naive/src/api/system/role.ts#L43-L48)
+- [apps/web-naive/src/api/system/role.ts:54-56](file://apps/web-naive/src/api/system/role.ts#L54-L56)
 - [playground/src/api/system/role.ts:19-23](file://playground/src/api/system/role.ts#L19-L23)
 - [playground/src/api/system/role.ts:29-31](file://playground/src/api/system/role.ts#L29-L31)
 - [playground/src/api/system/role.ts:39-44](file://playground/src/api/system/role.ts#L39-L44)
@@ -193,14 +209,14 @@ A-->>L : 返回结果
 L->>G : 刷新表格
 ```
 
-图表来源
+**图表来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:79-110](file://apps/web-naive/src/views/system/role/list.vue#L79-L110)
 - [playground/src/views/system/role/list.vue:27-60](file://playground/src/views/system/role/list.vue#L27-L60)
 - [apps/web-naive/src/views/system/role/list.vue:45-58](file://apps/web-naive/src/views/system/role/list.vue#L45-L58)
 - [playground/src/views/system/role/list.vue:125-142](file://playground/src/views/system/role/list.vue#L125-L142)
 
-章节来源
+**章节来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:1-132](file://apps/web-naive/src/views/system/role/list.vue#L1-L132)
 - [playground/src/views/system/role/list.vue:1-165](file://playground/src/views/system/role/list.vue#L1-L165)
@@ -226,17 +242,35 @@ A-->>F : 返回结果
 F-->>U : 关闭弹窗并刷新列表
 ```
 
-图表来源
+**图表来源**
 
-- [apps/web-naive/src/views/system/role/modules/form.vue:35-69](file://apps/web-naive/src/views/system/role/modules/form.vue#L35-L69)
-- [playground/src/views/system/role/modules/form.vue:35-83](file://playground/src/views/system/role/modules/form.vue#L35-L83)
-- [playground/src/views/system/role/modules/form.vue:75-83](file://playground/src/views/system/role/modules/form.vue#L75-L83)
-- [playground/src/views/system/role/modules/form.vue:40-48](file://playground/src/views/system/role/modules/form.vue#L40-L48)
+- [apps/web-naive/src/views/system/role/modules/form.vue:44-53](file://apps/web-naive/src/views/system/role/modules/form.vue#L44-L53)
+- [playground/src/views/system/role/modules/form.vue:51-58](file://playground/src/views/system/role/modules/form.vue#L51-L58)
+- [playground/src/views/system/role/modules/form.vue:103-122](file://playground/src/views/system/role/modules/form.vue#L103-L122)
+- [playground/src/views/system/role/modules/form.vue:115-120](file://playground/src/views/system/role/modules/form.vue#L115-L120)
 
-章节来源
+**章节来源**
 
-- [apps/web-naive/src/views/system/role/modules/form.vue:1-84](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L84)
-- [playground/src/views/system/role/modules/form.vue:1-139](file://playground/src/views/system/role/modules/form.vue#L1-L139)
+- [apps/web-naive/src/views/system/role/modules/form.vue:1-158](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L158)
+- [playground/src/views/system/role/modules/form.vue:1-138](file://playground/src/views/system/role/modules/form.vue#L1-L138)
+
+### 树形权限分配系统
+
+- 菜单树加载：首次打开表单时才加载菜单树，减少初始渲染压力
+- 权限分配：支持多选菜单节点，按钮类型节点具有特殊样式标识
+- 数据结构：菜单树采用 Ant Design Tree 组件，支持图标、标题、权限码等字段映射
+- 自定义渲染：支持自定义菜单项渲染模板，包含图标和标题显示
+- 动态加载：菜单树数据通过 API 动态获取，支持懒加载和缓存
+
+**更新** 新增树形权限分配系统，支持基于菜单树的权限授权和动态加载
+
+**章节来源**
+
+- [apps/web-naive/src/views/system/role/modules/form.vue:129-144](file://apps/web-naive/src/views/system/role/modules/form.vue#L129-L144)
+- [playground/src/views/system/role/modules/form.vue:103-122](file://playground/src/views/system/role/modules/form.vue#L103-L122)
+- [playground/src/views/system/role/modules/form.vue:115-120](file://playground/src/views/system/role/modules/form.vue#L115-L120)
+- [apps/web-naive/src/api/system/menu.ts:110-112](file://apps/web-naive/src/api/system/menu.ts#L110-L112)
+- [playground/src/api/system/menu.ts:96-98](file://playground/src/api/system/menu.ts#L96-L98)
 
 ### 角色数据模型与 Schema
 
@@ -244,13 +278,13 @@ F-->>U : 关闭弹窗并刷新列表
 - 表单 Schema：必填校验、长度限制、默认值
 - 表格列：ID、名称、状态、创建时间、备注、操作列
 
-章节来源
+**章节来源**
 
-- [apps/web-naive/src/views/system/role/data.ts:41-78](file://apps/web-naive/src/views/system/role/data.ts#L41-L78)
-- [apps/web-naive/src/views/system/role/data.ts:83-131](file://apps/web-naive/src/views/system/role/data.ts#L83-L131)
+- [apps/web-naive/src/views/system/role/data.ts:41-96](file://apps/web-naive/src/views/system/role/data.ts#L41-L96)
+- [apps/web-naive/src/views/system/role/data.ts:101-161](file://apps/web-naive/src/views/system/role/data.ts#L101-L161)
 - [playground/src/views/system/role/data.ts:7-42](file://playground/src/views/system/role/data.ts#L7-L42)
 - [playground/src/views/system/role/data.ts:44-75](file://playground/src/views/system/role/data.ts#L44-L75)
-- [playground/src/views/system/role/data.ts:77-127](file://playground/src/views/system/role/data.ts#L77-L127)
+- [playground/src/views/system/role/data.ts:77-128](file://playground/src/views/system/role/data.ts#L77-L128)
 - [playground/src/locales/langs/zh-CN/system.json:54-66](file://playground/src/locales/langs/zh-CN/system.json#L54-L66)
 
 ### 角色与用户关联管理
@@ -259,7 +293,7 @@ F-->>U : 关闭弹窗并刷新列表
 - 列表页支持分页查询与状态切换，便于管理用户角色
 - 角色与用户的关联可通过用户管理界面进行批量角色分配与权限继承
 
-章节来源
+**章节来源**
 
 - [apps/web-naive/src/api/system/user.ts:5-28](file://apps/web-naive/src/api/system/user.ts#L5-L28)
 - [apps/web-naive/src/api/system/user.ts:33-50](file://apps/web-naive/src/api/system/user.ts#L33-L50)
@@ -286,17 +320,33 @@ Render --> End(["完成"])
 Remove --> End
 ```
 
-图表来源
+**图表来源**
 
 - [packages/effects/access/src/directive.ts:11-30](file://packages/effects/access/src/directive.ts#L11-L30)
 - [packages/effects/access/src/access-control.vue:38-41](file://packages/effects/access/src/access-control.vue#L38-L41)
-- [playground/src/views/demos/access/button-control.vue:53-116](file://playground/src/views/demos/access/button-control.vue#L53-L116)
+- [playground/src/views/demos/access/button-control.vue:53-158](file://playground/src/views/demos/access/button-control.vue#L53-L158)
 
-章节来源
+**章节来源**
 
-- [packages/effects/access/src/directive.ts:1-42](file://packages/effects/access/src/directive.ts#L1-L42)
-- [packages/effects/access/src/access-control.vue:1-47](file://packages/effects/access/src/access-control.vue#L1-L47)
-- [playground/src/views/demos/access/button-control.vue:53-116](file://playground/src/views/demos/access/button-control.vue#L53-L116)
+- [packages/effects/access/src/directive.ts:1-43](file://packages/effects/access/src/directive.ts#L1-L43)
+- [packages/effects/access/src/access-control.vue:1-48](file://packages/effects/access/src/access-control.vue#L1-L48)
+- [playground/src/views/demos/access/button-control.vue:53-158](file://playground/src/views/demos/access/button-control.vue#L53-L158)
+
+### 菜单权限授权实现
+
+- 菜单树加载：首次打开表单时才加载菜单树，减少初始渲染压力
+- 权限分配：支持多选菜单节点，按钮类型节点具有特殊样式标识
+- 数据结构：菜单树采用 Ant Design Tree 组件，支持图标、标题、权限码等字段映射
+- 新增接口：支持基于 token 的菜单权限树查询接口 `/menu/role/permissions/tree`
+
+**更新** 新增菜单权限树接口，支持基于 token 的权限树查询
+
+**章节来源**
+
+- [playground/src/views/system/role/modules/form.vue:103-122](file://playground/src/views/system/role/modules/form.vue#L103-L122)
+- [playground/src/views/system/role/modules/form.vue:115-120](file://playground/src/views/system/role/modules/form.vue#L115-L120)
+- [apps/web-naive/src/api/system/menu.ts:110-112](file://apps/web-naive/src/api/system/menu.ts#L110-L112)
+- [api-docs.json:1599-1614](file://api-docs.json#L1599-L1614)
 
 ## 依赖关系分析
 
@@ -304,12 +354,14 @@ Remove --> End
 - 角色表单页依赖角色 API、菜单 API 与本地数据配置
 - 权限控制层独立于业务模块，通过全局指令与组件注入到任意组件
 - 用户 API 与角色 API 解耦，但通过用户模型中的角色 ID 实现关联
+- 菜单权限树接口支持基于 token 的权限树查询
 
 ```mermaid
 graph LR
 RL["角色列表页"] --> RA["角色 API"]
 RF["角色表单页"] --> RA
 RF --> MA["菜单 API"]
+RF --> MPT["菜单权限树接口"]
 RL --> RD["角色数据配置"]
 RF --> RD
 RL --> AC["权限控制"]
@@ -318,22 +370,22 @@ RL --> UA["用户 API"]
 RF --> UA
 ```
 
-图表来源
+**图表来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:15-18](file://apps/web-naive/src/views/system/role/list.vue#L15-L18)
-- [apps/web-naive/src/views/system/role/modules/form.vue:10-11](file://apps/web-naive/src/views/system/role/modules/form.vue#L10-L11)
-- [playground/src/views/system/role/modules/form.vue:15-17](file://playground/src/views/system/role/modules/form.vue#L15-L17)
-- [apps/web-naive/src/views/system/role/data.ts:1-132](file://apps/web-naive/src/views/system/role/data.ts#L1-L132)
-- [packages/effects/access/src/directive.ts:1-42](file://packages/effects/access/src/directive.ts#L1-L42)
-- [apps/web-naive/src/api/system/user.ts:1-99](file://apps/web-naive/src/api/system/user.ts#L1-L99)
+- [apps/web-naive/src/views/system/role/modules/form.vue:15-16](file://apps/web-naive/src/views/system/role/modules/form.vue#L15-L16)
+- [playground/src/views/system/role/modules/form.vue:16-17](file://playground/src/views/system/role/modules/form.vue#L16-L17)
+- [apps/web-naive/src/views/system/role/data.ts:1-161](file://apps/web-naive/src/views/system/role/data.ts#L1-L161)
+- [packages/effects/access/src/directive.ts:1-43](file://packages/effects/access/src/directive.ts#L1-L43)
+- [apps/web-naive/src/api/system/user.ts:1-96](file://apps/web-naive/src/api/system/user.ts#L1-L96)
 
-章节来源
+**章节来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:1-132](file://apps/web-naive/src/views/system/role/list.vue#L1-L132)
-- [apps/web-naive/src/views/system/role/modules/form.vue:1-84](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L84)
-- [apps/web-naive/src/views/system/role/data.ts:1-132](file://apps/web-naive/src/views/system/role/data.ts#L1-L132)
-- [packages/effects/access/src/directive.ts:1-42](file://packages/effects/access/src/directive.ts#L1-L42)
-- [apps/web-naive/src/api/system/user.ts:1-99](file://apps/web-naive/src/api/system/user.ts#L1-L99)
+- [apps/web-naive/src/views/system/role/modules/form.vue:1-158](file://apps/web-naive/src/views/system/role/modules/form.vue#L1-L158)
+- [apps/web-naive/src/views/system/role/data.ts:1-161](file://apps/web-naive/src/views/system/role/data.ts#L1-L161)
+- [packages/effects/access/src/directive.ts:1-43](file://packages/effects/access/src/directive.ts#L1-L43)
+- [apps/web-naive/src/api/system/user.ts:1-96](file://apps/web-naive/src/api/system/user.ts#L1-L96)
 
 ## 性能考虑
 
@@ -341,6 +393,7 @@ RF --> UA
 - 权限树加载：首次打开表单时才加载菜单树，减少初始渲染压力
 - 表单校验：在提交前进行前端校验，降低无效请求
 - 状态切换：状态变更采用二次确认与锁屏机制，避免重复提交
+- 菜单树优化：支持懒加载和缓存，提升大体量菜单树的渲染性能
 
 ## 故障排查指南
 
@@ -348,22 +401,25 @@ RF --> UA
 - 删除失败：确认网络状态与权限；查看错误日志并重试
 - 权限树不显示：确认菜单 API 是否正常返回；检查表单打开时的初始化逻辑
 - 权限指令无效：确认指令注册与权限模式配置；检查当前用户权限是否正确
+- 菜单权限树接口异常：检查 token 有效性；确认接口返回格式符合预期
 
-章节来源
+**章节来源**
 
 - [apps/web-naive/src/views/system/role/list.vue:45-58](file://apps/web-naive/src/views/system/role/list.vue#L45-L58)
 - [playground/src/views/system/role/list.vue:125-142](file://playground/src/views/system/role/list.vue#L125-L142)
-- [playground/src/views/system/role/modules/form.vue:75-83](file://playground/src/views/system/role/modules/form.vue#L75-L83)
+- [playground/src/views/system/role/modules/form.vue:103-122](file://playground/src/views/system/role/modules/form.vue#L103-L122)
 - [packages/effects/access/src/directive.ts:11-30](file://packages/effects/access/src/directive.ts#L11-L30)
 
 ## 结论
 
-本角色管理 API 提供了完整的角色 CRUD 与权限授权能力，并通过统一的数据模型与权限控制机制，实现了灵活的角色与用户关联管理。前端采用模块化设计，具备良好的可维护性与扩展性；结合菜单树授权与动态权限控制，能够满足复杂场景下的权限治理需求。
+本角色管理 API 提供了完整的角色 CRUD 与权限授权能力，并通过统一的数据模型与权限控制机制，实现了灵活的角色与用户关联管理。前端采用模块化设计，具备良好的可维护性与扩展性；结合菜单树授权与动态权限控制，能够满足复杂场景下的权限治理需求。新增的树形权限分配系统进一步增强了权限管理的灵活性和用户体验。
 
 ## 附录
 
 - 国际化键值：角色相关文案集中于系统语言包，便于多语言支持与统一管理
+- API 接口：支持基于 token 的菜单权限树查询接口，提供更灵活的权限管理方案
 
-章节来源
+**章节来源**
 
 - [playground/src/locales/langs/zh-CN/system.json:54-66](file://playground/src/locales/langs/zh-CN/system.json#L54-L66)
+- [api-docs.json:1599-1614](file://api-docs.json#L1599-L1614)

@@ -6,6 +6,7 @@ import type { SystemUserApi } from '#/api/system/user';
 
 import { z } from '#/adapter/form';
 import { getDeptList } from '#/api/system/dept';
+import { getRoleList } from '#/api/system/user';
 import { $t } from '#/locales';
 
 /**
@@ -20,7 +21,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'nickname',
+      fieldName: 'nickName',
       label: $t('system.user.nickname'),
     },
     {
@@ -29,8 +30,8 @@ export function useGridFormSchema(): VbenFormSchema[] {
         buttonStyle: 'solid',
         options: [
           { label: $t('common.all'), value: '' },
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
@@ -56,11 +57,26 @@ export function useSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'nickname',
+      fieldName: 'nickName',
       label: $t('system.user.nickname'),
       rules: z
         .string()
         .min(1, $t('ui.formRules.required', [$t('system.user.nickname')])),
+    },
+    {
+      component: 'InputPassword',
+      fieldName: 'password',
+      label: $t('system.user.password'),
+      rules: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', [$t('system.user.password'), 6]))
+        .optional(),
+      dependencies: {
+        if(values) {
+          return !values.id;
+        },
+        triggerFields: ['id'],
+      },
     },
     {
       component: 'Input',
@@ -78,6 +94,21 @@ export function useSchema(): VbenFormSchema[] {
         .optional(),
     },
     {
+      component: 'RadioGroup',
+      componentProps: {
+        buttonStyle: 'solid',
+        options: [
+          { label: $t('system.user.sexMale'), value: '0' },
+          { label: $t('system.user.sexFemale'), value: '1' },
+          { label: $t('system.user.sexUnknown'), value: '2' },
+        ],
+        optionType: 'button',
+      },
+      defaultValue: '2',
+      fieldName: 'sex',
+      label: $t('system.user.sex'),
+    },
+    {
       component: 'ApiSelect',
       componentProps: {
         allowClear: true,
@@ -90,25 +121,39 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('system.user.dept'),
     },
     {
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getRoleList,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        multiple: true,
+      },
+      fieldName: 'roleIds',
+      label: $t('system.user.role'),
+    },
+    {
       component: 'RadioGroup',
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
+      defaultValue: '1',
       fieldName: 'status',
       label: $t('system.user.status'),
     },
     {
-      component: 'Textarea',
+      component: 'Input',
       componentProps: {
-        maxLength: 200,
+        maxlength: 200,
         rows: 3,
         showCount: true,
+        type: 'textarea',
       },
       fieldName: 'remark',
       label: $t('system.user.remark'),
@@ -138,7 +183,7 @@ export function useColumns(
       width: 120,
     },
     {
-      field: 'nickname',
+      field: 'nickName',
       title: $t('system.user.nickname'),
       width: 120,
     },
@@ -153,7 +198,31 @@ export function useColumns(
       width: 120,
     },
     {
-      cellRender: { name: 'CellTag' },
+      field: 'sex',
+      formatter: ({ row }) => {
+        switch (row.sex) {
+          case '0': {
+            return $t('system.user.sexMale');
+          }
+          case '1': {
+            return $t('system.user.sexFemale');
+          }
+          default: {
+            return $t('system.user.sexUnknown');
+          }
+        }
+      },
+      title: $t('system.user.sex'),
+      width: 80,
+    },
+    {
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.normal'), value: '1' },
+          { color: 'error', label: $t('common.disabled'), value: '0' },
+        ],
+      },
       field: 'status',
       title: $t('system.user.status'),
       width: 100,

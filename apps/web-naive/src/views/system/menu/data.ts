@@ -54,6 +54,14 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('system.menu.menuName')])),
     },
     {
+      component: 'Input',
+      fieldName: 'code',
+      label: $t('system.menu.code'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('system.menu.code')])),
+    },
+    {
       component: 'ApiTreeSelect',
       componentProps: {
         allowClear: true,
@@ -132,6 +140,77 @@ export function useSchema(): VbenFormSchema[] {
       },
     },
     {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: [
+          { label: 'default', value: 'default' },
+          { label: 'full-content', value: 'full-content' },
+        ],
+      },
+      fieldName: 'layout',
+      label: $t('system.menu.layout'),
+      dependencies: {
+        if(values) {
+          return values.type === 'menu';
+        },
+        triggerFields: ['type'],
+      },
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: [
+          { label: 'GET', value: 'GET' },
+          { label: 'POST', value: 'POST' },
+          { label: 'PUT', value: 'PUT' },
+          { label: 'DELETE', value: 'DELETE' },
+        ],
+      },
+      fieldName: 'method',
+      label: $t('system.menu.method'),
+      dependencies: {
+        if(values) {
+          return values.type === 'button';
+        },
+        triggerFields: ['type'],
+      },
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        maxlength: 200,
+        rows: 3,
+        showCount: true,
+        type: 'textarea',
+      },
+      fieldName: 'description',
+      label: $t('system.menu.description'),
+    },
+    {
+      component: 'Switch',
+      defaultValue: true,
+      fieldName: 'show',
+      label: $t('system.menu.show'),
+      dependencies: {
+        if(values) {
+          return values.type !== 'button';
+        },
+        triggerFields: ['type'],
+      },
+    },
+    {
+      component: 'InputNumber',
+      componentProps: {
+        min: 0,
+        precision: 0,
+      },
+      defaultValue: 0,
+      fieldName: 'order',
+      label: $t('system.menu.order'),
+    },
+    {
       component: 'Switch',
       defaultValue: false,
       fieldName: 'meta.hideInMenu',
@@ -160,12 +239,12 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
+      defaultValue: '1',
       fieldName: 'status',
       label: $t('system.menu.status'),
     },

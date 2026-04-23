@@ -35,7 +35,7 @@ function onEdit(row: SystemRoleApi.SystemRole) {
  * 创建新角色
  */
 function onCreate() {
-  formModalApi.setData(null).open();
+  formModalApi.setData({}).open();
 }
 
 /**
@@ -79,6 +79,7 @@ function onActionClick({
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
+    submitOnChange: true,
   },
   gridEvents: {},
   gridOptions: {
@@ -91,10 +92,13 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async (_params, formValues) => {
-          const data = await getRoleList({
-            ...formValues,
-          });
-          // 后端返回的是数组，包装为 vxe-table 需要的格式
+          // 过滤空值，避免空字符串传给后端
+          const params = Object.fromEntries(
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
+          );
+          const data = await getRoleList(params);
           const list = Array.isArray(data) ? data : [];
           return { items: list, total: list.length };
         },
@@ -104,6 +108,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       custom: true,
       export: false,
       refresh: true,
+      search: true,
       zoom: true,
     },
   } as VxeTableGridOptions,
