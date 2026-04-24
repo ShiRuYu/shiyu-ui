@@ -43,26 +43,18 @@ function onCreate() {
  * @param row
  */
 function onDelete(row: SystemUserApi.SystemUser) {
-  dialog.warning({
-    title: '提示',
-    content: `确定要删除用户"${row.username}"吗？`,
-    positiveText: '确定',
-    negativeText: '取消',
-    onPositiveClick: () => {
-      const hideLoading = message.loading('正在删除...', {
-        duration: 0,
-      });
-      deleteUser(row.id)
-        .then(() => {
-          message.success($t('ui.actionMessage.deleteSuccess', [row.username]));
-          refreshGrid();
-          hideLoading();
-        })
-        .catch(() => {
-          hideLoading();
-        });
-    },
+  const hideLoading = message.loading('正在删除...', {
+    duration: 0,
   });
+  deleteUser(row.id)
+    .then(() => {
+      message.success($t('ui.actionMessage.deleteSuccess', [row.username]));
+      refreshGrid();
+      hideLoading.destroy();
+    })
+    .catch(() => {
+      hideLoading.destroy();
+    });
 }
 
 /**
@@ -83,9 +75,9 @@ function onResetPassword(row: SystemUserApi.SystemUser) {
         // 这里可以调用后端接口生成随机密码或设置默认密码
         await resetUserPassword(row.id, '123456');
         message.success('密码已重置为：123456');
-        hideLoading();
+        hideLoading.destroy();
       } catch (error) {
-        hideLoading();
+        hideLoading.destroy();
         console.error(error);
       }
     },
@@ -164,7 +156,7 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid table-title="用户列表">
+    <Grid :table-title="$t('system.user.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />

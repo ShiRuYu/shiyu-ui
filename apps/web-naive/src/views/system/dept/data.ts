@@ -9,6 +9,34 @@ import { getDeptList } from '#/api/system/dept';
 import { $t } from '#/locales';
 
 /**
+ * 获取查询表单的字段配置
+ */
+export function useGridFormSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('system.dept.deptName'),
+    },
+    {
+      component: 'RadioGroup',
+      componentProps: {
+        buttonStyle: 'solid',
+        options: [
+          { label: $t('common.all'), value: '' },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
+        ],
+        optionType: 'button',
+      },
+      defaultValue: '',
+      fieldName: 'status',
+      label: $t('system.dept.status'),
+    },
+  ];
+}
+
+/**
  * 获取编辑表单的字段配置
  */
 export function useSchema(): VbenFormSchema[] {
@@ -43,12 +71,12 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
+      defaultValue: '1',
       fieldName: 'status',
       label: $t('system.dept.status'),
     },
@@ -86,7 +114,13 @@ export function useColumns(
       width: 150,
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.normal'), value: '1' },
+          { color: 'error', label: $t('common.disabled'), value: '0' },
+        ],
+      },
       field: 'status',
       title: $t('system.dept.status'),
       width: 100,

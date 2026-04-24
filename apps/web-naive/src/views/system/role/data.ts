@@ -91,6 +91,7 @@ export function useSchema(): VbenFormSchema[] {
       formItemClass: 'items-start',
       label: $t('system.role.setPermissions'),
       modelPropName: 'modelValue',
+      wrapperClass: '!block w-full',
     },
   ];
 }

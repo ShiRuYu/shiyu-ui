@@ -58,10 +58,10 @@ function onDelete(row: SystemMenuApi.SystemMenu) {
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
-      hideLoading();
+      hideLoading.destroy();
     })
     .catch(() => {
-      hideLoading();
+      hideLoading.destroy();
     });
 }
 
@@ -128,7 +128,7 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid table-title="菜单列表">
+    <Grid :table-title="$t('system.menu.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />

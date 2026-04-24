@@ -117,15 +117,7 @@ const [Modal, modalApi] = useVbenModal({
       <template #permissions="slotProps">
         <div class="w-full">
           <NSpin :show="loadingMenu">
-            <div
-              class="w-full rounded"
-              style="
-                min-height: 60px;
-                max-height: 360px;
-                overflow-y: auto;
-                border: 1px solid var(--n-border-color, #e0e0e6);
-              "
-            >
+            <div class="w-full rounded" style="min-height: 60px">
               <NTree
                 :checked-keys="slotProps.modelValue || []"
                 :data="menuTree"

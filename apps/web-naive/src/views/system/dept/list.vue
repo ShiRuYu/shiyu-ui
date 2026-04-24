@@ -15,7 +15,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteDept, getDeptListForGrid } from '#/api/system/dept';
 import { $t } from '#/locales';
 
-import { useColumns } from './data';
+import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -58,10 +58,10 @@ function onDelete(row: SystemDeptApi.SystemDept) {
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
-      hideLoading();
+      hideLoading.destroy();
     })
     .catch(() => {
-      hideLoading();
+      hideLoading.destroy();
     });
 }
 
@@ -89,6 +89,10 @@ function onActionClick({
 }
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useGridFormSchema(),
+    submitOnChange: true,
+  },
   gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
@@ -99,8 +103,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params) => {
-          return await getDeptListForGrid();
+        query: async (_params, formValues) => {
+          // 过滤空值，避免空字符串传给后端
+          const params = Object.fromEntries(
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
+          );
+          return await getDeptListForGrid(params);
         },
       },
     },
@@ -108,6 +118,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       custom: true,
       export: false,
       refresh: true,
+      search: true,
       zoom: true,
     },
     treeConfig: {
@@ -128,7 +139,7 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid table-title="部门列表">
+    <Grid :table-title="$t('system.dept.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />

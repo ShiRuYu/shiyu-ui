@@ -1,3 +1,5 @@
+import type { Recordable } from '@vben/types';
+
 import { requestClient } from '#/api/request';
 
 export namespace SystemDeptApi {
@@ -9,23 +11,27 @@ export namespace SystemDeptApi {
     name: string;
     pid?: number;
     remark?: string;
-    status: 0 | 1;
+    status: string;
   }
 }
 
 /**
  * 获取部门列表数据
  */
-async function getDeptList() {
-  return requestClient.get<Array<SystemDeptApi.SystemDept>>('/dept/list');
+async function getDeptList(params?: Recordable<any>) {
+  return requestClient.get<Array<SystemDeptApi.SystemDept>>('/dept/list', {
+    params,
+  });
 }
 
 /**
  * 获取部门列表数据（包装为 vxe-table 格式）
  */
-async function getDeptListForGrid() {
-  const data =
-    await requestClient.get<Array<SystemDeptApi.SystemDept>>('/dept/list');
+async function getDeptListForGrid(params?: Recordable<any>) {
+  const data = await requestClient.get<Array<SystemDeptApi.SystemDept>>(
+    '/dept/list',
+    { params },
+  );
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }

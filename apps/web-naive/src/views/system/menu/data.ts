@@ -310,7 +310,13 @@ export function useColumns(
       title: $t('system.menu.component'),
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.normal'), value: '1' },
+          { color: 'error', label: $t('common.disabled'), value: '0' },
+        ],
+      },
       field: 'status',
       title: $t('system.menu.status'),
       width: 100,

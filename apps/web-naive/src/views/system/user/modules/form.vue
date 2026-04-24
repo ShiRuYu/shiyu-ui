@@ -58,11 +58,6 @@ const [Modal, modalApi] = useVbenModal({
         if (submitData.id && !submitData.password) {
           delete submitData.password;
         }
-        // 处理 nickName 字段映射
-        if (submitData.nickname) {
-          submitData.nickName = submitData.nickname;
-          delete submitData.nickname;
-        }
         await (formData.value?.id
           ? updateUser(formData.value.id, submitData)
           : createUser(submitData));
@@ -85,12 +80,7 @@ const [Modal, modalApi] = useVbenModal({
       const data = modalApi.getData<SystemUserApi.SystemUser>();
       if (data) {
         formData.value = data;
-        // 处理 nickName 字段映射
-        const formDataWithNickName = { ...data };
-        if (data.nickName && !data.nickname) {
-          formDataWithNickName.nickname = data.nickName;
-        }
-        formApi.setValues(formDataWithNickName);
+        formApi.setValues(data);
       } else {
         formData.value = undefined;
         formApi.resetForm();

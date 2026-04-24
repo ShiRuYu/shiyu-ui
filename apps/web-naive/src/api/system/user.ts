@@ -11,7 +11,6 @@ export namespace SystemUserApi {
     email?: string;
     id: number;
     nickName?: string;
-    nickname?: string;
     password?: string;
     phone?: string;
     postIds?: number[];
