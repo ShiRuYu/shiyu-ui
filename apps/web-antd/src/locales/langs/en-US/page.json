@@ -11,5 +11,10 @@
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "agent": {
+    "title": "Agent",
+    "list": "Agent List",
+    "chat": "Agent Chat"
   }
 }

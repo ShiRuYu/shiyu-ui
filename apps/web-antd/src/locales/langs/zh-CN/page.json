@@ -11,5 +11,10 @@
     "title": "概览",
     "analytics": "分析页",
     "workspace": "工作台"
+  },
+  "agent": {
+    "title": "Agent",
+    "list": "Agent 列表",
+    "chat": "Agent 对话"
   }
 }
