@@ -1,42 +1,75 @@
 <script lang="ts" setup>
+import type { ChatApi } from '#/api/agent/chat';
+
 import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NInput, NSelect, NSpace, NSpin } from 'naive-ui';
+import {
+  NButton,
+  NCard,
+  NInput,
+  NRadio,
+  NRadioGroup,
+  NSelect,
+  NSpace,
+  NSpin,
+} from 'naive-ui';
 
-import { chat, getDefaultModel, getPlatforms } from '#/api/agent/chat';
+import { chat, chatStream, getModelOptions } from '#/api/agent/chat';
+import { getPlatformOptions } from '#/api/common/platform';
 
-const platforms = ref<string[]>([]);
-const selectedPlatform = ref<string>('SILICON_FLOW');
-const defaultModel = ref('');
+const platformOptions = ref<Array<{ label: string; value: number }>>([]);
+const platformCodeMap = ref<Record<number, string>>({});
+const modelOptions = ref<Array<{ label: string; value: string }>>([]);
+const selectedPlatformId = ref<number>();
+const selectedModel = ref<string>();
+const streamMode = ref(false);
 const prompt = ref('');
 const response = ref('');
 const loading = ref(false);
 
 async function loadPlatforms() {
   try {
-    platforms.value = (await getPlatforms()) || [];
-    if (platforms.value.length > 0 && !selectedPlatform.value) {
-      selectedPlatform.value = platforms.value[0] ?? '';
+    const list: ChatApi.OptionItem[] = (await getPlatformOptions()) || [];
+    platformOptions.value = list.map((p) => ({ label: p.name, value: p.id }));
+    const codeMap: Record<number, string> = {};
+    for (const p of list) {
+      if (p.code) codeMap[p.id] = p.code;
+    }
+    platformCodeMap.value = codeMap;
+    if (list[0]?.id) {
+      selectedPlatformId.value = list[0].id;
+      await loadModels(list[0].id);
     }
   } catch {
     // ignore
   }
 }
 
-async function onPlatformChange(value: string) {
-  selectedPlatform.value = value;
-  await loadDefaultModel();
+async function loadModels(platformId: number) {
+  try {
+    const list: ChatApi.OptionItem[] =
+      (await getModelOptions(platformId)) || [];
+    const mapped = list.map((m) => ({
+      label: m.name || m.value || '',
+      value: m.value || '',
+    }));
+    modelOptions.value = mapped;
+    selectedModel.value = mapped[0]?.value ?? undefined;
+  } catch {
+    modelOptions.value = [];
+    selectedModel.value = undefined;
+  }
 }
 
-async function loadDefaultModel() {
-  if (!selectedPlatform.value) return;
-  try {
-    const data = await getDefaultModel(selectedPlatform.value);
-    defaultModel.value = data?.defaultModel || '';
-  } catch {
-    defaultModel.value = '';
+async function onPlatformChange(id: number) {
+  selectedPlatformId.value = id;
+  if (id) {
+    await loadModels(id);
+  } else {
+    modelOptions.value = [];
+    selectedModel.value = undefined;
   }
 }
 
@@ -45,11 +78,22 @@ async function onSend() {
   loading.value = true;
   response.value = '';
   try {
-    const data = await chat({
-      platform: selectedPlatform.value || undefined,
+    const requestData: ChatApi.ChatRequest = {
+      platform: selectedPlatformId.value
+        ? platformCodeMap.value[selectedPlatformId.value]
+        : undefined,
+      model: selectedModel.value || undefined,
       prompt: prompt.value,
-    });
-    response.value = data?.content || '';
+    };
+
+    if (streamMode.value) {
+      await chatStream(requestData, (text) => {
+        response.value += text;
+      });
+    } else {
+      const data = await chat(requestData);
+      response.value = data?.content || '';
+    }
   } catch (error: any) {
     response.value = `Error: ${error?.message || error}`;
   } finally {
@@ -66,15 +110,22 @@ loadPlatforms();
       <NSpace vertical :size="16">
         <div class="flex items-center gap-3">
           <NSelect
-            v-model:value="selectedPlatform"
-            :options="platforms.map((p) => ({ label: p, value: p }))"
+            v-model:value="selectedPlatformId"
+            :options="platformOptions"
             :style="{ width: '200px' }"
-            placeholder="AI Platform"
+            placeholder="Platform"
             @update:value="onPlatformChange"
           />
-          <span class="text-muted-foreground text-sm">
-            Model: {{ defaultModel || 'default' }}
-          </span>
+          <NSelect
+            v-model:value="selectedModel"
+            :options="modelOptions"
+            :style="{ width: '240px' }"
+            placeholder="Model"
+          />
+          <NRadioGroup v-model:value="streamMode" size="small">
+            <NRadio :value="false">Sync</NRadio>
+            <NRadio :value="true">Stream</NRadio>
+          </NRadioGroup>
         </div>
         <NInput
           v-model:value="prompt"

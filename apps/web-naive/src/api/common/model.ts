@@ -12,6 +12,7 @@ export namespace ModelApi {
     modelConfig?: string;
     modelName: string;
     platformId: number;
+    platformName?: string;
     sort?: number;
     status: string;
   }

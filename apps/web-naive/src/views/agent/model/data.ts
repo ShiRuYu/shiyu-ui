@@ -5,7 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { ModelApi } from '#/api/common/model';
 
 import { z } from '#/adapter/form';
-import { getEnabledPlatforms } from '#/api/common/platform';
+import { getPlatformOptions } from '#/api/common/platform';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -13,9 +13,9 @@ export function useGridFormSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getEnabledPlatforms,
-        fieldNames: { label: 'name', value: 'id' },
-        resultField: '',
+        api: getPlatformOptions,
+        labelField: 'name',
+        valueField: 'id',
       },
       fieldName: 'platformId',
       label: $t('system.model.platformId'),
@@ -28,9 +28,9 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getEnabledPlatforms,
-        fieldNames: { label: 'name', value: 'id' },
-        resultField: '',
+        api: getPlatformOptions,
+        labelField: 'name',
+        valueField: 'id',
       },
       fieldName: 'platformId',
       label: $t('system.model.platformId'),
@@ -106,7 +106,7 @@ export function useColumns(
 ): VxeTableGridColumns<ModelApi.ModelItem> {
   return [
     { field: 'id', title: 'ID', width: 80 },
-    { field: 'platformId', title: $t('system.model.platformId'), width: 100 },
+    { field: 'platformName', title: $t('system.model.platformId'), width: 120 },
     { field: 'modelName', title: $t('system.model.modelName'), width: 200 },
     {
       field: 'displayName',

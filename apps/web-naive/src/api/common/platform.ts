@@ -61,6 +61,12 @@ async function setDefaultPlatform(id: number) {
   return requestClient.put(`/ai/platform/${id}/default`);
 }
 
+async function getPlatformOptions() {
+  return requestClient.get<{ id: number; name: string }[]>(
+    '/ai/platform/options',
+  );
+}
+
 async function reloadPlatforms() {
   return requestClient.post('/ai/platform/reload');
 }
@@ -70,6 +76,7 @@ export {
   deletePlatform,
   getEnabledPlatforms,
   getPlatformById,
+  getPlatformOptions,
   getPlatformPage,
   reloadPlatforms,
   setDefaultPlatform,

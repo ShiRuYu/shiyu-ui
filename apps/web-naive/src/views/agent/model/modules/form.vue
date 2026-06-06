@@ -4,11 +4,13 @@ import type { ModelApi } from '#/api/common/model';
 import { computed, nextTick, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+
 import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { createModel, updateModel } from '#/api/common/model';
+import { getPlatformOptions } from '#/api/common/platform';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
@@ -66,6 +68,11 @@ const [Modal, modalApi] = useVbenModal({
       await nextTick();
       if (data?.id) {
         formApi.setValues(data);
+      } else {
+        const options = await getPlatformOptions();
+        if (options?.[0]) {
+          formApi.setFieldValue('platformId', options[0].id);
+        }
       }
     }
   },
