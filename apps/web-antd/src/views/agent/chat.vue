@@ -146,7 +146,7 @@ function handleClear() {
 
 // 返回列表
 function handleBack() {
-  router.push({ name: 'AgentList' });
+  router.back();
 }
 
 // 滚动到底部
