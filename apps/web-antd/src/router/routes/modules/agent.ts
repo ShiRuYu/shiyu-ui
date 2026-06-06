@@ -6,6 +6,7 @@ const routes: RouteRecordRaw[] = [
   {
     meta: {
       hideInMenu: true,
+      noBasicLayout: true,
       icon: 'lucide:bot',
       title: $t('page.agent.title'),
     },
