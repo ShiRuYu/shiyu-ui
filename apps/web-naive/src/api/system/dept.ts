@@ -56,7 +56,7 @@ async function updateDept(
   id: number,
   data: Omit<SystemDeptApi.SystemDept, 'children' | 'createTime' | 'id'>,
 ) {
-  return requestClient.put(`/dept/${id}`, data);
+  return requestClient.patch(`/dept/${id}`, data);
 }
 
 /**

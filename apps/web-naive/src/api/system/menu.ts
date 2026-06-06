@@ -159,7 +159,7 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.put(`/menu/${id}`, data);
+  return requestClient.patch(`/menu/${id}`, data);
 }
 
 /**

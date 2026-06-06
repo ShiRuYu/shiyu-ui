@@ -80,5 +80,19 @@
     "createTime": "Create Time",
     "operation": "Operation",
     "resetPassword": "Reset Password"
+  },
+  "dict": {
+    "title": "Dictionary Management",
+    "list": "Dictionary List",
+    "name": "Dictionary",
+    "dictType": "Dictionary Type",
+    "dictLabel": "Dictionary Label",
+    "dictValue": "Dictionary Value",
+    "dictSort": "Sort",
+    "cssClass": "CSS Class",
+    "listClass": "List Class",
+    "isDefault": "Is Default",
+    "status": "Status",
+    "remark": "Remark"
   }
 }

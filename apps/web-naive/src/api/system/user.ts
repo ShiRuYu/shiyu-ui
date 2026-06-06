@@ -23,7 +23,7 @@ export namespace SystemUserApi {
 
   /** 分页返回格式 */
   export interface PageResult<T> {
-    records: T[];
+    pageData: T[];
     total: number;
     pageNo?: number;
     pageSize?: number;
@@ -46,9 +46,9 @@ async function getUserList(params: Recordable<any>) {
       ...restParams,
     },
   });
-  // 如果后端返回分页格式 { records, total }
-  if (data && typeof data === 'object' && 'records' in data) {
-    return { items: data.records, total: data.total };
+  // 如果后端返回分页格式 { pageData, total }
+  if (data && typeof data === 'object' && 'pageData' in data) {
+    return { items: data.pageData, total: data.total };
   }
   // 如果后端直接返回数组
   const list = Array.isArray(data) ? data : [];
@@ -58,7 +58,7 @@ async function getUserList(params: Recordable<any>) {
 /**
  * 获取角色列表（用于用户表单中的角色选择）
  */
-async function getRoleList() {
+async function getRolesForUserForm() {
   return requestClient.get<Array<{ code: string; id: number; name: string }>>(
     '/role',
   );
@@ -84,7 +84,7 @@ async function updateUser(
   id: number,
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.put(`/user/${id}`, data);
+  return requestClient.patch(`/user/${id}`, data);
 }
 
 /**
@@ -101,13 +101,13 @@ async function deleteUser(id: number) {
  * @param password 新密码
  */
 async function resetUserPassword(id: number, password: string) {
-  return requestClient.put(`/user/${id}/password`, { password });
+  return requestClient.patch(`/user/${id}/password/reset`, { password });
 }
 
 export {
   createUser,
   deleteUser,
-  getRoleList,
+  getRolesForUserForm,
   getUserList,
   resetUserPassword,
   updateUser,

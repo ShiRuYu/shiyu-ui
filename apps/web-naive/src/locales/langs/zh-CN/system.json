@@ -95,5 +95,19 @@
     "createTime": "创建时间",
     "operation": "操作",
     "resetPassword": "重置密码"
+  },
+  "dict": {
+    "title": "字典管理",
+    "list": "字典列表",
+    "name": "字典",
+    "dictType": "字典类型",
+    "dictLabel": "字典标签",
+    "dictValue": "字典键值",
+    "dictSort": "排序",
+    "cssClass": "样式属性",
+    "listClass": "表格回显样式",
+    "isDefault": "是否默认",
+    "status": "状态",
+    "remark": "备注"
   }
 }

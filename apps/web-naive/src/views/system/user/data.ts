@@ -6,7 +6,7 @@ import type { SystemUserApi } from '#/api/system/user';
 
 import { z } from '#/adapter/form';
 import { getDeptList } from '#/api/system/dept';
-import { getRoleList } from '#/api/system/user';
+import { getRolesForUserForm } from '#/api/system/user';
 import { $t } from '#/locales';
 
 /**
@@ -124,7 +124,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         allowClear: true,
-        api: getRoleList,
+        api: getRolesForUserForm,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',

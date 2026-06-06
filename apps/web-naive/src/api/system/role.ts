@@ -44,7 +44,7 @@ async function updateRole(
   id: number,
   data: Omit<SystemRoleApi.SystemRole, 'createTime' | 'id'>,
 ) {
-  return requestClient.put(`/role/${id}`, data);
+  return requestClient.patch(`/role/${id}`, data);
 }
 
 /**
