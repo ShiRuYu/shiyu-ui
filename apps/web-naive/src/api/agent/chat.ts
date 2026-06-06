@@ -1,4 +1,4 @@
-import type { Recordable } from '@vben/types';
+import { useAccessStore } from '@vben/stores';
 
 import { requestClient } from '#/api/request';
 
@@ -36,13 +36,15 @@ async function chatStream(
   data: ChatApi.ChatRequest,
   onMessage: (text: string) => void,
 ): Promise<void> {
-  const token = (requestClient as Recordable<any>)?.token;
-  const response = await fetch('/api/lc4j/chat/stream', {
+  const accessStore = useAccessStore();
+  const token = accessStore.accessToken;
+  const baseURL = requestClient.getBaseUrl() ?? '';
+  const response = await fetch(`${baseURL}/api/lc4j/chat/stream`, {
     body: JSON.stringify(data),
     headers: {
       'Accept': 'text/event-stream',
+      'Authorization': token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: token } : {}),
     },
     method: 'POST',
   });
