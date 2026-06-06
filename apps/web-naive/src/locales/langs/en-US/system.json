@@ -94,5 +94,32 @@
     "isDefault": "Is Default",
     "status": "Status",
     "remark": "Remark"
+  },
+  "platform": {
+    "title": "AI Platform Management",
+    "list": "AI Platform List",
+    "name": "Platform",
+    "code": "Platform Code",
+    "baseUrl": "Base URL",
+    "apiKey": "API Key",
+    "temperature": "Temperature",
+    "maxTokens": "Max Tokens",
+    "maxRetries": "Max Retries",
+    "availableModels": "Available Models (JSON)",
+    "extraConfig": "Extra Config (JSON)",
+    "isDefault": "Default Platform",
+    "reload": "Reload Adapters"
+  },
+  "model": {
+    "title": "AI Model Management",
+    "list": "AI Model List",
+    "name": "Model",
+    "platformId": "Platform",
+    "modelName": "Model Name",
+    "displayName": "Display Name",
+    "description": "Description",
+    "modelConfig": "Model Config (JSON)",
+    "isDefault": "Default Model",
+    "sort": "Sort"
   }
 }
