@@ -6,11 +6,22 @@ const routes: RouteRecordRaw[] = [
   {
     meta: {
       hideInMenu: true,
-      title: $t('page.agent.chat'),
+      icon: 'lucide:bot',
+      title: $t('page.agent.title'),
     },
-    name: 'AgentChat',
-    path: '/agent/:agentId/chat',
-    component: () => import('#/views/agent/chat.vue'),
+    name: 'Agent',
+    path: '/agent',
+    children: [
+      {
+        name: 'AgentChat',
+        path: ':agentId/chat',
+        component: () => import('#/views/agent/chat.vue'),
+        meta: {
+          hideInMenu: true,
+          title: $t('page.agent.chat'),
+        },
+      },
+    ],
   },
 ];
 

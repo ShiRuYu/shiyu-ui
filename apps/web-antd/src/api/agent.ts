@@ -1,3 +1,6 @@
+import { useAppConfig } from '@vben/hooks';
+import { useAccessStore } from '@vben/stores';
+
 import { requestClient } from '#/api/request';
 
 /** Agent 定义 */
@@ -32,6 +35,19 @@ export interface AgentExecuteResult {
   [key: string]: any;
 }
 
+/** 获取 apiURL（与 request.ts 保持一致） */
+function getBaseURL(): string {
+  const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
+  return apiURL;
+}
+
+/** 获取当前 Bearer Token */
+function getAuthHeaders(): Record<string, string> {
+  const accessStore = useAccessStore();
+  const token = accessStore.accessToken;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 /**
  * 获取 Agent 列表
  */
@@ -61,7 +77,7 @@ export function executeAgentApi(
 
 /**
  * 执行 Agent（流式 SSE）
- * 返回 EventSource 供前端消费
+ * 使用 fetch + ReadableStream，手动携带 Auth Token
  */
 export function executeAgentStreamApi(
   agentId: string,
@@ -71,13 +87,15 @@ export function executeAgentStreamApi(
   onDone?: () => void,
 ): AbortController {
   const controller = new AbortController();
-  const baseURL = (requestClient as any).config?.baseURL ?? '';
+  const baseURL = getBaseURL();
   const url = `${baseURL}/agent/${agentId}/executeStream`;
+  const authHeaders = getAuthHeaders();
 
   fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...authHeaders,
     },
     body: JSON.stringify(input),
     signal: controller.signal,
@@ -107,11 +125,17 @@ export function executeAgentStreamApi(
         buffer = lines.pop() ?? '';
 
         for (const line of lines) {
-          if (line.startsWith('data:')) {
-            const data = line.slice(5).trim();
-            if (data) {
-              onMessage(data);
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+
+          if (trimmed.startsWith('data:')) {
+            const raw = trimmed.slice(5).trim();
+            if (raw && raw !== '[DONE]') {
+              onMessage(raw);
             }
+          } else if (trimmed.startsWith('{')) {
+            // 非标准 SSE，直接当 JSON chunk
+            onMessage(trimmed);
           }
         }
       }

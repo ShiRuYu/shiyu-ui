@@ -51,18 +51,41 @@ async function fetchAgentDetail() {
   }
 }
 
+/**
+ * 解析后端 SSE 数据
+ * 后端返回 Flux<Result<Map<String, Object>>>
+ * 每条 SSE data: {"code":0,"data":{"content":"chunk text"}}
+ */
+function parseSseContent(raw: string): string {
+  try {
+    const parsed = JSON.parse(raw);
+    // Result 结构: {code: 0, data: {content: "..."}}
+    if (parsed?.code === 0 && parsed?.data) {
+      return parsed.data.content ?? JSON.stringify(parsed.data);
+    }
+    // 直接是 content 字段
+    if (parsed?.content) {
+      return parsed.content;
+    }
+    // 其他 JSON，原样展示
+    return raw;
+  } catch {
+    // 非 JSON，原样返回
+    return raw;
+  }
+}
+
 // 发送消息
 async function handleSend() {
   const text = inputText.value.trim();
   if (!text || sending.value) return;
 
   // 添加用户消息
-  const userMsg: ChatMessage = {
+  messages.value.push({
     id: ++messageIdCounter,
     role: 'user',
     content: text,
-  };
-  messages.value.push(userMsg);
+  });
   inputText.value = '';
 
   // 添加 AI 占位消息
@@ -84,15 +107,9 @@ async function handleSend() {
       abortController = executeAgentStreamApi(
         agentId,
         input,
-        (data) => {
-          // 解析 SSE 数据
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed?.data?.content || parsed?.content || data;
-            aiMsg.content += content;
-          } catch {
-            aiMsg.content += data;
-          }
+        (rawData) => {
+          const content = parseSseContent(rawData);
+          aiMsg.content += content;
           aiMsg.loading = false;
           scrollToBottom();
         },
@@ -110,11 +127,11 @@ async function handleSend() {
     } else {
       // 同步调用
       const res = await executeAgentApi(agentId, input);
-      const content =
-        (res as any)?.content ||
-        (res as any)?.data?.content ||
-        JSON.stringify(res, null, 2);
-      aiMsg.content = content;
+      const data = res as any;
+      aiMsg.content =
+        data?.content ||
+        data?.data?.content ||
+        JSON.stringify(data, null, 2);
       aiMsg.loading = false;
       sending.value = false;
     }
@@ -131,7 +148,6 @@ function handleStop() {
     abortController.abort();
     abortController = null;
     sending.value = false;
-    // 更新最后一条消息状态
     const lastMsg = messages.value[messages.value.length - 1];
     if (lastMsg?.role === 'assistant') {
       lastMsg.loading = false;
@@ -144,7 +160,7 @@ function handleClear() {
   messages.value = [];
 }
 
-// 返回列表
+// 返回
 function handleBack() {
   router.back();
 }
