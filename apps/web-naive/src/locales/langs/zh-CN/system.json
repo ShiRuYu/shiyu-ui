@@ -109,5 +109,32 @@
     "isDefault": "是否默认",
     "status": "状态",
     "remark": "备注"
+  },
+  "platform": {
+    "title": "AI 平台管理",
+    "list": "AI 平台列表",
+    "name": "平台",
+    "code": "平台编码",
+    "baseUrl": "Base URL",
+    "apiKey": "API Key",
+    "temperature": "温度",
+    "maxTokens": "最大 Token",
+    "maxRetries": "最大重试",
+    "availableModels": "可用模型 (JSON)",
+    "extraConfig": "扩展配置 (JSON)",
+    "isDefault": "默认平台",
+    "reload": "刷新适配器"
+  },
+  "model": {
+    "title": "AI 模型管理",
+    "list": "AI 模型列表",
+    "name": "模型",
+    "platformId": "所属平台",
+    "modelName": "模型名称",
+    "displayName": "显示名称",
+    "description": "描述",
+    "modelConfig": "模型参数 (JSON)",
+    "isDefault": "默认模型",
+    "sort": "排序"
   }
 }
