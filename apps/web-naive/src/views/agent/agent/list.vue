@@ -1,83 +1,127 @@
 <script lang="ts" setup>
+import type { OnActionClickParams } from '#/adapter/vxe-table';
 import type { AgentApi } from '#/api/agent/agent';
 
-import { onMounted, ref } from 'vue';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
 
-import { Page } from '@vben/common-ui';
+import { NButton } from 'naive-ui';
 
-import { NButton, NCard, NEmpty, NGrid, NGi, NSpin, NTag } from 'naive-ui';
-
-import { deleteAgent, getAgentList } from '#/api/agent/agent';
 import { message } from '#/adapter/naive';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { deleteAgent, getAgentList } from '#/api/agent/agent';
 import { $t } from '#/locales';
 
-const agents = ref<AgentApi.AgentDefinition[]>([]);
-const loading = ref(false);
+import { useColumns, useGridFormSchema } from './data';
+import AgentChat from './modules/chat.vue';
+import Form from './modules/form.vue';
 
-async function loadAgents() {
-  loading.value = true;
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
+  destroyOnClose: true,
+});
+
+const [ChatModal, chatModalApi] = useVbenModal({
+  connectedComponent: AgentChat,
+  destroyOnClose: true,
+});
+
+function onEdit(row: AgentApi.AgentDefinition) {
+  formModalApi.setData(row).open();
+}
+
+function onCreate() {
+  formModalApi.setData({}).open();
+}
+
+function onChat(row: AgentApi.AgentDefinition) {
+  chatModalApi.setData(row).open();
+}
+
+async function onDelete(row: AgentApi.AgentDefinition) {
+  const hideLoading = message.loading('正在删除...', { duration: 0 });
   try {
-    agents.value = (await getAgentList()) || [];
+    await deleteAgent(row.agentId);
+    message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
+    refreshGrid();
+  } catch (error) {
+    console.error(error);
   } finally {
-    loading.value = false;
+    hideLoading.destroy();
   }
 }
 
-async function onDelete(agentId: string) {
-  await deleteAgent(agentId);
-  message.success($t('ui.actionMessage.deleteSuccess', [agentId]));
-  await loadAgents();
+function onActionClick({ code, row }: OnActionClickParams<AgentApi.AgentDefinition>) {
+  switch (code) {
+    case 'delete': {
+      onDelete(row);
+      break;
+    }
+    case 'edit': {
+      onEdit(row);
+      break;
+    }
+    case 'chat': {
+      onChat(row);
+      break;
+    }
+  }
 }
 
-onMounted(() => {
-  loadAgents();
+const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useGridFormSchema(),
+    submitOnChange: true,
+  },
+  gridEvents: {},
+  gridOptions: {
+    columns: useColumns(onActionClick),
+    height: 'auto',
+    keepSource: true,
+    pagerConfig: { enabled: false },
+    proxyConfig: {
+      ajax: {
+        query: async (_params, formValues) => {
+          const allAgents = (await getAgentList()) || [];
+          const keyword = formValues?.keyword?.toLowerCase() || '';
+          const filtered = keyword
+            ? allAgents.filter(
+                (a) =>
+                  a.name.toLowerCase().includes(keyword) ||
+                  a.agentId.toLowerCase().includes(keyword) ||
+                  (a.description || '').toLowerCase().includes(keyword),
+              )
+            : allAgents;
+          return { items: filtered, total: filtered.length };
+        },
+      },
+    },
+    toolbarConfig: {
+      custom: true,
+      export: false,
+      refresh: true,
+      search: true,
+      zoom: true,
+    },
+  },
 });
+
+function refreshGrid() {
+  gridApi.query();
+}
 </script>
 
 <template>
   <Page auto-content-height>
-    <NSpin :show="loading">
-      <template v-if="agents.length === 0">
-        <NEmpty :description="$t('common.noData')" />
+    <FormModal @success="refreshGrid" />
+    <ChatModal />
+    <Grid :table-title="$t('agent.list')">
+      <template #toolbar-tools>
+        <NButton type="primary" @click="onCreate">
+          <Plus class="size-5" />
+          {{ $t('ui.actionTitle.create', [$t('agent.name')]) }}
+        </NButton>
       </template>
-      <template v-else>
-        <NGrid :cols="3" :x-gap="16" :y-gap="16" item-responsive>
-          <NGi
-            v-for="agent in agents"
-            :key="agent.agentId"
-            class="flex flex-col"
-          >
-            <NCard
-              :content-style="{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-              }"
-              :title="agent.name"
-              class="flex flex-1 flex-col"
-              size="small"
-            >
-              <template #header-extra>
-                <NTag v-if="agent.currentVersion" size="small" type="info">
-                  v{{ agent.currentVersion }}
-                </NTag>
-              </template>
-              <p class="text-muted-foreground flex-1 text-sm">
-                {{ agent.description || '-' }}
-              </p>
-              <div class="mt-3 flex gap-2">
-                <NButton
-                  size="small"
-                  type="error"
-                  @click="onDelete(agent.agentId)"
-                >
-                  {{ $t('common.delete') }}
-                </NButton>
-              </div>
-            </NCard>
-          </NGi>
-        </NGrid>
-      </template>
-    </NSpin>
+    </Grid>
   </Page>
 </template>

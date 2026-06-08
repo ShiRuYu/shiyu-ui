@@ -1,3 +1,5 @@
+import { useAccessStore } from '@vben/stores';
+
 import { requestClient } from '#/api/request';
 
 export namespace AgentApi {
@@ -25,6 +27,14 @@ export namespace AgentApi {
     name: string;
     versionDescription?: string;
     versionNumber?: string;
+  }
+
+  export interface ExecuteRequest {
+    [key: string]: any;
+  }
+
+  export interface ExecuteResponse {
+    [key: string]: any;
   }
 }
 
@@ -59,11 +69,47 @@ async function deleteAgent(agentId: string) {
 /**
  * 同步执行 Agent
  */
-async function executeAgent(agentId: string, data?: Record<string, any>) {
-  return requestClient.post<Record<string, any>>(
+async function executeAgent(agentId: string, data?: AgentApi.ExecuteRequest) {
+  return requestClient.post<AgentApi.ExecuteResponse>(
     `/api/agent/${agentId}/execute`,
     data,
   );
+}
+
+/**
+ * 流式执行 Agent (SSE)
+ */
+async function executeAgentStream(
+  agentId: string,
+  data: AgentApi.ExecuteRequest,
+  onMessage: (chunk: string) => void,
+): Promise<void> {
+  const accessStore = useAccessStore();
+  const token = accessStore.accessToken;
+  const baseURL = requestClient.getBaseUrl() ?? '';
+  const response = await fetch(`${baseURL}/api/agent/${agentId}/executeStream`, {
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'text/event-stream',
+      'Authorization': token ? `Bearer ${token}` : '',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  });
+
+  if (!response.ok || !response.body) {
+    throw new Error(`Stream error: ${response.status}`);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const text = decoder.decode(value, { stream: true });
+    onMessage(text);
+  }
 }
 
 /**
@@ -78,6 +124,7 @@ async function switchAgentVersion(agentId: string, version: string) {
 export {
   deleteAgent,
   executeAgent,
+  executeAgentStream,
   getAgent,
   getAgentList,
   registerAgent,

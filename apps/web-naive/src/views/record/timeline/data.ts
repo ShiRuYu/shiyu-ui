@@ -1,6 +1,7 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
+import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { TimelineApi } from '#/api/record/timeline';
 
 import { z } from '#/adapter/form';
@@ -9,18 +10,96 @@ import { $t } from '#/locales';
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'InputNumber',
-      componentProps: { min: 1 },
+      component: 'ApiSelect',
+      componentProps: {
+        api: '/api/profile/page',
+        fieldNames: { label: 'name', value: 'id' },
+        params: { pageNo: 1, pageSize: 100 },
+        placeholder: $t('ui.placeholder.select'),
+        resultField: 'data.items',
+      },
       fieldName: 'profileId',
-      label: $t('record.timeline.profileId'),
+      label: $t('record.timeline.profileName'),
       rules: z
         .number()
-        .min(1, $t('ui.formRules.required', [$t('record.timeline.profileId')])),
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.profileName')])),
     },
   ];
 }
 
-export function useColumns(): VxeTableGridColumns<TimelineApi.TimelineEvent> {
+export function useSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: '/api/profile/page',
+        fieldNames: { label: 'name', value: 'id' },
+        params: { pageNo: 1, pageSize: 100 },
+        placeholder: $t('ui.placeholder.select'),
+        resultField: 'data.items',
+      },
+      fieldName: 'profileId',
+      label: $t('record.timeline.profileName'),
+      rules: z
+        .number()
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.profileName')])),
+    },
+    {
+      component: 'Input',
+      fieldName: 'title',
+      label: $t('record.timeline.title'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.title')])),
+    },
+    {
+      component: 'DatePicker',
+      componentProps: {
+        clearable: true,
+        type: 'datetime',
+        valueFormat: 'yyyy-MM-dd HH:mm:ss',
+      },
+      fieldName: 'eventTime',
+      label: $t('record.timeline.eventTime'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.eventTime')])),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: '里程碑', value: 'milestone' },
+          { label: '日常', value: 'daily' },
+          { label: '自定义', value: 'custom' },
+        ],
+      },
+      defaultValue: 'custom',
+      fieldName: 'type',
+      label: $t('record.timeline.type'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.type')])),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: '私密', value: 'private' },
+          { label: '家庭', value: 'family' },
+          { label: '公开', value: 'public' },
+        ],
+      },
+      defaultValue: 'family',
+      fieldName: 'visibility',
+      label: $t('record.timeline.visibility'),
+    },
+  ];
+}
+
+export function useColumns(
+  onActionClick?: OnActionClickFn<TimelineApi.TimelineEvent>,
+): VxeTableGridColumns<TimelineApi.TimelineEvent> {
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'title', title: $t('record.timeline.title'), width: 200 },
@@ -50,6 +129,24 @@ export function useColumns(): VxeTableGridColumns<TimelineApi.TimelineEvent> {
       field: 'visibility',
       title: $t('record.timeline.visibility'),
       width: 100,
+    },
+    {
+      align: 'right',
+      cellRender: {
+        attrs: {
+          nameField: 'title',
+          nameTitle: $t('record.timeline.title'),
+          onClick: onActionClick,
+        },
+        name: 'CellOperation',
+        options: ['edit', 'delete'],
+      },
+      field: 'operation',
+      fixed: 'right',
+      headerAlign: 'center',
+      showOverflow: false,
+      title: $t('system.role.operation'),
+      width: 150,
     },
   ];
 }
