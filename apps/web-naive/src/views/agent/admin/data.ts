@@ -39,7 +39,10 @@ export function useSchema(): VbenFormSchema[] {
       rules: z
         .string()
         .min(1, 'Agent标识不能为空')
-        .regex(/^[a-z][a-z0-9-]*$/, '只能包含小写字母、数字和连字符，以字母开头'),
+        .regex(
+          /^[a-z][a-z0-9-]*$/,
+          '只能包含小写字母、数字和连字符，以字母开头',
+        ),
     },
     {
       component: 'Input',

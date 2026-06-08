@@ -5,18 +5,19 @@ import type {
 } from '#/adapter/vxe-table';
 import type { AgentAdminApi } from '#/api/agent/admin';
 
+import { useRouter } from 'vue-router';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
+
 import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteAgent, getAgentPage } from '#/api/agent/admin';
 
-import { useRouter } from 'vue-router';
-
-import { useColumns, useGridFormSchema } from './data';
 import Form from './agent-form.vue';
+import { useColumns, useGridFormSchema } from './data';
 
 const router = useRouter();
 
@@ -114,7 +115,7 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="'Agent 管理'">
+    <Grid table-title="Agent 管理">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />

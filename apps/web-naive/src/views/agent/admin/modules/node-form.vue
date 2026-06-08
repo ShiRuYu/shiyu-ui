@@ -1,14 +1,22 @@
 <script lang="ts" setup>
-import type { NodeTypeApi } from '#/api/agent/node-type';
 import type { Node } from '@vue-flow/core';
+
+import type { NodeTypeApi } from '#/api/agent/node-type';
 
 import { computed, watch } from 'vue';
 
-import { NButton, NCheckbox, NInput, NInputNumber, NSelect, NSpace } from 'naive-ui';
+import {
+  NButton,
+  NCheckbox,
+  NInput,
+  NInputNumber,
+  NSelect,
+  NSpace,
+} from 'naive-ui';
 
 const props = defineProps<{
-  selectedNode: Node;
   nodeTypeMeta: NodeTypeApi.NodeTypeMetaVO[];
+  selectedNode: Node;
 }>();
 
 const emit = defineEmits(['close', 'update']);
@@ -61,7 +69,9 @@ watch(
       <label class="mb-1 block text-xs">节点类型</label>
       <NSelect
         :value="nodeData.nodeType"
-        :options="nodeTypeMeta.map((nt) => ({ label: nt.name, value: nt.code }))"
+        :options="
+          nodeTypeMeta.map((nt) => ({ label: nt.name, value: nt.code }))
+        "
         size="small"
         @update:value="(v: string) => (nodeData.nodeType = v)"
       />
@@ -87,11 +97,7 @@ watch(
 
     <div v-if="fieldSchemas.length > 0">
       <div class="mb-2 text-xs font-bold">配置参数</div>
-      <div
-        v-for="field in fieldSchemas"
-        :key="field.key"
-        class="mb-2"
-      >
+      <div v-for="field in fieldSchemas" :key="field.key" class="mb-2">
         <label class="mb-1 block text-xs">{{ field.label || field.key }}</label>
         <NSelect
           v-if="field.options"

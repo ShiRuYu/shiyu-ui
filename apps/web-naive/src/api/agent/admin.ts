@@ -60,10 +60,7 @@ async function createAgent(data: AgentAdminApi.AgentRequest) {
 }
 
 async function updateAgent(id: number, data: AgentAdminApi.AgentRequest) {
-  return requestClient.patch<AgentAdminApi.AgentVO>(
-    `/admin/agent/${id}`,
-    data,
-  );
+  return requestClient.patch<AgentAdminApi.AgentVO>(`/admin/agent/${id}`, data);
 }
 
 async function deleteAgent(id: number) {

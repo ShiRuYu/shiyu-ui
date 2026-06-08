@@ -1,20 +1,17 @@
 <script lang="ts" setup>
+import type { Connection, Edge, Node } from '@vue-flow/core';
+
 import type { AgentGraphApi } from '#/api/agent/graph';
 import type { NodeTypeApi } from '#/api/agent/node-type';
 
 import { nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import { Page } from '@vben/common-ui';
+
 import { Background } from '@vue-flow/background';
 import { Controls } from '@vue-flow/controls';
-import {
-  Handle,
-  Position,
-  useVueFlow,
-  VueFlow,
-} from '@vue-flow/core';
-import type { Connection, Edge, Node } from '@vue-flow/core';
-import { Page } from '@vben/common-ui';
+import { Handle, Position, useVueFlow, VueFlow } from '@vue-flow/core';
 import { NButton, NModal, NSpace, NSpin, NTag } from 'naive-ui';
 
 import {
@@ -85,7 +82,10 @@ async function loadGraph() {
         graphNodes.push({
           id: key,
           type: 'custom',
-          position: { x: 100 + Math.random() * 300, y: 100 + Math.random() * 300 },
+          position: {
+            x: 100 + Math.random() * 300,
+            y: 100 + Math.random() * 300,
+          },
           data: {
             nodeId: key,
             nodeName: nd.nodeName || key,
@@ -309,7 +309,7 @@ onMounted(() => {
       <NSpace align="center">
         <NButton @click="onBack">返回</NButton>
         <span class="text-lg font-semibold">{{ agentName }} - Graph 编排</span>
-        <div class="flex-1" />
+        <div class="flex-1"></div>
         <NButton @click="handleValidate">校验</NButton>
         <NButton :loading="saving" type="primary" @click="handleSave">
           保存
@@ -328,7 +328,7 @@ onMounted(() => {
               <span
                 class="inline-block h-3 w-3 rounded-full"
                 :style="{ backgroundColor: nt.color || '#666' }"
-              />
+              ></span>
               <span class="font-medium">{{ nt.name }}</span>
             </div>
             <div class="mt-1 text-gray-500">{{ nt.code }}</div>
@@ -359,9 +359,10 @@ onMounted(() => {
                   ]"
                   :style="{
                     minWidth: '150px',
-                    borderLeftColor: nodeTypesMeta.find(
-                      (nt) => nt.code === nodeProps.data?.nodeType,
-                    )?.color || '#666',
+                    borderLeftColor:
+                      nodeTypesMeta.find(
+                        (nt) => nt.code === nodeProps.data?.nodeType,
+                      )?.color || '#666',
                     borderLeftWidth: '4px',
                   }"
                 >
@@ -386,7 +387,7 @@ onMounted(() => {
             <span class="text-xs text-gray-500">
               节点: {{ nodes.length }} | 连线: {{ edges.length }}
             </span>
-            <div class="flex-1" />
+            <div class="flex-1"></div>
             <NButton
               v-if="selectedNode || selectedEdge"
               size="small"

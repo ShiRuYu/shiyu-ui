@@ -5,7 +5,16 @@ import { computed, h, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { NButton, NDataTable, NEmpty, NPopconfirm, NSpace, NSpin, NTag } from 'naive-ui';
+
+import {
+  NButton,
+  NDataTable,
+  NEmpty,
+  NPopconfirm,
+  NSpace,
+  NSpin,
+  NTag,
+} from 'naive-ui';
 
 import {
   activateVersion,
@@ -56,7 +65,11 @@ const columns = [
         ARCHIVED: { color: 'warning', label: '已归档' },
       };
       const info = map[row.status] || { color: 'default', label: row.status };
-      return h(NTag, { bordered: false, type: info.color as any }, () => info.label);
+      return h(
+        NTag,
+        { bordered: false, type: info.color as any },
+        () => info.label,
+      );
     },
   },
   { key: 'createTime', title: '创建时间', width: 170 },
@@ -65,30 +78,63 @@ const columns = [
     title: '操作',
     width: 320,
     render(row: AgentVersionApi.AgentVersionVO) {
-      return h(NSpace, () => [
-        row.status === 'DRAFT' &&
-          h(NPopconfirm, { onPositiveClick: () => handlePublish(row) }, {
-            default: () => '确认发布该版本？',
-            trigger: () => h(NButton, { size: 'small', type: 'primary' }, () => '发布'),
-          }),
-        row.status === 'PUBLISHED' &&
-          h(NPopconfirm, { onPositiveClick: () => handleArchive(row) }, {
-            default: () => '确认归档该版本？',
-            trigger: () => h(NButton, { size: 'small' }, () => '归档'),
-          }),
-        row.status === 'PUBLISHED' &&
-          h(NPopconfirm, { onPositiveClick: () => handleActivate(row) }, {
-            default: () => '确认激活该版本为当前版本？',
-            trigger: () => h(NButton, { size: 'small', type: 'success' }, () => '激活'),
-          }),
-        h(NButton, { size: 'small', onClick: () => handleEditGraph(row) }, () => '编排'),
-        h(NButton, { size: 'small', onClick: () => handleCopy(row) }, () => '复制'),
-        h(NButton, { size: 'small', onClick: () => handleEdit(row) }, () => '编辑'),
-        h(NPopconfirm, { onPositiveClick: () => handleDelete(row) }, {
-          default: () => '确认删除该版本？',
-          trigger: () => h(NButton, { size: 'small', type: 'error' }, () => '删除'),
-        }),
-      ].filter(Boolean));
+      return h(NSpace, () =>
+        [
+          row.status === 'DRAFT' &&
+            h(
+              NPopconfirm,
+              { onPositiveClick: () => handlePublish(row) },
+              {
+                default: () => '确认发布该版本？',
+                trigger: () =>
+                  h(NButton, { size: 'small', type: 'primary' }, () => '发布'),
+              },
+            ),
+          row.status === 'PUBLISHED' &&
+            h(
+              NPopconfirm,
+              { onPositiveClick: () => handleArchive(row) },
+              {
+                default: () => '确认归档该版本？',
+                trigger: () => h(NButton, { size: 'small' }, () => '归档'),
+              },
+            ),
+          row.status === 'PUBLISHED' &&
+            h(
+              NPopconfirm,
+              { onPositiveClick: () => handleActivate(row) },
+              {
+                default: () => '确认激活该版本为当前版本？',
+                trigger: () =>
+                  h(NButton, { size: 'small', type: 'success' }, () => '激活'),
+              },
+            ),
+          h(
+            NButton,
+            { size: 'small', onClick: () => handleEditGraph(row) },
+            () => '编排',
+          ),
+          h(
+            NButton,
+            { size: 'small', onClick: () => handleCopy(row) },
+            () => '复制',
+          ),
+          h(
+            NButton,
+            { size: 'small', onClick: () => handleEdit(row) },
+            () => '编辑',
+          ),
+          h(
+            NPopconfirm,
+            { onPositiveClick: () => handleDelete(row) },
+            {
+              default: () => '确认删除该版本？',
+              trigger: () =>
+                h(NButton, { size: 'small', type: 'error' }, () => '删除'),
+            },
+          ),
+        ].filter(Boolean),
+      );
     },
   },
 ];
@@ -119,17 +165,25 @@ async function handleActivate(row: AgentVersionApi.AgentVersionVO) {
 }
 
 function handleEdit(row: AgentVersionApi.AgentVersionVO) {
-  formModalApi.setData({ agentId: agentId.value, isEdit: true, editData: row }).open();
+  formModalApi
+    .setData({ agentId: agentId.value, isEdit: true, editData: row })
+    .open();
 }
 
 function handleCopy(row: AgentVersionApi.AgentVersionVO) {
-  formModalApi.setData({ agentId: agentId.value, isCopy: true, editData: row }).open();
+  formModalApi
+    .setData({ agentId: agentId.value, isCopy: true, editData: row })
+    .open();
 }
 
 function handleEditGraph(row: AgentVersionApi.AgentVersionVO) {
   router.push({
     path: '/agent/admin/graph',
-    query: { agentId: agentId.value, versionId: String(row.id), agentName: agentName.value },
+    query: {
+      agentId: agentId.value,
+      versionId: String(row.id),
+      agentName: agentName.value,
+    },
   });
 }
 

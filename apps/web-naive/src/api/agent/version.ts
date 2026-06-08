@@ -67,9 +67,7 @@ async function updateVersion(
 }
 
 async function deleteVersion(agentId: string, versionId: number) {
-  return requestClient.delete(
-    `/admin/agent/${agentId}/version/${versionId}`,
-  );
+  return requestClient.delete(`/admin/agent/${agentId}/version/${versionId}`);
 }
 
 async function publishVersion(agentId: string, versionId: number) {

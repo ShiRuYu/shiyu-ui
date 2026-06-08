@@ -9,10 +9,7 @@ defineProps<{
 <template>
   <div>
     <div class="mb-4 text-center">
-      <span
-        v-if="result.valid"
-        class="text-lg font-bold text-green-500"
-      >
+      <span v-if="result.valid" class="text-lg font-bold text-green-500">
         校验通过
       </span>
       <span v-else class="text-lg font-bold text-red-500"> 校验失败 </span>

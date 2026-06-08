@@ -1,6 +1,6 @@
-import { requestClient } from '#/api/request';
-
 import type { AgentVersionApi } from './version';
+
+import { requestClient } from '#/api/request';
 
 export namespace AgentGraphApi {
   export interface NodeConfigDTO {
@@ -115,11 +115,7 @@ async function updateNode(
   );
 }
 
-async function deleteNode(
-  agentId: string,
-  versionId: number,
-  nodeId: string,
-) {
+async function deleteNode(agentId: string, versionId: number, nodeId: string) {
   return requestClient.delete(
     `/admin/agent/${agentId}/version/${versionId}/graph/node/${nodeId}`,
   );
