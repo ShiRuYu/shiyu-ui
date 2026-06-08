@@ -7,9 +7,9 @@ export namespace ProfileApi {
     [key: string]: any;
     avatar?: string;
     birthDate?: string;
-    creatorId?: number;
     delFlag?: number;
-    gender?: string;
+    gender?: number;
+    genderLabel?: string;
     id: number;
     name: string;
     status?: string;

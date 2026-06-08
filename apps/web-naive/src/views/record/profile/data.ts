@@ -32,13 +32,13 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: '男', value: 'male' },
-          { label: '女', value: 'female' },
-          { label: '未知', value: 'unknown' },
+          { label: '男', value: 0 },
+          { label: '女', value: 1 },
+          { label: '未知', value: 2 },
         ],
         optionType: 'button',
       },
-      defaultValue: 'unknown',
+      defaultValue: 2,
       fieldName: 'gender',
       label: $t('system.user.sex'),
     },
@@ -71,7 +71,7 @@ export function useColumns(
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'name', title: $t('record.profile.name'), width: 150 },
-    { field: 'gender', title: $t('system.user.sex'), width: 80 },
+    { field: 'genderLabel', title: $t('system.user.sex'), width: 80 },
     { field: 'birthDate', title: $t('record.profile.birthDate'), width: 150 },
     {
       cellRender: {
