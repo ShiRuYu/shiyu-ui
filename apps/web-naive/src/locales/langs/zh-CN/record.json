@@ -7,12 +7,12 @@
     "gender": "性别",
     "birthDate": "出生日期",
     "avatar": "头像",
-    "creatorId": "创建者",
     "status": "状态"
   },
   "timeline": {
     "title": "时间轴管理",
     "list": "时间轴列表",
+    "profileName": "所属人物",
     "profileId": "人物ID",
     "eventTitle": "事件标题",
     "eventTime": "事件时间",

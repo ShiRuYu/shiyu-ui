@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { TimelineApi } from '#/api/record/timeline';
 
 import { z } from '#/adapter/form';
+import { getProfileOptions } from '#/api/record/profile';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -12,11 +13,11 @@ export function useGridFormSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: '/api/profile/page',
-        fieldNames: { label: 'name', value: 'id' },
-        params: { pageNo: 1, pageSize: 100 },
+        api: getProfileOptions,
+        labelField: 'name',
+        valueField: 'id',
+        allowClear: true,
         placeholder: $t('ui.placeholder.select'),
-        resultField: 'data.items',
       },
       fieldName: 'profileId',
       label: $t('record.timeline.profileName'),
@@ -32,11 +33,10 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: '/api/profile/page',
-        fieldNames: { label: 'name', value: 'id' },
-        params: { pageNo: 1, pageSize: 100 },
+        api: getProfileOptions,
+        labelField: 'name',
+        valueField: 'id',
         placeholder: $t('ui.placeholder.select'),
-        resultField: 'data.items',
       },
       fieldName: 'profileId',
       label: $t('record.timeline.profileName'),
@@ -47,10 +47,10 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'title',
-      label: $t('record.timeline.title'),
+      label: $t('record.timeline.eventTitle'),
       rules: z
         .string()
-        .min(1, $t('ui.formRules.required', [$t('record.timeline.title')])),
+        .min(1, $t('ui.formRules.required', [$t('record.timeline.eventTitle')])),
     },
     {
       component: 'DatePicker',
@@ -102,7 +102,7 @@ export function useColumns(
 ): VxeTableGridColumns<TimelineApi.TimelineEvent> {
   return [
     { field: 'id', title: 'ID', width: 80 },
-    { field: 'title', title: $t('record.timeline.title'), width: 200 },
+    { field: 'title', title: $t('record.timeline.eventTitle'), width: 200 },
     { field: 'eventTime', title: $t('record.timeline.eventTime'), width: 180 },
     {
       cellRender: {
@@ -135,7 +135,7 @@ export function useColumns(
       cellRender: {
         attrs: {
           nameField: 'title',
-          nameTitle: $t('record.timeline.title'),
+          nameTitle: $t('record.timeline.eventTitle'),
           onClick: onActionClick,
         },
         name: 'CellOperation',

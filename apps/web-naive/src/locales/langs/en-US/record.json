@@ -7,12 +7,12 @@
     "gender": "Gender",
     "birthDate": "Birth Date",
     "avatar": "Avatar",
-    "creatorId": "Creator ID",
     "status": "Status"
   },
   "timeline": {
     "title": "Timeline Management",
     "list": "Timeline List",
+    "profileName": "Profile",
     "profileId": "Profile ID",
     "eventTitle": "Event Title",
     "eventTime": "Event Time",

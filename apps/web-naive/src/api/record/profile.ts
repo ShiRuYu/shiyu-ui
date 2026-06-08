@@ -60,10 +60,19 @@ async function deleteProfile(id: number) {
   return requestClient.delete<boolean>(`/api/profile/${id}`);
 }
 
+/**
+ * 获取档案下拉选项（id + name）
+ */
+async function getProfileOptions() {
+  const result = await getProfilePage({ page: 1, pageSize: 1000 });
+  return (result?.items || []).map((p) => ({ id: p.id, name: p.name }));
+}
+
 export {
   createProfile,
   deleteProfile,
   getProfileById,
+  getProfileOptions,
   getProfilePage,
   updateProfile,
 };

@@ -66,6 +66,13 @@ const [Modal, modalApi] = useVbenModal({
           description: data.description,
           versionNumber: data.currentVersion || 'v1.0.0',
         });
+        formApi.updateSchema([
+          { componentProps: { disabled: true }, fieldName: 'agentId' },
+        ]);
+      } else {
+        formApi.updateSchema([
+          { componentProps: { disabled: false }, fieldName: 'agentId' },
+        ]);
       }
     }
   },
