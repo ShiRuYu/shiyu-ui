@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AgentApi } from '#/api/agent/agent';
+import type { AgentAdminApi } from '#/api/agent/admin';
 
 import { computed, nextTick, ref } from 'vue';
 
@@ -9,25 +9,22 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { registerAgent } from '#/api/agent/agent';
-import { $t } from '#/locales';
+import { createAgent, updateAgent } from '#/api/agent/admin';
 
-import { useSchema } from '../data';
+import { useSchema } from './data';
 
 const emit = defineEmits(['success']);
-const formData = ref<AgentApi.AgentDefinition>();
+const formData = ref<AgentAdminApi.AgentVO>();
 
 const getTitle = computed(() => {
-  return formData.value?.agentId
-    ? $t('ui.actionTitle.edit', [$t('agent.name')])
-    : $t('ui.actionTitle.create', [$t('agent.name')]);
+  return formData.value?.id ? '编辑 Agent' : '新增 Agent';
 });
 
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
-  wrapperClass: 'grid-cols-1',
   schema: useSchema(),
   showDefaultActions: false,
+  wrapperClass: 'grid-cols-1',
 });
 
 function resetForm() {
@@ -42,8 +39,14 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       const data = await formApi.getValues();
       try {
-        await registerAgent(data);
-        message.success($t('ui.actionMessage.operationSuccess'));
+        const submitData = { ...data };
+        if (submitData.status !== undefined) {
+          submitData.status = String(submitData.status);
+        }
+        await (formData.value?.id
+          ? updateAgent(formData.value.id, submitData)
+          : createAgent(submitData));
+        message.success('操作成功');
         modalApi.close();
         emit('success');
       } catch (error) {
@@ -55,24 +58,12 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<AgentApi.AgentDefinition>();
+      const data = modalApi.getData<AgentAdminApi.AgentVO>();
       formApi.resetForm();
-      formData.value = data?.agentId ? data : undefined;
+      formData.value = data?.id ? data : undefined;
       await nextTick();
-      if (data?.agentId) {
-        formApi.setValues({
-          agentId: data.agentId,
-          name: data.name,
-          description: data.description,
-          versionNumber: data.currentVersion || 'v1.0.0',
-        });
-        formApi.updateSchema([
-          { componentProps: { disabled: true }, fieldName: 'agentId' },
-        ]);
-      } else {
-        formApi.updateSchema([
-          { componentProps: { disabled: false }, fieldName: 'agentId' },
-        ]);
+      if (data?.id) {
+        formApi.setValues(data);
       }
     }
   },
@@ -84,9 +75,7 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="resetForm">
-          {{ $t('common.reset') }}
-        </NButton>
+        <NButton type="error" @click="resetForm"> 重置 </NButton>
       </div>
     </template>
   </Modal>
