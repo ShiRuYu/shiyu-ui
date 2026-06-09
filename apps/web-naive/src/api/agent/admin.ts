@@ -55,6 +55,10 @@ async function getAgentById(id: number) {
   return requestClient.get<AgentAdminApi.AgentDetailVO>(`/admin/agent/${id}`);
 }
 
+async function getAgentListAll() {
+  return requestClient.get('/admin/agent/list/all');
+}
+
 async function createAgent(data: AgentAdminApi.AgentRequest) {
   return requestClient.post<AgentAdminApi.AgentVO>('/admin/agent', data);
 }
@@ -77,6 +81,7 @@ export {
   createAgent,
   deleteAgent,
   getAgentById,
+  getAgentListAll,
   getAgentPage,
   toggleAgentStatus,
   updateAgent,

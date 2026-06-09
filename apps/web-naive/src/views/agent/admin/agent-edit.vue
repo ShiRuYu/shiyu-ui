@@ -16,14 +16,12 @@ import {
   NButton,
   NCollapse,
   NCollapseItem,
-  NDivider,
   NEmpty,
   NForm,
   NFormItemGi,
   NGi,
   NGrid,
   NInput,
-  NInputNumber,
   NModal,
   NPopconfirm,
   NSelect,
@@ -38,11 +36,10 @@ import {
   archiveVersion,
   createVersion,
   deleteVersion,
-  getVersionDetail,
   getVersionList,
   publishVersion,
 } from '#/api/agent/version';
-import { getAgentById, updateAgent } from '#/api/agent/admin';
+import { createAgent, getAgentById, getAgentListAll, updateAgent } from '#/api/agent/admin';
 import {
   getGraphConfig,
   updateGraphConfig,
@@ -55,6 +52,15 @@ import ValidateResult from './modules/validate-result.vue';
 
 const route = useRoute();
 const router = useRouter();
+
+// Mode: read-only vs edit
+const readonly = ref(route.query.readonly === 'true');
+const isNew = ref(route.query.new === 'true');
+
+// Agent selector (for direct entry without id)
+const agentOptions = ref<Array<{ label: string; value: number }>>([]);
+const selectedAgentId = ref<number | null>(null);
+const loadingOptions = ref(false);
 
 // Agent info
 const agentId = ref('');
@@ -104,9 +110,32 @@ const statusOptions = [
 
 onMounted(async () => {
   const id = route.query.id as string;
+  const isNewMode = route.query.new === 'true';
   if (id) {
     agentDetailId.value = Number(id);
     await loadAgentDetail(Number(id));
+  } else if (!isNewMode) {
+    // No id and not new — show agent selector
+    await loadAgentOptions();
+  }
+});
+
+async function loadAgentOptions() {
+  loadingOptions.value = true;
+  try {
+    const opts = (await getAgentListAll()) || [];
+    agentOptions.value = opts.map((o: any) => ({ label: o.name, value: o.id }));
+  } catch {
+    // ignore
+  } finally {
+    loadingOptions.value = false;
+  }
+}
+
+watch(selectedAgentId, async (newId) => {
+  if (newId) {
+    agentDetailId.value = newId;
+    await loadAgentDetail(newId);
   }
 });
 
@@ -170,6 +199,27 @@ watch(selectedVersionId, async (newId) => {
     edges.value = [];
   }
 });
+
+// --------------- New agent ---------------
+
+async function handleCreateNewAgent() {
+  if (!agentId.value || !agentName.value) {
+    message.error('请填写 Agent 标识和名称');
+    return;
+  }
+  try {
+    const vo = await createAgent({
+      agentId: agentId.value,
+      name: agentName.value,
+      description: agentDescription.value,
+      status: agentStatus.value,
+    });
+    message.success('Agent 创建成功');
+    agentDetailId.value = vo.id;
+  } catch {
+    message.error('创建 Agent 失败');
+  }
+}
 
 // --------------- Save agent info ---------------
 
@@ -508,11 +558,56 @@ onMounted(() => {
       <!-- Top bar -->
       <NSpace align="center">
         <NButton @click="onBack">← 返回列表</NButton>
-        <span class="text-lg font-semibold">{{ agentName || '加载中...' }}</span>
-        <div class="flex-1"></div>
+        <span v-if="agentDetailId" class="text-lg font-semibold">{{ agentName || '加载中...' }}</span>
+        <span v-else-if="isNew" class="text-lg font-semibold">新增 Agent</span>
+        <span v-else class="text-lg font-semibold">Agent 管理</span>
+        <div class="flex-1" />
+        <NTag v-if="readonly && agentDetailId" :bordered="false" type="info" size="small">只读</NTag>
       </NSpace>
 
-      <NSpin :show="loadingAgent">
+      <!-- Agent selector (direct entry without id) -->
+      <div v-if="!agentDetailId && !isNew" class="flex items-center gap-2 p-4">
+        <span class="text-sm font-medium whitespace-nowrap">选择 Agent：</span>
+        <NSelect
+          v-model:value="selectedAgentId"
+          :loading="loadingOptions"
+          :options="agentOptions"
+          class="w-[320px]"
+          placeholder="请选择一个 Agent"
+          @update:value="(val: any) => selectedAgentId = val"
+        />
+      </div>
+
+      <!-- New agent form (isNew mode) -->
+      <div v-if="isNew" class="max-w-[480px] space-y-3">
+        <NForm label-placement="top" label-width="auto">
+          <NGrid :cols="1" :x-gap="12">
+            <NGi>
+              <NFormItemGi label="Agent 标识">
+                <NInput v-model:value="agentId" placeholder="唯一标识（如 my-agent）" />
+              </NFormItemGi>
+            </NGi>
+            <NGi>
+              <NFormItemGi label="名称">
+                <NInput v-model:value="agentName" placeholder="Agent 名称" />
+              </NFormItemGi>
+            </NGi>
+            <NGi>
+              <NFormItemGi label="描述">
+                <NInput v-model:value="agentDescription" :maxlength="500" :rows="2" placeholder="描述" type="textarea" />
+              </NFormItemGi>
+            </NGi>
+            <NGi>
+              <NFormItemGi label="状态">
+                <NSelect v-model:value="agentStatus" :options="statusOptions" />
+              </NFormItemGi>
+            </NGi>
+          </NGrid>
+          <NButton type="primary" @click="handleCreateNewAgent">创建 Agent</NButton>
+        </NForm>
+      </div>
+
+      <NSpin v-if="agentDetailId" :show="loadingAgent">
         <div class="flex flex-1 gap-4 overflow-hidden">
           <!-- Left: Agent Info + Version Control -->
           <div class="w-[380px] flex-shrink-0 overflow-y-auto space-y-3">
@@ -523,18 +618,19 @@ onMounted(() => {
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
                       <NFormItemGi label="Agent 标识">
-                        <NInput v-model:value="agentId" disabled placeholder="Agent 唯一标识" />
+                        <NInput v-model:value="agentId" :disabled="true" placeholder="Agent 唯一标识" />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
                       <NFormItemGi label="名称">
-                        <NInput v-model:value="agentName" placeholder="Agent 名称" />
+                        <NInput v-model:value="agentName" :disabled="readonly" placeholder="Agent 名称" />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
                       <NFormItemGi label="描述">
                         <NInput
                           v-model:value="agentDescription"
+                          :disabled="readonly"
                           :maxlength="500"
                           :rows="2"
                           placeholder="描述"
@@ -544,11 +640,11 @@ onMounted(() => {
                     </NGi>
                     <NGi>
                       <NFormItemGi label="状态">
-                        <NSelect v-model:value="agentStatus" :options="statusOptions" />
+                        <NSelect v-model:value="agentStatus" :disabled="readonly" :options="statusOptions" />
                       </NFormItemGi>
                     </NGi>
                   </NGrid>
-                  <div class="mt-2">
+                  <div v-if="!readonly" class="mt-2">
                     <NButton type="primary" @click="handleSaveAgent">保存信息</NButton>
                   </div>
                 </NForm>
@@ -564,13 +660,13 @@ onMounted(() => {
                     <NSpace>
                       <NSelect
                         v-model:value="selectedVersionId"
-                        :disabled="versions.length === 0"
+                        :disabled="versions.length === 0 || readonly"
                         :loading="loadingVersions"
                         :options="versions"
                         class="flex-1"
                         placeholder="选择版本"
                       />
-                      <NButton size="small" @click="showCreateVersion = !showCreateVersion">
+                      <NButton v-if="!readonly" size="small" @click="showCreateVersion = !showCreateVersion">
                         新建
                       </NButton>
                     </NSpace>
@@ -608,7 +704,7 @@ onMounted(() => {
                   </div>
 
                   <!-- Version actions -->
-                  <div v-if="selectedVersionId" class="flex flex-wrap gap-2">
+                  <div v-if="selectedVersionId && !readonly" class="flex flex-wrap gap-2">
                     <NButton
                       v-if="selectedVersionInfo?.status !== 'PUBLISHED'"
                       size="small"
@@ -664,6 +760,7 @@ onMounted(() => {
                 校验
               </NButton>
               <NButton
+                v-if="!readonly"
                 :disabled="!selectedVersionId"
                 :loading="saving"
                 size="small"
