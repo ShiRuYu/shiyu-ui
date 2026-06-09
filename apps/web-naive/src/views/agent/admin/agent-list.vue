@@ -27,7 +27,10 @@ const [FormModal, formModalApi] = useVbenModal({
 });
 
 function onEdit(row: AgentAdminApi.AgentVO) {
-  formModalApi.setData(row).open();
+  router.push({
+    path: '/agent/admin/edit',
+    query: { id: row.id },
+  });
 }
 
 function onCreate() {
@@ -62,8 +65,8 @@ function onActionClick({
     }
     case 'version': {
       router.push({
-        path: '/agent/admin/version',
-        query: { agentId: row.agentId, agentName: row.name },
+        path: '/agent/admin/edit',
+        query: { id: row.id },
       });
       break;
     }
