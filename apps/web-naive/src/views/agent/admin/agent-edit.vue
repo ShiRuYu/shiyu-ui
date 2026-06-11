@@ -1,23 +1,21 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node } from '@vue-flow/core';
-
 import type { AgentGraphApi } from '#/api/agent/graph';
 import type { NodeTypeApi } from '#/api/agent/node-type';
 
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, h, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
-import { Background } from '@vue-flow/background';
-import { Controls } from '@vue-flow/controls';
-import { Handle, Position, useVueFlow, VueFlow } from '@vue-flow/core';
 import {
   NButton,
+  NCheckbox,
   NCollapse,
   NCollapseItem,
+  NDataTable,
   NEmpty,
   NForm,
+  NFormItem,
   NFormItemGi,
   NGi,
   NGrid,
@@ -39,7 +37,12 @@ import {
   getVersionList,
   publishVersion,
 } from '#/api/agent/version';
-import { createAgent, getAgentById, getAgentListAll, updateAgent } from '#/api/agent/admin';
+import {
+  createAgent,
+  getAgentById,
+  getAgentListAll,
+  updateAgent,
+} from '#/api/agent/admin';
 import {
   getGraphConfig,
   updateGraphConfig,
@@ -72,20 +75,26 @@ const loadingAgent = ref(false);
 
 // Version management
 const versions = ref<Array<{ label: string; value: number }>>([]);
-const versionMap = ref<Record<number, { versionNumber: string; status: string; description: string }>>({});
+const versionMap = ref<
+  Record<number, { versionNumber: string; status: string; description: string }>
+>({});
 const selectedVersionId = ref<number | null>(null);
 const loadingVersions = ref(false);
 const showCreateVersion = ref(false);
 const newVersionNumber = ref('');
 const newVersionDesc = ref('');
 
-// Graph editor
+// Graph form
 const loading = ref(false);
 const saving = ref(false);
 const nodeTypesMeta = ref<NodeTypeApi.NodeTypeMetaVO[]>([]);
-const selectedNode = ref<Node | null>(null);
-const selectedEdge = ref<Edge | null>(null);
-const showNodeForm = ref(false);
+
+const formNodes = ref<AgentGraphApi.FormNode[]>([]);
+const formEdges = ref<AgentGraphApi.FormEdge[]>([]);
+
+const startNode = ref('');
+const endNode = ref('');
+
 const showValidateResult = ref(false);
 const validationResult = ref<AgentGraphApi.GraphValidationVO>({
   errors: [],
@@ -93,8 +102,32 @@ const validationResult = ref<AgentGraphApi.GraphValidationVO>({
   warnings: [],
 });
 
-const { nodes, edges, addNodes, addEdges, removeNodes, removeEdges, fitView } =
-  useVueFlow();
+// Node modal state
+const showNodeModal = ref(false);
+const editingNode = ref<AgentGraphApi.FormNode>({
+  id: '',
+  nodeName: '',
+  nodeType: '',
+  enabled: true,
+  description: '',
+  config: {},
+});
+const isNewNode = ref(false);
+
+// Normal edge modal state
+const showEdgeModal = ref(false);
+const edgeSource = ref('');
+const edgeTarget = ref('');
+const isNewEdge = ref(false);
+
+// Conditional edge modal state
+const showCondEdgeModal = ref(false);
+const condEdgeSource = ref('');
+const condEdgeTarget = ref('');
+const condEdgeType = ref('');
+const condEdgeMapping = ref('');
+const condEdgeIsDefault = ref(false);
+const isNewCondEdge = ref(false);
 
 const selectedVersionInfo = computed(() => {
   if (!selectedVersionId.value) return null;
@@ -106,6 +139,102 @@ const statusOptions = [
   { label: '停用', value: '0' },
 ];
 
+const nodeOptions = computed(() =>
+  formNodes.value.map((n) => ({
+    label: `${n.nodeName} (${n.id})`,
+    value: n.id,
+  })),
+);
+
+const normalEdges = computed(() =>
+  formEdges.value.filter((e) => e.edgeType === 'normal'),
+);
+
+const conditionalEdges = computed(() =>
+  formEdges.value.filter((e) => e.edgeType === 'conditional'),
+);
+
+// --------------- Table columns ---------------
+
+const nodeColumns = computed(() => [
+  { title: '名称', key: 'nodeName', width: 130 },
+  { title: '类型', key: 'nodeType', width: 100 },
+  {
+    title: '状态',
+    key: 'enabled',
+    width: 70,
+    render: (row: AgentGraphApi.FormNode) => (row.enabled ? '启用' : '停用'),
+  },
+  { title: '描述', key: 'description', ellipsis: { tooltip: true } },
+  {
+    title: '操作',
+    key: 'actions',
+    width: 110,
+    fixed: 'right' as const,
+    render: (row: AgentGraphApi.FormNode) =>
+      h(NSpace, {}, [
+        h(NButton, { size: 'tiny', onClick: () => openEditNode(row) }, '编辑'),
+        h(
+          NButton,
+          {
+            size: 'tiny',
+            type: 'error',
+            onClick: () => handleDeleteNode(row.id),
+          },
+          '删除',
+        ),
+      ]),
+  },
+]);
+
+const normalEdgeColumns = [
+  { title: '源节点', key: 'source', width: 130 },
+  { title: '目标节点', key: 'target', width: 130 },
+  {
+    title: '操作',
+    key: 'actions',
+    width: 80,
+    render: (row: AgentGraphApi.FormEdge) =>
+      h(
+        NButton,
+        {
+          size: 'tiny',
+          type: 'error',
+          onClick: () => handleDeleteEdge(row.id),
+        },
+        '删除',
+      ),
+  },
+];
+
+const conditionalEdgeColumns = [
+  { title: '源节点', key: 'source', width: 120 },
+  { title: '目标节点', key: 'target', width: 120 },
+  { title: '条件类型', key: 'conditionType', width: 90 },
+  { title: '映射值', key: 'conditionMapping', width: 90 },
+  {
+    title: '默认目标',
+    key: 'isDefault',
+    width: 80,
+    render: (row: AgentGraphApi.FormEdge) => (row.isDefault ? '是' : '否'),
+  },
+  {
+    title: '操作',
+    key: 'actions',
+    width: 80,
+    render: (row: AgentGraphApi.FormEdge) =>
+      h(
+        NButton,
+        {
+          size: 'tiny',
+          type: 'error',
+          onClick: () => handleDeleteEdge(row.id),
+        },
+        '删除',
+      ),
+  },
+];
+
 // --------------- Lifecycle ---------------
 
 onMounted(async () => {
@@ -115,9 +244,9 @@ onMounted(async () => {
     agentDetailId.value = Number(id);
     await loadAgentDetail(Number(id));
   } else if (!isNewMode) {
-    // No id and not new — show agent selector
     await loadAgentOptions();
   }
+  await loadNodeTypes();
 });
 
 async function loadAgentOptions() {
@@ -168,14 +297,16 @@ async function loadVersions() {
         status: v.status,
         description: v.description,
       };
-      return { label: `${v.versionNumber} (${statusLabel(v.status)})`, value: v.id };
+      return {
+        label: `${v.versionNumber} (${statusLabel(v.status)})`,
+        value: v.id,
+      };
     });
-    // Auto-select the first published version, or latest
     const published = list.find((v) => v.status === 'PUBLISHED');
     if (published) {
       selectedVersionId.value = published.id;
     } else if (list.length > 0) {
-      selectedVersionId.value = list[list.length - 1].id;
+      selectedVersionId.value = list[list.length - 1]!.id;
     }
   } catch (e) {
     console.error('Failed to load versions', e);
@@ -185,7 +316,11 @@ async function loadVersions() {
 }
 
 function statusLabel(s: string): string {
-  const map: Record<string, string> = { DRAFT: '草稿', PUBLISHED: '已发布', ARCHIVED: '已归档' };
+  const map: Record<string, string> = {
+    DRAFT: '草稿',
+    PUBLISHED: '已发布',
+    ARCHIVED: '已归档',
+  };
   return map[s] || s;
 }
 
@@ -195,8 +330,8 @@ watch(selectedVersionId, async (newId) => {
   if (newId) {
     await loadGraph();
   } else {
-    nodes.value = [];
-    edges.value = [];
+    formNodes.value = [];
+    formEdges.value = [];
   }
 });
 
@@ -238,7 +373,7 @@ async function handleSaveAgent() {
   }
 }
 
-// --------------- Graph editor ---------------
+// --------------- Graph form ---------------
 
 async function loadGraph() {
   if (!agentId.value || !selectedVersionId.value) return;
@@ -248,27 +383,19 @@ async function loadGraph() {
     if (!detail?.graphConfig) return;
     const config = detail.graphConfig;
 
-    const graphNodes: Node[] = [];
-    const graphEdges: Edge[] = [];
+    const nodes: AgentGraphApi.FormNode[] = [];
+    const edges: AgentGraphApi.FormEdge[] = [];
 
     if (config.nodes) {
       for (const [key, nodeData] of Object.entries(config.nodes)) {
         const nd = nodeData as any;
-        graphNodes.push({
+        nodes.push({
           id: key,
-          type: 'custom',
-          position: {
-            x: 100 + Math.random() * 300,
-            y: 100 + Math.random() * 300,
-          },
-          data: {
-            nodeId: key,
-            nodeName: nd.nodeName || key,
-            nodeType: nd.nodeType || '',
-            enabled: nd.enabled !== false,
-            description: nd.description || '',
-            config: nd.config || {},
-          },
+          nodeName: nd.nodeName || key,
+          nodeType: nd.nodeType || '',
+          enabled: nd.enabled !== false,
+          description: nd.description || '',
+          config: nd.config || {},
         });
       }
     }
@@ -276,12 +403,11 @@ async function loadGraph() {
     if (config.edges) {
       for (const [source, targets] of Object.entries(config.edges)) {
         for (const target of targets as string[]) {
-          graphEdges.push({
+          edges.push({
             id: `${source}->${target}`,
             source,
             target,
-            type: 'default',
-            animated: false,
+            edgeType: 'normal',
           });
         }
       }
@@ -293,36 +419,34 @@ async function loadGraph() {
         const defaultTarget = ci.defaultTarget;
         const nodeMappings = ci.nodeMappings || {};
         if (defaultTarget) {
-          graphEdges.push({
+          edges.push({
             id: `${source}->${defaultTarget}__cond_default`,
             source,
             target: defaultTarget,
-            type: 'default',
-            animated: true,
-            style: { strokeDasharray: '5 5' },
-            data: { conditionType: ci.conditionType, isConditional: true },
+            edgeType: 'conditional',
+            conditionType: ci.conditionType,
+            isDefault: true,
           });
         }
         for (const [mapping, targetTile] of Object.entries(nodeMappings)) {
           const target = targetTile as string;
-          graphEdges.push({
+          edges.push({
             id: `${source}->${target}__cond_${mapping}`,
             source,
             target,
-            type: 'default',
-            animated: true,
-            style: { strokeDasharray: '5 5' },
-            label: mapping,
-            data: { conditionType: ci.conditionType, isConditional: true },
+            edgeType: 'conditional',
+            conditionType: ci.conditionType,
+            conditionMapping: mapping,
+            isDefault: false,
           });
         }
       }
     }
 
-    nodes.value = graphNodes;
-    edges.value = graphEdges;
-    await nextTick();
-    fitView();
+    formNodes.value = nodes;
+    formEdges.value = edges;
+    startNode.value = config.startNode || '';
+    endNode.value = config.endNode || '';
   } catch {
     // ignore load errors for new/empty versions
   } finally {
@@ -332,36 +456,36 @@ async function loadGraph() {
 
 function buildGraphConfig(): AgentGraphApi.GraphConfigRequest {
   const nMap: Record<string, any> = {};
-  for (const n of nodes.value) {
+  for (const n of formNodes.value) {
     nMap[n.id] = {
-      nodeName: n.data?.nodeName || n.id,
-      description: n.data?.description || '',
-      nodeType: n.data?.nodeType || '',
-      enabled: n.data?.enabled !== false,
-      config: n.data?.config || {},
+      nodeName: n.nodeName || n.id,
+      description: n.description || '',
+      nodeType: n.nodeType || '',
+      enabled: n.enabled !== false,
+      config: n.config || {},
     };
   }
 
   const eMap: Record<string, string[]> = {};
   const ceMap: Record<string, any> = {};
 
-  for (const e of edges.value) {
-    if (e.data?.isConditional) {
+  for (const e of formEdges.value) {
+    if (e.edgeType === 'conditional') {
       if (!ceMap[e.source]) {
         ceMap[e.source] = {
-          conditionType: e.data?.conditionType || '',
+          conditionType: e.conditionType || '',
           defaultTarget: '',
           nodeMappings: {},
         };
       }
-      if (e.id?.includes('__cond_default')) {
+      if (e.isDefault) {
         ceMap[e.source].defaultTarget = e.target;
-      } else if (e.label) {
-        ceMap[e.source].nodeMappings[e.label as string] = e.target;
+      } else if (e.conditionMapping) {
+        ceMap[e.source].nodeMappings[e.conditionMapping] = e.target;
       }
     } else {
       if (!eMap[e.source]) eMap[e.source] = [];
-      eMap[e.source].push(e.target);
+      eMap[e.source]!.push(e.target);
     }
   }
 
@@ -370,8 +494,9 @@ function buildGraphConfig(): AgentGraphApi.GraphConfigRequest {
     nodes: nMap,
     edges: eMap,
     conditionalEdges: ceMap,
-    startNode: nodes.value[0]?.id || '',
-    endNode: nodes.value[nodes.value.length - 1]?.id || '',
+    startNode: startNode.value || formNodes.value[0]?.id || '',
+    endNode:
+      endNode.value || formNodes.value[formNodes.value.length - 1]?.id || '',
   };
 }
 
@@ -379,7 +504,11 @@ async function handleSaveGraph() {
   if (!agentId.value || !selectedVersionId.value) return;
   saving.value = true;
   try {
-    await updateGraphConfig(agentId.value, selectedVersionId.value, buildGraphConfig());
+    await updateGraphConfig(
+      agentId.value,
+      selectedVersionId.value,
+      buildGraphConfig(),
+    );
     message.success('Graph 保存成功');
   } catch {
     message.error('保存 Graph 失败');
@@ -403,76 +532,109 @@ async function handleValidate() {
   }
 }
 
-function onNodeClick({ node }: { node: Node }) {
-  selectedNode.value = node;
-  selectedEdge.value = null;
-  showNodeForm.value = true;
+// --------------- Node CRUD ---------------
+
+function openAddNode() {
+  const firstType = nodeTypesMeta.value[0];
+  editingNode.value = {
+    id: `node_${Date.now()}`,
+    nodeName: firstType?.name || '',
+    nodeType: firstType?.code || '',
+    enabled: true,
+    description: '',
+    config: {},
+  };
+  isNewNode.value = true;
+  showNodeModal.value = true;
 }
 
-function onEdgeClick({ edge }: { edge: Edge }) {
-  selectedEdge.value = edge;
-  selectedNode.value = null;
-  showNodeForm.value = false;
+function openEditNode(node: AgentGraphApi.FormNode) {
+  editingNode.value = { ...node, config: { ...(node.config || {}) } };
+  isNewNode.value = false;
+  showNodeModal.value = true;
 }
 
-function onPaneClick() {
-  selectedNode.value = null;
-  selectedEdge.value = null;
-  showNodeForm.value = false;
-}
-
-function onConnect(connection: Connection) {
-  const id = `${connection.source}->${connection.target}`;
-  addEdges([
-    {
-      id,
-      source: connection.source,
-      target: connection.target,
-      type: 'default',
-    },
-  ]);
-}
-
-function handleAddNode(nodeType: NodeTypeApi.NodeTypeMetaVO) {
-  const nodeId = `${nodeType.code.toLowerCase()}_${Date.now()}`;
-  addNodes([
-    {
-      id: nodeId,
-      type: 'custom',
-      position: { x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 },
-      data: {
-        nodeId,
-        nodeName: nodeType.name,
-        nodeType: nodeType.code,
-        enabled: true,
-        description: nodeType.description,
-        config: {},
-      },
-    },
-  ]);
-}
-
-function handleDeleteSelected() {
-  if (selectedNode.value) {
-    removeNodes([selectedNode.value.id]);
-    showNodeForm.value = false;
-    selectedNode.value = null;
-  } else if (selectedEdge.value) {
-    removeEdges([selectedEdge.value.id]);
-    selectedEdge.value = null;
+function confirmNode() {
+  if (isNewNode.value) {
+    formNodes.value.push({ ...editingNode.value });
+  } else {
+    const idx = formNodes.value.findIndex((n) => n.id === editingNode.value.id);
+    if (idx >= 0) formNodes.value[idx] = { ...editingNode.value };
   }
+  showNodeModal.value = false;
 }
 
-function onNodeUpdate() {
-  showNodeForm.value = false;
+function handleDeleteNode(id: string) {
+  formNodes.value = formNodes.value.filter((n) => n.id !== id);
+  // Also remove related edges
+  formEdges.value = formEdges.value.filter(
+    (e) => e.source !== id && e.target !== id,
+  );
 }
 
-async function loadNodeTypes() {
-  try {
-    nodeTypesMeta.value = (await getNodeTypes()) || [];
-  } catch {
-    // ignore
+// --------------- Normal Edge CRUD ---------------
+
+function openAddEdge() {
+  edgeSource.value = '';
+  edgeTarget.value = '';
+  isNewEdge.value = true;
+  showEdgeModal.value = true;
+}
+
+function confirmEdge() {
+  if (!edgeSource.value || !edgeTarget.value) {
+    message.warning('请选择源节点和目标节点');
+    return;
   }
+  const id = `${edgeSource.value}->${edgeTarget.value}`;
+  formEdges.value.push({
+    id,
+    source: edgeSource.value,
+    target: edgeTarget.value,
+    edgeType: 'normal',
+  });
+  showEdgeModal.value = false;
+}
+
+// --------------- Conditional Edge CRUD ---------------
+
+function openAddConditionalEdge() {
+  condEdgeSource.value = '';
+  condEdgeTarget.value = '';
+  condEdgeType.value = '';
+  condEdgeMapping.value = '';
+  condEdgeIsDefault.value = false;
+  isNewCondEdge.value = true;
+  showCondEdgeModal.value = true;
+}
+
+function confirmCondEdge() {
+  if (!condEdgeSource.value || !condEdgeTarget.value) {
+    message.warning('请选择源节点和目标节点');
+    return;
+  }
+  const suffix = condEdgeIsDefault.value
+    ? 'cond_default'
+    : `cond_${condEdgeMapping.value || 'unknown'}`;
+  const id = `${condEdgeSource.value}->${condEdgeTarget.value}__${suffix}`;
+  formEdges.value.push({
+    id,
+    source: condEdgeSource.value,
+    target: condEdgeTarget.value,
+    edgeType: 'conditional',
+    conditionType: condEdgeType.value,
+    conditionMapping: condEdgeIsDefault.value
+      ? undefined
+      : condEdgeMapping.value,
+    isDefault: condEdgeIsDefault.value,
+  });
+  showCondEdgeModal.value = false;
+}
+
+// --------------- Edge delete ---------------
+
+function handleDeleteEdge(id: string) {
+  formEdges.value = formEdges.value.filter((e) => e.id !== id);
 }
 
 // --------------- Version operations ---------------
@@ -543,13 +705,17 @@ async function handleDeleteVersion() {
   }
 }
 
+async function loadNodeTypes() {
+  try {
+    nodeTypesMeta.value = (await getNodeTypes()) || [];
+  } catch {
+    // ignore
+  }
+}
+
 function onBack() {
   router.push({ path: '/agent/admin/list' });
 }
-
-onMounted(() => {
-  loadNodeTypes();
-});
 </script>
 
 <template>
@@ -558,11 +724,19 @@ onMounted(() => {
       <!-- Top bar -->
       <NSpace align="center">
         <NButton @click="onBack">← 返回列表</NButton>
-        <span v-if="agentDetailId" class="text-lg font-semibold">{{ agentName || '加载中...' }}</span>
+        <span v-if="agentDetailId" class="text-lg font-semibold">{{
+          agentName || '加载中...'
+        }}</span>
         <span v-else-if="isNew" class="text-lg font-semibold">新增 Agent</span>
         <span v-else class="text-lg font-semibold">Agent 管理</span>
         <div class="flex-1" />
-        <NTag v-if="readonly && agentDetailId" :bordered="false" type="info" size="small">只读</NTag>
+        <NTag
+          v-if="readonly && agentDetailId"
+          :bordered="false"
+          type="info"
+          size="small"
+          >只读</NTag
+        >
       </NSpace>
 
       <!-- Agent selector (direct entry without id) -->
@@ -574,7 +748,7 @@ onMounted(() => {
           :options="agentOptions"
           class="w-[320px]"
           placeholder="请选择一个 Agent"
-          @update:value="(val: any) => selectedAgentId = val"
+          @update:value="(val: any) => (selectedAgentId = val)"
         />
       </div>
 
@@ -584,7 +758,10 @@ onMounted(() => {
           <NGrid :cols="1" :x-gap="12">
             <NGi>
               <NFormItemGi label="Agent 标识">
-                <NInput v-model:value="agentId" placeholder="唯一标识（如 my-agent）" />
+                <NInput
+                  v-model:value="agentId"
+                  placeholder="唯一标识（如 my-agent）"
+                />
               </NFormItemGi>
             </NGi>
             <NGi>
@@ -594,7 +771,13 @@ onMounted(() => {
             </NGi>
             <NGi>
               <NFormItemGi label="描述">
-                <NInput v-model:value="agentDescription" :maxlength="500" :rows="2" placeholder="描述" type="textarea" />
+                <NInput
+                  v-model:value="agentDescription"
+                  :maxlength="500"
+                  :rows="2"
+                  placeholder="描述"
+                  type="textarea"
+                />
               </NFormItemGi>
             </NGi>
             <NGi>
@@ -603,7 +786,9 @@ onMounted(() => {
               </NFormItemGi>
             </NGi>
           </NGrid>
-          <NButton type="primary" @click="handleCreateNewAgent">创建 Agent</NButton>
+          <NButton type="primary" @click="handleCreateNewAgent"
+            >创建 Agent</NButton
+          >
         </NForm>
       </div>
 
@@ -618,12 +803,20 @@ onMounted(() => {
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
                       <NFormItemGi label="Agent 标识">
-                        <NInput v-model:value="agentId" :disabled="true" placeholder="Agent 唯一标识" />
+                        <NInput
+                          v-model:value="agentId"
+                          :disabled="true"
+                          placeholder="Agent 唯一标识"
+                        />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
                       <NFormItemGi label="名称">
-                        <NInput v-model:value="agentName" :disabled="readonly" placeholder="Agent 名称" />
+                        <NInput
+                          v-model:value="agentName"
+                          :disabled="readonly"
+                          placeholder="Agent 名称"
+                        />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
@@ -640,12 +833,18 @@ onMounted(() => {
                     </NGi>
                     <NGi>
                       <NFormItemGi label="状态">
-                        <NSelect v-model:value="agentStatus" :disabled="readonly" :options="statusOptions" />
+                        <NSelect
+                          v-model:value="agentStatus"
+                          :disabled="readonly"
+                          :options="statusOptions"
+                        />
                       </NFormItemGi>
                     </NGi>
                   </NGrid>
                   <div v-if="!readonly" class="mt-2">
-                    <NButton type="primary" @click="handleSaveAgent">保存信息</NButton>
+                    <NButton type="primary" @click="handleSaveAgent"
+                      >保存信息</NButton
+                    >
                   </div>
                 </NForm>
               </NCollapseItem>
@@ -666,7 +865,11 @@ onMounted(() => {
                         class="flex-1"
                         placeholder="选择版本"
                       />
-                      <NButton v-if="!readonly" size="small" @click="showCreateVersion = !showCreateVersion">
+                      <NButton
+                        v-if="!readonly"
+                        size="small"
+                        @click="showCreateVersion = !showCreateVersion"
+                      >
                         新建
                       </NButton>
                     </NSpace>
@@ -688,23 +891,38 @@ onMounted(() => {
                         size="small"
                         type="textarea"
                       />
-                      <NButton size="small" type="primary" @click="handleCreateVersion">
+                      <NButton
+                        size="small"
+                        type="primary"
+                        @click="handleCreateVersion"
+                      >
                         确定创建
                       </NButton>
                     </NSpace>
                   </div>
 
                   <!-- Version info -->
-                  <div v-if="selectedVersionInfo" class="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800">
+                  <div
+                    v-if="selectedVersionInfo"
+                    class="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800"
+                  >
                     <div>版本号: {{ selectedVersionInfo.versionNumber }}</div>
-                    <div>状态: <NTag :bordered="false" size="small">{{ statusLabel(selectedVersionInfo.status) }}</NTag></div>
+                    <div>
+                      状态:
+                      <NTag :bordered="false" size="small">{{
+                        statusLabel(selectedVersionInfo.status)
+                      }}</NTag>
+                    </div>
                     <div v-if="selectedVersionInfo.description" class="mt-1">
                       描述: {{ selectedVersionInfo.description }}
                     </div>
                   </div>
 
                   <!-- Version actions -->
-                  <div v-if="selectedVersionId && !readonly" class="flex flex-wrap gap-2">
+                  <div
+                    v-if="selectedVersionId && !readonly"
+                    class="flex flex-wrap gap-2"
+                  >
                     <NButton
                       v-if="selectedVersionInfo?.status !== 'PUBLISHED'"
                       size="small"
@@ -740,7 +958,7 @@ onMounted(() => {
             </NCollapse>
           </div>
 
-          <!-- Right: Graph Editor -->
+          <!-- Right: Graph Form (replaces Vue Flow canvas) -->
           <div class="flex flex-1 flex-col overflow-hidden rounded border">
             <!-- Graph editor toolbar -->
             <NSpace align="center" class="border-b p-2">
@@ -771,112 +989,205 @@ onMounted(() => {
               </NButton>
             </NSpace>
 
-            <!-- Canvas area -->
-            <div class="flex flex-1 overflow-hidden">
-              <!-- Node type palette -->
-              <div class="w-[180px] flex-shrink-0 overflow-y-auto border-r p-2">
-                <div class="mb-2 text-xs font-bold">节点类型</div>
-                <div
-                  v-for="nt in nodeTypesMeta"
-                  :key="nt.code"
-                  class="mb-1 cursor-pointer rounded border p-1.5 text-xs transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-                  @click="selectedVersionId && handleAddNode(nt)"
-                >
-                  <div class="flex items-center gap-1">
-                    <span
-                      class="inline-block h-2.5 w-2.5 rounded-full"
-                      :style="{ backgroundColor: nt.color || '#666' }"
-                    ></span>
-                    <span class="font-medium">{{ nt.name }}</span>
-                  </div>
-                  <div class="mt-0.5 text-gray-400">{{ nt.code }}</div>
-                </div>
-              </div>
-
-              <!-- VueFlow canvas -->
-              <div class="relative flex-1">
-                <div v-if="!selectedVersionId" class="flex h-full items-center justify-center">
-                  <NEmpty description="请选择一个版本以编辑 Graph" />
-                </div>
-                <NSpin v-else :show="loading">
-                  <VueFlow
-                    :nodes="nodes"
-                    :edges="edges"
-                    class="h-full w-full"
-                    :default-viewport="{ x: 0, y: 0, zoom: 1 }"
-                    fit-view-on-init
-                    @connect="onConnect"
-                    @node-click="onNodeClick"
-                    @edge-click="onEdgeClick"
-                    @pane-click="onPaneClick"
-                  >
-                    <template #node-custom="nodeProps">
-                      <div
-                        class="rounded-lg border-2 bg-white px-3 py-2 shadow-md dark:bg-gray-800"
-                        :class="[
-                          nodeProps.selected
-                            ? 'border-blue-500'
-                            : 'border-gray-300 dark:border-gray-600',
-                          nodeProps.data?.enabled !== false ? '' : 'opacity-50',
-                        ]"
-                        :style="{
-                          minWidth: '140px',
-                          borderLeftColor:
-                            nodeTypesMeta.find(
-                              (nt) => nt.code === nodeProps.data?.nodeType,
-                            )?.color || '#666',
-                          borderLeftWidth: '4px',
-                        }"
-                      >
-                        <Handle type="target" :position="Position.Top" />
-                        <div class="text-xs font-bold">
-                          {{ nodeProps.data?.nodeName || nodeProps.id }}
-                        </div>
-                        <div class="flex items-center gap-1">
-                          <NTag :bordered="false" size="tiny">
-                            {{ nodeProps.data?.nodeType || 'default' }}
-                          </NTag>
-                        </div>
-                        <Handle type="source" :position="Position.Bottom" />
-                      </div>
-                    </template>
-                    <Background />
-                    <Controls />
-                  </VueFlow>
-                </NSpin>
-
-                <!-- Bottom status bar -->
-                <div class="absolute bottom-0 left-0 right-0 flex items-center gap-2 border-t bg-white p-1.5 dark:bg-gray-900">
-                  <span class="text-xs text-gray-500">
-                    节点: {{ nodes.length }} | 连线: {{ edges.length }}
-                  </span>
-                  <div class="flex-1"></div>
-                  <NButton
-                    v-if="selectedNode || selectedEdge"
-                    size="tiny"
-                    type="error"
-                    @click="handleDeleteSelected"
-                  >
-                    删除选中
-                  </NButton>
-                </div>
-              </div>
-
-              <!-- Node property panel -->
-              <NodeForm
-                v-if="showNodeForm && selectedNode"
-                :node-type-meta="nodeTypesMeta"
-                :selected-node="selectedNode"
-                class="w-[280px] flex-shrink-0 overflow-y-auto border-l p-2"
-                @close="showNodeForm = false"
-                @update="onNodeUpdate"
-              />
+            <!-- Form content area -->
+            <div
+              v-if="!selectedVersionId"
+              class="flex flex-1 items-center justify-center"
+            >
+              <NEmpty description="请选择一个版本以编辑 Graph" />
             </div>
+            <NSpin v-else :show="loading" class="flex-1">
+              <div class="flex-1 space-y-4 overflow-auto p-3">
+                <!-- Start/End node selectors -->
+                <NSpace align="center" wrap>
+                  <NSelect
+                    v-model:value="startNode"
+                    :options="nodeOptions"
+                    :disabled="readonly"
+                    placeholder="起始节点"
+                    class="w-[200px]"
+                    clearable
+                  />
+                  <NSelect
+                    v-model:value="endNode"
+                    :options="nodeOptions"
+                    :disabled="readonly"
+                    placeholder="结束节点"
+                    class="w-[200px]"
+                    clearable
+                  />
+                </NSpace>
+
+                <!-- Nodes Table -->
+                <div>
+                  <NSpace align="center" class="mb-2">
+                    <span class="text-sm font-bold">节点列表</span>
+                    <NButton
+                      v-if="!readonly"
+                      size="small"
+                      type="primary"
+                      @click="openAddNode"
+                    >
+                      添加节点
+                    </NButton>
+                  </NSpace>
+                  <NDataTable
+                    :columns="nodeColumns"
+                    :data="formNodes"
+                    :max-height="280"
+                    :bordered="true"
+                    size="small"
+                    :empty-text="'暂无节点，点击上方添加节点'"
+                  />
+                </div>
+
+                <!-- Normal Edges Table -->
+                <div>
+                  <NSpace align="center" class="mb-2">
+                    <span class="text-sm font-bold">普通连线</span>
+                    <NButton
+                      v-if="!readonly"
+                      size="small"
+                      type="primary"
+                      @click="openAddEdge"
+                    >
+                      添加连线
+                    </NButton>
+                  </NSpace>
+                  <NDataTable
+                    :columns="normalEdgeColumns"
+                    :data="normalEdges"
+                    :max-height="200"
+                    :bordered="true"
+                    size="small"
+                    :empty-text="'暂无普通连线'"
+                  />
+                </div>
+
+                <!-- Conditional Edges Table -->
+                <div>
+                  <NSpace align="center" class="mb-2">
+                    <span class="text-sm font-bold">条件连线</span>
+                    <NButton
+                      v-if="!readonly"
+                      size="small"
+                      type="primary"
+                      @click="openAddConditionalEdge"
+                    >
+                      添加条件连线
+                    </NButton>
+                  </NSpace>
+                  <NDataTable
+                    :columns="conditionalEdgeColumns"
+                    :data="conditionalEdges"
+                    :max-height="200"
+                    :bordered="true"
+                    size="small"
+                    :empty-text="'暂无条件连线'"
+                  />
+                </div>
+              </div>
+            </NSpin>
           </div>
         </div>
       </NSpin>
     </div>
 
+    <!-- Add/Edit Node Modal -->
+    <NModal
+      v-model:show="showNodeModal"
+      preset="card"
+      :title="isNewNode ? '添加节点' : '编辑节点'"
+      class="w-[480px]"
+    >
+      <NodeForm
+        v-model:node-data="editingNode"
+        :node-type-meta="nodeTypesMeta"
+      />
+      <template #footer>
+        <NSpace justify="end">
+          <NButton @click="showNodeModal = false">取消</NButton>
+          <NButton type="primary" @click="confirmNode">确定</NButton>
+        </NSpace>
+      </template>
+    </NModal>
+
+    <!-- Add Normal Edge Modal -->
+    <NModal
+      v-model:show="showEdgeModal"
+      preset="card"
+      title="添加连线"
+      class="w-[420px]"
+    >
+      <NForm label-placement="top">
+        <NFormItem label="源节点">
+          <NSelect
+            v-model:value="edgeSource"
+            :options="nodeOptions"
+            placeholder="选择源节点"
+          />
+        </NFormItem>
+        <NFormItem label="目标节点">
+          <NSelect
+            v-model:value="edgeTarget"
+            :options="nodeOptions"
+            placeholder="选择目标节点"
+          />
+        </NFormItem>
+      </NForm>
+      <template #footer>
+        <NSpace justify="end">
+          <NButton @click="showEdgeModal = false">取消</NButton>
+          <NButton type="primary" @click="confirmEdge">确定</NButton>
+        </NSpace>
+      </template>
+    </NModal>
+
+    <!-- Add Conditional Edge Modal -->
+    <NModal
+      v-model:show="showCondEdgeModal"
+      preset="card"
+      title="添加条件连线"
+      class="w-[480px]"
+    >
+      <NForm label-placement="top">
+        <NFormItem label="源节点">
+          <NSelect
+            v-model:value="condEdgeSource"
+            :options="nodeOptions"
+            placeholder="选择源节点"
+          />
+        </NFormItem>
+        <NFormItem label="目标节点">
+          <NSelect
+            v-model:value="condEdgeTarget"
+            :options="nodeOptions"
+            placeholder="选择目标节点"
+          />
+        </NFormItem>
+        <NFormItem label="条件类型">
+          <NInput v-model:value="condEdgeType" placeholder="例如：classify" />
+        </NFormItem>
+        <NFormItem label="映射值">
+          <NInput
+            v-model:value="condEdgeMapping"
+            :disabled="condEdgeIsDefault"
+            placeholder="条件映射值"
+          />
+        </NFormItem>
+        <NFormItem>
+          <NCheckbox v-model:checked="condEdgeIsDefault"> 默认目标 </NCheckbox>
+        </NFormItem>
+      </NForm>
+      <template #footer>
+        <NSpace justify="end">
+          <NButton @click="showCondEdgeModal = false">取消</NButton>
+          <NButton type="primary" @click="confirmCondEdge">确定</NButton>
+        </NSpace>
+      </template>
+    </NModal>
+
+    <!-- Validation Result Modal -->
     <NModal
       v-model:show="showValidateResult"
       preset="card"

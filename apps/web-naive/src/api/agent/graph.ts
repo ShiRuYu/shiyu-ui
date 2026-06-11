@@ -62,6 +62,27 @@ export namespace AgentGraphApi {
     errors: string[];
     warnings: string[];
   }
+
+  /** 表单模式下使用的节点数据结构 */
+  export interface FormNode {
+    id: string;
+    nodeName: string;
+    nodeType: string;
+    enabled: boolean;
+    description: string;
+    config: Record<string, any>;
+  }
+
+  /** 表单模式下使用的连线数据结构 */
+  export interface FormEdge {
+    id: string;
+    source: string;
+    target: string;
+    edgeType: 'normal' | 'conditional';
+    conditionType?: string;
+    conditionMapping?: string;
+    isDefault?: boolean;
+  }
 }
 
 async function getGraphConfig(agentId: string, versionId: number) {
