@@ -1,0 +1,23 @@
+{
+  "title": "Daily Records",
+  "profile": {
+    "title": "Profile Management",
+    "list": "Profile List",
+    "name": "Profile",
+    "gender": "Gender",
+    "birthDate": "Birth Date",
+    "avatar": "Avatar",
+    "status": "Status"
+  },
+  "timeline": {
+    "title": "Timeline Management",
+    "list": "Timeline List",
+    "profileName": "Profile",
+    "profileId": "Profile ID",
+    "eventTitle": "Event Title",
+    "eventTime": "Event Time",
+    "type": "Type",
+    "visibility": "Visibility",
+    "createdBy": "Created By"
+  }
+}

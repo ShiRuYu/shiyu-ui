@@ -9,7 +9,7 @@ import axios from 'axios';
 export const defaultResponseInterceptor = ({
   codeField = 'code',
   dataField = 'data',
-  successCode = 0,
+  successCode = 200,
 }: {
   /** 响应数据中代表访问结果的字段名 */
   codeField: string;
@@ -56,14 +56,20 @@ export const authenticateResponseInterceptor = ({
   doRefreshToken: () => Promise<string>;
   enableRefreshToken: boolean;
   formatToken: (token: string) => null | string;
+  successCode?: ((code: any) => boolean) | number | string;
 }): ResponseInterceptorConfig => {
   return {
     rejected: async (error) => {
       const { config, response } = error;
-      // 如果不是 401 错误，直接抛出异常
-      if (response?.status !== 401) {
+
+      // 检查是否是 401 错误（HTTP 状态码或响应体中的 code）
+      const isHttp401 = response?.status === 401;
+      const isBodyCode401 = response?.data?.code === 401;
+
+      if (!isHttp401 && !isBodyCode401) {
         throw error;
       }
+
       // 判断是否启用了 refreshToken 功能
       // 如果没有启用或者已经是重试请求了，直接跳转到重新登录
       if (!enableRefreshToken || config.__isRetryRequest) {
@@ -131,7 +137,8 @@ export const errorMessageResponseInterceptor = (
       }
 
       let errorMessage: string;
-      const status = error?.response?.status;
+      // 优先使用 HTTP 状态码，如果没有则使用响应体中的 code
+      const status = error?.response?.status ?? error?.response?.data?.code;
 
       switch (status) {
         case 400: {

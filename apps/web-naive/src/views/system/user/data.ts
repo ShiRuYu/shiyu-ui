@@ -1,0 +1,261 @@
+import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+
+import type { VbenFormSchema } from '#/adapter/form';
+import type { OnActionClickFn } from '#/adapter/vxe-table';
+import type { SystemUserApi } from '#/api/system/user';
+
+import { z } from '#/adapter/form';
+import { getDeptList } from '#/api/system/dept';
+import { getRolesForUserForm } from '#/api/system/user';
+import { $t } from '#/locales';
+
+/**
+ * 获取查询表单的字段配置
+ */
+export function useGridFormSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      fieldName: 'username',
+      label: $t('system.user.username'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'nickName',
+      label: $t('system.user.nickname'),
+    },
+    {
+      component: 'RadioGroup',
+      componentProps: {
+        buttonStyle: 'solid',
+        options: [
+          { label: $t('common.all'), value: '' },
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
+        ],
+        optionType: 'button',
+      },
+      defaultValue: '',
+      fieldName: 'status',
+      label: $t('system.user.status'),
+    },
+  ];
+}
+
+/**
+ * 获取编辑表单的字段配置
+ */
+export function useSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      fieldName: 'username',
+      label: $t('system.user.username'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('system.user.username')])),
+    },
+    {
+      component: 'Input',
+      fieldName: 'nickName',
+      label: $t('system.user.nickname'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('system.user.nickname')])),
+    },
+    {
+      component: 'InputPassword',
+      fieldName: 'password',
+      label: $t('system.user.password'),
+      rules: z
+        .string()
+        .min(6, $t('ui.formRules.minLength', [$t('system.user.password'), 6]))
+        .optional(),
+      dependencies: {
+        if(values) {
+          return !values.id;
+        },
+        triggerFields: ['id'],
+      },
+    },
+    {
+      component: 'Input',
+      fieldName: 'email',
+      label: $t('system.user.email'),
+      rules: z.string().email($t('ui.formRules.email')).optional(),
+    },
+    {
+      component: 'Input',
+      fieldName: 'phone',
+      label: $t('system.user.phone'),
+      rules: z
+        .string()
+        .regex(/^1[3-9]\d{9}$/, $t('ui.formRules.phone'))
+        .optional(),
+    },
+    {
+      component: 'RadioGroup',
+      componentProps: {
+        buttonStyle: 'solid',
+        options: [
+          { label: $t('system.user.sexMale'), value: '0' },
+          { label: $t('system.user.sexFemale'), value: '1' },
+          { label: $t('system.user.sexUnknown'), value: '2' },
+        ],
+        optionType: 'button',
+      },
+      defaultValue: '2',
+      fieldName: 'sex',
+      label: $t('system.user.sex'),
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getDeptList,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+      },
+      fieldName: 'deptId',
+      label: $t('system.user.dept'),
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getRolesForUserForm,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        multiple: true,
+      },
+      fieldName: 'roleIds',
+      label: $t('system.user.role'),
+    },
+    {
+      component: 'RadioGroup',
+      componentProps: {
+        buttonStyle: 'solid',
+        options: [
+          { label: $t('common.normal'), value: '1' },
+          { label: $t('common.disabled'), value: '0' },
+        ],
+        optionType: 'button',
+      },
+      defaultValue: '1',
+      fieldName: 'status',
+      label: $t('system.user.status'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        maxlength: 200,
+        rows: 3,
+        showCount: true,
+        type: 'textarea',
+      },
+      fieldName: 'remark',
+      label: $t('system.user.remark'),
+      rules: z
+        .string()
+        .max(200, $t('ui.formRules.maxLength', [$t('system.user.remark'), 200]))
+        .optional(),
+    },
+  ];
+}
+
+/**
+ * 获取表格列配置
+ */
+export function useColumns(
+  onActionClick?: OnActionClickFn<SystemUserApi.SystemUser>,
+): VxeTableGridColumns<SystemUserApi.SystemUser> {
+  return [
+    {
+      field: 'id',
+      title: 'ID',
+      width: 80,
+    },
+    {
+      field: 'username',
+      title: $t('system.user.username'),
+      width: 120,
+    },
+    {
+      field: 'nickName',
+      title: $t('system.user.nickname'),
+      width: 120,
+    },
+    {
+      field: 'email',
+      title: $t('system.user.email'),
+      width: 180,
+    },
+    {
+      field: 'phone',
+      title: $t('system.user.phone'),
+      width: 120,
+    },
+    {
+      field: 'sex',
+      formatter: ({ row }) => {
+        switch (row.sex) {
+          case '0': {
+            return $t('system.user.sexMale');
+          }
+          case '1': {
+            return $t('system.user.sexFemale');
+          }
+          default: {
+            return $t('system.user.sexUnknown');
+          }
+        }
+      },
+      title: $t('system.user.sex'),
+      width: 80,
+    },
+    {
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.normal'), value: '1' },
+          { color: 'error', label: $t('common.disabled'), value: '0' },
+        ],
+      },
+      field: 'status',
+      title: $t('system.user.status'),
+      width: 100,
+    },
+    {
+      field: 'createTime',
+      title: $t('system.user.createTime'),
+      width: 180,
+    },
+    {
+      align: 'right',
+      cellRender: {
+        attrs: {
+          nameField: 'username',
+          nameTitle: $t('system.user.name'),
+          onClick: onActionClick,
+        },
+        name: 'CellOperation',
+        options: [
+          {
+            code: 'resetPassword',
+            text: $t('system.user.resetPassword'),
+          },
+          'edit',
+          'delete',
+        ],
+      },
+      field: 'operation',
+      fixed: 'right',
+      headerAlign: 'center',
+      showOverflow: false,
+      title: $t('system.user.operation'),
+      width: 200,
+    },
+  ];
+}

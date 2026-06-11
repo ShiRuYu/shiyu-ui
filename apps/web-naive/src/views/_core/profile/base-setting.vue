@@ -49,7 +49,12 @@ const formSchema = computed((): VbenFormSchema[] => {
     },
     {
       fieldName: 'introduction',
-      component: 'Textarea',
+      component: 'Input',
+      componentProps: {
+        type: 'textarea',
+        rows: 4,
+        placeholder: '请输入个人简介',
+      },
       label: '个人简介',
     },
   ];

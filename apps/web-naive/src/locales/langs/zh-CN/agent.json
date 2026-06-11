@@ -1,0 +1,13 @@
+{
+  "title": "智能体",
+  "name": "智能体名称",
+  "description": "描述",
+  "version": "当前版本",
+  "versionDescription": "版本描述",
+  "createdAt": "创建时间",
+  "list": "智能体列表",
+  "chat": "AI对话",
+  "response": "AI回复",
+  "send": "发送",
+  "promptPlaceholder": "请输入你想问的问题..."
+}

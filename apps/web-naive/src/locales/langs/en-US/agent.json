@@ -1,0 +1,13 @@
+{
+  "title": "Agent",
+  "name": "Agent Name",
+  "description": "Description",
+  "version": "Current Version",
+  "versionDescription": "Version Description",
+  "createdAt": "Created At",
+  "list": "Agent List",
+  "chat": "AI Chat",
+  "response": "AI Response",
+  "send": "Send",
+  "promptPlaceholder": "Enter your question here..."
+}
