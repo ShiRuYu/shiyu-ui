@@ -40,8 +40,9 @@ class PreferenceManager {
   private state: Preferences;
 
   constructor() {
-    this.cache = new StorageManager();
-    // 构造函数不再同步读取缓存，使用默认值初始化
+    // 先使用临时前缀创建缓存实例，防止空前缀污染全局 localStorage
+    // initPreferences 中会使用实际 namespace 替换
+    this.cache = new StorageManager({ prefix: '__preferences_temp__' });
     // 真正的缓存加载在 initPreferences 中完成（已经是 async）
     this.state = reactive<Preferences>({ ...defaultPreferences });
     this.debouncedSave = useDebounceFn(() => this.saveToCache(), 150);
