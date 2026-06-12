@@ -70,7 +70,7 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         api: () => getAgentListAll(),
         labelField: 'name',
-        valueField: 'agentId',
+        valueField: 'code',
         placeholder: '选择所属Agent',
       },
       defaultValue: 'default',
