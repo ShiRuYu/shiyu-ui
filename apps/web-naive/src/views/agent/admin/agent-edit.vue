@@ -132,15 +132,12 @@ const isNewCondEdge = ref(false);
 const condEdgeIntentOptions = ref<Array<{ label: string; value: string }>>([]);
 
 async function loadCondEdgeIntentOptions() {
-  if (!agentId.value) return;
   try {
-    const res: any = await requestClient.get(
-      `/intent/def/page?agentId=${agentId.value}&pageSize=999`,
-    );
-    const data = Array.isArray(res) ? res : res?.data?.records ?? [];
+    const res: any = await requestClient.get('/dict/type/INTENT_CODE');
+    const data = Array.isArray(res) ? res : res?.data ?? [];
     condEdgeIntentOptions.value = data.map((item: any) => ({
-      label: item.name,
-      value: item.code,
+      label: item.dictLabel,
+      value: item.dictValue,
     }));
   } catch {
     condEdgeIntentOptions.value = [];
