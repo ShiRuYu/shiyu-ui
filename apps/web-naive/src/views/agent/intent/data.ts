@@ -3,8 +3,12 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { IntentDefApi } from '#/api/agent/intent-def';
 import { z } from '#/adapter/form';
 
-const intentCodeDictType = 'INTENT_CODE';
-const intentCategoryDictType = 'INTENT_CATEGORY';
+import { getDictByType } from '#/api/common/dict';
+import { getAgentListAll } from '#/api/agent/admin';
+
+const intentCodeOptions = () => getDictByType('INTENT_CODE');
+const intentCategoryOptions = () => getDictByType('INTENT_CATEGORY');
+const agentOptions = () => getAgentListAll();
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -24,7 +28,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         clearable: true,
-        api: `/dict/type/${intentCategoryDictType}`,
+        api: () => getDictByType('INTENT_CATEGORY'),
         labelField: 'dictLabel',
         valueField: 'dictValue',
         placeholder: '分类',
@@ -40,7 +44,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: `/dict/type/${intentCodeDictType}`,
+        api: () => getDictByType('INTENT_CODE'),
         labelField: 'dictLabel',
         valueField: 'dictValue',
         placeholder: '选择意图编码',
@@ -62,11 +66,12 @@ export function useSchema(): VbenFormSchema[] {
       label: '描述',
     },
     {
-      component: 'Select',
+      component: 'ApiSelect',
       componentProps: {
-        options: [
-          { label: 'default', value: 'default' },
-        ],
+        api: () => getAgentListAll(),
+        labelField: 'name',
+        valueField: 'agentId',
+        placeholder: '选择所属Agent',
       },
       defaultValue: 'default',
       fieldName: 'agentId',
@@ -75,7 +80,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: `/dict/type/${intentCategoryDictType}`,
+        api: () => getDictByType('INTENT_CATEGORY'),
         labelField: 'dictLabel',
         valueField: 'dictValue',
         placeholder: '选择分类',
