@@ -798,7 +798,8 @@ function onBack() {
           <div class="w-[380px] flex-shrink-0 overflow-y-auto space-y-3">
             <!-- Agent Info Section -->
             <NCollapse :default-expanded-names="['info']">
-              <NCollapseItem name="info" title="基本信息">
+              <NCollapseItem name="info">
+                <template #header><span>基本信息</span></template>
                 <NForm label-placement="top" label-width="auto">
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
@@ -852,7 +853,8 @@ function onBack() {
 
             <!-- Version Control Section -->
             <NCollapse :default-expanded-names="['version']">
-              <NCollapseItem name="version" title="版本管理">
+              <NCollapseItem name="version">
+                <template #header><span>版本管理</span></template>
                 <div class="space-y-3">
                   <NSpace vertical>
                     <label class="text-sm font-medium">选择版本</label>
