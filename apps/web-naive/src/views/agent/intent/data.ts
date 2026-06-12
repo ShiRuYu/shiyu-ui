@@ -6,9 +6,20 @@ import { z } from '#/adapter/form';
 import { getDictByType } from '#/api/common/dict';
 import { getAgentListAll } from '#/api/agent/admin';
 
-const intentCodeOptions = () => getDictByType('INTENT_CODE');
-const intentCategoryOptions = () => getDictByType('INTENT_CATEGORY');
-const agentOptions = () => getAgentListAll();
+async function getIntentCodeOptions() {
+  const data = await getDictByType('INTENT_CODE');
+  return (data || []).map((item: any) => ({ label: item.dictLabel, value: item.dictValue }));
+}
+
+async function getIntentCategoryOptions() {
+  const data = await getDictByType('INTENT_CATEGORY');
+  return (data || []).map((item: any) => ({ label: item.dictLabel, value: item.dictValue }));
+}
+
+async function getAgentOptions() {
+  const data = await getAgentListAll();
+  return (data || []).map((item: any) => ({ label: item.name, value: item.code }));
+}
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -28,9 +39,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         clearable: true,
-        api: () => getDictByType('INTENT_CATEGORY'),
-        labelField: 'dictLabel',
-        valueField: 'dictValue',
+        api: getIntentCategoryOptions,
         placeholder: '分类',
       },
       fieldName: 'category',
@@ -44,14 +53,12 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: () => getDictByType('INTENT_CODE'),
-        labelField: 'dictLabel',
-        valueField: 'dictValue',
+        api: getIntentCodeOptions,
         placeholder: '选择意图编码',
       },
+      defaultValue: 'CHITCHAT',
       fieldName: 'code',
       label: '意图代码',
-      rules: z.string().min(1, '意图代码不能为空'),
     },
     {
       component: 'Input',
@@ -68,21 +75,16 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: () => getAgentListAll(),
-        labelField: 'name',
-        valueField: 'code',
+        api: getAgentOptions,
         placeholder: '选择所属Agent',
       },
-      defaultValue: 'default',
       fieldName: 'agentId',
       label: '所属 Agent',
     },
     {
       component: 'ApiSelect',
       componentProps: {
-        api: () => getDictByType('INTENT_CATEGORY'),
-        labelField: 'dictLabel',
-        valueField: 'dictValue',
+        api: getIntentCategoryOptions,
         placeholder: '选择分类',
       },
       defaultValue: 'CONVERSATION',
