@@ -2,9 +2,11 @@
 import type { AgentGraphApi } from '#/api/agent/graph';
 import type { NodeTypeApi } from '#/api/agent/node-type';
 
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { NCheckbox, NInput, NInputNumber, NSelect } from 'naive-ui';
+
+import { requestClient } from '#/api/request';
 
 const props = defineProps<{
   nodeData: AgentGraphApi.FormNode;
@@ -32,6 +34,90 @@ function getConfigValue(key: string): any {
 
 function setPartial(partial: Partial<AgentGraphApi.FormNode>) {
   emit('update:nodeData', { ...props.nodeData, ...partial });
+}
+
+// ---------- API/Dict field rendering ----------
+
+const apiOptionsCache = ref<Record<string, Array<{ label: string; value: any }>>>({});
+
+function buildUrl(url: string): string {
+  return url.replace(/\{(\w+)\}/g, (_: string, key: string) => {
+    return props.nodeData.config?.[key] ?? '';
+  });
+}
+
+async function loadApiOptions(field: NodeTypeApi.FieldMeta) {
+  const src = field.source;
+  if (!src) return;
+  const cacheKey = field.key;
+  let options: Array<{ label: string; value: any }> = [];
+
+  if (src.type === 'dict' && src.dictType) {
+    try {
+      const res: any = await requestClient.get(`/dict/type/${src.dictType}`);
+      const items = Array.isArray(res) ? res : res?.data ?? [];
+      options = items.map((item: any) => ({
+        label: src.labelKey ? item[src.labelKey] : item.dictLabel,
+        value: src.valueKey ? item[src.valueKey] : item.dictValue,
+      }));
+    } catch { /* ignore */ }
+  } else if (src.type === 'api' && src.url) {
+    const resolvedUrl = buildUrl(src.url);
+    try {
+      const res: any = await requestClient.get(resolvedUrl);
+      const items = Array.isArray(res) ? res : res?.data ?? [];
+      options = items.map((item: any) => ({
+        label: src.labelKey ? item[src.labelKey] : item.name,
+        value: src.valueKey ? item[src.valueKey] : item.id,
+      }));
+    } catch { /* ignore */ }
+  }
+
+  apiOptionsCache.value[cacheKey] = options;
+}
+
+// Load non-dependent fields on mount
+watch(fieldSchemas, (schemas) => {
+  for (const f of schemas) {
+    if (f.source && !f.source.dependsOn) {
+      loadApiOptions(f);
+    }
+  }
+}, { immediate: true });
+
+// Watch dependencies for cascade reload
+watch(
+  () => props.nodeData.config,
+  (cfg) => {
+    if (!cfg) return;
+    for (const f of fieldSchemas.value) {
+      if (f.source?.dependsOn && f.source.dependsOn in cfg) {
+        loadApiOptions(f);
+        // If current value is not in new options, clear it
+        const currentVal = getConfigValue(f.key);
+        if (currentVal !== undefined && currentVal !== '') {
+          const opts = apiOptionsCache.value[f.key];
+          if (opts && !opts.some((o) => o.value === currentVal)) {
+            updateField(f.key, '');
+          }
+        }
+      }
+    }
+  },
+  { deep: true },
+);
+
+function getFieldOptions(field: NodeTypeApi.FieldMeta) {
+  if (field.source) {
+    return apiOptionsCache.value[field.key] || [];
+  }
+  if (field.options) {
+    return Object.entries(field.options).map(([k, v]) => ({
+      label: String(v),
+      value: k,
+    }));
+  }
+  return [];
 }
 </script>
 
@@ -81,15 +167,13 @@ function setPartial(partial: Partial<AgentGraphApi.FormNode>) {
       <div v-for="field in fieldSchemas" :key="field.key" class="mb-2">
         <label class="mb-1 block text-xs">{{ field.label || field.key }}</label>
         <NSelect
-          v-if="field.options"
+          v-if="field.source || field.options"
           :value="getConfigValue(field.key) ?? field.defaultValue"
-          :options="
-            Object.entries(field.options).map(([k, v]) => ({
-              label: String(v),
-              value: k,
-            }))
-          "
+          :options="getFieldOptions(field)"
+          :loading="field.source && !apiOptionsCache[field.key] && !field.source.dependsOn"
           size="small"
+          :placeholder="field.description || '请选择'"
+          :clearable="true"
           @update:value="(v: any) => updateField(field.key, v)"
         />
         <NInputNumber

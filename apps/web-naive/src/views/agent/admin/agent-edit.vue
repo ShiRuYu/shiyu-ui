@@ -28,6 +28,7 @@ import {
   NTag,
 } from 'naive-ui';
 
+import { requestClient } from '#/api/request';
 import { message } from '#/adapter/naive';
 import {
   activateVersion,
@@ -128,6 +129,23 @@ const condEdgeType = ref('');
 const condEdgeMapping = ref('');
 const condEdgeIsDefault = ref(false);
 const isNewCondEdge = ref(false);
+const condEdgeIntentOptions = ref<Array<{ label: string; value: string }>>([]);
+
+async function loadCondEdgeIntentOptions() {
+  if (!agentId.value) return;
+  try {
+    const res: any = await requestClient.get(
+      `/intent/def/page?agentId=${agentId.value}&pageSize=999`,
+    );
+    const data = Array.isArray(res) ? res : res?.data?.records ?? [];
+    condEdgeIntentOptions.value = data.map((item: any) => ({
+      label: item.name,
+      value: item.code,
+    }));
+  } catch {
+    condEdgeIntentOptions.value = [];
+  }
+}
 
 const selectedVersionInfo = computed(() => {
   if (!selectedVersionId.value) return null;
@@ -606,6 +624,7 @@ function openAddConditionalEdge() {
   condEdgeIsDefault.value = false;
   isNewCondEdge.value = true;
   showCondEdgeModal.value = true;
+  loadCondEdgeIntentOptions();
 }
 
 function confirmCondEdge() {
@@ -1171,10 +1190,13 @@ function onBack() {
           <NInput v-model:value="condEdgeType" placeholder="例如：classify" />
         </NFormItem>
         <NFormItem label="映射值">
-          <NInput
+          <NSelect
             v-model:value="condEdgeMapping"
             :disabled="condEdgeIsDefault"
-            placeholder="条件映射值"
+            :options="condEdgeIntentOptions"
+            placeholder="选择意图编码"
+            :clearable="true"
+            filterable
           />
         </NFormItem>
         <NFormItem>

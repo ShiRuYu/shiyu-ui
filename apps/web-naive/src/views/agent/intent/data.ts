@@ -3,6 +3,9 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { IntentDefApi } from '#/api/agent/intent-def';
 import { z } from '#/adapter/form';
 
+const intentCodeDictType = 'INTENT_CODE';
+const intentCategoryDictType = 'INTENT_CATEGORY';
+
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
@@ -18,16 +21,12 @@ export function useGridFormSchema(): VbenFormSchema[] {
       label: '代码',
     },
     {
-      component: 'Select',
+      component: 'ApiSelect',
       componentProps: {
         clearable: true,
-        options: [
-          { label: 'CONVERSATION', value: 'CONVERSATION' },
-          { label: 'KNOWLEDGE', value: 'KNOWLEDGE' },
-          { label: 'TASK', value: 'TASK' },
-          { label: 'SEARCH', value: 'SEARCH' },
-          { label: 'TECHNICAL', value: 'TECHNICAL' },
-        ],
+        api: `/dict/type/${intentCategoryDictType}`,
+        labelField: 'dictLabel',
+        valueField: 'dictValue',
         placeholder: '分类',
       },
       fieldName: 'category',
@@ -39,10 +38,16 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      componentProps: {
+        api: `/dict/type/${intentCodeDictType}`,
+        labelField: 'dictLabel',
+        valueField: 'dictValue',
+        placeholder: '选择意图编码',
+      },
       fieldName: 'code',
       label: '意图代码',
-      rules: z.string().min(1, '意图代码不能为空').regex(/^[A-Z][A-Z0-9_]*$/, '只能包含大写字母、数字和下划线'),
+      rules: z.string().min(1, '意图代码不能为空'),
     },
     {
       component: 'Input',
@@ -68,15 +73,12 @@ export function useSchema(): VbenFormSchema[] {
       label: '所属 Agent',
     },
     {
-      component: 'Select',
+      component: 'ApiSelect',
       componentProps: {
-        options: [
-          { label: 'CONVERSATION', value: 'CONVERSATION' },
-          { label: 'KNOWLEDGE', value: 'KNOWLEDGE' },
-          { label: 'TASK', value: 'TASK' },
-          { label: 'SEARCH', value: 'SEARCH' },
-          { label: 'TECHNICAL', value: 'TECHNICAL' },
-        ],
+        api: `/dict/type/${intentCategoryDictType}`,
+        labelField: 'dictLabel',
+        valueField: 'dictValue',
+        placeholder: '选择分类',
       },
       defaultValue: 'CONVERSATION',
       fieldName: 'category',

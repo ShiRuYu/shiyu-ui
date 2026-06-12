@@ -1,6 +1,15 @@
 import { requestClient } from '#/api/request';
 
 export namespace NodeTypeApi {
+  export interface DataSourceConfig {
+    type: 'api' | 'dict';
+    url?: string;
+    dictType?: string;
+    labelKey?: string;
+    valueKey?: string;
+    dependsOn?: string;
+  }
+
   export interface FieldMeta {
     key: string;
     label: string;
@@ -9,6 +18,7 @@ export namespace NodeTypeApi {
     defaultValue?: any;
     required?: boolean;
     options?: Record<string, any>;
+    source?: NodeTypeApi.DataSourceConfig;
   }
 
   export interface NodeTypeMetaVO {
