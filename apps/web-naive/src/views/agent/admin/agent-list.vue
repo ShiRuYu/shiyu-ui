@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { AgentAdminApi } from '#/api/agent/admin';
+import type { AgentApi } from '#/api/agent/agent';
 
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import {
@@ -22,8 +23,14 @@ import {
 
 import { message } from '#/adapter/naive';
 import { deleteAgent, getAgentPage } from '#/api/agent/admin';
+import ChatModal from '../agent/modules/chat.vue';
 
 const router = useRouter();
+
+const [ChatModalComp, chatModalApi] = useVbenModal({
+  connectedComponent: ChatModal,
+  destroyOnClose: true,
+});
 
 const loading = ref(false);
 const agents = ref<AgentAdminApi.AgentVO[]>([]);
@@ -61,18 +68,13 @@ function onEdit(row: AgentAdminApi.AgentVO) {
   });
 }
 
-function onSyncChat(row: AgentAdminApi.AgentVO) {
-  router.push({
-    path: '/agent/agent/chat',
-    query: { agentId: row.agentId, mode: 'sync' },
-  });
-}
-
-function onStreamChat(row: AgentAdminApi.AgentVO) {
-  router.push({
-    path: '/agent/agent/chat',
-    query: { agentId: row.agentId, mode: 'stream' },
-  });
+function openChat(row: AgentAdminApi.AgentVO) {
+  const agentDef: AgentApi.AgentDefinition = {
+    agentId: row.agentId,
+    name: row.name,
+    description: row.description,
+  };
+  chatModalApi.setData(agentDef).open();
 }
 
 async function onDelete(row: AgentAdminApi.AgentVO) {
@@ -156,8 +158,7 @@ function statusTag(s: string) {
                 <NSpace>
                   <NButton size="tiny" @click="onView(agent)">查看</NButton>
                   <NButton size="tiny" type="primary" @click="onEdit(agent)">修改</NButton>
-                  <NButton size="tiny" @click="onSyncChat(agent)">对话(同步)</NButton>
-                  <NButton size="tiny" @click="onStreamChat(agent)">对话(流式)</NButton>
+                  <NButton size="tiny" @click="openChat(agent)">对话</NButton>
                   <NPopconfirm @positive-click="onDelete(agent)">
                     <template #trigger>
                       <NButton size="tiny" type="error">删除</NButton>
@@ -172,4 +173,5 @@ function statusTag(s: string) {
       </NSpin>
     </NSpace>
   </Page>
+  <ChatModalComp />
 </template>
