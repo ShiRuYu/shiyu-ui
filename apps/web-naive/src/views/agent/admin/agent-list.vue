@@ -101,8 +101,9 @@ function statusTag(s: string) {
 </script>
 
 <template>
-  <Page auto-content-height>
-    <NSpace vertical :size="16">
+  <div>
+    <Page auto-content-height>
+      <NSpace vertical :size="16">
       <!-- Search + New -->
       <NSpace align="center">
         <NInput
@@ -171,7 +172,8 @@ function statusTag(s: string) {
           </NGi>
         </NGrid>
       </NSpin>
-    </NSpace>
-  </Page>
-  <ChatModalComp />
+      </NSpace>
+    </Page>
+    <ChatModalComp />
+  </div>
 </template>
