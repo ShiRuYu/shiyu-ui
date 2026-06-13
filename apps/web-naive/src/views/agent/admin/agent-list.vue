@@ -19,6 +19,7 @@ import {
   NSpace,
   NSpin,
   NTag,
+  NTooltip,
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
@@ -131,10 +132,17 @@ function statusTag(s: string) {
           <NGi v-for="agent in agents" :key="agent.id">
             <NCard
               :bordered="true"
-              :title="agent.name"
               size="small"
               style="border-left: 4px solid #2080f0"
             >
+              <template #header>
+                <NTooltip :delay="300" style="max-width:100%">
+                  <template #trigger>
+                    <span class="truncate block font-medium">{{ agent.name }}</span>
+                  </template>
+                  {{ agent.name }}
+                </NTooltip>
+              </template>
               <template #header-extra>
                 <NSpace align="center" size="small">
                   <NTag :bordered="false" :type="agent.status === '1' ? 'success' : 'error'" size="tiny">
@@ -144,14 +152,25 @@ function statusTag(s: string) {
               </template>
 
               <div class="text-sm text-gray-500">
-                <div class="mb-1">
-                  <span class="font-medium">标识：</span>{{ agent.agentId }}
+                <div class="mb-1 truncate">
+                  <span class="font-medium">标识：</span>
+                  <NTooltip :delay="300" style="max-width:100%">
+                    <template #trigger>
+                      <span>{{ agent.agentId }}</span>
+                    </template>
+                    {{ agent.agentId }}
+                  </NTooltip>
                 </div>
                 <div class="mb-1">
                   <span class="font-medium">版本：</span>{{ agent.currentVersion || '-' }}
                 </div>
-                <div v-if="agent.description" class="line-clamp-2 text-xs">
-                  {{ agent.description }}
+                <div v-if="agent.description" class="truncate text-xs">
+                  <NTooltip :delay="300" style="max-width:100%">
+                    <template #trigger>
+                      <span>{{ agent.description }}</span>
+                    </template>
+                    {{ agent.description }}
+                  </NTooltip>
                 </div>
               </div>
 

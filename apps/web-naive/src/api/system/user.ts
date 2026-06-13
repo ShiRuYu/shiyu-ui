@@ -104,7 +104,18 @@ async function resetUserPassword(id: number, password: string) {
   return requestClient.patch(`/user/${id}/password/reset`, { password });
 }
 
+/**
+ * 修改密码（校验旧密码）
+ * @param id 用户 ID
+ * @param oldPassword 旧密码
+ * @param newPassword 新密码
+ */
+async function changePassword(id: number, oldPassword: string, newPassword: string) {
+  return requestClient.patch(`/user/${id}/password`, { oldPassword, newPassword });
+}
+
 export {
+  changePassword,
   createUser,
   deleteUser,
   getRolesForUserForm,

@@ -17,4 +17,12 @@ interface UserInfo extends BasicUserInfo {
   token: string;
 }
 
-export type { UserInfo };
+/** 角色信息（后端 RoleVO） */
+interface RoleInfo {
+  id: number;
+  name: string;
+  code: string;
+  [key: string]: any;
+}
+
+export type { RoleInfo, UserInfo };

@@ -51,3 +51,10 @@ export async function logoutApi() {
 export async function getAccessCodesApi() {
   return requestClient.get<string[]>('/auth/codes');
 }
+
+/**
+ * 切换当前角色
+ */
+export async function switchCurrentRoleApi(roleId: number) {
+  return requestClient.patch('/auth/current-role', { roleId });
+}

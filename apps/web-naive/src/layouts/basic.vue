@@ -16,7 +16,7 @@ import {
 } from '@vben/layouts';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
+import { openWindow, parseExtInfo } from '@vben/utils';
 
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
@@ -126,6 +126,11 @@ const avatar = computed(() => {
   return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
 });
 
+const currentRoleName = computed(() => {
+  const info = parseExtInfo(userStore.userInfo?.extInfo);
+  return info?.currentRole?.roleName ?? '';
+});
+
 async function handleLogout() {
   await authStore.logout(false);
 }
@@ -223,8 +228,8 @@ watch(
         :avatar
         :menus
         :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        :description="userStore.userInfo?.email ?? userStore.userInfo?.username ?? ''"
+        :tag-text="currentRoleName || undefined"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"
       />

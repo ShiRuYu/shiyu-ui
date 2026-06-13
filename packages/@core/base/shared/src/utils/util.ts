@@ -1,3 +1,11 @@
+/**
+ * 解析 extInfo 字段，兼容字符串和对象两种格式
+ */
+export function parseExtInfo(extInfo: unknown): Record<string, any> {
+  if (!extInfo) return {};
+  return typeof extInfo === 'string' ? JSON.parse(extInfo as string) : extInfo as Record<string, any>;
+}
+
 export function bindMethods<T extends object>(instance: T): void {
   const prototype = Object.getPrototypeOf(instance);
   const propertyNames = Object.getOwnPropertyNames(prototype);

@@ -22,6 +22,10 @@ interface BasicUserInfo {
    * 用户名
    */
   username: string;
+  /**
+   * 扩展信息
+   */
+  extInfo?: Record<string, any>;
 }
 
 interface AccessState {
@@ -42,6 +46,9 @@ export const useUserStore = defineStore('core-user', {
   actions: {
     setUserInfo(userInfo: BasicUserInfo | null) {
       // 设置用户信息
+      if (userInfo && !userInfo.userId) {
+        userInfo = { ...userInfo, userId: String((userInfo as any).id ?? '') };
+      }
       this.userInfo = userInfo;
       // 设置角色信息
       const roles = userInfo?.roles ?? [];
