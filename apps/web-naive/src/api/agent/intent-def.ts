@@ -43,6 +43,8 @@ export namespace IntentDefApi {
 
 async function getIntentDefPage(params: {
   agentId?: string;
+  name?: string;
+  code?: string;
   category?: string;
   page: number;
   pageSize: number;
@@ -58,8 +60,14 @@ async function createIntentDef(data: IntentDefApi.IntentDefRequest) {
   return requestClient.post<IntentDefApi.IntentDefVO>('/intent/def', data);
 }
 
-async function updateIntentDef(id: number, data: IntentDefApi.IntentDefRequest) {
-  return requestClient.patch<IntentDefApi.IntentDefVO>(`/intent/def/${id}`, data);
+async function updateIntentDef(
+  id: number,
+  data: IntentDefApi.IntentDefRequest,
+) {
+  return requestClient.patch<IntentDefApi.IntentDefVO>(
+    `/intent/def/${id}`,
+    data,
+  );
 }
 
 async function deleteIntentDef(id: number) {

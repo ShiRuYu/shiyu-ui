@@ -8,17 +8,26 @@ import { getAgentListAll } from '#/api/agent/admin';
 
 async function getIntentCodeOptions() {
   const data = await getDictByType('INTENT_CODE');
-  return (data || []).map((item: any) => ({ label: item.dictLabel, value: item.dictValue }));
+  return (data || []).map((item: any) => ({
+    label: item.dictLabel,
+    value: item.dictValue,
+  }));
 }
 
 async function getIntentCategoryOptions() {
   const data = await getDictByType('INTENT_CATEGORY');
-  return (data || []).map((item: any) => ({ label: item.dictLabel, value: item.dictValue }));
+  return (data || []).map((item: any) => ({
+    label: item.dictLabel,
+    value: item.dictValue,
+  }));
 }
 
 async function getAgentOptions() {
   const data = await getAgentListAll();
-  return (data || []).map((item: any) => ({ label: item.name, value: item.code }));
+  return (data || []).map((item: any) => ({
+    label: item.name,
+    value: item.code,
+  }));
 }
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -34,6 +43,16 @@ export function useGridFormSchema(): VbenFormSchema[] {
       componentProps: { placeholder: '意图代码' },
       fieldName: 'code',
       label: '代码',
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getAgentOptions,
+        clearable: true,
+        placeholder: '所属Agent',
+      },
+      fieldName: 'agentId',
+      label: '所属 Agent',
     },
     {
       component: 'ApiSelect',
@@ -112,18 +131,32 @@ export function useSchema(): VbenFormSchema[] {
   ];
 }
 
-export function useColumns(onActionClick?: any): VxeTableGridColumns<IntentDefApi.IntentDefVO> {
+export function useColumns(
+  onActionClick?: any,
+): VxeTableGridColumns<IntentDefApi.IntentDefVO> {
   return [
     { field: 'id', title: 'ID', width: 70 },
     { field: 'code', title: '代码', width: 140 },
     { field: 'name', title: '名称', width: 140 },
+    { field: 'agentId', title: 'Agent', width: 120 },
     { field: 'category', title: '分类', width: 120 },
     { field: 'priority', title: '优先级', width: 80 },
     { field: 'confidenceThreshold', title: '置信度阈值', width: 120 },
     { field: 'targetNode', title: '目标节点', width: 130 },
-    { field: 'description', title: '描述', minWidth: 200, ellipsis: { tooltip: true } },
     {
-      cellRender: { name: 'CellTag', options: [{ color: 'success', label: '启用', value: true }, { color: 'error', label: '停用', value: false }] },
+      field: 'description',
+      title: '描述',
+      minWidth: 200,
+      ellipsis: { tooltip: true },
+    },
+    {
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: '启用', value: true },
+          { color: 'error', label: '停用', value: false },
+        ],
+      },
       field: 'enabled',
       title: '启用',
       width: 80,
