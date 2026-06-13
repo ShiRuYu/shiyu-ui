@@ -105,92 +105,102 @@ function statusTag(s: string) {
   <div>
     <Page auto-content-height>
       <NSpace vertical :size="16">
-      <!-- Search + New -->
-      <NSpace align="center">
-        <NInput
-          v-model:value="searchName"
-          clearable
-          placeholder="搜索 Agent 名称..."
-          size="small"
-          style="width: 240px"
-          @keyup.enter="loadAgents"
-        />
-        <NButton size="small" @click="loadAgents">搜索</NButton>
-        <div class="flex-1" />
-        <NButton type="primary" @click="onNewAgent">
-          <Plus class="size-5" />
-          新增 Agent
-        </NButton>
-      </NSpace>
+        <!-- Search + New -->
+        <NSpace align="center">
+          <NInput
+            v-model:value="searchName"
+            clearable
+            placeholder="搜索 Agent 名称..."
+            size="small"
+            style="width: 240px"
+            @keyup.enter="loadAgents"
+          />
+          <NButton size="small" @click="loadAgents">搜索</NButton>
+          <div class="flex-1" />
+          <NButton type="primary" @click="onNewAgent">
+            <Plus class="size-5" />
+            新增 Agent
+          </NButton>
+        </NSpace>
 
-      <!-- Card List -->
-      <NSpin :show="loading">
-        <template v-if="agents.length === 0">
-          <NEmpty description="暂无 Agent" />
-        </template>
-        <NGrid v-else :cols="3" :x-gap="12" :y-gap="12">
-          <NGi v-for="agent in agents" :key="agent.id">
-            <NCard
-              :bordered="true"
-              size="small"
-              style="border-left: 4px solid #2080f0"
-            >
-              <template #header>
-                <NTooltip :delay="300" style="max-width:100%">
-                  <template #trigger>
-                    <span class="truncate block font-medium">{{ agent.name }}</span>
-                  </template>
-                  {{ agent.name }}
-                </NTooltip>
-              </template>
-              <template #header-extra>
-                <NSpace align="center" size="small">
-                  <NTag :bordered="false" :type="agent.status === '1' ? 'success' : 'error'" size="tiny">
-                    {{ agent.status === '1' ? '正常' : '停用' }}
-                  </NTag>
-                </NSpace>
-              </template>
-
-              <div class="text-sm text-gray-500">
-                <div class="mb-1 truncate">
-                  <span class="font-medium">标识：</span>
-                  <NTooltip :delay="300" style="max-width:100%">
+        <!-- Card List -->
+        <NSpin :show="loading">
+          <template v-if="agents.length === 0">
+            <NEmpty description="暂无 Agent" />
+          </template>
+          <NGrid v-else :cols="3" :x-gap="12" :y-gap="12">
+            <NGi v-for="agent in agents" :key="agent.id">
+              <NCard
+                :bordered="true"
+                size="small"
+                style="border-left: 4px solid #2080f0"
+              >
+                <template #header>
+                  <NTooltip :delay="300" style="max-width: 100%">
                     <template #trigger>
-                      <span>{{ agent.agentId }}</span>
+                      <span class="truncate block font-medium">{{
+                        agent.name
+                      }}</span>
                     </template>
-                    {{ agent.agentId }}
+                    {{ agent.name }}
                   </NTooltip>
-                </div>
-                <div class="mb-1">
-                  <span class="font-medium">版本：</span>{{ agent.currentVersion || '-' }}
-                </div>
-                <div v-if="agent.description" class="truncate text-xs">
-                  <NTooltip :delay="300" style="max-width:100%">
-                    <template #trigger>
-                      <span>{{ agent.description }}</span>
-                    </template>
-                    {{ agent.description }}
-                  </NTooltip>
-                </div>
-              </div>
+                </template>
+                <template #header-extra>
+                  <NSpace align="center" size="small">
+                    <NTag
+                      :bordered="false"
+                      :type="agent.status === '1' ? 'success' : 'error'"
+                      size="tiny"
+                    >
+                      {{ agent.status === '1' ? '正常' : '停用' }}
+                    </NTag>
+                  </NSpace>
+                </template>
 
-              <template #footer>
-                <NSpace>
-                  <NButton size="tiny" @click="onView(agent)">查看</NButton>
-                  <NButton size="tiny" type="primary" @click="onEdit(agent)">修改</NButton>
-                  <NButton size="tiny" @click="openChat(agent)">对话</NButton>
-                  <NPopconfirm @positive-click="onDelete(agent)">
-                    <template #trigger>
-                      <NButton size="tiny" type="error">删除</NButton>
-                    </template>
-                    确认删除 <b>{{ agent.name }}</b>？
-                  </NPopconfirm>
-                </NSpace>
-              </template>
-            </NCard>
-          </NGi>
-        </NGrid>
-      </NSpin>
+                <div class="text-sm text-gray-500">
+                  <div class="mb-1 truncate">
+                    <span class="font-medium">标识：</span>
+                    <NTooltip :delay="300" style="max-width: 100%">
+                      <template #trigger>
+                        <span>{{ agent.agentId }}</span>
+                      </template>
+                      {{ agent.agentId }}
+                    </NTooltip>
+                  </div>
+                  <div class="mb-1">
+                    <span class="font-medium">版本：</span
+                    >{{ agent.currentVersion || '-' }}
+                  </div>
+                  <div v-if="agent.description" class="truncate text-xs">
+                    <NTooltip :delay="300" style="max-width: 100%">
+                      <template #trigger>
+                        <span>{{ agent.description }}</span>
+                      </template>
+                      {{ agent.description }}
+                    </NTooltip>
+                  </div>
+                </div>
+
+                <template #footer>
+                  <NSpace>
+                    <NButton size="tiny" @click="onView(agent)">查看</NButton>
+                    <NButton size="tiny" type="primary" @click="onEdit(agent)"
+                      >修改</NButton
+                    >
+                    <NButton size="tiny" @click="openChat(agent)">对话</NButton>
+                    <NPopconfirm @positive-click="onDelete(agent)">
+                      <template #trigger>
+                        <NButton size="tiny" type="error">删除</NButton>
+                      </template>
+                      确认删除 <b>{{ agent.name }}</b
+                      >？
+                    </NPopconfirm>
+                  </NSpace>
+                </template>
+              </NCard>
+            </NGi>
+          </NGrid>
+        </NSpin>
       </NSpace>
     </Page>
     <ChatModalComp />

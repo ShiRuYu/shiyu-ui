@@ -41,7 +41,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 
 async function handleUpdateProfile(values: Record<string, any>) {
   try {
-    const userInfo = userStore.userInfo ?? await getUserInfoApi();
+    const userInfo = userStore.userInfo ?? (await getUserInfoApi());
     const userId = userInfo.userId;
     if (userId === null || userId === undefined) {
       message.error('获取用户信息失败');
@@ -59,7 +59,9 @@ async function handleUpdateProfile(values: Record<string, any>) {
 
 async function switchRole() {
   if (selectedRoleId.value == null) return;
-  const target = userRoles.value.find((r: RoleInfo) => r.id === selectedRoleId.value);
+  const target = userRoles.value.find(
+    (r: RoleInfo) => r.id === selectedRoleId.value,
+  );
   if (!target) return;
   try {
     await switchCurrentRoleApi(target.id);
@@ -93,7 +95,9 @@ onMounted(async () => {
       lastLoginInfo.value = parseExtInfo(data.extInfo);
       const currentCode = lastLoginInfo.value.currentRole?.roleKey;
       if (currentCode && Array.isArray(data.roles)) {
-        const matched = data.roles.find((r: RoleInfo) => r.code === currentCode);
+        const matched = data.roles.find(
+          (r: RoleInfo) => r.code === currentCode,
+        );
         if (matched) selectedRoleId.value = matched.id;
       }
     }
@@ -103,7 +107,11 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <ProfileBaseSetting ref="profileBaseSettingRef" :form-schema="formSchema" @submit="handleUpdateProfile" />
+  <ProfileBaseSetting
+    ref="profileBaseSettingRef"
+    :form-schema="formSchema"
+    @submit="handleUpdateProfile"
+  />
 
   <!-- 角色切换 -->
   <div class="p-4 rounded-md bg-card mt-4">
@@ -114,11 +122,7 @@ onMounted(async () => {
         v-model="selectedRoleId"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
-        <option
-          v-for="r in userRoles"
-          :key="r.id"
-          :value="r.id"
-        >
+        <option v-for="r in userRoles" :key="r.id" :value="r.id">
           {{ r.name }}
         </option>
       </select>
@@ -138,9 +142,15 @@ onMounted(async () => {
   >
     <h4 class="text-sm font-medium mb-2 text-gray-500">上次登录信息</h4>
     <div class="space-y-1 text-xs text-gray-400">
-      <div v-if="lastLoginInfo.lastLoginTime">登录时间：{{ lastLoginInfo.lastLoginTime }}</div>
-      <div v-if="lastLoginInfo.lastLoginIp">登录IP：{{ lastLoginInfo.lastLoginIp }}</div>
-      <div v-if="lastLoginInfo.currentRole?.roleName">当前角色：{{ lastLoginInfo.currentRole.roleName }}</div>
+      <div v-if="lastLoginInfo.lastLoginTime">
+        登录时间：{{ lastLoginInfo.lastLoginTime }}
+      </div>
+      <div v-if="lastLoginInfo.lastLoginIp">
+        登录IP：{{ lastLoginInfo.lastLoginIp }}
+      </div>
+      <div v-if="lastLoginInfo.currentRole?.roleName">
+        当前角色：{{ lastLoginInfo.currentRole.roleName }}
+      </div>
     </div>
   </div>
 </template>

@@ -57,7 +57,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 
 async function handleSubmit(values: Record<string, any>) {
   try {
-    const userInfo = userStore.userInfo ?? await getUserInfoApi();
+    const userInfo = userStore.userInfo ?? (await getUserInfoApi());
     const userId = userInfo.userId;
     if (userId == null) {
       message.error('获取用户信息失败');

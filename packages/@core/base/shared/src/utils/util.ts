@@ -3,7 +3,9 @@
  */
 export function parseExtInfo(extInfo: unknown): Record<string, any> {
   if (!extInfo) return {};
-  return typeof extInfo === 'string' ? JSON.parse(extInfo as string) : extInfo as Record<string, any>;
+  return typeof extInfo === 'string'
+    ? JSON.parse(extInfo as string)
+    : (extInfo as Record<string, any>);
 }
 
 export function bindMethods<T extends object>(instance: T): void {

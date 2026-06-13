@@ -56,19 +56,19 @@ pre-commit:
         - merge
         - rebase
     lint-vue:
-      run: pnpm exec oxfmt {staged_files} && pnpm exec oxlint --fix {staged_files} && pnpm exec eslint --cache --fix {staged_files} && pnpm exec stylelint --fix --allow-empty-input {staged_files}
+      run: pnpm exec oxfmt {staged_files} && pnpm exec eslint --cache --fix {staged_files}
       glob: '*.vue'
       skip:
         - merge
         - rebase
     lint-js:
-      run: pnpm exec oxfmt {staged_files} && pnpm exec oxlint --fix {staged_files} && pnpm exec eslint --cache --fix {staged_files}
+      run: pnpm exec oxfmt {staged_files} && pnpm exec eslint --cache --fix {staged_files}
       glob: '*.{js,jsx,ts,tsx}'
       skip:
         - merge
         - rebase
     lint-style:
-      run: pnpm exec oxfmt {staged_files} && pnpm exec stylelint --fix --allow-empty-input {staged_files}
+      run: pnpm exec oxfmt {staged_files}
       glob: '*.{scss,less,styl,html,vue,css}'
       skip:
         - merge

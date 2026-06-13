@@ -228,7 +228,9 @@ watch(
         :avatar
         :menus
         :text="userStore.userInfo?.realName"
-        :description="userStore.userInfo?.email ?? userStore.userInfo?.username ?? ''"
+        :description="
+          userStore.userInfo?.email ?? userStore.userInfo?.username ?? ''
+        "
         :tag-text="currentRoleName || undefined"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"

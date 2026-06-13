@@ -110,8 +110,15 @@ async function resetUserPassword(id: number, password: string) {
  * @param oldPassword 旧密码
  * @param newPassword 新密码
  */
-async function changePassword(id: number, oldPassword: string, newPassword: string) {
-  return requestClient.patch(`/user/${id}/password`, { oldPassword, newPassword });
+async function changePassword(
+  id: number,
+  oldPassword: string,
+  newPassword: string,
+) {
+  return requestClient.patch(`/user/${id}/password`, {
+    oldPassword,
+    newPassword,
+  });
 }
 
 export {
