@@ -8,7 +8,7 @@ import { h } from 'vue';
 
 import { Tag } from 'antdv-next';
 
-import { getDeptList } from '#/api';
+import { getWorkspaceList } from '#/api';
 import { $t } from '#/locales';
 
 export function useFormSchema(): VbenFormSchema[] {
@@ -23,14 +23,14 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'ApiTreeSelect',
       componentProps: {
         allowClear: true,
-        api: getDeptList,
+        api: getWorkspaceList,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',
         childrenField: 'children',
       },
-      fieldName: 'deptId',
-      label: $t('system.user.dept'),
+      fieldName: 'workspaceId',
+      label: $t('system.user.workspace'),
       rules: 'required',
     },
     {
@@ -99,7 +99,7 @@ export function useDescriptionItems(
   return [
     { label: $t('system.user.name'), content: row?.name },
     { label: $t('system.user.id'), content: row?.id },
-    { label: $t('system.user.dept'), content: row?.deptId },
+    { label: $t('system.user.workspace'), content: row?.workspaceId },
     {
       label: $t('system.user.status'),
       content: () =>

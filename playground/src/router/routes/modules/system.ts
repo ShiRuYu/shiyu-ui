@@ -40,13 +40,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/system/menu/list.vue'),
       },
       {
-        path: '/system/dept',
-        name: 'SystemDept',
+        path: '/system/workspace',
+        name: 'SystemWorkspace',
         meta: {
           icon: 'charm:organisation',
-          title: $t('system.dept.title'),
+          title: $t('system.workspace.title'),
         },
-        component: () => import('#/views/system/dept/list.vue'),
+        component: () => import('#/views/system/workspace/list.vue'),
       },
     ],
   },

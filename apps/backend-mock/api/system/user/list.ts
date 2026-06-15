@@ -24,7 +24,7 @@ function generateMockDataList(count: number) {
       createTime: formatterCN.format(
         faker.date.between({ from: '2022-01-01', to: '2025-01-01' }),
       ),
-      deptId: faker.string.uuid(),
+      workspaceId: faker.string.uuid(),
       remark: faker.lorem.sentence(),
     };
 
@@ -50,7 +50,7 @@ export default eventHandler(async (event) => {
     remark,
     startTime,
     endTime,
-    deptId,
+    workspaceId,
     status,
   } = getQuery(event);
   let listData = structuredClone(mockData);
@@ -78,8 +78,8 @@ export default eventHandler(async (event) => {
   if (['0', '1'].includes(status as string)) {
     listData = listData.filter((item) => item.status === Number(status));
   }
-  if (deptId) {
-    listData = listData.filter((item) => item.deptId === deptId);
+  if (workspaceId) {
+    listData = listData.filter((item) => item.workspaceId === workspaceId);
   }
   return usePageResponseSuccess(page as string, pageSize as string, listData);
 });

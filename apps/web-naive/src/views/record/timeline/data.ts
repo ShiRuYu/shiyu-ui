@@ -13,6 +13,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
+        autoSelect: 'first',
         api: getProfileOptions,
         labelField: 'name',
         valueField: 'id',
@@ -33,6 +34,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
+        autoSelect: 'first',
         api: getProfileOptions,
         labelField: 'name',
         valueField: 'id',

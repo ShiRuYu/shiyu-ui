@@ -1,24 +1,25 @@
 <script lang="ts" setup>
-import type { SystemDeptApi } from '#/api/system/dept';
+import type { SystemWorkspaceApi } from '#/api/system/workspace';
 
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Button } from 'antdv-next';
+import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
-import { createDept, updateDept } from '#/api/system/dept';
+import { message } from '#/adapter/naive';
+import { createWorkspace, updateWorkspace } from '#/api/system/workspace';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
-const formData = ref<SystemDeptApi.SystemDept>();
+const formData = ref<SystemWorkspaceApi.SystemWorkspace>();
 const getTitle = computed(() => {
   return formData.value?.id
-    ? $t('ui.actionTitle.edit', [$t('system.dept.name')])
-    : $t('ui.actionTitle.create', [$t('system.dept.name')]);
+    ? $t('ui.actionTitle.edit', [$t('system.workspace.name')])
+    : $t('ui.actionTitle.create', [$t('system.workspace.name')]);
 });
 
 const [Form, formApi] = useVbenForm({
@@ -39,11 +40,24 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       const data = await formApi.getValues();
       try {
+        // 处理 pid 为 0 或 null 的情况
+        const submitData = { ...data };
+        if (!submitData.pid || submitData.pid === 0) {
+          submitData.pid = undefined;
+        }
+
         await (formData.value?.id
-          ? updateDept(formData.value.id, data)
-          : createDept(data));
+          ? updateWorkspace(formData.value.id, submitData)
+          : createWorkspace(submitData));
+        message.success(
+          formData.value?.id
+            ? $t('ui.actionMessage.editSuccess', [$t('system.workspace.name')])
+            : $t('ui.actionMessage.createSuccess', [$t('system.workspace.name')]),
+        );
         modalApi.close();
         emit('success');
+      } catch (error) {
+        console.error(error);
       } finally {
         modalApi.lock(false);
       }
@@ -51,8 +65,9 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<SystemDeptApi.SystemDept>();
+      const data = modalApi.getData<SystemWorkspaceApi.SystemWorkspace>();
       if (data) {
+        // 处理 pid 为 0 的情况（number 类型）
         if (data.pid === 0) {
           data.pid = undefined;
         }
@@ -69,9 +84,9 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <Button type="primary" danger @click="resetForm">
+        <NButton type="error" @click="resetForm">
           {{ $t('common.reset') }}
-        </Button>
+        </NButton>
       </div>
     </template>
   </Modal>

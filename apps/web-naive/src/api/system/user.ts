@@ -7,7 +7,7 @@ export namespace SystemUserApi {
     [key: string]: any;
     avatar?: string;
     createTime?: string;
-    deptId?: number;
+    workspaceId?: number;
     email?: string;
     id: number;
     nickName?: string;

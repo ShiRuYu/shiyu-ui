@@ -1,15 +1,15 @@
 {
   "title": "System Management",
-  "dept": {
-    "list": "Department List",
+  "workspace": {
+    "list": "Workspace List",
     "createTime": "Create Time",
-    "deptName": "Department Name",
-    "name": "Department",
+    "workspaceName": "Workspace Name",
+    "name": "Workspace",
     "operation": "Operation",
-    "parentDept": "Parent Department",
+    "parentWorkspace": "Parent Workspace",
     "remark": "Remark",
     "status": "Status",
-    "title": "Department Management"
+    "title": "Workspace Management"
   },
   "menu": {
     "list": "Menu List",
@@ -73,7 +73,7 @@
     "email": "Email",
     "phone": "Phone",
     "avatar": "Avatar",
-    "dept": "Department",
+    "workspace": "Workspace",
     "role": "Role",
     "status": "Status",
     "remark": "Remark",

@@ -6,22 +6,22 @@
     "name": "User",
     "userName": "User Name",
     "id": "User ID",
-    "dept": "Department",
+    "workspace": "Workspace",
     "status": "Status",
     "remark": "Remark",
     "createTime": "Creation Time",
     "operation": "Operation",
-    "placeholder": "Search Department..."
+    "placeholder": "Search Workspace..."
   },
-  "dept": {
-    "name": "Department",
-    "title": "Department Management",
-    "deptName": "Department Name",
+  "workspace": {
+    "name": "Workspace",
+    "title": "Workspace Management",
+    "workspaceName": "Workspace Name",
     "status": "Status",
     "createTime": "Create Time",
     "remark": "Remark",
     "operation": "Operation",
-    "parentDept": "Parent Department"
+    "parentWorkspace": "Parent Workspace"
   },
   "menu": {
     "title": "Menu Management",

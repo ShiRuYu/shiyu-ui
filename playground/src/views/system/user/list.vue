@@ -2,7 +2,7 @@
 import type { Recordable } from '@vben/types';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { SystemDeptApi, SystemUserApi } from '#/api';
+import type { SystemWorkspaceApi, SystemUserApi } from '#/api';
 
 import { onMounted, ref, watch } from 'vue';
 
@@ -12,16 +12,16 @@ import { Plus } from '@vben/icons';
 import { Button, Card, InputSearch, message, Modal } from 'antdv-next';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
-import { deleteUser, getDeptList, getUserList, updateUser } from '#/api';
+import { deleteUser, getWorkspaceList, getUserList, updateUser } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Detail from './modules/detail.vue';
 import Form from './modules/form.vue';
 
-const deptList = ref<SystemDeptApi.SystemDept[]>([]);
+const workspaceList = ref<SystemWorkspaceApi.SystemWorkspace[]>([]);
 const inputSearchValue = ref('');
-const selectedDeptId = ref<string>('');
+const selectedWorkspaceId = ref<string>('');
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -50,7 +50,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
             page: page.currentPage,
             pageSize: page.pageSize,
             ...formValues,
-            deptId: selectedDeptId.value,
+            workspaceId: selectedWorkspaceId.value,
           });
         },
       },
@@ -150,37 +150,37 @@ function onCreate() {
   formDrawerApi.setData({}).open();
 }
 
-async function loadDeptList() {
+async function loadWorkspaceList() {
   try {
-    const res = await getDeptList();
-    deptList.value = res;
+    const res = await getWorkspaceList();
+    workspaceList.value = res;
   } catch (error) {
-    console.error('Failed to load department list:', error);
+    console.error('Failed to load workspace list:', error);
   }
 }
 
-function selectDept(v: string) {
-  selectedDeptId.value = v;
+function selectWorkspace(v: string) {
+  selectedWorkspaceId.value = v;
   gridApi.query();
 }
 
-function searchDept(value: string) {
+function searchWorkspace(value: string) {
   if (!value) {
-    loadDeptList();
+    loadWorkspaceList();
     return;
   }
-  const filtered = deptList.value.filter((dept) =>
-    dept.name.toLowerCase().includes(value.toLowerCase()),
+  const filtered = workspaceList.value.filter((workspace) =>
+    workspace.name.toLowerCase().includes(value.toLowerCase()),
   );
-  deptList.value = filtered;
+  workspaceList.value = filtered;
 }
 
 onMounted(() => {
-  loadDeptList();
+  loadWorkspaceList();
 });
 
 watch(inputSearchValue, (value) => {
-  searchDept(value);
+  searchWorkspace(value);
 });
 </script>
 <template>
@@ -196,9 +196,9 @@ watch(inputSearchValue, (value) => {
         <Tree
           label-field="name"
           value-field="id"
-          :tree-data="deptList"
+          :tree-data="workspaceList"
           :default-expanded-level="2"
-          @select="selectDept"
+          @select="selectWorkspace"
         />
       </Card>
 

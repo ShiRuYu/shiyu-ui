@@ -26,8 +26,8 @@
                 ],
     "tags":  [
                  {
-                     "name":  "dept-controller",
-                     "description":  "é¨é¨ç®¡ç Controller"
+                      "name":  "workspace-controller",
+                      "description":  "é¨é¨ç®¡ç Controller"
                  },
                  {
                      "name":  "auth-controller",
@@ -1813,14 +1813,14 @@
                                                                }
                                              }
                                  },
-                  "/dept/list":  {
-                                     "get":  {
-                                                 "tags":  [
-                                                              "dept-controller"
-                                                          ],
+                   "/workspace/list":  {
+                                      "get":  {
+                                                  "tags":  [
+                                                               "workspace-controller"
+                                                           ],
                                                  "summary":  "è·åé¨é¨åè¡¨",
                                                  "description":  "è·åé¨é¨åè¡¨",
-                                                 "operationId":  "getDeptList",
+                                                  "operationId":  "getWorkspaceList",
                                                  "parameters":  [
                                                                     {
                                                                         "name":  "name",

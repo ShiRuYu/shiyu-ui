@@ -2,10 +2,10 @@ import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
-import type { SystemDeptApi } from '#/api/system/dept';
+import type { SystemWorkspaceApi } from '#/api/system/workspace';
 
 import { z } from '#/adapter/form';
-import { getDeptList } from '#/api/system/dept';
+import { getWorkspaceList } from '#/api/system/workspace';
 import { $t } from '#/locales';
 
 /**
@@ -16,27 +16,27 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'name',
-      label: $t('system.dept.deptName'),
+      label: $t('system.workspace.workspaceName'),
       rules: z
         .string()
-        .min(2, $t('ui.formRules.minLength', [$t('system.dept.deptName'), 2]))
+        .min(2, $t('ui.formRules.minLength', [$t('system.workspace.workspaceName'), 2]))
         .max(
           20,
-          $t('ui.formRules.maxLength', [$t('system.dept.deptName'), 20]),
+          $t('ui.formRules.maxLength', [$t('system.workspace.workspaceName'), 20]),
         ),
     },
     {
       component: 'ApiTreeSelect',
       componentProps: {
         allowClear: true,
-        api: getDeptList,
+        api: getWorkspaceList,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',
         childrenField: 'children',
       },
       fieldName: 'pid',
-      label: $t('system.dept.parentDept'),
+      label: $t('system.workspace.parentWorkspace'),
     },
     {
       component: 'RadioGroup',
@@ -50,7 +50,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       defaultValue: 1,
       fieldName: 'status',
-      label: $t('system.dept.status'),
+      label: $t('system.workspace.status'),
     },
     {
       component: 'Textarea',
@@ -60,10 +60,10 @@ export function useSchema(): VbenFormSchema[] {
         showCount: true,
       },
       fieldName: 'remark',
-      label: $t('system.dept.remark'),
+      label: $t('system.workspace.remark'),
       rules: z
         .string()
-        .max(50, $t('ui.formRules.maxLength', [$t('system.dept.remark'), 50]))
+        .max(50, $t('ui.formRules.maxLength', [$t('system.workspace.remark'), 50]))
         .optional(),
     },
   ];
@@ -75,38 +75,38 @@ export function useSchema(): VbenFormSchema[] {
  * @param onActionClick 表格操作按钮点击事件
  */
 export function useColumns(
-  onActionClick?: OnActionClickFn<SystemDeptApi.SystemDept>,
-): VxeTableGridColumns<SystemDeptApi.SystemDept> {
+  onActionClick?: OnActionClickFn<SystemWorkspaceApi.SystemWorkspace>,
+): VxeTableGridColumns<SystemWorkspaceApi.SystemWorkspace> {
   return [
     {
       align: 'left',
       field: 'name',
       fixed: 'left',
-      title: $t('system.dept.deptName'),
+      title: $t('system.workspace.workspaceName'),
       treeNode: true,
       width: 150,
     },
     {
       cellRender: { name: 'CellTag' },
       field: 'status',
-      title: $t('system.dept.status'),
+      title: $t('system.workspace.status'),
       width: 100,
     },
     {
       field: 'createTime',
-      title: $t('system.dept.createTime'),
+      title: $t('system.workspace.createTime'),
       width: 180,
     },
     {
       field: 'remark',
-      title: $t('system.dept.remark'),
+      title: $t('system.workspace.remark'),
     },
     {
       align: 'right',
       cellRender: {
         attrs: {
           nameField: 'name',
-          nameTitle: $t('system.dept.name'),
+          nameTitle: $t('system.workspace.name'),
           onClick: onActionClick,
         },
         name: 'CellOperation',
@@ -118,7 +118,7 @@ export function useColumns(
           'edit', // 默认的编辑按钮
           {
             code: 'delete', // 默认的删除按钮
-            disabled: (row: SystemDeptApi.SystemDept) => {
+            disabled: (row: SystemWorkspaceApi.SystemWorkspace) => {
               return !!(row.children && row.children.length > 0);
             },
           },
@@ -128,7 +128,7 @@ export function useColumns(
       fixed: 'right',
       headerAlign: 'center',
       showOverflow: false,
-      title: $t('system.dept.operation'),
+      title: $t('system.workspace.operation'),
       width: 200,
     },
   ];
