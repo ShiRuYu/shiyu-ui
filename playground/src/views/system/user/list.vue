@@ -2,7 +2,7 @@
 import type { Recordable } from '@vben/types';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { SystemWorkspaceApi, SystemUserApi } from '#/api';
+import type { SystemUserApi, SystemWorkspaceApi } from '#/api';
 
 import { onMounted, ref, watch } from 'vue';
 
@@ -12,7 +12,7 @@ import { Plus } from '@vben/icons';
 import { Button, Card, InputSearch, message, Modal } from 'antdv-next';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
-import { deleteUser, getWorkspaceList, getUserList, updateUser } from '#/api';
+import { deleteUser, getUserList, getWorkspaceList, updateUser } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

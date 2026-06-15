@@ -192,7 +192,10 @@ watch(
 
 function emitChange() {
   if (
-    (modelValue.value === undefined || modelValue.value === null || modelValue.value === '' || modelValue.value === 0) &&
+    (modelValue.value === undefined ||
+      modelValue.value === null ||
+      modelValue.value === '' ||
+      modelValue.value === 0) &&
     props.autoSelect &&
     unref(getOptions).length > 0
   ) {

@@ -12,7 +12,10 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteWorkspace, getWorkspaceListForGrid } from '#/api/system/workspace';
+import {
+  deleteWorkspace,
+  getWorkspaceListForGrid,
+} from '#/api/system/workspace';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

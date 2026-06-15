@@ -5,8 +5,8 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemUserApi } from '#/api/system/user';
 
 import { z } from '#/adapter/form';
-import { getWorkspaceList } from '#/api/system/workspace';
 import { getRolesForUserForm } from '#/api/system/user';
+import { getWorkspaceList } from '#/api/system/workspace';
 import { $t } from '#/locales';
 
 /**

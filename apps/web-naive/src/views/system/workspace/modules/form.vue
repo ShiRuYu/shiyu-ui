@@ -52,7 +52,9 @@ const [Modal, modalApi] = useVbenModal({
         message.success(
           formData.value?.id
             ? $t('ui.actionMessage.editSuccess', [$t('system.workspace.name')])
-            : $t('ui.actionMessage.createSuccess', [$t('system.workspace.name')]),
+            : $t('ui.actionMessage.createSuccess', [
+                $t('system.workspace.name'),
+              ]),
         );
         modalApi.close();
         emit('success');

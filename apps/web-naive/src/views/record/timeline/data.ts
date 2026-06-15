@@ -24,7 +24,10 @@ export function useGridFormSchema(): VbenFormSchema[] {
       label: $t('record.timeline.profileName'),
       rules: z
         .number()
-        .min(1, $t('ui.formRules.required', [$t('record.timeline.profileName')])),
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('record.timeline.profileName')]),
+        ),
     },
   ];
 }
@@ -44,7 +47,10 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('record.timeline.profileName'),
       rules: z
         .number()
-        .min(1, $t('ui.formRules.required', [$t('record.timeline.profileName')])),
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('record.timeline.profileName')]),
+        ),
     },
     {
       component: 'Input',
@@ -52,7 +58,10 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('record.timeline.eventTitle'),
       rules: z
         .string()
-        .min(1, $t('ui.formRules.required', [$t('record.timeline.eventTitle')])),
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('record.timeline.eventTitle')]),
+        ),
     },
     {
       component: 'DatePicker',

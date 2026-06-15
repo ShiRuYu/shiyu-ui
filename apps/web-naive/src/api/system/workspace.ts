@@ -19,19 +19,21 @@ export namespace SystemWorkspaceApi {
  * 获取工作空间列表数据
  */
 async function getWorkspaceList(params?: Recordable<any>) {
-  return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>('/workspace/list', {
-    params,
-  });
+  return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>(
+    '/workspace/list',
+    {
+      params,
+    },
+  );
 }
 
 /**
  * 获取工作空间列表数据（包装为 vxe-table 格式）
  */
 async function getWorkspaceListForGrid(params?: Recordable<any>) {
-  const data = await requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>(
-    '/workspace/list',
-    { params },
-  );
+  const data = await requestClient.get<
+    Array<SystemWorkspaceApi.SystemWorkspace>
+  >('/workspace/list', { params });
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }
@@ -41,7 +43,10 @@ async function getWorkspaceListForGrid(params?: Recordable<any>) {
  * @param data 工作空间数据
  */
 async function createWorkspace(
-  data: Omit<SystemWorkspaceApi.SystemWorkspace, 'children' | 'createTime' | 'id'>,
+  data: Omit<
+    SystemWorkspaceApi.SystemWorkspace,
+    'children' | 'createTime' | 'id'
+  >,
 ) {
   return requestClient.post('/workspace', data);
 }
@@ -54,7 +59,10 @@ async function createWorkspace(
  */
 async function updateWorkspace(
   id: number,
-  data: Omit<SystemWorkspaceApi.SystemWorkspace, 'children' | 'createTime' | 'id'>,
+  data: Omit<
+    SystemWorkspaceApi.SystemWorkspace,
+    'children' | 'createTime' | 'id'
+  >,
 ) {
   return requestClient.patch(`/workspace/${id}`, data);
 }
@@ -67,4 +75,10 @@ async function deleteWorkspace(id: number) {
   return requestClient.delete(`/workspace/${id}`);
 }
 
-export { createWorkspace, deleteWorkspace, getWorkspaceList, getWorkspaceListForGrid, updateWorkspace };
+export {
+  createWorkspace,
+  deleteWorkspace,
+  getWorkspaceList,
+  getWorkspaceListForGrid,
+  updateWorkspace,
+};

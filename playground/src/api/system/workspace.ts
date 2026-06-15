@@ -15,7 +15,9 @@ export namespace SystemWorkspaceApi {
  * 获取工作空间列表数据
  */
 async function getWorkspaceList() {
-  return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>('/workspace/list');
+  return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>(
+    '/workspace/list',
+  );
 }
 
 /**
