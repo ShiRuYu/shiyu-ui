@@ -71,15 +71,15 @@ interface Props {
   /** 租户列表 */
   tenants?: Array<{ id: number; name: string }>;
   /** 当前租户ID */
-  currentTenantId?: number | null;
+  currentTenantId?: null | number;
   /** 工作空间列表 */
   workspaces?: Array<{ workspaceId: number; workspaceName: string }>;
   /** 当前工作空间ID */
-  currentWorkspaceId?: number | null;
+  currentWorkspaceId?: null | number;
   /** 角色列表 */
   roles?: Array<{ id: number; name: string }>;
   /** 当前角色ID */
-  currentRoleId?: number | null;
+  currentRoleId?: null | number;
 }
 
 defineOptions({
@@ -278,15 +278,24 @@ if (enableShortcutKey.value) {
             </div>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator v-if="menus?.length || tenants.length || workspaces.length || (roles && roles.length)" />
+        <DropdownMenuSeparator
+          v-if="
+            menus?.length ||
+            tenants.length > 0 ||
+            workspaces.length > 0 ||
+            (roles && roles.length > 0)
+          "
+        />
         <!-- 租户/工作空间/角色切换 -->
-        <template v-if="tenants.length">
+        <template v-if="tenants.length > 0">
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+            <DropdownMenuSubTrigger
+              class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent"
+            >
               <span class="text-muted-foreground">{{ $t('ui.widgets.tenant.label') }}：</span>
               <span class="flex-1">{{
-                tenants.find((t) => t.id === currentTenantId)
-                  ?.name ?? $t('ui.widgets.tenant.notSelected')
+                tenants.find((t) => t.id === currentTenantId)?.name ??
+                $t('ui.widgets.tenant.notSelected')
               }}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent class="min-w-36">
@@ -297,19 +306,18 @@ if (enableShortcutKey.value) {
                 :class="{ 'text-green-400': t.id === currentTenantId }"
                 @click="emit('switchTenant', t.id)"
               >
-                <Check
-                  v-if="t.id === currentTenantId"
-                  class="mr-2 size-4"
-                />
-                <span v-else class="mr-2 inline-block size-4" />
+                <Check v-if="t.id === currentTenantId" class="mr-2 size-4" />
+                <span v-else class="mr-2 inline-block size-4"></span>
                 {{ t.name }}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
         </template>
-        <template v-if="workspaces.length">
+        <template v-if="workspaces.length > 0">
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+            <DropdownMenuSubTrigger
+              class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent"
+            >
               <span class="text-muted-foreground">{{ $t('ui.widgets.workspace.label') }}：</span>
               <span class="flex-1">{{
                 workspaces.find((w) => w.workspaceId === currentWorkspaceId)
@@ -321,22 +329,26 @@ if (enableShortcutKey.value) {
                 v-for="w in workspaces"
                 :key="w.workspaceId"
                 class="flex cursor-pointer items-center rounded-sm py-1 text-sm"
-                :class="{ 'text-green-400': w.workspaceId === currentWorkspaceId }"
+                :class="{
+                  'text-green-400': w.workspaceId === currentWorkspaceId,
+                }"
                 @click="emit('switchWorkspace', w.workspaceId)"
               >
                 <Check
                   v-if="w.workspaceId === currentWorkspaceId"
                   class="mr-2 size-4"
                 />
-                <span v-else class="mr-2 inline-block size-4" />
+                <span v-else class="mr-2 inline-block size-4"></span>
                 {{ w.workspaceName }}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
         </template>
-        <template v-if="roles && roles.length">
+        <template v-if="roles && roles.length > 0">
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+            <DropdownMenuSubTrigger
+              class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent"
+            >
               <span class="text-muted-foreground">{{ $t('ui.widgets.roleSwitch.label') }}：</span>
               <span class="flex-1">{{
                 roles.find((r) => r.id === currentRoleId)?.name ?? tagText
@@ -350,11 +362,8 @@ if (enableShortcutKey.value) {
                 :class="{ 'text-green-400': r.id === currentRoleId }"
                 @click="emit('switchRole', r.id)"
               >
-                <Check
-                  v-if="r.id === currentRoleId"
-                  class="mr-2 size-4"
-                />
-                <span v-else class="mr-2 inline-block size-4" />
+                <Check v-if="r.id === currentRoleId" class="mr-2 size-4" />
+                <span v-else class="mr-2 inline-block size-4"></span>
                 {{ r.name }}
               </DropdownMenuItem>
             </DropdownMenuSubContent>

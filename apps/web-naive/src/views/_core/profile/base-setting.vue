@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import type { RoleInfo } from '@vben/types';
+
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { computed, onMounted, ref } from 'vue';
 
 import { ProfileBaseSetting } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
+import { parseExtInfo } from '@vben/utils';
 
+import { message } from '#/adapter/naive';
 import { getUserInfoApi, switchCurrentRoleApi } from '#/api';
 import { updateUser } from '#/api/system/user';
-import { message } from '#/adapter/naive';
 import { useAuthStore } from '#/store';
-import { parseExtInfo } from '@vben/utils';
 
 const profileBaseSettingRef = ref();
 const userStore = useUserStore();
@@ -19,10 +20,10 @@ const authStore = useAuthStore();
 
 const lastLoginInfo = ref<Record<string, any>>({});
 const userRoles = ref<RoleInfo[]>([]);
-const selectedRoleId = ref<number | null>(null);
+const selectedRoleId = ref<null | number>(null);
 
-const selectedTenantId = ref<number | null>(null);
-const selectedWorkspaceId = ref<number | null>(null);
+const selectedTenantId = ref<null | number>(null);
+const selectedWorkspaceId = ref<null | number>(null);
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -57,8 +58,8 @@ async function handleUpdateProfile(values: Record<string, any>) {
       email: values.email,
     });
     message.success('基本信息已更新');
-  } catch (e: any) {
-    message.error(e?.response?.message ?? e?.message ?? '更新失败');
+  } catch (error: any) {
+    message.error(error?.response?.message ?? error?.message ?? '更新失败');
   }
 }
 
@@ -84,8 +85,8 @@ async function switchTenant() {
     await authStore.switchTenant(selectedTenantId.value);
     selectedWorkspaceId.value = null;
     message.success('租户切换成功');
-  } catch (e: any) {
-    message.error(e?.message ?? '切换租户失败');
+  } catch (error: any) {
+    message.error(error?.message ?? '切换租户失败');
   }
 }
 
@@ -94,8 +95,8 @@ async function switchWorkspace() {
   try {
     await authStore.switchWorkspace(selectedWorkspaceId.value);
     message.success('工作空间切换成功');
-  } catch (e: any) {
-    message.error(e?.message ?? '切换工作空间失败');
+  } catch (error: any) {
+    message.error(error?.message ?? '切换工作空间失败');
   }
 }
 
@@ -140,8 +141,8 @@ onMounted(async () => {
     } catch {
       // 忽略
     }
-  } catch (e: any) {
-    message.error(e?.message ?? '获取用户信息失败');
+  } catch (error: any) {
+    message.error(error?.message ?? '获取用户信息失败');
   }
 });
 </script>
@@ -163,11 +164,7 @@ onMounted(async () => {
         v-model="selectedTenantId"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
-        <option
-          v-for="t in userStore.tenants"
-          :key="t.id"
-          :value="t.id"
-        >
+        <option v-for="t in userStore.tenants" :key="t.id" :value="t.id">
           {{ t.name }}
         </option>
       </select>

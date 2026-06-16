@@ -146,7 +146,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
       const extInfo = userStore.userInfo?.extInfo;
       if (extInfo) {
-        let parsed =
+        const parsed =
           typeof extInfo === 'string' ? JSON.parse(extInfo) : extInfo;
         const currentWsId = parsed?.currentWorkspaceId;
         if (currentWsId != null && Array.isArray(workspaces)) {
@@ -183,12 +183,12 @@ export const useAuthStore = defineStore('auth', () => {
         userStore.setCurrentWorkspace(null, '');
       }
       await fetchUserInfo();
-    } catch (e: any) {
+    } catch (error: any) {
       notification.error({
-        content: e?.message ?? '切换租户失败',
+        content: error?.message ?? '切换租户失败',
         duration: 3000,
       });
-      throw e;
+      throw error;
     }
   }
 
@@ -203,12 +203,12 @@ export const useAuthStore = defineStore('auth', () => {
         workspace?.workspaceName ?? '',
       );
       await fetchUserInfo();
-    } catch (e: any) {
+    } catch (error: any) {
       notification.error({
-        content: e?.message ?? '切换工作空间失败',
+        content: error?.message ?? '切换工作空间失败',
         duration: 3000,
       });
-      throw e;
+      throw error;
     }
   }
 

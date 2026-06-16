@@ -18,8 +18,8 @@ import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow, parseExtInfo } from '@vben/utils';
 
-import { $t } from '#/locales';
 import { switchCurrentRoleApi } from '#/api';
+import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 

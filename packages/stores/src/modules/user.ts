@@ -7,6 +7,10 @@ interface BasicUserInfo {
    */
   avatar: string;
   /**
+   * 扩展信息
+   */
+  extInfo?: Record<string, any>;
+  /**
    * 用户昵称
    */
   realName: string;
@@ -22,25 +26,41 @@ interface BasicUserInfo {
    * 用户名
    */
   username: string;
-  /**
-   * 扩展信息
-   */
-  extInfo?: Record<string, any>;
 }
 
 interface TenantInfo {
-  id: number;
   code?: string;
+  id: number;
   name: string;
 }
 
 interface WorkspaceContextInfo {
+  roleCode: string;
   workspaceId: number;
   workspaceName: string;
-  roleCode: string;
 }
 
 interface AccessState {
+  /**
+   * 当前租户ID
+   */
+  currentTenantId: null | number;
+  /**
+   * 当前租户名称
+   */
+  currentTenantName: string;
+  /**
+   * 当前工作空间ID
+   */
+  currentWorkspaceId: null | number;
+  /**
+   * 当前工作空间名称
+   */
+  currentWorkspaceName: string;
+  /**
+   * 可用租户列表
+   */
+  tenants: TenantInfo[];
   /**
    * 用户信息
    */
@@ -50,29 +70,9 @@ interface AccessState {
    */
   userRoles: string[];
   /**
-   * 可用租户列表
-   */
-  tenants: TenantInfo[];
-  /**
-   * 当前租户ID
-   */
-  currentTenantId: number | null;
-  /**
-   * 当前租户名称
-   */
-  currentTenantName: string;
-  /**
    * 可用工作空间列表
    */
   workspaces: WorkspaceContextInfo[];
-  /**
-   * 当前工作空间ID
-   */
-  currentWorkspaceId: number | null;
-  /**
-   * 当前工作空间名称
-   */
-  currentWorkspaceName: string;
 }
 
 /**
@@ -129,14 +129,14 @@ export const useUserStore = defineStore('core-user', {
     setTenants(tenants: TenantInfo[]) {
       this.tenants = tenants;
     },
-    setCurrentTenant(tenantId: number | null, tenantName: string) {
+    setCurrentTenant(tenantId: null | number, tenantName: string) {
       this.currentTenantId = tenantId;
       this.currentTenantName = tenantName;
     },
     setWorkspaces(workspaces: WorkspaceContextInfo[]) {
       this.workspaces = workspaces;
     },
-    setCurrentWorkspace(workspaceId: number | null, workspaceName: string) {
+    setCurrentWorkspace(workspaceId: null | number, workspaceName: string) {
       this.currentWorkspaceId = workspaceId;
       this.currentWorkspaceName = workspaceName;
     },
