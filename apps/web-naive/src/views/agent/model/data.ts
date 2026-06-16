@@ -152,7 +152,7 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['chat', 'edit', 'delete'],
+        options: [{ code: 'chat', label: '对话' }, 'edit', 'delete'],
       },
       field: 'operation',
       fixed: 'right',

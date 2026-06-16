@@ -8,7 +8,6 @@ import type { ModelApi } from '#/api/common/model';
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
-import { useRouter } from 'vue-router';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -16,9 +15,13 @@ import { deleteModel, getModelPage } from '#/api/common/model';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
+import ChatDialog from './modules/chat-dialog.vue';
 import Form from './modules/form.vue';
 
-const router = useRouter();
+const [ChatModal, chatModalApi] = useVbenModal({
+  connectedComponent: ChatDialog,
+  destroyOnClose: true,
+});
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -46,8 +49,8 @@ function onDelete(row: ModelApi.ModelItem) {
     });
 }
 
-function onChat() {
-  router.push('/agent/chat');
+function onChat(row: ModelApi.ModelItem) {
+  chatModalApi.setData(row).open();
 }
 
 function onActionClick({
@@ -64,7 +67,7 @@ function onActionClick({
       break;
     }
     case 'chat': {
-      onChat();
+      onChat(row);
       break;
     }
   }
@@ -114,6 +117,7 @@ function refreshGrid() {
 
 <template>
   <Page auto-content-height>
+    <ChatModal />
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('system.model.list')">
       <template #toolbar-tools>
