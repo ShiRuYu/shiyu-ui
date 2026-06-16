@@ -10,14 +10,19 @@ import { useUserStore } from '@vben/stores';
 import { getUserInfoApi, switchCurrentRoleApi } from '#/api';
 import { updateUser } from '#/api/system/user';
 import { message } from '#/adapter/naive';
+import { useAuthStore } from '#/store';
 import { parseExtInfo } from '@vben/utils';
 
 const profileBaseSettingRef = ref();
 const userStore = useUserStore();
+const authStore = useAuthStore();
 
 const lastLoginInfo = ref<Record<string, any>>({});
 const userRoles = ref<RoleInfo[]>([]);
 const selectedRoleId = ref<number | null>(null);
+
+const selectedTenantId = ref<number | null>(null);
+const selectedWorkspaceId = ref<number | null>(null);
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -73,6 +78,27 @@ async function switchRole() {
   }
 }
 
+async function switchTenant() {
+  if (selectedTenantId.value == null) return;
+  try {
+    await authStore.switchTenant(selectedTenantId.value);
+    selectedWorkspaceId.value = null;
+    message.success('租户切换成功');
+  } catch (e: any) {
+    message.error(e?.message ?? '切换租户失败');
+  }
+}
+
+async function switchWorkspace() {
+  if (selectedWorkspaceId.value == null) return;
+  try {
+    await authStore.switchWorkspace(selectedWorkspaceId.value);
+    message.success('工作空间切换成功');
+  } catch (e: any) {
+    message.error(e?.message ?? '切换工作空间失败');
+  }
+}
+
 onMounted(async () => {
   try {
     const data = await getUserInfoApi();
@@ -101,6 +127,19 @@ onMounted(async () => {
         if (matched) selectedRoleId.value = matched.id;
       }
     }
+
+    // 加载租户和工作空间
+    selectedTenantId.value = userStore.currentTenantId;
+    selectedWorkspaceId.value = userStore.currentWorkspaceId;
+
+    // 刷新工作空间和租户列表
+    try {
+      await authStore.refreshWorkspaceInfo();
+      selectedTenantId.value = userStore.currentTenantId;
+      selectedWorkspaceId.value = userStore.currentWorkspaceId;
+    } catch {
+      // 忽略
+    }
   } catch (e: any) {
     message.error(e?.message ?? '获取用户信息失败');
   }
@@ -113,12 +152,60 @@ onMounted(async () => {
     @submit="handleUpdateProfile"
   />
 
-  <!-- 角色切换 -->
-  <div class="p-4 rounded-md bg-card mt-4">
-    <h4 class="text-sm font-medium mb-2">当前角色</h4>
-    <div class="flex items-center gap-2">
+  <!-- 租户/工作空间/角色切换 -->
+  <div class="p-3 rounded-md bg-card mt-3 space-y-3">
+    <h4 class="text-sm font-medium">空间与角色</h4>
+
+    <!-- 租户 -->
+    <div v-if="userStore.tenants.length > 0" class="flex items-center gap-2">
+      <span class="w-16 shrink-0 text-xs text-muted-foreground">当前租户</span>
       <select
-        v-if="userRoles.length > 0"
+        v-model="selectedTenantId"
+        class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
+      >
+        <option
+          v-for="t in userStore.tenants"
+          :key="t.id"
+          :value="t.id"
+        >
+          {{ t.name }}
+        </option>
+      </select>
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
+        @click="switchTenant"
+      >
+        切换
+      </button>
+    </div>
+
+    <!-- 工作空间 -->
+    <div v-if="userStore.workspaces.length > 0" class="flex items-center gap-2">
+      <span class="w-16 shrink-0 text-xs text-muted-foreground">工作空间</span>
+      <select
+        v-model="selectedWorkspaceId"
+        class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
+      >
+        <option
+          v-for="w in userStore.workspaces"
+          :key="w.workspaceId"
+          :value="w.workspaceId"
+        >
+          {{ w.workspaceName }}
+        </option>
+      </select>
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
+        @click="switchWorkspace"
+      >
+        切换
+      </button>
+    </div>
+
+    <!-- 角色 -->
+    <div v-if="userRoles.length > 0" class="flex items-center gap-2">
+      <span class="w-16 shrink-0 text-xs text-muted-foreground">当前角色</span>
+      <select
         v-model="selectedRoleId"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
@@ -138,7 +225,7 @@ onMounted(async () => {
   <!-- 上次登录信息 -->
   <div
     v-if="lastLoginInfo.lastLoginTime || lastLoginInfo.currentRole"
-    class="p-4 border-t border-gray-200 dark:border-gray-700 mt-4 rounded-md bg-card"
+    class="p-3 mt-3 rounded-md bg-card"
   >
     <h4 class="text-sm font-medium mb-2 text-gray-500">上次登录信息</h4>
     <div class="space-y-1 text-xs text-gray-400">

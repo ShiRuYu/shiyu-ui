@@ -10,7 +10,16 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { defineStore } from 'pinia';
 
 import { notification } from '#/adapter/naive';
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
+import {
+  getAccessCodesApi,
+  getUserInfoApi,
+  getUserTenantsApi,
+  getUserWorkspacesApi,
+  loginApi,
+  logoutApi,
+  switchTenantApi,
+  switchWorkspaceApi,
+} from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -33,12 +42,28 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
+      const loginResult = await loginApi(params);
 
       // 如果成功获取到 accessToken
-      if (accessToken) {
+      if (loginResult.accessToken) {
         // 将 accessToken 存储到 accessStore 中
-        accessStore.setAccessToken(accessToken);
+        accessStore.setAccessToken(loginResult.accessToken);
+
+        // 存储租户信息
+        if (loginResult.tenants) {
+          userStore.setTenants(loginResult.tenants);
+        }
+        if (loginResult.tenantId != null) {
+          userStore.setCurrentTenant(
+            loginResult.tenantId,
+            loginResult.tenantName ?? '',
+          );
+        }
+
+        // 存储工作空间信息
+        if (loginResult.workspaces) {
+          userStore.setWorkspaces(loginResult.workspaces);
+        }
 
         // 获取用户信息并存储到 accessStore 中
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
@@ -50,6 +75,9 @@ export const useAuthStore = defineStore('auth', () => {
 
         userStore.setUserInfo(userInfo);
         accessStore.setAccessCodes(accessCodes);
+
+        // 根据用户 extInfo 还原工作空间信息
+        await refreshWorkspaceInfo();
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -104,6 +132,86 @@ export const useAuthStore = defineStore('auth', () => {
     return userInfo;
   }
 
+  async function refreshWorkspaceInfo() {
+    try {
+      const [workspaces, tenants] = await Promise.all([
+        getUserWorkspacesApi(),
+        getUserTenantsApi(),
+      ]);
+      if (Array.isArray(workspaces)) {
+        userStore.setWorkspaces(workspaces);
+      }
+      if (Array.isArray(tenants)) {
+        userStore.setTenants(tenants);
+      }
+      const extInfo = userStore.userInfo?.extInfo;
+      if (extInfo) {
+        let parsed =
+          typeof extInfo === 'string' ? JSON.parse(extInfo) : extInfo;
+        const currentWsId = parsed?.currentWorkspaceId;
+        if (currentWsId != null && Array.isArray(workspaces)) {
+          const currentWs = workspaces.find(
+            (w: any) => w.workspaceId === currentWsId,
+          );
+          if (currentWs) {
+            userStore.setCurrentWorkspace(
+              currentWsId,
+              currentWs.workspaceName ?? '',
+            );
+          }
+        }
+        const currentTid = parsed?.currentTenantId;
+        if (currentTid != null && Array.isArray(tenants)) {
+          const currentT = tenants.find((t: any) => t.id === currentTid);
+          if (currentT) {
+            userStore.setCurrentTenant(currentTid, currentT.name ?? '');
+          }
+        }
+      }
+    } catch {
+      // 忽略错误
+    }
+  }
+
+  async function switchTenant(tenantId: number) {
+    try {
+      const workspaces = await switchTenantApi(tenantId);
+      const tenant = userStore.tenants.find((t: any) => t.id === tenantId);
+      userStore.setCurrentTenant(tenantId, tenant?.name ?? '');
+      if (Array.isArray(workspaces)) {
+        userStore.setWorkspaces(workspaces);
+        userStore.setCurrentWorkspace(null, '');
+      }
+      await fetchUserInfo();
+    } catch (e: any) {
+      notification.error({
+        content: e?.message ?? '切换租户失败',
+        duration: 3000,
+      });
+      throw e;
+    }
+  }
+
+  async function switchWorkspace(workspaceId: number) {
+    try {
+      await switchWorkspaceApi(workspaceId);
+      const workspace = userStore.workspaces.find(
+        (w: any) => w.workspaceId === workspaceId,
+      );
+      userStore.setCurrentWorkspace(
+        workspaceId,
+        workspace?.workspaceName ?? '',
+      );
+      await fetchUserInfo();
+    } catch (e: any) {
+      notification.error({
+        content: e?.message ?? '切换工作空间失败',
+        duration: 3000,
+      });
+      throw e;
+    }
+  }
+
   function $reset() {
     loginLoading.value = false;
   }
@@ -114,5 +222,8 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     loginLoading,
     logout,
+    refreshWorkspaceInfo,
+    switchTenant,
+    switchWorkspace,
   };
 });

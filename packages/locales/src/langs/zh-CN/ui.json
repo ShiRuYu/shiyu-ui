@@ -160,6 +160,23 @@
     "timezone": {
       "setTimezone": "设置时区",
       "setSuccess": "时区设置成功"
+    },
+    "tenant": {
+      "label": "当前租户",
+      "switchSuccess": "租户切换成功",
+      "switchFailed": "切换租户失败",
+      "notSelected": "未选择"
+    },
+    "workspace": {
+      "label": "工作空间",
+      "switchSuccess": "工作空间切换成功",
+      "switchFailed": "切换工作空间失败",
+      "notSelected": "未选择"
+    },
+    "roleSwitch": {
+      "label": "当前角色",
+      "switchSuccess": "角色切换成功",
+      "switchFailed": "切换角色失败"
     }
   }
 }

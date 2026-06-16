@@ -6,7 +6,7 @@ import type { AnyFunction } from '@vben/types';
 import { computed, useTemplateRef, watch } from 'vue';
 
 import { useHoverToggle } from '@vben/hooks';
-import { LockKeyhole, LogOut, Settings } from '@vben/icons';
+import { Check, LockKeyhole, LogOut, Settings } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
@@ -21,6 +21,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   VbenAvatar,
   VbenIcon,
@@ -65,6 +68,18 @@ interface Props {
   trigger?: 'both' | 'click' | 'hover';
   /** hover触发时，延迟响应的时间 */
   hoverDelay?: number;
+  /** 租户列表 */
+  tenants?: Array<{ id: number; name: string }>;
+  /** 当前租户ID */
+  currentTenantId?: number | null;
+  /** 工作空间列表 */
+  workspaces?: Array<{ workspaceId: number; workspaceName: string }>;
+  /** 当前工作空间ID */
+  currentWorkspaceId?: number | null;
+  /** 角色列表 */
+  roles?: Array<{ id: number; name: string }>;
+  /** 当前角色ID */
+  currentRoleId?: number | null;
 }
 
 defineOptions({
@@ -73,17 +88,29 @@ defineOptions({
 
 const props = withDefaults(defineProps<Props>(), {
   avatar: '',
+  currentRoleId: null,
+  currentTenantId: null,
+  currentWorkspaceId: null,
   description: '',
   enableShortcutKey: true,
   menus: () => [],
+  roles: () => [],
   showShortcutKey: true,
   tagText: '',
+  tenants: () => [],
   text: '',
   trigger: 'click',
   hoverDelay: 500,
+  workspaces: () => [],
 });
 
-const emit = defineEmits<{ clearPreferencesAndLogout: []; logout: [] }>();
+const emit = defineEmits<{
+  clearPreferencesAndLogout: [];
+  logout: [];
+  switchRole: [roleId: number];
+  switchTenant: [tenantId: number];
+  switchWorkspace: [workspaceId: number];
+}>();
 
 const {
   globalLockScreenShortcutKey,
@@ -251,6 +278,88 @@ if (enableShortcutKey.value) {
             </div>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator v-if="menus?.length || tenants.length || workspaces.length || (roles && roles.length)" />
+        <!-- 租户/工作空间/角色切换 -->
+        <template v-if="tenants.length">
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+              <span class="text-muted-foreground">{{ $t('ui.widgets.tenant.label') }}：</span>
+              <span class="flex-1">{{
+                tenants.find((t) => t.id === currentTenantId)
+                  ?.name ?? $t('ui.widgets.tenant.notSelected')
+              }}</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent class="min-w-36">
+              <DropdownMenuItem
+                v-for="t in tenants"
+                :key="t.id"
+                class="flex cursor-pointer items-center rounded-sm py-1 text-sm"
+                :class="{ 'text-green-400': t.id === currentTenantId }"
+                @click="emit('switchTenant', t.id)"
+              >
+                <Check
+                  v-if="t.id === currentTenantId"
+                  class="mr-2 size-4"
+                />
+                <span v-else class="mr-2 inline-block size-4" />
+                {{ t.name }}
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </template>
+        <template v-if="workspaces.length">
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+              <span class="text-muted-foreground">{{ $t('ui.widgets.workspace.label') }}：</span>
+              <span class="flex-1">{{
+                workspaces.find((w) => w.workspaceId === currentWorkspaceId)
+                  ?.workspaceName ?? $t('ui.widgets.workspace.notSelected')
+              }}</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent class="min-w-36">
+              <DropdownMenuItem
+                v-for="w in workspaces"
+                :key="w.workspaceId"
+                class="flex cursor-pointer items-center rounded-sm py-1 text-sm"
+                :class="{ 'text-green-400': w.workspaceId === currentWorkspaceId }"
+                @click="emit('switchWorkspace', w.workspaceId)"
+              >
+                <Check
+                  v-if="w.workspaceId === currentWorkspaceId"
+                  class="mr-2 size-4"
+                />
+                <span v-else class="mr-2 inline-block size-4" />
+                {{ w.workspaceName }}
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </template>
+        <template v-if="roles && roles.length">
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger class="mx-1 cursor-pointer rounded-sm py-1 text-sm data-[highlighted]:bg-accent">
+              <span class="text-muted-foreground">{{ $t('ui.widgets.roleSwitch.label') }}：</span>
+              <span class="flex-1">{{
+                roles.find((r) => r.id === currentRoleId)?.name ?? tagText
+              }}</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent class="min-w-36">
+              <DropdownMenuItem
+                v-for="r in roles"
+                :key="r.id"
+                class="flex cursor-pointer items-center rounded-sm py-1 text-sm"
+                :class="{ 'text-green-400': r.id === currentRoleId }"
+                @click="emit('switchRole', r.id)"
+              >
+                <Check
+                  v-if="r.id === currentRoleId"
+                  class="mr-2 size-4"
+                />
+                <span v-else class="mr-2 inline-block size-4" />
+                {{ r.name }}
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </template>
         <DropdownMenuSeparator v-if="menus?.length" />
         <DropdownMenuItem
           v-for="menu in menus"

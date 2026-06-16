@@ -28,6 +28,18 @@ interface BasicUserInfo {
   extInfo?: Record<string, any>;
 }
 
+interface TenantInfo {
+  id: number;
+  code?: string;
+  name: string;
+}
+
+interface WorkspaceContextInfo {
+  workspaceId: number;
+  workspaceName: string;
+  roleCode: string;
+}
+
 interface AccessState {
   /**
    * 用户信息
@@ -37,6 +49,30 @@ interface AccessState {
    * 用户角色
    */
   userRoles: string[];
+  /**
+   * 可用租户列表
+   */
+  tenants: TenantInfo[];
+  /**
+   * 当前租户ID
+   */
+  currentTenantId: number | null;
+  /**
+   * 当前租户名称
+   */
+  currentTenantName: string;
+  /**
+   * 可用工作空间列表
+   */
+  workspaces: WorkspaceContextInfo[];
+  /**
+   * 当前工作空间ID
+   */
+  currentWorkspaceId: number | null;
+  /**
+   * 当前工作空间名称
+   */
+  currentWorkspaceName: string;
 }
 
 /**
@@ -53,14 +89,67 @@ export const useUserStore = defineStore('core-user', {
       // 设置角色信息
       const roles = userInfo?.roles ?? [];
       this.setUserRoles(roles);
+      // 从 userInfo 中提取租户和工作空间信息
+      if (userInfo) {
+        const info = userInfo as any;
+        if (Array.isArray(info.tenants)) {
+          this.setTenants(info.tenants);
+        }
+        if (Array.isArray(info.workspaces)) {
+          this.setWorkspaces(info.workspaces);
+        }
+        if (info.currentTenantId != null) {
+          this.currentTenantId = info.currentTenantId;
+        }
+        if (info.currentWorkspaceId != null) {
+          this.currentWorkspaceId = info.currentWorkspaceId;
+          if (Array.isArray(info.workspaces)) {
+            const ws = info.workspaces.find(
+              (w: any) => w.workspaceId === info.currentWorkspaceId,
+            );
+            if (ws) {
+              this.currentWorkspaceName = ws.workspaceName ?? '';
+            }
+          }
+        }
+        // 尝试从 tenants 列表中匹配当前租户名称
+        if (info.currentTenantId != null && Array.isArray(info.tenants)) {
+          const t = info.tenants.find(
+            (t: any) => t.id === info.currentTenantId,
+          );
+          if (t) {
+            this.currentTenantName = t.name ?? '';
+          }
+        }
+      }
     },
     setUserRoles(roles: string[]) {
       this.userRoles = roles;
+    },
+    setTenants(tenants: TenantInfo[]) {
+      this.tenants = tenants;
+    },
+    setCurrentTenant(tenantId: number | null, tenantName: string) {
+      this.currentTenantId = tenantId;
+      this.currentTenantName = tenantName;
+    },
+    setWorkspaces(workspaces: WorkspaceContextInfo[]) {
+      this.workspaces = workspaces;
+    },
+    setCurrentWorkspace(workspaceId: number | null, workspaceName: string) {
+      this.currentWorkspaceId = workspaceId;
+      this.currentWorkspaceName = workspaceName;
     },
   },
   state: (): AccessState => ({
     userInfo: null,
     userRoles: [],
+    tenants: [],
+    currentTenantId: null,
+    currentTenantName: '',
+    workspaces: [],
+    currentWorkspaceId: null,
+    currentWorkspaceName: '',
   }),
 });
 

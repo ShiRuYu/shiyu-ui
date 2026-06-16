@@ -1,5 +1,17 @@
 import { baseRequestClient, requestClient } from '#/api/request';
 
+export interface WorkspaceContextInfo {
+  workspaceId: number;
+  workspaceName: string;
+  roleCode: string;
+}
+
+export interface TenantInfo {
+  id: number;
+  code?: string;
+  name: string;
+}
+
 export namespace AuthApi {
   /** 登录接口参数 */
   export interface LoginParams {
@@ -10,6 +22,10 @@ export namespace AuthApi {
   /** 登录接口返回值 */
   export interface LoginResult {
     accessToken: string;
+    tenantId?: number;
+    tenantName?: string;
+    tenants?: TenantInfo[];
+    workspaces?: WorkspaceContextInfo[];
   }
 
   export interface RefreshTokenResult {
@@ -57,4 +73,35 @@ export async function getAccessCodesApi() {
  */
 export async function switchCurrentRoleApi(roleId: number) {
   return requestClient.patch('/auth/current-role', { roleId });
+}
+
+/**
+ * 切换当前租户
+ * 返回租户下的工作空间列表
+ */
+export async function switchTenantApi(tenantId: number) {
+  return requestClient.post<WorkspaceContextInfo[]>('/auth/switch-tenant', {
+    tenantId,
+  });
+}
+
+/**
+ * 切换当前工作空间
+ */
+export async function switchWorkspaceApi(workspaceId: number) {
+  return requestClient.post('/auth/switch-workspace', { workspaceId });
+}
+
+/**
+ * 获取用户工作空间列表
+ */
+export async function getUserWorkspacesApi() {
+  return requestClient.get<WorkspaceContextInfo[]>('/auth/workspaces');
+}
+
+/**
+ * 获取用户租户列表
+ */
+export async function getUserTenantsApi() {
+  return requestClient.get<TenantInfo[]>('/auth/tenants');
 }

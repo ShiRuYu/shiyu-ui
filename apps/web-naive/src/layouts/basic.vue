@@ -19,6 +19,7 @@ import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow, parseExtInfo } from '@vben/utils';
 
 import { $t } from '#/locales';
+import { switchCurrentRoleApi } from '#/api';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
@@ -131,6 +132,39 @@ const currentRoleName = computed(() => {
   return info?.currentRole?.roleName ?? '';
 });
 
+const currentRoleId = computed(() => {
+  const info = parseExtInfo(userStore.userInfo?.extInfo);
+  return info?.currentRole?.roleId ?? null;
+});
+
+const userRoleList = computed(() => {
+  const info = userStore.userInfo;
+  if (info && Array.isArray((info as any).roles)) {
+    return (info as any).roles.map((r: any) => ({
+      id: r.id ?? r.roleId,
+      name: r.name ?? r.roleName,
+    }));
+  }
+  return [];
+});
+
+async function handleSwitchRole(roleId: number) {
+  try {
+    await switchCurrentRoleApi(roleId);
+    await authStore.fetchUserInfo();
+  } catch {
+    // error handled in api
+  }
+}
+
+async function handleSwitchTenant(tenantId: number) {
+  await authStore.switchTenant(tenantId);
+}
+
+async function handleSwitchWorkspace(workspaceId: number) {
+  await authStore.switchWorkspace(workspaceId);
+}
+
 async function handleLogout() {
   await authStore.logout(false);
 }
@@ -232,8 +266,17 @@ watch(
           userStore.userInfo?.email ?? userStore.userInfo?.username ?? ''
         "
         :tag-text="currentRoleName || undefined"
+        :tenants="userStore.tenants"
+        :current-tenant-id="userStore.currentTenantId"
+        :workspaces="userStore.workspaces"
+        :current-workspace-id="userStore.currentWorkspaceId"
+        :roles="userRoleList"
+        :current-role-id="currentRoleId"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"
+        @switch-tenant="handleSwitchTenant"
+        @switch-workspace="handleSwitchWorkspace"
+        @switch-role="handleSwitchRole"
       />
     </template>
     <template #notification>
