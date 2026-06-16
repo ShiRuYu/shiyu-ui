@@ -2,7 +2,7 @@
 import type { ModelApi } from '#/api/common/model';
 import type { ChatApi } from '#/api/agent/chat';
 
-import { ref, watch } from 'vue';
+import { nextTick, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
@@ -29,24 +29,6 @@ const streamMode = ref(false);
 const prompt = ref('');
 const response = ref('');
 const loading = ref(false);
-
-const [FormModal, modalApi] = useVbenModal({
-  onCancel() {
-    modalApi.close();
-  },
-  title: 'AI 对话',
-});
-
-// 监听弹窗打开，加载平台列表并预填
-watch(
-  () => modalApi.isOpen,
-  async (isOpen) => {
-    if (!isOpen) return;
-    const row = modalApi.getData<ModelApi.ModelItem>();
-    await loadPlatforms(row);
-  },
-  { immediate: false },
-);
 
 async function loadPlatforms(row?: ModelApi.ModelItem) {
   try {
@@ -136,6 +118,16 @@ async function onSend() {
     loading.value = false;
   }
 }
+
+const [FormModal, modalApi] = useVbenModal({
+  async onOpenChange(isOpen: boolean) {
+    if (!isOpen) return;
+    const row = modalApi.getData<ModelApi.ModelItem>();
+    await nextTick();
+    await loadPlatforms(row);
+  },
+  title: 'AI 对话',
+});
 </script>
 
 <template>
@@ -175,12 +167,7 @@ async function onSend() {
           </NButton>
         </NSpace>
         <NSpin v-if="loading" />
-        <NCard
-          v-if="response"
-          embedded
-          size="small"
-          title="回复"
-        >
+        <NCard v-if="response" embedded size="small" title="回复">
           <pre class="whitespace-pre-wrap font-mono text-sm">{{
             response
           }}</pre>
