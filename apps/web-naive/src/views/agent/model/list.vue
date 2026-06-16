@@ -8,6 +8,7 @@ import type { ModelApi } from '#/api/common/model';
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
+import { useRouter } from 'vue-router';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -16,6 +17,8 @@ import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
+
+const router = useRouter();
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -43,6 +46,10 @@ function onDelete(row: ModelApi.ModelItem) {
     });
 }
 
+function onChat() {
+  router.push('/agent/chat');
+}
+
 function onActionClick({
   code,
   row,
@@ -54,6 +61,10 @@ function onActionClick({
     }
     case 'edit': {
       onEdit(row);
+      break;
+    }
+    case 'chat': {
+      onChat();
       break;
     }
   }

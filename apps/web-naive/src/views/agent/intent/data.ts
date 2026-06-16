@@ -6,6 +6,20 @@ import { z } from '#/adapter/form';
 import { getDictByType } from '#/api/common/dict';
 import { getAgentListAll } from '#/api/agent/admin';
 
+// 分类代码 → 名称映射，用于表格列显示
+let categoryLabelMap: Record<string, string> = {};
+
+export async function initCategoryLabelMap() {
+  const data = await getDictByType('INTENT_CATEGORY');
+  categoryLabelMap = (data || []).reduce(
+    (map: Record<string, string>, item: any) => {
+      map[item.dictValue] = item.dictLabel;
+      return map;
+    },
+    {},
+  );
+}
+
 async function getIntentCodeOptions() {
   const data = await getDictByType('INTENT_CODE');
   return (data || []).map((item: any) => ({
@@ -139,7 +153,13 @@ export function useColumns(
     { field: 'code', title: '代码', width: 140 },
     { field: 'name', title: '名称', width: 140 },
     { field: 'agentId', title: 'Agent', width: 120 },
-    { field: 'category', title: '分类', width: 120 },
+    {
+      field: 'category',
+      title: '分类',
+      width: 120,
+      formatter: ({ cellValue }: any) =>
+        categoryLabelMap[cellValue] || cellValue,
+    },
     { field: 'priority', title: '优先级', width: 80 },
     { field: 'confidenceThreshold', title: '置信度阈值', width: 120 },
     { field: 'targetNode', title: '目标节点', width: 130 },

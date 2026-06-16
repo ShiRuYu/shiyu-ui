@@ -10,7 +10,10 @@ import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
 
 import Form from './modules/form.vue';
-import { useColumns, useGridFormSchema } from './data';
+import { useColumns, useGridFormSchema, initCategoryLabelMap } from './data';
+
+// 预加载分类字典映射
+initCategoryLabelMap();
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,

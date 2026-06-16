@@ -152,14 +152,14 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: ['chat', 'edit', 'delete'],
       },
       field: 'operation',
       fixed: 'right',
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.role.operation'),
-      width: 150,
+      width: 200,
     },
   ];
 }
