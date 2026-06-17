@@ -55,4 +55,24 @@ async function deleteRole(id: number) {
   return requestClient.delete(`/role/${id}`);
 }
 
-export { createRole, deleteRole, getRoleList, updateRole };
+/**
+ * 分配角色给用户（在指定工作空间）
+ * @param id 角色 ID
+ * @param userIds 用户 ID 列表
+ * @param workspaceId 工作空间 ID
+ */
+async function assignRoles(id: number, userIds: number[], workspaceId: number) {
+  return requestClient.patch(`/role/users/add/${id}`, { userIds, workspaceId });
+}
+
+/**
+ * 取消分配角色（在指定工作空间）
+ * @param id 角色 ID
+ * @param userIds 用户 ID 列表
+ * @param workspaceId 工作空间 ID
+ */
+async function removeRoles(id: number, userIds: number[], workspaceId: number) {
+  return requestClient.patch(`/role/users/remove/${id}`, { userIds, workspaceId });
+}
+
+export { assignRoles, createRole, deleteRole, getRoleList, removeRoles, updateRole };
