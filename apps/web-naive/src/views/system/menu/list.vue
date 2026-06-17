@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuListForGrid } from '#/api/system/menu';
+import { deleteMenu, getMenuChildren, getMenuRoots } from '#/api/system/menu';
 import { $t } from '#/locales';
 
 import { useColumns } from './data';
@@ -99,8 +99,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params) => {
-          return await getMenuListForGrid();
+        query: async () => {
+          const roots = await getMenuRoots();
+          // catalog/menu can have children
+          const items = (roots ?? []).map((m) => ({
+            ...m,
+            hasChildren: m.type === 'catalog' || m.type === 'menu',
+          }));
+          return { items, total: items.length };
         },
       },
     },
@@ -111,6 +117,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
       zoom: true,
     },
     treeConfig: {
+      lazy: true,
+      hasChildren: 'hasChildren',
+      loadMethod: async ({ row }: any) => {
+        const children = await getMenuChildren(row.id);
+        return (children ?? []).map((m) => ({
+          ...m,
+          hasChildren: m.type === 'catalog' || m.type === 'menu',
+        }));
+      },
       parentField: 'pid',
       rowField: 'id',
       transform: false,

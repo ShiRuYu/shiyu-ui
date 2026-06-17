@@ -105,6 +105,23 @@ export namespace SystemMenuApi {
 }
 
 /**
+ * 获取根节点菜单（懒加载初始加载）
+ */
+async function getMenuRoots() {
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list/roots');
+}
+
+/**
+ * 获取指定父菜单的子菜单（懒加载展开）
+ * @param parentId 父菜单 ID
+ */
+async function getMenuChildren(parentId: number) {
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
+    '/menu/list/children/' + parentId,
+  );
+}
+
+/**
  * 获取菜单数据列表
  */
 async function getMenuList() {
@@ -173,8 +190,10 @@ async function deleteMenu(id: number) {
 export {
   createMenu,
   deleteMenu,
+  getMenuChildren,
   getMenuList,
   getMenuListForGrid,
+  getMenuRoots,
   isMenuNameExists,
   isMenuPathExists,
   updateMenu,
