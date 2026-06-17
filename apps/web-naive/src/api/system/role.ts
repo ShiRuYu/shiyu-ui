@@ -56,23 +56,21 @@ async function deleteRole(id: number) {
 }
 
 /**
- * 分配角色给用户（在指定工作空间）
+ * 分配角色给用户
  * @param id 角色 ID
  * @param userIds 用户 ID 列表
- * @param workspaceId 工作空间 ID
  */
-async function assignRoles(id: number, userIds: number[], workspaceId: number) {
-  return requestClient.patch(`/role/users/add/${id}`, { userIds, workspaceId });
+async function assignRoles(id: number, userIds: number[]) {
+  return requestClient.patch(`/role/users/add/${id}`, { userIds });
 }
 
 /**
- * 取消分配角色（在指定工作空间）
+ * 取消分配角色
  * @param id 角色 ID
  * @param userIds 用户 ID 列表
- * @param workspaceId 工作空间 ID
  */
-async function removeRoles(id: number, userIds: number[], workspaceId: number) {
-  return requestClient.patch(`/role/users/remove/${id}`, { userIds, workspaceId });
+async function removeRoles(id: number, userIds: number[]) {
+  return requestClient.patch(`/role/users/remove/${id}`, { userIds });
 }
 
 export { assignRoles, createRole, deleteRole, getRoleList, removeRoles, updateRole };
