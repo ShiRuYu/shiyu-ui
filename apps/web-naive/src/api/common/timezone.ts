@@ -8,7 +8,9 @@ export namespace TimezoneApi {
 }
 
 async function getTimezoneOptions() {
-  return requestClient.get<TimezoneApi.TimezoneOption[]>('/timezone/getTimezoneOptions');
+  return requestClient.get<TimezoneApi.TimezoneOption[]>(
+    '/timezone/getTimezoneOptions',
+  );
 }
 
 async function getTimezone() {

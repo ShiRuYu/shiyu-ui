@@ -1,4 +1,5 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { MediaApi } from '#/api/record/media';
@@ -13,18 +14,56 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useSchema(): VbenFormSchema[] {
   return [
-    { component: 'InputNumber', fieldName: 'recordId', label: $t('record.media.recordId') },
+    {
+      component: 'InputNumber',
+      fieldName: 'recordId',
+      label: $t('record.media.recordId'),
+    },
     { component: 'Input', fieldName: 'url', label: $t('record.media.url') },
-    { component: 'Select', componentProps: { options: [{ label: '图片', value: 'image' }, { label: '视频', value: 'video' }, { label: '音频', value: 'audio' }, { label: '文件', value: 'file' }] }, fieldName: 'type', label: $t('record.media.type') },
-    { component: 'InputNumber', fieldName: 'size', label: $t('record.media.size') },
-    { component: 'InputNumber', fieldName: 'duration', label: $t('record.media.duration') },
-    { component: 'InputNumber', fieldName: 'width', label: $t('record.media.width') },
-    { component: 'InputNumber', fieldName: 'height', label: $t('record.media.height') },
-    { component: 'InputNumber', fieldName: 'sort', label: $t('record.media.sort') },
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: '图片', value: 'image' },
+          { label: '视频', value: 'video' },
+          { label: '音频', value: 'audio' },
+          { label: '文件', value: 'file' },
+        ],
+      },
+      fieldName: 'type',
+      label: $t('record.media.type'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'size',
+      label: $t('record.media.size'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'duration',
+      label: $t('record.media.duration'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'width',
+      label: $t('record.media.width'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'height',
+      label: $t('record.media.height'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'sort',
+      label: $t('record.media.sort'),
+    },
   ];
 }
 
-export function useColumns(onActionClick?: OnActionClickFn<MediaApi.Media>): VxeTableGridColumns<MediaApi.Media> {
+export function useColumns(
+  onActionClick?: OnActionClickFn<MediaApi.Media>,
+): VxeTableGridColumns<MediaApi.Media> {
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'recordId', title: $t('record.media.recordId'), width: 100 },
@@ -36,7 +75,11 @@ export function useColumns(onActionClick?: OnActionClickFn<MediaApi.Media>): Vxe
     {
       align: 'right',
       cellRender: {
-        attrs: { nameField: 'url', nameTitle: $t('record.media.name'), onClick: onActionClick },
+        attrs: {
+          nameField: 'url',
+          nameTitle: $t('record.media.name'),
+          onClick: onActionClick,
+        },
         name: 'CellOperation',
         options: ['edit', 'delete'],
       },

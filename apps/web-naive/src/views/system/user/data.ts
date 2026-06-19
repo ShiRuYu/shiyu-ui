@@ -65,7 +65,11 @@ export function useSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      componentProps: { type: 'password', showPasswordOnClick: true, placeholder: '留空则使用默认密码 123456' },
+      componentProps: {
+        type: 'password',
+        showPasswordOnClick: true,
+        placeholder: '留空则使用默认密码 123456',
+      },
       fieldName: 'password',
       label: $t('system.user.password'),
       dependencies: {

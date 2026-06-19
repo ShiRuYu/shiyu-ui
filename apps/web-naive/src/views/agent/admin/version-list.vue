@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AgentVersionApi } from '#/api/agent/version';
 
-import { computed, h, ref } from 'vue';
+import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
@@ -170,29 +170,48 @@ const columns = [
       </NSpace>
 
       <NSpin :show="loading">
-        <NTable :columns="columns" :data="versions" size="small" bordered striped>
+        <NTable
+          :columns="columns"
+          :data="versions"
+          size="small"
+          bordered
+          striped
+        >
           <thead>
             <tr>
-              <th v-for="col in columns" :key="col.key" :style="{ width: col.width }">
+              <th
+                v-for="col in columns"
+                :key="col.key"
+                :style="{ width: col.width }"
+              >
                 {{ col.title }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="versions.length === 0">
-              <td :colspan="columns.length" class="text-center text-gray-400 py-4">
+              <td
+                :colspan="columns.length"
+                class="text-center text-gray-400 py-4"
+              >
                 暂无版本
               </td>
             </tr>
             <tr v-for="version in versions" :key="version.id">
               <td>{{ version.versionNumber }}</td>
               <td>
-                <NTag :bordered="false" :type="statusType(version.status)" size="small">
+                <NTag
+                  :bordered="false"
+                  :type="statusType(version.status)"
+                  size="small"
+                >
                   {{ statusLabel(version.status) }}
                 </NTag>
               </td>
               <td>
-                <span class="truncate block max-w-[200px]">{{ version.description || '-' }}</span>
+                <span class="truncate block max-w-[200px]">{{
+                  version.description || '-'
+                }}</span>
               </td>
               <td>{{ version.createTime }}</td>
               <td>{{ version.updateTime }}</td>
@@ -260,7 +279,7 @@ const columns = [
             placeholder="版本描述（可选）"
             rows="2"
             class="w-full rounded border border-input bg-background px-3 py-2 text-sm mt-1"
-          />
+          ></textarea>
         </div>
         <NSpace justify="end">
           <NButton @click="showCreateModal = false">取消</NButton>

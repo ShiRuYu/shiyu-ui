@@ -7,6 +7,7 @@ import type { ModelApi } from '#/api/common/model';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
+
 import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
@@ -63,21 +64,18 @@ async function onSetDefault(row: ModelApi.ModelItem) {
   }
 }
 
-function onActionClick({
-  code,
-  row,
-}: OnActionClickParams<ModelApi.ModelItem>) {
+function onActionClick({ code, row }: OnActionClickParams<ModelApi.ModelItem>) {
   switch (code) {
+    case 'chat': {
+      onChat(row);
+      break;
+    }
     case 'delete': {
       onDelete(row);
       break;
     }
     case 'edit': {
       onEdit(row);
-      break;
-    }
-    case 'chat': {
-      onChat(row);
       break;
     }
     case 'setDefault': {

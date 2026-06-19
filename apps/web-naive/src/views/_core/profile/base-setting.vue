@@ -11,9 +11,13 @@ import { parseExtInfo } from '@vben/utils';
 
 import { message } from '#/adapter/naive';
 import { getUserInfoApi, switchCurrentRoleApi } from '#/api';
+import {
+  getTimezone,
+  getTimezoneOptions,
+  setTimezone,
+} from '#/api/common/timezone';
 import { updateUser } from '#/api/system/user';
 import { useAuthStore } from '#/store';
-import { getTimezone, getTimezoneOptions, setTimezone } from '#/api/common/timezone';
 
 const profileBaseSettingRef = ref();
 const userStore = useUserStore();
@@ -255,7 +259,11 @@ onMounted(async () => {
         v-model="selectedTimezone"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
-        <option v-for="opt in timezoneOptions" :key="opt.value" :value="opt.value">
+        <option
+          v-for="opt in timezoneOptions"
+          :key="opt.value"
+          :value="opt.value"
+        >
           {{ opt.label }}
         </option>
       </select>
