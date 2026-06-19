@@ -110,6 +110,21 @@
     "isDefault": "Default Platform",
     "reload": "Reload Adapters"
   },
+  "tenant": {
+    "title": "Tenant Management",
+    "list": "Tenant List",
+    "name": "Tenant",
+    "tenantName": "Tenant Name",
+    "tenantCode": "Tenant Code",
+    "contactName": "Contact Name",
+    "contactPhone": "Contact Phone",
+    "address": "Address",
+    "domain": "Domain",
+    "intro": "Introduction",
+    "status": "Status",
+    "createTime": "Create Time",
+    "operation": "Operation"
+  },
   "model": {
     "title": "AI Model Management",
     "list": "AI Model List",

@@ -125,6 +125,21 @@
     "isDefault": "默认平台",
     "reload": "刷新适配器"
   },
+  "tenant": {
+    "title": "租户管理",
+    "list": "租户列表",
+    "name": "租户",
+    "tenantName": "租户名称",
+    "tenantCode": "租户编码",
+    "contactName": "联系人",
+    "contactPhone": "联系电话",
+    "address": "地址",
+    "domain": "域名",
+    "intro": "简介",
+    "status": "状态",
+    "createTime": "创建时间",
+    "operation": "操作"
+  },
   "model": {
     "title": "AI 模型管理",
     "list": "AI 模型列表",

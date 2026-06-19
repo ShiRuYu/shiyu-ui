@@ -3,19 +3,19 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { SystemMenuApi } from '#/api/system/menu';
+import type { SystemTenantApi } from '#/api/system/tenant';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { IconifyIcon, Plus } from '@vben/icons';
+import { Plus } from '@vben/icons';
 
 import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuListForGrid } from '#/api/system/menu';
+import { deleteTenant, getTenantList } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
-import { useColumns } from './data';
+import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -23,38 +23,19 @@ const [FormModal, formModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
-/**
- * 编辑菜单
- * @param row
- */
-function onEdit(row: SystemMenuApi.SystemMenu) {
+function onEdit(row: SystemTenantApi.SystemTenant) {
   formModalApi.setData(row).open();
 }
 
-/**
- * 创建新菜单
- */
 function onCreate() {
   formModalApi.setData(null).open();
 }
 
-/**
- * 新增下级菜单
- * @param row
- */
-function onAppend(row: SystemMenuApi.SystemMenu) {
-  formModalApi.setData({ pid: row.id }).open();
-}
-
-/**
- * 删除菜单
- * @param row
- */
-function onDelete(row: SystemMenuApi.SystemMenu) {
+function onDelete(row: SystemTenantApi.SystemTenant) {
   const hideLoading = message.loading('正在删除...', {
     duration: 0,
   });
-  deleteMenu(row.id)
+  deleteTenant(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
@@ -65,18 +46,11 @@ function onDelete(row: SystemMenuApi.SystemMenu) {
     });
 }
 
-/**
- * 表格操作按钮的回调函数
- */
 function onActionClick({
   code,
   row,
-}: OnActionClickParams<SystemMenuApi.SystemMenu>) {
+}: OnActionClickParams<SystemTenantApi.SystemTenant>) {
   switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
     case 'delete': {
       onDelete(row);
       break;
@@ -89,18 +63,31 @@ function onActionClick({
 }
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useGridFormSchema(),
+    submitOnChange: true,
+  },
   gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: false,
+      enabled: true,
     },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          return await getMenuListForGrid();
+        query: async ({ page }, formValues) => {
+          const params = Object.fromEntries(
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
+          );
+          return await getTenantList({
+            page: page.currentPage,
+            pageSize: page.pageSize,
+            ...params,
+          });
         },
       },
     },
@@ -108,21 +95,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
       custom: true,
       export: false,
       refresh: true,
+      search: true,
       zoom: true,
-    },
-    treeConfig: {
-      lazy: false,
-      parentField: 'pid',
-      rowField: 'id',
-      transform: false,
-      expandAll: false,
     },
   } as VxeTableGridOptions,
 });
 
-/**
- * 刷新表格
- */
 function refreshGrid() {
   gridApi.query();
 }
@@ -130,26 +108,12 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('system.menu.list')">
+    <Grid :table-title="$t('system.tenant.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.menu.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('system.tenant.name')]) }}
         </NButton>
-      </template>
-      <template #icon="{ row }">
-        <div class="flex items-center justify-center">
-          <IconifyIcon
-            v-if="row.type === 'button'"
-            icon="carbon:security"
-            class="size-5"
-          />
-          <IconifyIcon
-            v-else-if="row.meta?.icon"
-            :icon="row.meta.icon"
-            class="size-5"
-          />
-        </div>
       </template>
     </Grid>
   </Page>
