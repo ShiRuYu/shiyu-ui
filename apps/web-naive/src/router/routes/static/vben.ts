@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+﻿import type { RouteRecordRaw } from 'vue-router';
 
 import {
   VBEN_ANT_PREVIEW_URL,
@@ -18,6 +18,12 @@ import {
 import { IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
+/**
+ * 静态后备路由
+ *
+ * 当后端未返回同名菜单时，这些路由会作为默认值显示在菜单中；
+ * 如果后端返回了相同 name 的菜单，后端配置优先（mixed 模式下由 mergeRoutesByName 保证）。
+ */
 const routes: RouteRecordRaw[] = [
   {
     meta: {
@@ -103,16 +109,6 @@ const routes: RouteRecordRaw[] = [
       icon: 'lucide:copyright',
       title: $t('demos.vben.about'),
       order: 9999,
-    },
-  },
-  {
-    name: 'Profile',
-    path: '/profile',
-    component: () => import('#/views/_core/profile/index.vue'),
-    meta: {
-      icon: 'lucide:user',
-      hideInMenu: true,
-      title: $t('page.auth.profile'),
     },
   },
 ];
