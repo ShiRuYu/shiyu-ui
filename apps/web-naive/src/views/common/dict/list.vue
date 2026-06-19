@@ -5,14 +5,16 @@ import type {
 } from '#/adapter/vxe-table';
 import type { DictApi } from '#/api/common/dict';
 
+import { ref } from 'vue';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { NButton } from 'naive-ui';
+import { NButton, NPopconfirm } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteDict, getDictPage } from '#/api/common/dict';
+import { batchDeleteDict, deleteDict, getDictPage } from '#/api/common/dict';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -22,6 +24,8 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
+
+const selectedIds = ref<number[]>([]);
 
 function onEdit(row: DictApi.DictItem) {
   formModalApi.setData(row).open();
@@ -44,6 +48,24 @@ function onDelete(row: DictApi.DictItem) {
     });
 }
 
+async function onBatchDelete() {
+  if (selectedIds.value.length === 0) {
+    message.warning('请先选择要删除的字典项');
+    return;
+  }
+  const hideLoading = message.loading('正在批量删除...', { duration: 0 });
+  try {
+    await batchDeleteDict(selectedIds.value);
+    message.success(`批量删除成功，共 ${selectedIds.value.length} 项`);
+    selectedIds.value = [];
+    refreshGrid();
+  } catch {
+    // handled by request interceptor
+  } finally {
+    hideLoading.destroy();
+  }
+}
+
 function onActionClick({ code, row }: OnActionClickParams<DictApi.DictItem>) {
   switch (code) {
     case 'delete': {
@@ -57,17 +79,26 @@ function onActionClick({ code, row }: OnActionClickParams<DictApi.DictItem>) {
   }
 }
 
+function onSelectChange(data: { records: any[] }) {
+  selectedIds.value = data.records.map((r: any) => r.id);
+}
+
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
     submitOnChange: true,
   },
-  gridEvents: {},
+  gridEvents: {
+    checkboxChange: onSelectChange,
+    checkboxAll: onSelectChange,
+  },
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: { enabled: true },
+    scrollY: { enabled: true },
+    minHeight: 300,
     proxyConfig: {
       ajax: {
         query: async (params, formValues) => {
@@ -104,6 +135,14 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('system.dict.list')">
       <template #toolbar-tools>
+        <NPopconfirm @positive-click="onBatchDelete">
+          <template #trigger>
+            <NButton type="error" :disabled="selectedIds.length === 0">
+              批量删除
+            </NButton>
+          </template>
+          确认删除选中的 {{ selectedIds.length }} 项？
+        </NPopconfirm>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.dict.name')]) }}

@@ -82,6 +82,7 @@ export function useColumns(
   onActionClick?: OnActionClickFn<DictApi.DictItem>,
 ): VxeTableGridColumns<DictApi.DictItem> {
   return [
+    { type: 'checkbox', width: 50 },
     { field: 'id', title: 'ID', width: 80 },
     { field: 'dictType', title: $t('system.dict.dictType'), width: 150 },
     { field: 'dictLabel', title: $t('system.dict.dictLabel'), width: 150 },

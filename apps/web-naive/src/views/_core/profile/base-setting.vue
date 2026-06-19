@@ -13,6 +13,7 @@ import { message } from '#/adapter/naive';
 import { getUserInfoApi, switchCurrentRoleApi } from '#/api';
 import { updateUser } from '#/api/system/user';
 import { useAuthStore } from '#/store';
+import { getTimezone, getTimezoneOptions, setTimezone } from '#/api/common/timezone';
 
 const profileBaseSettingRef = ref();
 const userStore = useUserStore();
@@ -24,6 +25,9 @@ const selectedRoleId = ref<null | number>(null);
 
 const selectedTenantId = ref<null | number>(null);
 const selectedWorkspaceId = ref<null | number>(null);
+
+const timezoneOptions = ref<{ label: string; value: string }[]>([]);
+const selectedTimezone = ref('');
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -100,6 +104,26 @@ async function switchWorkspace() {
   }
 }
 
+async function loadTimezone() {
+  try {
+    timezoneOptions.value = (await getTimezoneOptions()) || [];
+    const current = await getTimezone();
+    if (current) selectedTimezone.value = current;
+  } catch {
+    // ignore
+  }
+}
+
+async function switchTimezone() {
+  if (!selectedTimezone.value) return;
+  try {
+    await setTimezone(selectedTimezone.value);
+    message.success('时区已更新');
+  } catch {
+    message.error('时区更新失败');
+  }
+}
+
 onMounted(async () => {
   try {
     const data = await getUserInfoApi();
@@ -132,6 +156,9 @@ onMounted(async () => {
     // 加载租户和工作空间
     selectedTenantId.value = userStore.currentTenantId;
     selectedWorkspaceId.value = userStore.currentWorkspaceId;
+
+    // 加载时区
+    await loadTimezone();
 
     // 刷新工作空间和租户列表
     try {
@@ -215,6 +242,28 @@ onMounted(async () => {
         @click="switchRole"
       >
         切换
+      </button>
+    </div>
+  </div>
+
+  <!-- 时区设置 -->
+  <div class="p-3 rounded-md bg-card mt-3 space-y-3">
+    <h4 class="text-sm font-medium">时区设置</h4>
+    <div class="flex items-center gap-2">
+      <span class="w-16 shrink-0 text-xs text-muted-foreground">时区</span>
+      <select
+        v-model="selectedTimezone"
+        class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
+      >
+        <option v-for="opt in timezoneOptions" :key="opt.value" :value="opt.value">
+          {{ opt.label }}
+        </option>
+      </select>
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90"
+        @click="switchTimezone"
+      >
+        保存
       </button>
     </div>
   </div>

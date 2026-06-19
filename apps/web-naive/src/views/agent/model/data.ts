@@ -152,7 +152,12 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: [{ code: 'chat', label: '对话' }, 'edit', 'delete'],
+        options: [
+          { code: 'chat', label: '对话' },
+          { code: 'setDefault', label: '设为默认' },
+          'edit',
+          'delete',
+        ],
       },
       field: 'operation',
       fixed: 'right',

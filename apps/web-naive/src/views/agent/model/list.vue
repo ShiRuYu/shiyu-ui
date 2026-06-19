@@ -11,7 +11,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteModel, getModelPage } from '#/api/common/model';
+import { deleteModel, getModelPage, setDefaultModel } from '#/api/common/model';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -53,6 +53,16 @@ function onChat(row: ModelApi.ModelItem) {
   chatModalApi.setData(row).open();
 }
 
+async function onSetDefault(row: ModelApi.ModelItem) {
+  try {
+    await setDefaultModel(row.id);
+    message.success(`已设为默认模型: ${row.modelName}`);
+    refreshGrid();
+  } catch {
+    // handled by request interceptor
+  }
+}
+
 function onActionClick({
   code,
   row,
@@ -68,6 +78,10 @@ function onActionClick({
     }
     case 'chat': {
       onChat(row);
+      break;
+    }
+    case 'setDefault': {
+      onSetDefault(row);
       break;
     }
   }

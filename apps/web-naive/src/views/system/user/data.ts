@@ -64,13 +64,10 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('system.user.nickname')])),
     },
     {
-      component: 'InputPassword',
+      component: 'Input',
+      componentProps: { type: 'password', showPasswordOnClick: true, placeholder: '留空则使用默认密码 123456' },
       fieldName: 'password',
       label: $t('system.user.password'),
-      rules: z
-        .string()
-        .min(6, $t('ui.formRules.minLength', [$t('system.user.password'), 6]))
-        .optional(),
       dependencies: {
         if(values) {
           return !values.id;

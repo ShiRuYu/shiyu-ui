@@ -23,7 +23,7 @@ export namespace SystemUserApi {
 
   /** 分页返回格式 */
   export interface PageResult<T> {
-    pageData: T[];
+    items: T[];
     total: number;
     pageNo?: number;
     pageSize?: number;
@@ -46,11 +46,9 @@ async function getUserList(params: Recordable<any>) {
       ...restParams,
     },
   });
-  // 如果后端返回分页格式 { pageData, total }
-  if (data && typeof data === 'object' && 'pageData' in data) {
-    return { items: data.pageData, total: data.total };
+  if (data && typeof data === 'object' && 'items' in data) {
+    return { items: data.items, total: data.total };
   }
-  // 如果后端直接返回数组
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }

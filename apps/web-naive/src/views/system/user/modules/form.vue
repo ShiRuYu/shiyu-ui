@@ -49,12 +49,7 @@ const [Modal, modalApi] = useVbenModal({
         if (submitData.sex !== undefined) {
           submitData.sex = String(submitData.sex);
         }
-        // 新增时必须有 password，编辑时如果没有 password 则删除该字段
-        if (!submitData.id && !submitData.password) {
-          message.error('请输入密码');
-          modalApi.unlock();
-          return;
-        }
+        // 编辑时如果没有修改 password 则删除该字段
         if (submitData.id && !submitData.password) {
           delete submitData.password;
         }

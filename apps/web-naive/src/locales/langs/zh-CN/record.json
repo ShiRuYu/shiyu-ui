@@ -19,5 +19,35 @@
     "type": "类型",
     "visibility": "可见性",
     "createdBy": "创建人"
+  },
+  "media": {
+    "title": "附件管理",
+    "list": "附件列表",
+    "name": "附件",
+    "recordId": "记录ID",
+    "url": "文件URL",
+    "type": "类型",
+    "size": "大小",
+    "duration": "时长",
+    "width": "宽度",
+    "height": "高度",
+    "sort": "排序",
+    "bucket": "存储桶",
+    "objectKey": "对象键"
+  },
+  "records": {
+    "title": "记录内容管理",
+    "list": "记录列表",
+    "name": "记录",
+    "eventId": "事件ID",
+    "content": "内容",
+    "mood": "心情",
+    "location": "地点",
+    "weather": "天气"
+  },
+  "tag": {
+    "title": "标签管理",
+    "list": "标签列表",
+    "name": "标签"
   }
 }

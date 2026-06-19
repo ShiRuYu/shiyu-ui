@@ -19,5 +19,35 @@
     "type": "Type",
     "visibility": "Visibility",
     "createdBy": "Created By"
+  },
+  "media": {
+    "title": "Media Management",
+    "list": "Media List",
+    "name": "Media",
+    "recordId": "Record ID",
+    "url": "File URL",
+    "type": "Type",
+    "size": "Size",
+    "duration": "Duration",
+    "width": "Width",
+    "height": "Height",
+    "sort": "Sort",
+    "bucket": "Bucket",
+    "objectKey": "Object Key"
+  },
+  "records": {
+    "title": "Record Content Management",
+    "list": "Record List",
+    "name": "Record",
+    "eventId": "Event ID",
+    "content": "Content",
+    "mood": "Mood",
+    "location": "Location",
+    "weather": "Weather"
+  },
+  "tag": {
+    "title": "Tag Management",
+    "list": "Tag List",
+    "name": "Tag"
   }
 }

@@ -16,6 +16,7 @@ import {
   deletePlatform,
   getPlatformPage,
   reloadPlatforms,
+  setDefaultPlatform,
 } from '#/api/common/platform';
 import { $t } from '#/locales';
 
@@ -57,6 +58,16 @@ async function onReload() {
   }
 }
 
+async function onSetDefault(row: PlatformApi.PlatformItem) {
+  try {
+    await setDefaultPlatform(row.id);
+    message.success(`已设为默认平台: ${row.name}`);
+    refreshGrid();
+  } catch {
+    // handled by request interceptor
+  }
+}
+
 function onActionClick({
   code,
   row,
@@ -68,6 +79,10 @@ function onActionClick({
     }
     case 'edit': {
       onEdit(row);
+      break;
+    }
+    case 'setDefault': {
+      onSetDefault(row);
       break;
     }
   }

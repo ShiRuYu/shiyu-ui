@@ -162,7 +162,7 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: [{ code: 'setDefault', label: '设为默认' }, 'edit', 'delete'],
       },
       field: 'operation',
       fixed: 'right',
