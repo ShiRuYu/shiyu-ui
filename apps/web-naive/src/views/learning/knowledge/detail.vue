@@ -115,17 +115,13 @@ onMounted(() => {
           >
             <template v-if="item.mastered">
               <NTag type="success" size="small">
-{{
-                $t('learning.mastered')
-              }}
-</NTag>
+                {{ $t('learning.mastered') }}
+              </NTag>
             </template>
             <template v-else>
               <NTag type="warning" size="small">
-{{
-                $t('learning.notMastered')
-              }}
-</NTag>
+                {{ $t('learning.notMastered') }}
+              </NTag>
             </template>
           </NStep>
         </NSteps>
