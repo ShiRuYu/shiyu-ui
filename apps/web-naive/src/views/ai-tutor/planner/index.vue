@@ -3,14 +3,14 @@ import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NSelect, NDatePicker, NSpace, NSpin } from 'naive-ui';
+import { NButton, NCard, NDatePicker, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { generatePlan } from '#/api/agent/education';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const result = ref<any>(null);
-const knowledgeId = ref<number | null>(null);
+const knowledgeId = ref<null | number>(null);
 const targetDate = ref<number>(Date.now() + 14 * 86400000);
 
 const knowledgeOptions = [
@@ -23,7 +23,11 @@ async function handlePlan() {
   loading.value = true;
   try {
     const date = new Date(targetDate.value).toISOString().split('T')[0] || '';
-    const res = await generatePlan({ studentId: 1, knowledgeId: knowledgeId.value, targetDate: date });
+    const res = await generatePlan({
+      studentId: 1,
+      knowledgeId: knowledgeId.value,
+      targetDate: date,
+    });
     result.value = res;
   } catch (error) {
     console.error(error);
@@ -37,16 +41,36 @@ async function handlePlan() {
   <Page :title="$t('page.aiTutor.planner')">
     <NCard>
       <NSpace class="mb-4">
-        <NSelect v-model:value="knowledgeId" :options="knowledgeOptions" placeholder="选择目标知识点" style="width: 250px" />
-        <NDatePicker v-model:value="targetDate" type="date" style="width: 150px" />
-        <NButton type="primary" :loading="loading" :disabled="!knowledgeId" @click="handlePlan">生成计划</NButton>
+        <NSelect
+          v-model:value="knowledgeId"
+          :options="knowledgeOptions"
+          placeholder="选择目标知识点"
+          style="width: 250px"
+        />
+        <NDatePicker
+          v-model:value="targetDate"
+          type="date"
+          style="width: 150px"
+        />
+        <NButton
+          type="primary"
+          :loading="loading"
+          :disabled="!knowledgeId"
+          @click="handlePlan"
+          >
+生成计划
+</NButton>
       </NSpace>
 
       <NSpin :show="loading">
         <div v-if="result" class="rounded bg-gray-50 p-4">
-          <pre class="whitespace-pre-wrap text-sm">{{ JSON.stringify(result, null, 2) }}</pre>
+          <pre class="whitespace-pre-wrap text-sm">{{
+            JSON.stringify(result, null, 2)
+          }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">选择目标知识点和日期，生成学习计划</div>
+        <div v-else class="py-10 text-center text-gray-400">
+          选择目标知识点和日期，生成学习计划
+        </div>
       </NSpin>
     </NCard>
   </Page>

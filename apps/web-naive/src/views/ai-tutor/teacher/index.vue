@@ -10,7 +10,7 @@ import { $t } from '#/locales';
 
 const loading = ref(false);
 const result = ref('');
-const knowledgeId = ref<number | null>(null);
+const knowledgeId = ref<null | number>(null);
 const style = ref('textual');
 
 const knowledgeOptions = [
@@ -30,7 +30,11 @@ async function handleTeach() {
   if (!knowledgeId.value) return;
   loading.value = true;
   try {
-    const res = await teach({ studentId: 1, knowledgeId: knowledgeId.value, style: style.value });
+    const res = await teach({
+      studentId: 1,
+      knowledgeId: knowledgeId.value,
+      style: style.value,
+    });
     result.value = JSON.stringify(res, null, 2);
   } catch (error) {
     result.value = 'AI讲解接口调用失败（需后端Agent支持）';
@@ -45,16 +49,34 @@ async function handleTeach() {
   <Page :title="$t('page.aiTutor.teacher')">
     <NCard>
       <NSpace class="mb-4">
-        <NSelect v-model:value="knowledgeId" :options="knowledgeOptions" placeholder="选择知识点" style="width: 250px" />
-        <NSelect v-model:value="style" :options="styleOptions" style="width: 150px" />
-        <NButton type="primary" :loading="loading" :disabled="!knowledgeId" @click="handleTeach">开始讲解</NButton>
+        <NSelect
+          v-model:value="knowledgeId"
+          :options="knowledgeOptions"
+          placeholder="选择知识点"
+          style="width: 250px"
+        />
+        <NSelect
+          v-model:value="style"
+          :options="styleOptions"
+          style="width: 150px"
+        />
+        <NButton
+          type="primary"
+          :loading="loading"
+          :disabled="!knowledgeId"
+          @click="handleTeach"
+          >
+开始讲解
+</NButton>
       </NSpace>
 
       <NSpin :show="loading">
         <div v-if="result" class="rounded bg-gray-50 p-4">
           <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">选择知识点点击"开始讲解"</div>
+        <div v-else class="py-10 text-center text-gray-400">
+          选择知识点点击"开始讲解"
+        </div>
       </NSpin>
     </NCard>
   </Page>

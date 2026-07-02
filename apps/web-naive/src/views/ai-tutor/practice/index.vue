@@ -3,14 +3,14 @@ import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NSelect, NInputNumber, NSpace, NSpin } from 'naive-ui';
+import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { practice } from '#/api/agent/education';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const result = ref('');
-const knowledgeId = ref<number | null>(null);
+const knowledgeId = ref<null | number>(null);
 const difficulty = ref(2);
 const count = ref(3);
 
@@ -32,7 +32,12 @@ async function handlePractice() {
   if (!knowledgeId.value) return;
   loading.value = true;
   try {
-    const res = await practice({ studentId: 1, knowledgeId: knowledgeId.value, difficulty: difficulty.value, count: count.value });
+    const res = await practice({
+      studentId: 1,
+      knowledgeId: knowledgeId.value,
+      difficulty: difficulty.value,
+      count: count.value,
+    });
     result.value = JSON.stringify(res, null, 2);
   } catch (error) {
     result.value = 'AI出题接口调用失败（需后端Agent支持）';
@@ -48,10 +53,31 @@ async function handlePractice() {
     <NCard>
       <NSpace class="mb-4" vertical>
         <NSpace>
-          <NSelect v-model:value="knowledgeId" :options="knowledgeOptions" placeholder="选择知识点" style="width: 250px" />
-          <NSelect v-model:value="difficulty" :options="difficultyOptions" style="width: 120px" />
-          <NInputNumber v-model:value="count" :min="1" :max="10" style="width: 80px" />
-          <NButton type="primary" :loading="loading" :disabled="!knowledgeId" @click="handlePractice">AI出题</NButton>
+          <NSelect
+            v-model:value="knowledgeId"
+            :options="knowledgeOptions"
+            placeholder="选择知识点"
+            style="width: 250px"
+          />
+          <NSelect
+            v-model:value="difficulty"
+            :options="difficultyOptions"
+            style="width: 120px"
+          />
+          <NInputNumber
+            v-model:value="count"
+            :min="1"
+            :max="10"
+            style="width: 80px"
+          />
+          <NButton
+            type="primary"
+            :loading="loading"
+            :disabled="!knowledgeId"
+            @click="handlePractice"
+            >
+AI出题
+</NButton>
         </NSpace>
       </NSpace>
 
@@ -59,7 +85,9 @@ async function handlePractice() {
         <div v-if="result" class="rounded bg-gray-50 p-4">
           <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">选择参数点击"AI出题"</div>
+        <div v-else class="py-10 text-center text-gray-400">
+          选择参数点击"AI出题"
+        </div>
       </NSpin>
     </NCard>
   </Page>
