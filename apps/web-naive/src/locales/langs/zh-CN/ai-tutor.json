@@ -1,0 +1,21 @@
+{
+  "title": "AI助手",
+  "teacher": "AI讲解",
+  "practice": "AI出题",
+  "planner": "AI规划",
+  "chat": "AI对话",
+  "report": "AI报告",
+  "selectKnowledge": "选择知识点",
+  "selectStyle": "讲解风格",
+  "styleVisual": "图文并茂",
+  "styleTextual": "文字讲解",
+  "styleInteractive": "互动教学",
+  "startTeach": "开始讲解",
+  "generateQuestions": "AI出题",
+  "questionCount": "题目数量",
+  "generatePlan": "生成计划",
+  "targetDate": "目标日期",
+  "send": "发送",
+  "stop": "停止",
+  "promptPlaceholder": "输入你的问题..."
+}

@@ -18,5 +18,63 @@
     "role": "角色管理",
     "menu": "菜单管理",
     "workspace": "工作空间管理"
+  },
+  "learning": {
+    "title": "学习中心",
+    "course": "课程学习",
+    "knowledge": "知识浏览",
+    "plan": "学习计划",
+    "resource": "学习资源"
+  },
+  "practice": {
+    "title": "练习中心",
+    "question": "题库练习",
+    "wrong": "错题本",
+    "doing": "答题中"
+  },
+  "exam": {
+    "title": "考试中心",
+    "list": "在线考试",
+    "take": "考试中",
+    "result": "考试结果",
+    "aiExam": "AI组卷"
+  },
+  "review": {
+    "title": "复习中心",
+    "today": "今日复习",
+    "history": "复习历史"
+  },
+  "analyticsCenter": {
+    "title": "数据中心",
+    "report": "学习报告",
+    "radar": "能力雷达",
+    "trend": "学习趋势",
+    "weak": "薄弱分析"
+  },
+  "aiTutor": {
+    "title": "AI助手",
+    "teacher": "AI讲解",
+    "practice": "AI出题",
+    "planner": "AI规划",
+    "chat": "AI对话",
+    "report": "AI报告"
+  },
+  "knowledge": {
+    "title": "知识引擎",
+    "list": "知识点管理",
+    "graph": "知识图谱",
+    "document": "文档管理",
+    "index": "索引管理"
+  },
+  "eduAdmin": {
+    "title": "教务管理",
+    "subject": "学科管理",
+    "textbook": "教材管理",
+    "chapter": "章节管理",
+    "course": "课程管理",
+    "question": "题库管理",
+    "exam": "考试管理",
+    "student": "学生管理",
+    "resource": "资源管理"
   }
 }

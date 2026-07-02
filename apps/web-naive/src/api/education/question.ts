@@ -1,0 +1,69 @@
+import { requestClient } from '#/api/request';
+
+export namespace EducationQuestionApi {
+  export interface Question {
+    [key: string]: any;
+    id: number;
+    code: string;
+    type: string;
+    subjectCode: string;
+    grade: number;
+    difficulty: number;
+    abilityDimension: string;
+    title: string;
+    options: string;
+    answer: string;
+    analysis: string;
+    tags: string;
+    usedCount: number;
+  }
+}
+
+async function getQuestionById(id: number) {
+  return requestClient.get<EducationQuestionApi.Question>(
+    `/api/v1/question/${id}`,
+  );
+}
+
+async function getQuestionBySubjectGrade(subjectCode: string, grade: number) {
+  return requestClient.get<EducationQuestionApi.Question[]>(
+    `/api/v1/question/subject/${subjectCode}/grade/${grade}`,
+  );
+}
+
+async function getQuestionByDifficulty(difficulty: number) {
+  return requestClient.get<EducationQuestionApi.Question[]>(
+    `/api/v1/question/difficulty/${difficulty}`,
+  );
+}
+
+async function getQuestionByType(type: string) {
+  return requestClient.get<EducationQuestionApi.Question[]>(
+    `/api/v1/question/type/${type}`,
+  );
+}
+
+async function createQuestion(data: Omit<EducationQuestionApi.Question, 'id'>) {
+  return requestClient.post('/api/v1/question', data);
+}
+
+async function updateQuestion(
+  id: number,
+  data: Partial<EducationQuestionApi.Question>,
+) {
+  return requestClient.put(`/api/v1/question/${id}`, data);
+}
+
+async function deleteQuestion(id: number) {
+  return requestClient.delete(`/api/v1/question/${id}`);
+}
+
+export {
+  createQuestion,
+  deleteQuestion,
+  getQuestionByDifficulty,
+  getQuestionById,
+  getQuestionBySubjectGrade,
+  getQuestionByType,
+  updateQuestion,
+};

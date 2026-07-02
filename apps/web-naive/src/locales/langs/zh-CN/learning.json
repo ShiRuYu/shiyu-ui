@@ -1,0 +1,22 @@
+{
+  "title": "学习中心",
+  "course": "课程学习",
+  "courseDetail": "课程详情",
+  "knowledge": "知识浏览",
+  "knowledgeDetail": "知识详情",
+  "plan": "学习计划",
+  "planDetail": "计划详情",
+  "resource": "学习资源",
+  "searchKnowledge": "搜索知识点...",
+  "searchMode": "搜索模式",
+  "modeKeyword": "关键词",
+  "modeSemantic": "语义",
+  "modeHybrid": "混合",
+  "prerequisites": "前置知识",
+  "subsequent": "后置知识",
+  "related": "关联知识",
+  "learningPath": "学习路径",
+  "missingPrerequisites": "缺失前置知识",
+  "mastered": "已掌握",
+  "notMastered": "未掌握"
+}
