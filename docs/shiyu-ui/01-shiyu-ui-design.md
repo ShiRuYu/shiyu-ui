@@ -4,6 +4,7 @@
 > **对应后端**: shiyu-ai (Java 21 + Spring Boot 4.x)  
 > **前端框架**: Vue 3 + Vben Admin 5.x + Naive UI  
 > **双应用架构**: `web-naive`（管理后台）+ `web-client`（用户前台）  
+> **管理后台定位**: 覆盖后端**全部 27 个 Controller** 的管理能力  
 > **最后更新**: 2026-07-02
 
 ---
@@ -12,27 +13,62 @@
 
 ### 1.1 项目定位
 
-shiyu-ui 是 shiyu-ai 智能体平台的前端项目，采用 **双应用（Dual App）** 架构，面向两类用户群体：
+shiyu-ui 是 shiyu-ai 智能体平台的前端项目，采用 **双应用（Dual App）** 架构：
 
-| 应用 | 目录 | 定位 | 目标用户 | 风格 |
-|------|------|------|---------|------|
-| **管理后台** | `apps/web-naive/` | 管理员管控平台 | 管理员、运营 | 复杂表格、Graph编排、RBAC |
-| **用户前台** | `apps/web-client/` | 普通用户使用入口 | 终端用户 | 简洁对话、卡片浏览、轻量交互 |
+| 应用 | 目录 | 定位 | 目标用户 |
+|------|------|------|---------|
+| **管理后台** | `apps/web-naive/` | **全量管理** — 覆盖后端所有 Controller 的 CRUD/配置/管控 | 管理员、运营人员 |
+| **用户前台** | `apps/web-client/` | **消费入口** — Agent 对话、知识库搜索、个人空间等终端使用场景 | 普通终端用户 |
 
-### 1.2 后端模块与前端App映射
+**关键原则**: 管理后台 = 后端全部 Controller 的管理界面；用户前台 = 后端部分 API 的用户端消费入口。
+
+### 1.2 管理后台覆盖范围
 
 ```
-shiyu-ai 后端模块                   管理后台(web-naive)    用户前台(web-client)
-─────────────────────────────────────────────────────────────────────────
-shiyu-ai-agent  Agent核心              ✅ 全部                ✅ 执行API
-shiyu-ai-auth    认证授权              ✅ 全部                ✅ 登录/用户信息
-shiyu-ai-record  日常记录              ✅ 全部                ❌
-shiyu-ai-knowledge 知识库              ❌                    ✅ 检索/搜索
-shiyu-ai-education 教育                ❌(预留)              ❌(预留)
-shiyu-common-web  文件上传             ✅                    ✅
+后端模块              管理后台(web-naive)     用户前台(web-client)
+────────────────────────────────────────────────────────────────────────
+shiyu-ai-agent  Agent核心    ✅ 全部管理API        ✅ 执行/对话
+shiyu-ai-auth    认证授权    ✅ 全部管理API        ✅ 登录/用户信息
+shiyu-ai-record  日常记录    ✅ 全部管理API        ❌
+shiyu-ai-knowledge 知识库   ✅ 全部管理API        ✅ 搜索/浏览
+shiyu-ai-education 教育     ✅ 全部管理API        ❌ (预留)
+shiyu-ai-core    对话引擎   ✅ 管理配置(规划)      ✅ 对话消费
+shiyu-common-web 文件上传   ✅                    ✅
 ```
 
-### 1.3 技术栈
+### 1.3 后端完整列表
+
+| 序号 | 后端模块 | Controller | 基础路径 | API 数 | 管理后台页 | 用户前台页 |
+|-----|---------|-----------|---------|--------|-----------|-----------|
+| 1 | agent | AgentAdminController | `/admin/agent` | 7 | ✅ 有 | - |
+| 2 | agent | AgentController | `/api/agent` | 7 | ✅ 有 | ✅ 有 |
+| 3 | agent | AgentGraphController | `/admin/agent/{id}/version/{vid}/graph` | 10 | ✅ 有 | - |
+| 4 | agent | AgentVersionController | `/admin/agent/{id}/version` | 9 | ✅ 有 | - |
+| 5 | agent | AiModelController | `/ai/model` | 11 | ✅ 有 | - |
+| 6 | agent | AiPlatformController | `/ai/platform` | 11 | ✅ 有 | - |
+| 7 | agent | IntentDefController | `/intent/def` | 7 | ✅ 有 | - |
+| 8 | agent | NodeTypeController | `/admin/agent/node-types` | 2 | ✅ 有 | - |
+| 9 | auth | AuthController | `/auth` | 10 | ✅ 有 | ✅ 有 |
+| 10 | auth | CaptchaController | `/auth` | 2 | ✅ 有 | ✅ 有 |
+| 11 | auth | DictController | `/dict` | 7 | ✅ 有 | - |
+| 12 | auth | MenuController | `/menu` | 13 | ✅ 有 | - |
+| 13 | auth | RoleController | `/role` | 8 | ✅ 有 | - |
+| 14 | auth | TenantController | `/tenant` | 5 | ✅ 有 | - |
+| 15 | auth | UserController | `/user` | 7 | ✅ 有 | ✅ 有 |
+| 16 | auth | WorkspaceController | `/workspace` | 4 | ✅ 有 | - |
+| 17 | auth | TimezoneController | `/timezone` | 3 | ✅ 有 | - |
+| 18 | core | ChatDemoController | `/api/chat` | 5 | 🔧 对话配置管理 | ✅ 有 |
+| 19 | knowledge | KnowledgeController | `/api/v1/knowledge` | 19 | 🔧 知识点管理 | ✅ 搜索/浏览 |
+| 20 | knowledge | DocumentController | `/api/v1/knowledge/documents` | 6 | 🔧 文档管理 | ✅ |
+| 21 | record | ProfileController | `/api/profile` | 4 | ✅ 有 | - |
+| 22 | record | RecordController | `/api/record` | 4 | ✅ 有 | - |
+| 23 | record | TimelineEventController | `/api/timeline` | 5 | ✅ 有 | - |
+| 24 | record | MediaController | `/api/media` | 4 | ✅ 有 | - |
+| 25 | record | TagController | `/api/tag` | 5 | ✅ 有 | - |
+| 26 | common | FileController | `/upload` | 1 | ✅ 有 | ✅ 有 |
+| 27-37 | education | Subject/Textbook/Chapter/... | `/api/v1/*` | 56 | 🔧 教育管理 | - |
+
+### 1.4 技术栈
 
 ```
 管理后台 (web-naive):
@@ -40,520 +76,584 @@ shiyu-common-web  文件上传             ✅                    ✅
   VueFlow 1.48 (Graph编排) + Pinia 3 + Vue Router 5 + Vite 8
 
 用户前台 (web-client):
-  Vue 3.5 + (无 Vben 框架) + Naive UI 按需引入
-  Pinia 3 + Vue Router 5 + Vite 8
+  Vue 3.5 + Naive UI 按需引入 + Pinia 3 + Vue Router 5 + Vite 8
   SSE 流式对话 (共享 packages/effects/request)
 
 共享层 (packages/):
   effects/request  — requestClient + SSE 工具
-  stores           — Pinia stores (useAccessStore, useUserStore)
-  utils            — 工具函数
-  types            — 全局类型
-  hooks            — 通用 hooks
-  constants        — 常量
-  locales          — 国际化资源
+  stores           — Pinia stores
+  utils / types / hooks / constants / locales
 ```
 
 ---
 
-## 二、后端 API 全面对照
+## 二、系统架构
 
-### 2.1 总览
+### 2.1 完整双应用架构
 
-| 后端模块 | Controller | 基础路径 | API 数量 | 归属 |
-|---------|-----------|---------|---------|------|
-| Agent | AgentAdminController | `/admin/agent` | 6 | 管理后台 |
-| Agent | AgentController | `/api/agent` | 6 | 双端共用 |
-| Agent | AgentGraphController | `/admin/agent/{id}/version/{vid}/graph` | 8 | 管理后台 |
-| Agent | AgentVersionController | `/admin/agent/{id}/version` | 8 | 管理后台 |
-| Agent | AiModelController | `/ai/model` | 9 | 管理后台 |
-| Agent | AiPlatformController | `/ai/platform` | 9 | 管理后台 |
-| Agent | IntentDefController | `/intent/def` | 6 | 管理后台 |
-| Agent | NodeTypeController | `/admin/agent/node-types` | 2 | 管理后台 |
-| Auth | AuthController | `/auth` | 10 | 双端共用 |
-| Auth | CaptchaController | `/auth` | 2 | 双端共用 |
-| Auth | DictController | `/dict` | 6 | 管理后台 |
-| Auth | MenuController | `/menu` | 10 | 管理后台 |
-| Auth | RoleController | `/role` | 7 | 管理后台 |
-| Auth | TenantController | `/tenant` | 4 | 管理后台 |
-| Auth | UserController | `/user` | 7 | 双端共用 |
-| Auth | WorkspaceController | `/workspace` | 4 | 管理后台 |
-| Auth | TimezoneController | `/timezone` | 3 | 管理后台 |
-| Core | ChatDemoController | `/api/chat` | 5 | 用户前台 |
-| Knowledge | KnowledgeController | `/api/v1/knowledge` | 13 | 用户前台 |
-| Knowledge | DocumentController | `/api/v1/knowledge/documents` | 5 | 用户前台 |
-| Record | ProfileController | `/api/profile` | 4 | 管理后台 |
-| Record | RecordController | `/api/record` | 4 | 管理后台 |
-| Record | TimelineEventController | `/api/timeline` | 5 | 管理后台 |
-| Record | MediaController | `/api/media` | 4 | 管理后台 |
-| Record | TagController | `/api/tag` | 5 | 管理后台 |
-| Common | FileController | `/upload` | 1 | 双端共用 |
-| Education | (11个Controller) | `/api/v1/*` | 56 | 规划预留 |
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                           shiyu-ui (前端)                                  │
+│                                                                          │
+│  ┌─────────────────────────────────────────┐  ┌───────────────────────┐  │
+│  │     管理后台 web-naive (5888)             │  │ 用户前台 web-client   │  │
+│  │     ──── 管理全量后端 API                 │  │     ──── 消费入口     │  │
+│  │                                         │  │     (5889)            │  │
+│  │  Agent管理 Graph编排 平台/模型/意图        │  │  AI对话              │  │
+│  │  用户/角色/菜单 租户/工作空间 字典/时区     │  │  Agent广场           │  │
+│  │  日常记录(人物/时间轴/媒体/标签)           │  │  知识库搜索/浏览      │  │
+│  │  知识库管理(知识点/文档/索引/关系)          │  │   个人空间           │  │
+│  │  教育管理(学科/教材/章节/课程/试卷/题库)    │  │                     │  │
+│  │  对话配置/文件管理                        │  │                     │  │
+│  │  仪表盘                                 │  │                     │  │
+│  └──────────┬──────────────────────────────┘  └──────────┬────────────┘  │
+│             │                                            │                │
+│             └──────────────┬──────────────────────────────┘                │
+│                            │                                            │
+│                ┌───────────┴───────────┐                                │
+│                │    共享层 (packages/)    │                                │
+│                │  effects/request/SSE   │                                │
+│                │  stores/utils/types    │                                │
+│                └───────────────────────┘                                │
+└──────────────────────────────────┬────────────────────────────────────────┘
+                                   │ HTTP / SSE / JSON
+┌──────────────────────────────────┴────────────────────────────────────────┐
+│                         shiyu-ai (后端)                                    │
+│                                                                          │
+│  ┌──────────────┐ ┌────────────┐ ┌─────────────┐ ┌──────────────────┐   │
+│  │shiyu-ai-agent│ │shiyu-ai-   │ │shiyu-ai-    │ │shiyu-ai-         │   │
+│  │ Agent核心    │ │auth 认证   │ │record 记录  │ │knowledge 知识库  │   │
+│  │ :9000        │ │:9002       │ │:9005        │ │:9006             │   │
+│  ├─ /admin/agent│ ├─ /auth     │ ├─ /api/      │ ├─ /api/v1/        │   │
+│  ├─ /api/agent  │ ├─ /user     │ │  profile    │ │  knowledge       │   │
+│  ├─ /ai/platform│ ├─ /role     │ ├─ /api/      │ ├─ /api/v1/        │   │
+│  ├─ /ai/model   │ ├─ /menu     │ │  timeline   │ │  knowledge/docs  │   │
+│  ├─ /intent/def │ ├─ /workspace│ ├─ /api/media  │ └──────────────────┘   │
+│  └──────────────┘ ├─ /tenant   │ ├─ /api/tag   │ ┌──────────────────┐   │
+│  ┌──────────────┐ ├─ /dict     │ ├─ /api/record│ │shiyu-ai-         │   │
+│  │shiyu-ai-core │ ├─ /timezone │ └─────────────┘ │education 教育    │   │
+│  │ 对话引擎     │ └────────────┘                 │ :9007             │   │
+│  │ :9001        │ ┌────────────┐                 │ ├─ /api/v1/       │   │
+│  ├─ /api/chat   │ │shiyu-      │                 │ │  subject        │   │
+│  └──────────────┘ │common-web  │                 │ ├─ /api/v1/       │   │
+│                    │ 文件服务    │                 │ │  textbook       │   │
+│                    │ ├─ /upload  │                 │ ├─ /api/v1/       │   │
+│                    └────────────┘                 │ │  chapter        │   │
+│                                                   │ ├─ /api/v1/       │   │
+│              Sa-Token + JWT + MyBatis-Flex + DB   │ │  course/exam/.. │   │
+└───────────────────────────────────────────────────┴──────────────────────┘
+```
 
-### 2.2 Agent 管理 API (`/admin/agent`)
+### 2.2 管理后台与后端 Controller 映射
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/admin/agent/page` | Agent 分页列表 (name, status, pageNo, pageSize) | 管理后台 Agent 列表 |
-| GET | `/admin/agent/{id}` | Agent 详情 | 管理后台 Agent 编辑 |
-| POST | `/admin/agent` | 创建 Agent | 管理后台 Agent 新建 |
-| PATCH | `/admin/agent/{id}` | 更新 Agent | 管理后台 Agent 编辑 |
-| DELETE | `/admin/agent/{id}` | 删除 Agent | 管理后台 Agent 删除 |
-| PUT | `/admin/agent/{id}/status` | 启用/停用 Agent | 管理后台 Agent 状态切换 |
-| GET | `/admin/agent/list/all` | 全部可用 Agent（下拉选项） | 管理后台 下拉选择 |
+```
+管理后台侧边栏菜单树                   后端 Controller
+─────────────────────────────────────────────────────────────
+仪表盘
+├── 分析页                             -
+└── 工作空间                           -
 
-### 2.3 Agent 执行 API (`/api/agent`)
+系统管理
+├── 用户管理                           UserController
+├── 角色管理                           RoleController
+├── 菜单管理                           MenuController
+├── 工作空间管理                        WorkspaceController
+├── 租户管理                           TenantController
+├── 字典管理                           DictController
+└── 时区设置                           TimezoneController
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| POST | `/api/agent/register` | 注册 Agent（含 Graph 编译） | 管理后台 Graph 发布 |
-| GET | `/api/agent/{agentId}` | 获取 Agent 运行时定义 | 双端 Agent 详情 |
-| POST | `/api/agent/{agentId}` | 更新运行时 Agent | 管理后台 |
-| GET/POST | `/api/agent/{agentId}/execute` | 同步执行 Agent | 双端 对话/调试 |
-| GET/POST | `/api/agent/{agentId}/executeStream` | SSE 流式执行 Agent | 双端 流式对话 |
-| POST | `/api/agent/{agentId}/version/switch` | 切换 Agent 活跃版本 | 管理后台 版本切换 |
-| GET | `/api/agent/list` | 获取已注册的 Agent 列表 | 用户前台 Agent 广场 |
+智能体
+├── Agent管理                          AgentAdminController
+│   ├── Agent编辑 (Graph+版本)          AgentGraphController
+│   │                                  AgentVersionController
+│   │                                  NodeTypeController
+│   └── 执行对话 (Modal)               AgentController
+├── 平台管理                           AiPlatformController
+├── 模型管理                           AiModelController
+├── 意图管理                           IntentDefController
+└── 对话配置(规划)                      ChatDemoController (配置)
 
-### 2.4 Graph 编排 API (`/admin/agent/{agentId}/version/{versionId}/graph`)
+日常记录
+├── 人物管理                           ProfileController
+├── 时间轴管理                          TimelineEventController
+├── 记录管理                           RecordController
+├── 媒体管理                           MediaController
+└── 标签管理                           TagController
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/graph` | 获取 Graph 配置 | 管理后台 Graph 加载 |
-| PUT | `/graph` | 更新 Graph 配置 | 管理后台 Graph 保存 |
-| POST | `/graph/validate` | 校验 Graph 配置 | 管理后台 Graph 校验 |
-| POST | `/graph/node` | 添加单个节点 | 管理后台 |
-| PUT | `/graph/node/{nodeId}` | 更新单个节点 | 管理后台 |
-| DELETE | `/graph/node/{nodeId}` | 删除单个节点 | 管理后台 |
-| POST | `/graph/edge` | 添加边 | 管理后台 |
-| DELETE | `/graph/edge` | 删除边 | 管理后台 |
-| GET | `/graph/canvas` | 获取画布布局 | 管理后台 |
-| PUT | `/graph/canvas` | 保存画布布局 | 管理后台 |
+知识库 (规划)
+├── 知识点管理                          KnowledgeController
+├── 文档管理                           DocumentController
+├── 索引管理                           KnowledgeController (rebuild-index)
+├── 知识图谱                           KnowledgeController (graph)
+└── 关系管理                           KnowledgeController (relation)
 
-### 2.5 版本管理 API (`/admin/agent/{agentId}/version`)
+教育管理 (规划)
+├── 学科管理                           SubjectController
+├── 教材管理                           TextbookController
+├── 章节管理                           ChapterController
+├── 课程管理                           CourseController
+├── 试卷管理                           ExamController
+├── 题库管理                           QuestionController
+├── 学习计划管理                        StudyPlanController
+├── 复习任务管理                        ReviewController
+├── 学情分析                          AnalyticsController
+├── 资源管理                           ResourceController
+└── 错题管理                           WrongQuestionController
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/version` | 版本列表 | 管理后台 |
-| GET | `/version/{versionId}` | 版本详情（含 Graph） | 管理后台 |
-| POST | `/version` | 创建版本 | 管理后台 |
-| PATCH | `/version/{versionId}` | 更新版本元信息 | 管理后台 |
-| DELETE | `/version/{versionId}` | 删除版本 | 管理后台 |
-| POST | `/{versionId}/publish` | 发布版本 | 管理后台 |
-| POST | `/{versionId}/archive` | 归档版本 | 管理后台 |
-| POST | `/{versionId}/activate` | 激活版本 | 管理后台 |
-| POST | `/{versionId}/copy` | 复制版本 | 管理后台 |
+文件管理
+└── 文件上传/管理                       FileController
+```
 
-### 2.6 AI 平台 API (`/ai/platform`)
+---
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/ai/platform/page` | 平台分页列表 (name, code) | 管理后台 |
-| GET | `/ai/platform/enabled` | 已启用平台列表 | 管理后台 |
-| GET | `/ai/platform/options` | 平台下拉选项 | 管理后台 ApiSelect |
-| GET | `/ai/platform/{id}` | 平台详情 | 管理后台 |
-| GET | `/ai/platform/code/{code}` | 按编码查平台 | 管理后台 |
-| GET | `/ai/platform/default` | 获取默认平台 | 管理后台 |
-| POST | `/ai/platform` | 创建平台 | 管理后台 |
-| PATCH | `/ai/platform/{id}` | 更新平台 | 管理后台 |
-| DELETE | `/ai/platform/{id}` | 删除平台 | 管理后台 |
-| PUT | `/ai/platform/{id}/default` | 设为默认平台 | 管理后台 |
-| POST | `/ai/platform/reload` | 刷新适配器 | 管理后台 |
+## 三、后端 API 完整对照
 
-### 2.7 AI 模型 API (`/ai/model`)
+### 3.1 Agent 管理 (`/admin/agent`) — AgentAdminController
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/ai/model/page` | 模型分页 (platformId) | 管理后台 |
-| GET | `/ai/model/platform/{platformId}` | 某平台下模型列表 | 管理后台 |
-| GET | `/ai/model/platform/by-code/{platformCode}` | 按平台编码查模型 | 管理后台 |
-| GET | `/ai/model/options` | 模型下拉选项 | 管理后台 ApiSelect |
-| GET | `/ai/model/{id}` | 模型详情 | 管理后台 |
-| GET | `/ai/model/platform/{platformId}/default` | 平台默认模型 | 管理后台 |
-| POST | `/ai/model` | 创建模型 | 管理后台 |
-| PATCH | `/ai/model/{id}` | 更新模型 | 管理后台 |
-| DELETE | `/ai/model/{id}` | 删除模型 | 管理后台 |
-| DELETE | `/ai/model/batch` | 批量删除模型 | 管理后台 |
-| PUT | `/ai/model/{id}/default` | 设为默认模型 | 管理后台 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/admin/agent/page` | 分页列表 (name, status, pageNo, pageSize) | Agent 列表 |
+| GET | `/admin/agent/{id}` | 详情 (含版本) | Agent 编辑 |
+| POST | `/admin/agent` | 创建 | Agent 新建 |
+| PATCH | `/admin/agent/{id}` | 更新 | Agent 编辑 |
+| DELETE | `/admin/agent/{id}` | 删除 | Agent 列表 |
+| PUT | `/admin/agent/{id}/status` | 启用/停用 | Agent 列表 |
+| GET | `/admin/agent/list/all` | 全部可用(下拉) | 下拉选择器 |
 
-### 2.8 意图定义 API (`/intent/def`)
+### 3.2 Agent 执行 (`/api/agent`) — AgentController
 
-| 方法 | 端点 | 说明 | 前端用途 |
-|------|------|------|---------|
-| GET | `/intent/def/page` | 意图分页 (agentId, name, code, category) | 管理后台 |
-| GET | `/intent/def/{id}` | 意图详情 | 管理后台 |
-| POST | `/intent/def` | 创建意图 | 管理后台 |
-| PATCH | `/intent/def/{id}` | 更新意图 | 管理后台 |
-| DELETE | `/intent/def/{id}` | 删除意图 | 管理后台 |
-| DELETE | `/intent/def/batch` | 批量删除意图 | 管理后台 |
-| GET | `/intent/def/options` | 意图下拉选项 | 管理后台 |
+| 方法 | 端点 | 说明 | 管理后台 | 用户前台 |
+|------|------|------|---------|---------|
+| POST | `/api/agent/register` | 注册(编译Graph) | 编辑页保存 | - |
+| GET | `/api/agent/{agentId}` | 运行时定义 | 详情 | Agent详情 |
+| POST | `/api/agent/{agentId}` | 更新运行时 | 编辑 | - |
+| GET/POST | `/api/agent/{agentId}/execute` | 同步执行 | 对话Modal | 对话页 |
+| GET/POST | `/api/agent/{agentId}/executeStream` | SSE流式执行 | 对话Modal | 对话页 |
+| POST | `/api/agent/{agentId}/version/switch` | 切换版本 | 编辑页 | - |
+| GET | `/api/agent/list` | 已注册列表 | - | Agent广场 |
 
-### 2.9 认证 API (`/auth`) — 双端共用
+### 3.3 Graph 编排 (`/admin/agent/{agentId}/version/{versionId}/graph`) — AgentGraphController
 
-| 方法 | 端点 | 说明 | 对应前端 |
-|------|------|------|---------|
-| POST | `/auth/login` | 用户登录 | 双端登录页 |
-| GET | `/auth/codes` | 获取权限码 | 管理后台按钮鉴权 |
-| POST | `/auth/refresh` | 刷新 Token | 双端 Token 刷新 |
-| POST | `/auth/logout` | 登出 | 双端登出 |
-| PATCH | `/auth/current-role` | 切换当前角色 | 管理后台角色切换 |
-| POST | `/auth/switch-tenant` | 切换租户 | 管理后台租户切换 |
-| POST | `/auth/switch-workspace` | 切换工作空间 | 管理后台空间切换 |
-| GET | `/auth/workspaces` | 获取用户工作空间 | 双端 |
-| GET | `/auth/tenants` | 获取用户租户列表 | 管理后台 |
-| GET | `/auth/captcha` | 获取验证码 | 双端登录页 |
-| POST | `/auth/captcha/validate` | 校验验证码 | 双端登录页 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/graph` | 获取Graph配置 | Agent编辑 — Graph面板 |
+| PUT | `/graph` | 更新Graph配置 | Agent编辑 — 保存 |
+| POST | `/graph/validate` | 校验Graph | Agent编辑 — 校验按钮 |
+| POST | `/graph/node` | 添加节点 | Agent编辑 — 新增节点 |
+| PUT | `/graph/node/{nodeId}` | 更新节点 | 节点编辑弹窗 |
+| DELETE | `/graph/node/{nodeId}` | 删除节点 | Agent编辑 — 删除节点 |
+| POST | `/graph/edge` | 添加边 | Agent编辑 — 连线 |
+| DELETE | `/graph/edge` | 删除边 | Agent编辑 — 删连线 |
+| GET | `/graph/canvas` | 获取画布布局 | Agent编辑 — 加载位置 |
+| PUT | `/graph/canvas` | 保存画布布局 | Agent编辑 — 保存位置 |
 
-### 2.10 用户 API (`/user`) — 双端共用
+### 3.4 版本管理 (`/admin/agent/{agentId}/version`) — AgentVersionController
 
-| 方法 | 端点 | 说明 | 对应前端 |
-|------|------|------|---------|
-| GET | `/user/info` | 当前用户信息 (含租户/空间) | 双端用户中心 |
-| GET | `/user?pageNo&pageSize` | 用户分页列表 | 管理后台 |
-| POST | `/user` | 创建用户 | 管理后台 |
-| PATCH | `/{userId}` | 更新用户 | 管理后台 |
-| DELETE | `/{userId}` | 删除用户 | 管理后台 |
-| PATCH | `/{userId}/password/reset` | 重置密码 | 管理后台 |
-| PATCH | `/{userId}/password` | 修改密码（校验旧密码） | 双端 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/version` | 版本列表 | Agent编辑 — 版本下拉 |
+| GET | `/version/{versionId}` | 版本详情 (含Graph) | Agent编辑 — 版本切换 |
+| POST | `/version` | 创建版本 | Agent编辑 — 新建版本 |
+| PATCH | `/version/{versionId}` | 更新版本元信息 | Agent编辑 — 编辑版本 |
+| DELETE | `/version/{versionId}` | 删除版本 | Agent编辑 — 删除版本 |
+| POST | `/{versionId}/publish` | 发布 | Agent编辑 — 发布按钮 |
+| POST | `/{versionId}/archive` | 归档 | Agent编辑 — 归档按钮 |
+| POST | `/{versionId}/activate` | 激活 | Agent编辑 — 激活按钮 |
+| POST | `/{versionId}/copy` | 复制 | Agent编辑 — 复制版本 |
 
-### 2.11 菜单 API (`/menu`) — 仅管理后台
+### 3.5 AI 平台 (`/ai/platform`) — AiPlatformController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/menu/all` | 全部菜单（含按钮） |
-| GET | `/menu/list` | 菜单列表 |
-| GET | `/menu/list/roots` | 根级菜单 |
-| GET | `/menu/list/children/{parentId}` | 子菜单 |
-| GET | `/menu/role/permissions/tree` | 角色权限树 |
-| GET | `/menu/menu/tree` | 菜单树 |
-| GET | `/menu/tree` | 菜单树 |
-| POST | `/menu` | 创建菜单 |
-| PATCH | `/{id}` | 更新菜单 |
-| DELETE | `/{id}` | 删除菜单 |
-| GET | `/menu/name-exists` | 菜单名唯一校验 |
-| GET | `/menu/path-exists` | 菜单路径唯一校验 |
-| GET | `/menu/button/{parentId}` | 获取按钮级菜单 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/ai/platform/page` | 分页 (name, code) | 平台列表 |
+| GET | `/ai/platform/enabled` | 已启用列表 | - |
+| GET | `/ai/platform/options` | 下拉选项 | ApiSelect |
+| GET | `/ai/platform/{id}` | 详情 | 编辑弹窗 |
+| GET | `/ai/platform/code/{code}` | 按编码查 | - |
+| GET | `/ai/platform/default` | 默认平台 | - |
+| POST | `/ai/platform` | 创建 | 新建弹窗 |
+| PATCH | `/ai/platform/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/ai/platform/{id}` | 删除 | 列表 |
+| PUT | `/ai/platform/{id}/default` | 设为默认 | 列表操作 |
+| POST | `/ai/platform/reload` | 刷新适配器 | 列表操作 |
 
-### 2.12 角色 API (`/role`) — 仅管理后台
+### 3.6 AI 模型 (`/ai/model`) — AiModelController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/role/list` | 角色分页列表 |
-| GET | `/role` | 角色列表（所有） |
-| POST | `/role` | 创建角色 |
-| PATCH | `/{id}` | 更新角色 |
-| PUT | `/{id}` | 强制更新角色 |
-| DELETE | `/{id}` | 删除角色 |
-| PATCH | `/role/users/add/{id}` | 分配用户 |
-| PATCH | `/role/users/remove/{id}` | 移除用户 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/ai/model/page` | 分页 (platformId) | 模型列表 |
+| GET | `/ai/model/platform/{platformId}` | 某平台下模型 | - |
+| GET | `/ai/model/platform/by-code/{platformCode}` | 按编码查 | - |
+| GET | `/ai/model/options` | 下拉选项 | ApiSelect |
+| GET | `/ai/model/{id}` | 详情 | 编辑弹窗 |
+| GET | `/ai/model/platform/{platformId}/default` | 平台默认模型 | - |
+| POST | `/ai/model` | 创建 | 新建弹窗 |
+| PATCH | `/ai/model/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/ai/model/{id}` | 删除 | 列表 |
+| DELETE | `/ai/model/batch` | 批量删除 | 列表 |
+| PUT | `/ai/model/{id}/default` | 设为默认 | 列表操作 |
 
-### 2.13 工作空间 API (`/workspace`) — 仅管理后台
+### 3.7 意图定义 (`/intent/def`) — IntentDefController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/workspace/list` | 工作空间列表 |
-| POST | `/workspace` | 创建工作空间 |
-| PATCH | `/{id}` | 更新工作空间 |
-| DELETE | `/{id}` | 删除工作空间 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/intent/def/page` | 分页 (agentId,name,code,category) | 意图列表 |
+| GET | `/intent/def/{id}` | 详情 | 编辑弹窗 |
+| POST | `/intent/def` | 创建 | 新建弹窗 |
+| PATCH | `/intent/def/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/intent/def/{id}` | 删除 | 列表 |
+| DELETE | `/intent/def/batch` | 批量删除 | 列表 |
+| GET | `/intent/def/options` | 下拉选项 | - |
 
-### 2.14 租户 API (`/tenant`) — 仅管理后台
+### 3.8 节点类型 (`/admin/agent/node-types`) — NodeTypeController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/tenant/all` | 全部租户 |
-| GET | `/{id}` | 租户详情 |
-| POST | `` | 创建租户 |
-| PATCH | `/{id}` | 更新租户 |
-| DELETE | `/{id}` | 删除租户 |
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/admin/agent/node-types` | 所有节点类型 | Graph编辑 — 类型下拉 |
+| GET | `/{nodeType}` | 按类型查 schema | Graph编辑 — 配置表单 |
 
-### 2.15 字典 API (`/dict`) — 仅管理后台
+### 3.9 认证 (`/auth`) — AuthController + CaptchaController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/dict/page` | 字典分页 |
-| GET | `/{id}` | 字典详情 |
-| GET | `/dict/type/{dictType}` | 按类型查字典 |
-| POST | `` | 创建字典 |
-| PATCH | `/{id}` | 更新字典 |
-| DELETE | `/{id}` | 删除字典 |
-| DELETE | `/batch` | 批量删除 |
+| 方法 | 端点 | 说明 | 管理后台 | 用户前台 |
+|------|------|------|---------|---------|
+| POST | `/auth/login` | 登录 | ✅ | ✅ |
+| GET | `/auth/codes` | 权限码 | ✅ | - |
+| POST | `/auth/refresh` | 刷新Token | ✅ | ✅ |
+| POST | `/auth/logout` | 登出 | ✅ | ✅ |
+| PATCH | `/auth/current-role` | 切换角色 | ✅ | - |
+| POST | `/auth/switch-tenant` | 切换租户 | ✅ | - |
+| POST | `/auth/switch-workspace` | 切换空间 | ✅ | - |
+| GET | `/auth/workspaces` | 用户空间列表 | ✅ | ✅ |
+| GET | `/auth/tenants` | 用户租户列表 | ✅ | ✅ |
+| GET | `/auth/captcha` | 获取验证码 | ✅ | ✅ |
+| POST | `/auth/captcha/validate` | 校验验证码 | ✅ | ✅ |
 
-### 2.16 节点类型 API (`/admin/agent/node-types`) — 仅管理后台
+### 3.10 用户 (`/user`) — UserController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/admin/agent/node-types` | 所有节点类型枚举 |
-| GET | `/{nodeType}` | 按类型查节点配置 schema |
+| 方法 | 端点 | 说明 | 管理后台 | 用户前台 |
+|------|------|------|---------|---------|
+| GET | `/user/info` | 当前用户信息 | ✅ | ✅ |
+| GET | `/user?pageNo&pageSize` | 分页列表 | ✅ | - |
+| POST | `/user` | 创建 | ✅ | - |
+| PATCH | `/{userId}` | 更新 | ✅ | - |
+| DELETE | `/{userId}` | 删除 | ✅ | - |
+| PATCH | `/{userId}/password/reset` | 重置密码 | ✅ | - |
+| PATCH | `/{userId}/password` | 修改密码 | ✅ | ✅ |
 
-### 2.17 日常记录 API (`/api/*`) — 仅管理后台
+### 3.11 菜单 (`/menu`) — MenuController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/menu/all` | 全部菜单(含按钮) | 菜单列表 |
+| GET | `/menu/list` | 菜单列表 | 菜单列表 |
+| GET | `/menu/list/roots` | 根级菜单 | 菜单树 |
+| GET | `/menu/list/children/{parentId}` | 子菜单 | 菜单树 |
+| GET | `/menu/role/permissions/tree` | 角色权限树 | 角色编辑 |
+| GET | `/menu/menu/tree` | 菜单树 | 菜单树 |
+| GET | `/menu/tree` | 菜单树 (别名) | 菜单树 |
+| POST | `/menu` | 创建 | 新建弹窗 |
+| PATCH | `/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/{id}` | 删除 | 列表 |
+| GET | `/menu/name-exists` | 名称唯一校验 | 表单校验 |
+| GET | `/menu/path-exists` | 路径唯一校验 | 表单校验 |
+| GET | `/menu/button/{parentId}` | 按钮级菜单 | - |
+
+### 3.12 角色 (`/role`) — RoleController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/role/list` | 分页 (name) | 角色列表 |
+| GET | `/role` | 所有角色 (status) | 下拉选择 |
+| POST | `/role` | 创建 | 新建弹窗 |
+| PATCH | `/{id}` | 更新 | 编辑弹窗 |
+| PUT | `/{id}` | 强制更新 | 编辑弹窗 |
+| DELETE | `/{id}` | 删除 | 列表 |
+| PATCH | `/role/users/add/{id}` | 分配用户 | 用户分配弹窗 |
+| PATCH | `/role/users/remove/{id}` | 移除用户 | 用户分配弹窗 |
+
+### 3.13 工作空间 (`/workspace`) — WorkspaceController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/workspace/list` | 列表 (name) | 工作空间列表 |
+| POST | `/workspace` | 创建 | 新建弹窗 |
+| PATCH | `/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/{id}` | 删除 | 列表 |
+
+### 3.14 租户 (`/tenant`) — TenantController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/tenant/all` | 全部租户 | 租户列表 |
+| GET | `/{id}` | 详情 | 编辑弹窗 |
+| POST | `` | 创建 | 新建弹窗 |
+| PATCH | `/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/{id}` | 删除 | 列表 |
+
+### 3.15 字典 (`/dict`) — DictController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/dict/page` | 分页 | 字典列表 |
+| GET | `/{id}` | 详情 | 编辑弹窗 |
+| GET | `/dict/type/{dictType}` | 按类型查 | - |
+| POST | `` | 创建 | 新建弹窗 |
+| PATCH | `/{id}` | 更新 | 编辑弹窗 |
+| DELETE | `/{id}` | 删除 | 列表 |
+| DELETE | `/batch` | 批量删除 | 列表 |
+
+### 3.16 时区 (`/timezone`) — TimezoneController
+
+| 方法 | 端点 | 说明 | 管理后台页面 |
+|------|------|------|-------------|
+| GET | `/timezone/getTimezoneOptions` | 时区选项 | 时区设置表单 |
+| GET | `/timezone/getTimezone` | 当前时区 | 时区设置表单 |
+| POST | `/timezone/setTimezone` | 设置时区 | 时区设置表单 |
+
+### 3.17 日常记录 (`/api/*`) — Profile/Record/TimelineEvent/Media/Tag Controller
 
 | 方法 | `/api/profile` | `/api/record` | `/api/timeline` | `/api/media` | `/api/tag` |
 |------|---------------|---------------|-----------------|--------------|------------|
-| GET page | `/page` | `/page` | `/page?profileId` | `/page` | `/page` |
-| GET {id} | `/{id}` | `/{id}` | `/{id}` | `/{id}` | `/{id}` |
+| GET /page | `/page` | `/page` | `/page?profileId` | `/page?recordId` | `/page?name` |
+| GET /{id} | `/{id}` | `/{id}` | `/{id}` | `/{id}` | `/{id}` |
 | POST | `` | `` | `` | `` | `` |
 | PUT | `` | `` | `` | `` | `` |
 | DELETE | `/{id}` | `/{id}` | `/{id}` | `/{id}` | `/{id}` |
-| 其他 | - | - | `/profile/{profileId}` | - | `/all` |
+| 扩展 | - | - | `/profile/{profileId}` | - | `/all` |
 
-### 2.18 通用对话 API (`/api/chat`) — 用户前台
+### 3.18 通用对话 (`/api/chat`) — ChatDemoController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/api/chat/platforms` | 获取可用平台列表 |
-| POST | `/api/chat/send` | 同步对话 |
-| POST | `/api/chat/send/stream` | SSE 流式对话 |
-| POST | `/api/chat/send/with-memory` | 带记忆对话 |
-| GET | `/api/chat/default-model` | 获取平台默认模型 |
+| 方法 | 端点 | 说明 | 管理后台用途 | 用户前台用途 |
+|------|------|------|-------------|-------------|
+| GET | `/api/chat/platforms` | 可用平台 | 配置查看 | 对话页模型选择 |
+| POST | `/api/chat/send` | 同步对话 | 后台调试 | 对话页 |
+| POST | `/api/chat/send/stream` | SSE流式对话 | 后台调试 | 对话页 |
+| POST | `/api/chat/send/with-memory` | 带记忆对话 | - | 对话页 |
+| GET | `/api/chat/default-model` | 默认模型 | 配置查看 | 对话页 |
 
-### 2.19 知识库 API (`/api/v1/knowledge`) — 用户前台
+### 3.19 知识库 (`/api/v1/knowledge`) — KnowledgeController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/{id}` | 知识点详情 |
-| GET | `` | 知识点列表 |
-| GET | `/{id}/graph` | 知识点图谱 |
-| GET | `/{id}/path` | 知识点路径 |
-| GET | `/{id}/prerequisites` | 前置知识点 |
-| GET | `/{id}/prerequisites-list` | 前置知识点列表 |
-| GET | `/{id}/subsequent-list` | 后续知识点列表 |
-| POST | `` | 创建知识点 |
-| PUT | `/{id}` | 更新知识点 |
-| DELETE | `/{id}` | 删除知识点 |
-| POST | `/relation` | 添加知识点关系 |
-| DELETE | `/relation` | 删除知识点关系 |
-| POST | `/reload` | 重新加载 |
-| GET | `/search` | 搜索知识点 |
-| GET | `/search/modes` | 搜索模式列表 |
-| POST | `/rebuild-index` | 重建索引 |
-| GET | `/rebuild-index/{taskId}` | 重建索引进度 |
-| GET | `/rebuild-index` | 索引状态 |
-| DELETE | `/index` | 删除索引 |
+| 方法 | 端点 | 说明 | 管理后台页面 | 用户前台 |
+|------|------|------|-------------|---------|
+| GET | `/{id}` | 知识点详情 | 编辑弹窗 | 详情页 |
+| GET | `` | 知识点列表 | 列表页 | 浏览页 |
+| GET | `/{id}/graph` | 知识图谱 | 图谱视图 | - |
+| GET | `/{id}/path` | 学习路径 | 路径视图 | 学习路径 |
+| GET | `/{id}/prerequisites` | 前置知识点 | 前置管理 | - |
+| GET | `/{id}/prerequisites-list` | 前置列表 | 前置管理 | - |
+| GET | `/{id}/subsequent-list` | 后续列表 | 后续管理 | - |
+| POST | `` | 创建 | 新建弹窗 | - |
+| PUT | `/{id}` | 更新 | 编辑弹窗 | - |
+| DELETE | `/{id}` | 删除 | 列表 | - |
+| POST | `/relation` | 添加关系 | 关系管理 | - |
+| DELETE | `/relation` | 删除关系 | 关系管理 | - |
+| POST | `/reload` | 重新加载 | 操作按钮 | - |
+| GET | `/search` | 搜索 (query, topK, mode) | 搜索页 | 搜索页 |
+| GET | `/search/modes` | 搜索模式 | - | 搜索筛选 |
+| POST | `/rebuild-index` | 重建索引 | 索引管理 | - |
+| GET | `/rebuild-index/{taskId}` | 重建进度 | 索引管理 | - |
+| GET | `/rebuild-index` | 索引状态 | 索引管理 | - |
+| DELETE | `/index` | 删除索引 | 索引管理 | - |
 
-### 2.20 知识库文档 API (`/api/v1/knowledge/documents`) — 用户前台
+### 3.20 知识库文档 (`/api/v1/knowledge/documents`) — DocumentController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/{id}` | 文档详情 |
-| GET | `?keyword&topK` | 文档搜索 |
-| GET | `/by-knowledge/{knowledgeId}` | 按知识点查文档 |
-| POST | `` | 创建文档 |
-| PUT | `/{id}` | 更新文档 |
-| DELETE | `/{id}` | 删除文档 |
+| 方法 | 端点 | 说明 | 管理后台页面 | 用户前台 |
+|------|------|------|-------------|---------|
+| GET | `/{id}` | 文档详情 | 编辑弹窗 | 文档阅读 |
+| GET | `?keyword&topK` | 文档搜索 | 搜索页 | 搜索页 |
+| GET | `/by-knowledge/{knowledgeId}` | 按知识点查 | 文档列表 | 文档列表 |
+| POST | `` | 创建文档 | 新建弹窗 | - |
+| PUT | `/{id}` | 更新文档 | 编辑弹窗 | - |
+| DELETE | `/{id}` | 删除文档 | 列表 | - |
 
-### 2.21 文件上传 API (`/upload`) — 双端共用
+### 3.21 文件上传 (`/upload`) — FileController
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| POST | `/upload` | 上传文件 (MultipartFile) |
+| 方法 | 端点 | 说明 | 管理后台 | 用户前台 |
+|------|------|------|---------|---------|
+| POST | `/upload` | 上传文件 (MultipartFile) | ✅ | ✅ |
 
-### 2.22 时区 API (`/timezone`) — 管理后台
+### 3.22 教育管理 (`/api/v1/*`) — 规划中
 
-| 方法 | 端点 | 说明 |
-|------|------|------|
-| GET | `/timezone/getTimezoneOptions` | 时区选项 |
-| GET | `/timezone/getTimezone` | 当前时区 |
-| POST | `/timezone/setTimezone` | 设置时区 |
-
-### 2.23 教育 API (`/api/v1/*`) — 规划预留
-
-| Controller | 基础路径 | 说明 |
-|-----------|---------|------|
-| SubjectController | `/api/v1/subject` | 学科 CRUD |
-| TextbookController | `/api/v1/textbook` | 教材 CRUD |
-| ChapterController | `/api/v1/chapter` | 章节 CRUD + 树 |
-| CourseController | `/api/v1/course` | 课程 CRUD + 学习 |
-| ExamController | `/api/v1/exam` | 考试 CRUD + 提交 |
-| QuestionController | `/api/v1/question` | 题库 CRUD |
-| StudyPlanController | `/api/v1/plan` | 学习计划 CRUD |
-| ReviewController | `/api/v1/review` | 复习任务 CRUD |
-| AnalyticsController | `/api/v1/analytics` | 学情分析 |
-| ResourceController | `/api/v1/resource` | 资源 CRUD |
-| WrongQuestionController | `/api/v1/wrong-question` | 错题 CRUD |
+| Controller | 基础路径 | API 数 | 管理后台页面 |
+|-----------|---------|--------|-------------|
+| SubjectController | `/api/v1/subject` | 7 | 学科管理列表/表单 |
+| TextbookController | `/api/v1/textbook` | 6 | 教材管理列表/表单 |
+| ChapterController | `/api/v1/chapter` | 6 | 章节管理树/列表/表单 |
+| CourseController | `/api/v1/course` | 7 | 课程管理列表/表单/学习 |
+| ExamController | `/api/v1/exam` | 6 | 试卷管理列表/表单/提交 |
+| QuestionController | `/api/v1/question` | 6 | 题库管理列表/表单 |
+| StudyPlanController | `/api/v1/plan` | 7 | 学习计划列表/表单 |
+| ReviewController | `/api/v1/review` | 5 | 复习任务列表/表单 |
+| AnalyticsController | `/api/v1/analytics` | 6 | 学情分析看板 |
+| ResourceController | `/api/v1/resource` | 6 | 资源管理列表/表单 |
+| WrongQuestionController | `/api/v1/wrong-question` | 5 | 错题管理列表/表单 |
 
 ---
 
-## 三、模块设计
+## 四、模块设计
 
-### 3.1 模块划分总览
-
-```
-shiyu-ui 前端模块 (按后端API边界划分)
-├── agent-core          # Agent 核心管理(管理后台) — AgentAdminController
-├── agent-graph         # Graph 编排(管理后台) — AgentGraphController
-├── agent-version       # 版本管理(管理后台) — AgentVersionController
-├── agent-execution     # Agent 执行(管理后台 Modal) — AgentController
-├── agent-platform      # AI 平台管理(管理后台) — AiPlatformController
-├── agent-model         # AI 模型管理(管理后台) — AiModelController
-├── agent-intent        # 意图管理(管理后台) — IntentDefController
-├── system-auth         # 认证/用户(双端) — AuthController + UserController
-├── system-role         # 角色管理(管理后台) — RoleController
-├── system-menu         # 菜单管理(管理后台) — MenuController
-├── system-workspace    # 工作空间(管理后台) — WorkspaceController
-├── system-tenant       # 租户管理(管理后台) — TenantController
-├── system-dict         # 字典管理(管理后台) — DictController
-├── system-timezone     # 时区设置(管理后台) — TimezoneController
-├── record              # 日常记录(管理后台) — Profile/Record/Timeline/Media/Tag
-├── dashboard           # 仪表盘(管理后台)
-├── chat-demo           # AI 对话(用户前台) — ChatDemoController
-├── ai-knowledge        # 知识库(用户前台) — KnowledgeController + DocumentController
-├── file-upload         # 文件上传(双端) — FileController
-└── education           # 教育(规划预留)
-```
-
-### 3.2 管理后台 (web-naive) 模块详细
-
-| 模块 | 页面 | 控制器 | API 数量 | 状态 |
-|------|------|--------|---------|------|
-| **AgentCore** | agent-list, agent-edit, agent-form | AgentAdminController | 7 | ✅ |
-| **AgentGraph** | agent-edit 内 VueFlow | AgentGraphController | 10 | ✅ |
-| **AgentVersion** | agent-edit 内 NCollapse | AgentVersionController | 9 | ✅ |
-| **AgentExecution** | chat Modal | AgentController (部分) | 3 | ✅ |
-| **AgentPlatform** | platform/list, platform/form | AiPlatformController | 11 | ✅ |
-| **AgentModel** | model/list, model/form, chat-dialog | AiModelController | 11 | ✅ |
-| **AgentIntent** | intent/list, intent/form | IntentDefController | 7 | ✅ |
-| **SystemAuth** | login, user/info | AuthController + UserController | 16 | ✅ |
-| **SystemUser** | user/list, user/form | UserController | 6 | ✅ |
-| **SystemRole** | role/list, role/form, NTree | RoleController | 8 | ✅ |
-| **SystemMenu** | menu/list, menu/form, tree | MenuController | 13 | ✅ |
-| **SystemWorkspace** | workspace/list, workspace/form | WorkspaceController | 4 | ✅ |
-| **SystemTenant** | tenant/list, tenant/form | TenantController | 5 | ✅ |
-| **SystemDict** | dict/list, dict/form | DictController | 7 | ✅ |
-| **SystemTimezone** | timezone settings | TimezoneController | 3 | ✅ |
-| **RecordProfile** | profile/list, profile/form | ProfileController | 4 | ✅ |
-| **RecordTimeline** | timeline/list, timeline/form | TimelineEventController | 5 | ✅ |
-| **RecordMedia** | (未独立页面, 关联记录) | MediaController | 4 | ✅ |
-| **RecordTag** | (未独立页面, 关联管理) | TagController | 5 | ✅ |
-| **Dashboard** | analytics, workspace | - | - | ✅ |
-
-### 3.3 用户前台 (web-client) 模块详细 — 规划中
-
-| 模块 | 页面 | 控制器 | API 数量 | 状态 |
-|------|------|--------|---------|------|
-| **ChatCore** | `/chat`, `/chat/:sessionId` | ChatDemoController | 5 | 🔧 规划 |
-| **AgentSquare** | `/agent`, `/agent/:agentId` | AgentController | 2 | 🔧 规划 |
-| **AgentChat** | Agent 详情内对话 | AgentController (execute) | 2 | 🔧 规划 |
-| **Knowledge** | `/knowledge`, `/knowledge/search` | KnowledgeController + DocumentController | 18 | 🔧 规划 |
-| **UserCenter** | `/space/settings`, `/space/history` | UserController (用户前台子集) | 3 | 🔧 规划 |
-| **Auth** | `/login`, `/register` | AuthController (登录子集) | 4 | 🔧 规划 |
-
-### 3.4 双端 API 共享矩阵
+### 4.1 模块划分总览
 
 ```
-API 端点                                    web-naive   web-client
-─────────────────────────────────────────────────────────────────
-/auth/login                                   ✅           ✅
-/auth/codes                                   ✅           ❌
-/auth/refresh                                 ✅           ✅
-/auth/logout                                  ✅           ✅
-/auth/workspaces                              ✅           ✅ (只读)
-/auth/tenants                                 ✅           ✅ (只读)
-/auth/captcha                                 ✅           ✅
-/auth/switch-*                                ✅           ❌
-/user/info                                    ✅           ✅
-/user/{userId}/password                       ✅           ✅
-/api/agent/{agentId}                          ✅           ✅
-/api/agent/{agentId}/execute                  ✅           ✅
-/api/agent/{agentId}/executeStream            ✅           ✅
-/api/agent/list                               ❌           ✅
-/api/chat/*                                   ❌           ✅
-/api/v1/knowledge/*                           ❌           ✅
-/api/v1/knowledge/documents/*                 ❌           ✅
-/upload                                       ✅           ✅
+shiyu-ui 前端模块 (按后端 Controller 边界)
+───────────────────────────────────────────────────
+管理后台 (web-naive):
+  agent-core         — AgentAdminController (7 API)       ✅
+  agent-graph        — AgentGraphController (10 API)      ✅
+  agent-version      — AgentVersionController (9 API)     ✅
+  agent-execution    — AgentController (部分) (3 API)     ✅
+  agent-platform     — AiPlatformController (11 API)      ✅
+  agent-model        — AiModelController (11 API)         ✅
+  agent-intent       — IntentDefController (7 API)        ✅
+  agent-node-type    — NodeTypeController (2 API)         ✅
+  system-auth        — AuthController + CaptchaController (12 API)  ✅
+  system-user        — UserController (7 API)             ✅
+  system-role        — RoleController (8 API)             ✅
+  system-menu        — MenuController (13 API)            ✅
+  system-workspace   — WorkspaceController (4 API)        ✅
+  system-tenant      — TenantController (5 API)           ✅
+  system-dict        — DictController (7 API)             ✅
+  system-timezone    — TimezoneController (3 API)         ✅
+  record-profile     — ProfileController (4 API)          ✅
+  record-timeline    — TimelineEventController (5 API)    ✅
+  record-record      — RecordController (4 API)           ✅
+  record-media       — MediaController (4 API)            ✅
+  record-tag         — TagController (5 API)              ✅
+  knowledge-mgmt     — KnowledgeController (19 API)       🔧 规划
+  knowledge-doc      — DocumentController (6 API)         🔧 规划
+  education-subject  — SubjectController (7 API)          🔧 规划
+  education-textbook — TextbookController (6 API)         🔧 规划
+  education-chapter  — ChapterController (6 API)          🔧 规划
+  education-course   — CourseController (7 API)           🔧 规划
+  education-exam     — ExamController (6 API)             🔧 规划
+  education-question — QuestionController (6 API)         🔧 规划
+  education-plan     — StudyPlanController (7 API)        🔧 规划
+  education-review   — ReviewController (5 API)           🔧 规划
+  education-analytics— AnalyticsController (6 API)        🔧 规划
+  education-resource — ResourceController (6 API)         🔧 规划
+  education-wrong    — WrongQuestionController (5 API)    🔧 规划
+  file-manager       — FileController (1 API)             🔧 规划
+  dashboard          — (无需后端 API)                     ✅
+
+用户前台 (web-client):
+  chat-core          — ChatDemoController (5 API)         🔧 规划
+  agent-square       — AgentController (部分) (2 API)     🔧 规划
+  knowledge-search   — KnowledgeController (部分) (3 API) 🔧 规划
+  user-center        — UserController (部分) (3 API)      🔧 规划
+  auth               — AuthController (部分) (4 API)      🔧 规划
 ```
 
----
+### 4.2 管理后台侧边栏菜单结构
 
-## 四、路由系统
+```
+仪表盘
+├─ 分析页 (/analytics)
+└─ 工作空间 (/workspace)
 
-### 4.1 管理后台路由 (web-naive) — 后端动态路由模式
+系统管理
+├─ 用户管理 (/system/user)
+├─ 角色管理 (/system/role)
+├─ 菜单管理 (/system/menu)
+├─ 工作空间管理 (/system/workspace)
+├─ 租户管理 (/system/tenant)
+├─ 字典管理 (/system/dict)
+└─ 时区设置 (/system/timezone)
 
-后端 DB `menu` 表定义的菜单路径：
+智能体
+├─ Agent 管理 (/agent/admin/list)
+├─ 平台管理 (/agent/platform)
+├─ 模型管理 (/agent/model)
+├─ 意图管理 (/agent/intent)
+└─ 对话调试 (隐藏菜单, /agent/chat)
 
-| path | component | 说明 | 可见性 |
-|------|-----------|------|--------|
-| `/dashboard` | BasicLayout (目录) | 仪表盘分组 | visible |
-| `/analytics` | `/dashboard/analytics/index` | 分析页 | visible |
-| `/workspace` | `/dashboard/workspace/index` | 工作空间 | visible |
-| `/system` | BasicLayout (目录) | 系统管理分组 | visible |
-| `/system/user` | `/system/user/list` | 用户管理 | visible |
-| `/system/role` | `/system/role/list` | 角色管理 | visible |
-| `/system/menu` | `/system/menu/list` | 菜单管理 | visible |
-| `/system/workspace` | `/system/workspace/list` | 工作空间管理 | visible |
-| `/system/tenant` | `/system/tenant/list` | 租户管理 | visible |
-| `/system/dict` | `/common/dict/list` | 字典管理 | visible |
-| `/record` | (目录) | 日常记录分组 | visible |
-| `/record/profile` | `/record/profile/list` | 人物管理 | visible |
-| `/record/timeline` | `/record/timeline/list` | 时间轴管理 | visible |
-| `/agent` | (目录) | 智能体分组 | visible |
-| `/agent/admin/list` | `/agent/admin/agent-list` | Agent管理 | visible |
-| `/agent/admin/edit` | `/agent/admin/agent-edit` | 编辑页 | hidden |
-| `/agent/platform` | `/agent/platform/list` | 平台管理 | visible |
-| `/agent/model` | `/agent/model/list` | 模型管理 | visible |
-| `/agent/intent` | `/agent/intent/list` | 意图管理 | visible |
+日常记录
+├─ 人物管理 (/record/profile)
+├─ 时间轴管理 (/record/timeline)
+├─ 记录管理 (/record/record)
+├─ 媒体管理 (/record/media)
+└─ 标签管理 (/record/tag)
 
-### 4.2 用户前台路由 (web-client) — 静态路由
+知识库管理 (规划)
+├─ 知识点管理 (/knowledge/list)
+├─ 文档管理 (/knowledge/documents)
+├─ 索引管理 (/knowledge/index)
+└─ 知识图谱 (/knowledge/graph)
 
-```typescript
-const routes = [
-  // 认证
-  { path: '/login', component: Login },
-  
-  // AI 对话 (核心)
-  { path: '/chat', component: ChatIndex, meta: { requiresAuth: true } },
-  { path: '/chat/:sessionId', component: ChatIndex, meta: { requiresAuth: true } },
-  
-  // Agent 广场
-  { path: '/agent', component: AgentSquare, meta: { requiresAuth: true } },
-  { path: '/agent/:agentId', component: AgentDetail, meta: { requiresAuth: true } },
-  
-  // 知识库
-  { path: '/knowledge', component: KnowledgeIndex, meta: { requiresAuth: true } },
-  { path: '/knowledge/:id', component: KnowledgeDetail, meta: { requiresAuth: true } },
-  { path: '/knowledge/search', component: KnowledgeSearch, meta: { requiresAuth: true } },
-  
-  // 个人空间
-  { path: '/space', redirect: '/space/settings' },
-  { path: '/space/settings', component: SpaceSettings, meta: { requiresAuth: true } },
-  { path: '/space/history', component: ChatHistory, meta: { requiresAuth: true } },
-];
+教育管理 (规划)
+├─ 学科管理 (/education/subject)
+├─ 教材管理 (/education/textbook)
+├─ 章节管理 (/education/chapter)
+├─ 课程管理 (/education/course)
+├─ 试卷管理 (/education/exam)
+├─ 题库管理 (/education/question)
+├─ 学习计划 (/education/plan)
+├─ 复习任务 (/education/review)
+├─ 学情分析 (/education/analytics)
+├─ 资源管理 (/education/resource)
+└─ 错题管理 (/education/wrong-question)
+
+文件管理 (规划)
+└─ 文件管理 (/file/list)
 ```
 
 ---
 
-## 五、数据库核心表结构
+## 五、路由系统
 
-### 5.1 Agent 相关表 (agent 数据源)
+### 5.1 管理后台路由 — 后端动态路由
+
+所有菜单路径通过后端 `menu` 表动态注入（`accessMode: 'mixed'`），前端的 `router/routes/modules/` 仅保留 `dashboard.ts` 和 `vben.ts`（后者待清理）。
+
+### 5.2 规划页面路由表（含 DB menu 配置参考）
+
+| 模块 | menu.path | menu.component | show | 状态 |
+|------|-----------|---------------|------|------|
+| 知识库管理 | `/knowledge` | BasicLayout (目录) | true | 🔧 |
+| 知识点列表 | `/knowledge/list` | `/knowledge/list` | true | 🔧 |
+| 文档管理 | `/knowledge/documents` | `/knowledge/documents/list` | true | 🔧 |
+| 索引管理 | `/knowledge/index` | `/knowledge/index` | true | 🔧 |
+| 知识图谱 | `/knowledge/graph` | `/knowledge/graph` | true | 🔧 |
+| 教育管理 | `/education` | BasicLayout (目录) | true | 🔧 |
+| 学科管理 | `/education/subject` | `/education/subject/list` | true | 🔧 |
+| 教材管理 | `/education/textbook` | `/education/textbook/list` | true | 🔧 |
+| 章节管理 | `/education/chapter` | `/education/chapter/list` | true | 🔧 |
+| 课程管理 | `/education/course` | `/education/course/list` | true | 🔧 |
+| 试卷管理 | `/education/exam` | `/education/exam/list` | true | 🔧 |
+| 题库管理 | `/education/question` | `/education/question/list` | true | 🔧 |
+| 学习计划 | `/education/plan` | `/education/plan/list` | true | 🔧 |
+| 复习任务 | `/education/review` | `/education/review/list` | true | 🔧 |
+| 学情分析 | `/education/analytics` | `/education/analytics/index` | true | 🔧 |
+| 资源管理 | `/education/resource` | `/education/resource/list` | true | 🔧 |
+| 错题管理 | `/education/wrong-question` | `/education/wrong-question/list` | true | 🔧 |
+| 文件管理 | `/file` | `/file/list` | true | 🔧 |
+
+---
+
+## 六、数据库核心表结构
+
+### 6.1 Agent 相关表
 
 ```sql
-ai_platform (id, name, code, base_url, api_key, temperature, 
-             max_tokens, available_models, is_default, status)
-
-ai_model (id, platform_id, model_name, display_name, 
-          is_default, status, sort)
-
+ai_platform (id, name, code, base_url, api_key, temperature, max_tokens, available_models, is_default, status)
+ai_model (id, platform_id, model_name, display_name, is_default, status, sort)
 agent_def (id, agent_id, name, description, status)
-
-agent_version (id, agent_id, version_number, description, 
-              status DRAFT|PUBLISHED|ARCHIVED, graph_config TEXT)
-
-intent_def (id, agent_id, code, name, category, 
-           priority, target_node, enabled)
+agent_version (id, agent_id, version_number, description, status, graph_config TEXT)
+intent_def (id, agent_id, code, name, category, priority, target_node, enabled)
 ```
 
-### 5.2 权限相关表 (auth 数据源)
+### 6.2 权限相关表
 
 ```sql
 tenant (id, code, name, status)
 user (id, username, password, tenant_id, status, ext_info)
 role (id, code, name, tenant_id, status)
-menu (id, name, code, type CATALOG|MENU|BUTTON, parent_id, 
-      path, component, icon, show, layout, keep_alive, method, order, status)
+menu (id, name, code, type, parent_id, path, component, icon, show, layout, keep_alive, method, order, status)
 user_workspace_role (user_id, workspace_id, role_id, tenant_id)  -- PK
 role_workspace_menu (role_id, workspace_id, menu_id, tenant_id)  -- PK
 workspace (id, parent_id, name, tenant_id, leader, status)
 ```
 
-### 5.3 日常记录表 (record 数据源)
+### 6.3 日常记录表
 
 ```sql
 profile (id, name, gender, avatar, address, email, ...)
@@ -564,168 +664,45 @@ tag (id, name, color, ...)
 record_tag (record_id, tag_id)
 ```
 
-### 5.4 教育/知识库表 (预留)
+### 6.4 知识库表
 
 ```sql
--- 教育域 (education 数据源)
-subject, textbook, chapter, course, exam, question, study_plan, 
-review_task, resource, wrong_question, study_record
-
--- 知识库 (knowledge 数据源)
 knowledge (id, name, description, subject, grade_level, ...)
 document (id, knowledge_id, title, content, source, ...)
 knowledge_relation (source_id, target_id, type, weight)
 ```
 
----
+### 6.5 教育域表
 
-## 六、系统架构图
-
-### 6.1 完整双应用架构
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                         shiyu-ui (前端)                                │
-│                                                                      │
-│  ┌─────────────────────────────────┐  ┌───────────────────────────┐  │
-│  │     管理后台 web-naive (5888)     │  │  用户前台 web-client (5889) │  │
-│  │                                 │  │                           │  │
-│  │  Vue 3 + Vben Admin 5.x        │  │  Vue 3 (无 Vben 框架)     │  │
-│  │  + Naive UI + VxeTable          │  │  + Naive UI (按需)        │  │
-│  │  + VueFlow (Graph编排)           │  │  + 流式对话核心            │  │
-│  │                                 │  │                           │  │
-│  │  Agent管理  │ 系统管理 │ 记录    │  │  AI对话 │ Agent广场       │  │
-│  │  Graph编排  │ 平台/模型 │ 意图   │  │  知识库  │ 个人空间        │  │
-│  │  仪表盘     │ 字典/时区          │  │                           │  │
-│  └──────────┬──────────────────────┘  └──────────┬────────────────┘  │
-│             │                                     │                   │
-│             └──────────────┬──────────────────────┘                   │
-│                            │                                         │
-│              ┌─────────────┴─────────────┐                           │
-│              │    共享层 (packages/)       │                           │
-│              │  effects/request (SSE工具)  │                           │
-│              │  stores (useAccessStore)    │                           │
-│              │  utils / types / hooks      │                           │
-│              └─────────────────────────────┘                           │
-└──────────────────────────────────┬────────────────────────────────────┘
-                                   │ HTTP / SSE / JSON
-┌──────────────────────────────────┴────────────────────────────────────┐
-│                         shiyu-ai (后端)                                │
-│                                                                      │
-│  ┌─────────────┐ ┌──────────────┐ ┌────────────┐ ┌──────────────┐  │
-│  │shiyu-ai-agent│ │shiyu-ai-auth │ │shiyu-ai-   │ │shiyu-ai-     │  │
-│  │ Agent核心    │ │ 认证授权     │ │record 记录 │ │knowledge 知识│  │
-│  │ :9000       │ │ :9002        │ │ :9005      │ │ :9006        │  │
-│  ├─ /admin/agent│ ├─ /auth       │ ├─ /api/     │ ├─ /api/v1/    │  │
-│  ├─ /api/agent  │ ├─ /user       │ │  profile   │ │  knowledge   │  │
-│  ├─ /ai/platform│ ├─ /role       │ ├─ /api/     │ └──────────────┘  │
-│  ├─ /ai/model   │ ├─ /menu       │ │  timeline  │ ┌──────────────┐  │
-│  ├─ /intent/def │ ├─ /workspace  │ ├─ /api/     │ │shiyu-ai-     │  │
-│  └─────────────┘ ├─ /tenant      │ │  media     │ │education 教育 │  │
-│  ┌─────────────┐ ├─ /dict        │ ├─ /api/     │ │ :9007 (预留)  │  │
-│  │shiyu-ai-core │ ├─ /timezone   │ │  tag       │ └──────────────┘  │
-│  │ 对话引擎     │ └──────────────┘ │  /api/     │                    │
-│  │ :9001        │                  │  record    │                    │
-│  ├─ /api/chat   │                  └────────────┘                    │
-│  └─────────────┘                                                     │
-│              Sa-Token + JWT + MyBatis-Flex + H2/MySQL                │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### 6.2 数据流
-
-```
-管理后台操作流:
-  管理员 → web-naive 组件 → requestClient → /admin/agent (带 SaToken 鉴权)
-  → AgentAdminController → AgentAdminService → Repository → DB
-  → 返回 Result<code=200> → 前端渲染表格/卡片
-
-用户前台对话流:
-  用户 → web-client 组件 → fetch (SSE) → /api/agent/{id}/executeStream
-  → AgentController → AgentService (Graph 编译 → 执行)
-  → Flux<NodeOutput> → SSE stream → ReadableStream → 实时渲染
-
-用户前台知识库搜索流:
-  用户 → web-client 组件 → requestClient → /api/v1/knowledge/search
-  → KnowledgeController → KnowledgeService → 向量检索 + 全文搜索
-  → Result<List<KnowledgeResponse>> → 前端展示结果列表
+```sql
+subject (id, code, name, grade_level, icon, sort_order, status)
+textbook (id, name, subject_code, grade, publisher, isbn)
+chapter (id, textbook_id, parent_id, name, chapter_order)
+course (id, name, description, subject_code, grade, textbook_id, teacher_id, total_hours, status)
+exam (id, name, subject_code, grade, duration, total_score, status)
+question (id, subject_code, grade, type, difficulty, content, options, answer, analysis)
+study_plan (id, student_id, name, subject_code, start_date, end_date, status)
+review_task (id, student_id, knowledge_id, review_date, status)
+resource (id, name, type, subject_code, url, description)
+wrong_question (id, student_id, question_id, wrong_answer, review_status, review_count, last_review_date)
 ```
 
 ---
 
-## 七、权限体系
+## 七、开发进度
 
-### 7.1 管理后台 — 三级 RBAC
-
-```
-租户 (Tenant) — MyBatis-Flex 多租户自动隔离
-  └── 工作空间 (Workspace) — tenant_workspace_helper 业务过滤
-       └── 角色 (Role) — role_workspace_menu 绑定菜单权限
-            └── 用户 (User) — user_workspace_role 分配角色
-```
-
-- **权限码**: `system:user:query`, `common:platform:create` 等
-- **按钮级**: `<Auth :value="'system:user:query'">` 指令
-- **菜单级**: 后端返回按角色过滤的菜单树
-
-### 7.2 用户前台 — 轻量鉴权
-
-- **登录校验**: 路由守卫 `router.beforeEach` → `useAccessStore().accessToken`
-- **无按钮级权限**: 仅有登录/未登录区分
-- **接口鉴权**: 由后端 API 层 (Sa-Token) 统一控制
-
----
-
-## 八、前端-后端对接规范
-
-### 8.1 请求规范
-
-```typescript
-// web-naive (Vben Admin)
-import { requestClient } from '#/api/request';
-// 自动注入 Bearer Token, Content-Type
-// 自动拦截 code=200 解 data, code!=200 弹 message
-// 自动 401 → 跳转登录 / 弹出 Modal
-
-// web-client (轻量，可复用同一 requestClient)
-import { requestClient } from '@vben/effects/request';
-// 同上，共享 token 管理
-```
-
-### 8.2 SSE 规范 (双端共用)
-
-```typescript
-// 统一封装在 packages/effects/request/src/sse.ts
-createSseStream({ url, body, onMessage, onError, onDone }) → AbortController
-// 1. 原生 fetch (requestClient 不支持 SSE)
-// 2. 手动注入 Bearer Token (fetch 绕过拦截器)
-// 3. 跨 chunk 缓冲合并 (buffer + lines.pop())
-// 4. 解析 data: { code: 200, data: { content: "..." } }
-// 5. AbortController 支持取消
-```
-
-### 8.3 枚举字段规范
+### 7.1 当前状态
 
 ```
-后端 DO (Integer code) → BO (Integer code + String label) → VO
-前端 API 类型: { gender?: number, genderLabel?: string }
-表单提交 code, 列表展示 label
-后端 Repository 填充 label (单一责任)
+管理后台 (web-naive):
+  ✅ 已完成: Agent核心 + 系统管理 + 日常记录 (21个模块, 130+ API端点)
+  🔧 规划中: 知识库管理 + 教育管理 + 文件管理 (15个模块, 80+ API端点)
+
+用户前台 (web-client):
+  🔧 规划中: AI对话 + Agent广场 + 知识库搜索 + 个人空间
 ```
 
----
-
-## 九、开发进度
-
-### 9.1 当前状态
-
-```
-管理后台 (web-naive): ✅ 90% 完成
-用户前台 (web-client): 🔧 0% (规划中)
-API 覆盖: 管理后台 156/156 端点, 用户前台 22/44 端点 (部分)
-```
-
-### 9.2 管理后台完成度
+### 7.2 管理后台完成度明细
 
 | 模块 | API 端点 | 页面 | 状态 |
 |------|---------|------|------|
@@ -736,31 +713,48 @@ API 覆盖: 管理后台 156/156 端点, 用户前台 22/44 端点 (部分)
 | 平台管理 | 11 | platform/list + form | ✅ |
 | 模型管理 | 11 | model/list + form + chat-dialog | ✅ |
 | 意图管理 | 7 | intent/list + form | ✅ |
-| 认证/用户 | 16 | login + user/list | ✅ |
-| 角色管理 | 8 | role/list + form + NTree | ✅ |
-| 菜单管理 | 13 | menu/list + form + 树 | ✅ |
+| 节点类型 | 2 | Graph 编辑联动 | ✅ |
+| 认证/用户 | 19 | login + user/list | ✅ |
+| 角色管理 | 8 | role/list + form + NTree 权限回显 | ✅ |
+| 菜单管理 | 13 | menu/list + form + 树形 | ✅ |
 | 工作空间 | 4 | workspace/list + form | ✅ |
 | 租户管理 | 5 | tenant/list + form | ✅ |
 | 字典管理 | 7 | dict/list + form | ✅ |
-| 日常记录 | 18 | profile/timeline/media/tag | ✅ |
+| 时区设置 | 3 | timezone 表单 | ✅ |
+| 人物管理 | 4 | profile/list + form | ✅ |
+| 时间轴管理 | 5 | timeline/list + form | ✅ |
+| 记录管理 | 4 | record/list + form | ✅ |
+| 媒体管理 | 4 | media/list + form | ✅ |
+| 标签管理 | 5 | tag/list + form | ✅ |
 | 仪表盘 | - | analytics + workspace | ✅ |
+| **小计** | **130+** | **21 个模块** | **✅ 完成** |
+| 知识库管理 | 19 | knowledge/list + form + graph + index | 🔧 |
+| 文档管理 | 6 | document/list + form | 🔧 |
+| 学科管理 | 7 | subject/list + form | 🔧 |
+| 教材管理 | 6 | textbook/list + form | 🔧 |
+| 章节管理 | 6 | chapter/tree + form | 🔧 |
+| 课程管理 | 7 | course/list + form | 🔧 |
+| 试卷管理 | 6 | exam/list + form | 🔧 |
+| 题库管理 | 6 | question/list + form | 🔧 |
+| 学习计划 | 7 | plan/list + form | 🔧 |
+| 复习任务 | 5 | review/list + form | 🔧 |
+| 学情分析 | 6 | analytics/dashboard | 🔧 |
+| 资源管理 | 6 | resource/list + form | 🔧 |
+| 错题管理 | 5 | wrong-question/list + form | 🔧 |
+| 文件管理 | 1 | file/list | 🔧 |
+| 对话配置 | 5 | chat-config (规划) | 🔧 |
+| **小计** | **80+** | **15 个模块** | **🔧 规划中** |
 
-### 9.3 用户前台开发规划
+### 7.3 规划阶段优先级
 
-| 阶段 | 模块 | API 端点 | 页面 | 优先级 |
-|------|------|---------|------|--------|
-| P0 | 登录/认证 | 4 | login | 🔴 |
-| P0 | AI 对话 | 5 | /chat, /chat/:sessionId | 🔴 |
-| P1 | Agent 广场 | 2 | /agent, /agent/:agentId | 🟡 |
-| P1 | 个人空间 | 3 | /space/settings, /space/history | 🟡 |
-| P2 | 知识库 | 18 | /knowledge, /search | 🟢 |
-
-### 9.4 版本计划
-
-| 版本 | 日期 | 内容 |
-|------|------|------|
-| v1.0 | 2026-06 | 管理后台完整发布 |
-| v2.0 | TBD | web-client 基础 + AI 对话 |
-| v2.1 | TBD | Agent 广场 + 个人空间 |
-| v2.2 | TBD | 知识库 + RAG 对话 |
+| 阶段 | 模块 | API 端点 | 预估工作量 | 优先级 |
+|------|------|---------|-----------|--------|
+| P0 | 知识库管理 + 文档管理 | 25 | 大 | 🔴 最高 |
+| P0 | 对话配置 | 5 | 小 | 🔴 最高 |
+| P1 | 学科/教材/章节/课程 | 26 | 中 | 🟡 高 |
+| P1 | 试卷/题库 | 12 | 中 | 🟡 高 |
+| P2 | 学习计划/复习任务/错题 | 17 | 中 | 🟢 中 |
+| P2 | 学情分析看板 | 6 | 中 | 🟢 中 |
+| P3 | 资源管理 | 6 | 小 | ⚪ 低 |
+| P3 | 文件管理 | 1 | 小 | ⚪ 低 |
 
