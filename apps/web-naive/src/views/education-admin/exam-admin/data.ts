@@ -1,0 +1,62 @@
+import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+import type { VbenFormSchema } from '#/adapter/form';
+import type { OnActionClickFn } from '#/adapter/vxe-table';
+import type { EducationExamApi } from '#/api/education/exam';
+import { z } from '#/adapter/form';
+import { $t } from '#/locales';
+
+export function useGridFormSchema(): VbenFormSchema[] {
+  return [
+    { component: 'Input', fieldName: 'name', label: $t('education.exam.name') },
+    { component: 'Input', fieldName: 'subjectCode', label: $t('course.subjectCode') },
+  ];
+}
+
+export function useSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input', fieldName: 'name', label: $t('education.exam.name'),
+      rules: z.string().min(1, $t('ui.formRules.required', [$t('education.exam.name')])),
+    },
+    {
+      component: 'Select', fieldName: 'type', label: $t('education.exam.type'),
+      componentProps: {
+        options: [
+          { label: $t('education.exam.typeDailyQuiz'), value: 'DAILY_QUIZ' },
+          { label: $t('education.exam.typeUnitTest'), value: 'UNIT_TEST' },
+          { label: $t('education.exam.typeMidterm'), value: 'MIDTERM' },
+          { label: $t('education.exam.typeFinal'), value: 'FINAL' },
+          { label: $t('education.exam.typeMock'), value: 'MOCK' },
+          { label: $t('education.exam.typeAiGenerated'), value: 'AI_GENERATED' },
+        ],
+      },
+    },
+    { component: 'Input', fieldName: 'subjectCode', label: $t('course.subjectCode') },
+    { component: 'InputNumber', fieldName: 'grade', label: $t('course.grade') },
+    { component: 'InputNumber', fieldName: 'durationMin', label: $t('education.exam.durationMin') },
+    { component: 'InputNumber', fieldName: 'totalScore', label: $t('education.exam.totalScore') },
+  ];
+}
+
+export function useColumns(onActionClick?: OnActionClickFn<EducationExamApi.Exam>): VxeTableGridColumns<EducationExamApi.Exam> {
+  return [
+    { field: 'id', title: 'ID', width: 80 },
+    { field: 'name', title: $t('education.exam.name'), width: 180 },
+    { field: 'type', title: $t('education.exam.type'), width: 100 },
+    { field: 'subjectCode', title: $t('course.subjectCode'), width: 100 },
+    { field: 'grade', title: $t('course.grade'), width: 80 },
+    { field: 'durationMin', title: $t('education.exam.durationMin'), width: 100 },
+    { field: 'totalScore', title: $t('education.exam.totalScore'), width: 80 },
+    { field: 'status', title: $t('system.user.status'), width: 80 },
+    {
+      align: 'right',
+      cellRender: {
+        attrs: { nameField: 'name', nameTitle: $t('education.exam.name'), onClick: onActionClick },
+        name: 'CellOperation',
+        options: ['edit', 'delete'],
+      },
+      field: 'operation', fixed: 'right', headerAlign: 'center',
+      showOverflow: false, title: $t('common.operation'), width: 150,
+    },
+  ];
+}

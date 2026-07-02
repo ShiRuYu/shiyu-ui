@@ -4,7 +4,16 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NRadioGroup, NRadio, NSpace, NTag, NSpin, NCountdown } from 'naive-ui';
+import {
+  NButton,
+  NCard,
+  NCountdown,
+  NRadio,
+  NRadioGroup,
+  NSpace,
+  NSpin,
+  NTag,
+} from 'naive-ui';
 
 import { getExamById, submitExam } from '#/api';
 import { $t } from '#/locales';
@@ -47,7 +56,11 @@ onMounted(() => loadExam());
   <Page :title="exam?.name || $t('page.exam.take')">
     <template #extra>
       <NSpace>
-        <NCountdown v-if="exam?.durationMin" :duration="exam.durationMin * 60 * 1000" :active="true" />
+        <NCountdown
+          v-if="exam?.durationMin"
+          :duration="exam.durationMin * 60 * 1000"
+          :active="true"
+        />
         <NButton @click="router.back()">退出</NButton>
         <NButton type="primary" @click="handleSubmit">交卷</NButton>
       </NSpace>
@@ -58,17 +71,30 @@ onMounted(() => loadExam());
         <NCard>
           <NSpace>
             <NTag type="info">{{ exam.subjectCode }}</NTag>
-            <NTag>{{ $t('education.exam.totalScore') }}: {{ exam.totalScore }}</NTag>
-            <NTag>{{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}分钟</NTag>
+            <NTag>
+{{ $t('education.exam.totalScore') }}:
+              {{ exam.totalScore }}
+</NTag>
+            <NTag>
+{{ $t('education.exam.durationMin') }}:
+              {{ exam.durationMin }}分钟
+</NTag>
           </NSpace>
         </NCard>
 
         <!-- Question list - for demo purposes showing mock questions -->
         <NCard v-for="i in 5" :key="i" :title="`第 ${i} 题`">
           <p class="mb-4">题目占位内容</p>
-          <NRadioGroup :value="answers[i]" @update:value="(v: string) => setAnswer(i, v)">
+          <NRadioGroup
+            :value="answers[i]"
+            @update:value="(v: string) => setAnswer(i, v)"
+          >
             <NSpace vertical>
-              <NRadio v-for="opt in ['A', 'B', 'C', 'D']" :key="opt" :value="opt">
+              <NRadio
+                v-for="opt in ['A', 'B', 'C', 'D']"
+                :key="opt"
+                :value="opt"
+              >
                 {{ opt }}. 选项内容...
               </NRadio>
             </NSpace>

@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NGrid, NGi, NSpace, NTag } from 'naive-ui';
+import { NButton, NCard, NGi, NGrid, NSpace, NTag } from 'naive-ui';
 
 import { getExamBySubject } from '#/api';
 import { $t } from '#/locales';
@@ -64,22 +64,35 @@ onMounted(() => loadExams());
           </template>
 
           <NSpace vertical class="text-sm text-gray-500">
-            <span>{{ $t('education.course.subjectCode') }}: {{ exam.subjectCode }}</span>
+            <span>{{ $t('education.course.subjectCode') }}:
+              {{ exam.subjectCode }}</span>
             <span>{{ $t('education.course.grade') }}: {{ exam.grade }}</span>
-            <span>{{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}</span>
-            <span>{{ $t('education.exam.totalScore') }}: {{ exam.totalScore }}</span>
-            <NTag :type="exam.status === 1 ? 'success' : 'default'" size="small">
+            <span>{{ $t('education.exam.durationMin') }}:
+              {{ exam.durationMin }}</span>
+            <span>{{ $t('education.exam.totalScore') }}:
+              {{ exam.totalScore }}</span>
+            <NTag
+              :type="exam.status === 1 ? 'success' : 'default'"
+              size="small"
+            >
               {{ exam.status === 1 ? '进行中' : '已结束' }}
             </NTag>
           </NSpace>
 
           <template #footer>
-            <NButton type="primary" block @click="startExam(exam)">开始考试</NButton>
+            <NButton type="primary" block @click="startExam(exam)">
+开始考试
+</NButton>
           </template>
         </NCard>
       </NGi>
     </NGrid>
 
-    <div v-if="!loading && exams.length === 0" class="py-20 text-center text-gray-400">暂无考试</div>
+    <div
+      v-if="!loading && exams.length === 0"
+      class="py-20 text-center text-gray-400"
+    >
+      暂无考试
+    </div>
   </Page>
 </template>

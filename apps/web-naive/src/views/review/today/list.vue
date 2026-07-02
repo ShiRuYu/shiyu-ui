@@ -3,9 +3,9 @@ import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NGrid, NGi, NSpace, NTag, NProgress } from 'naive-ui';
+import { NButton, NCard, NGi, NGrid, NProgress, NSpace, NTag } from 'naive-ui';
 
-import { getTodayReviews, completeReview } from '#/api/education/review';
+import { completeReview, getTodayReviews } from '#/api/education/review';
 import { $t } from '#/locales';
 
 const loading = ref(false);
@@ -41,17 +41,29 @@ onMounted(() => loadReviews());
         <NCard>
           <template #header>
             <NSpace>
-              <span class="text-base font-medium">{{ review.knowledgeName || `知识点 #${review.knowledgeId}` }}</span>
-              <NTag type="warning" size="small">第{{ review.reviewRound }}轮</NTag>
+              <span class="text-base font-medium">{{
+                review.knowledgeName || `知识点 #${review.knowledgeId}`
+              }}</span>
+              <NTag type="warning" size="small">
+第{{ review.reviewRound }}轮
+</NTag>
             </NSpace>
           </template>
 
           <NSpace vertical class="text-sm text-gray-500">
-            <span>{{ $t('education.review.reviewDate') }}: {{ review.reviewDate }}</span>
+            <span>{{ $t('education.review.reviewDate') }}:
+              {{ review.reviewDate }}</span>
             <span>
               {{ $t('common.status') }}:
-              <NTag :type="review.status === 'PENDING' ? 'warning' : 'success'" size="small">
-                {{ $t(`education.review.status${review.status === 'PENDING' ? 'Pending' : 'Completed'}`) }}
+              <NTag
+                :type="review.status === 'PENDING' ? 'warning' : 'success'"
+                size="small"
+              >
+                {{
+                  $t(
+                    `education.review.status${review.status === 'PENDING' ? 'Pending' : 'Completed'}`,
+                  )
+                }}
               </NTag>
             </span>
             <NProgress
@@ -76,7 +88,10 @@ onMounted(() => loadReviews());
       </NGi>
     </NGrid>
 
-    <div v-if="!loading && reviews.length === 0" class="py-20 text-center text-gray-400">
+    <div
+      v-if="!loading && reviews.length === 0"
+      class="py-20 text-center text-gray-400"
+    >
       今日没有复习任务
     </div>
   </Page>

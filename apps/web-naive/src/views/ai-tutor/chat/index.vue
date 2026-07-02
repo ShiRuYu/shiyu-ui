@@ -8,7 +8,7 @@ import { NButton, NCard, NInput, NSpace } from 'naive-ui';
 import { chat } from '#/api/agent/chat';
 import { $t } from '#/locales';
 
-const messages = ref<{ content: string; role: string; }[]>([]);
+const messages = ref<{ content: string; role: string }[]>([]);
 const input = ref('');
 const loading = ref(false);
 
@@ -70,10 +70,8 @@ async function sendMessage() {
           @keyup.enter="sendMessage"
         />
         <NButton type="primary" :loading="loading" @click="sendMessage">
-{{
-          $t('aiTutor.send')
-        }}
-</NButton>
+          {{ $t('aiTutor.send') }}
+        </NButton>
       </NSpace>
     </NCard>
   </Page>

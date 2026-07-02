@@ -65,9 +65,9 @@ async function handleTeach() {
           :loading="loading"
           :disabled="!knowledgeId"
           @click="handleTeach"
-          >
-开始讲解
-</NButton>
+        >
+          开始讲解
+        </NButton>
       </NSpace>
 
       <NSpin :show="loading">

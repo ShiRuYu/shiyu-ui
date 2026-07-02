@@ -41,8 +41,8 @@ async function handleReport() {
           style="width: 120px"
         />
         <NButton type="primary" :loading="loading" @click="handleReport">
-生成报告
-</NButton>
+          生成报告
+        </NButton>
       </NSpace>
 
       <NSpin :show="loading">

@@ -82,10 +82,8 @@ onMounted(() => {
         <template #header>
           <NSpace>
             <NTag type="info">
-{{
-              typeMap[question.type] || question.type
-            }}
-</NTag>
+              {{ typeMap[question.type] || question.type }}
+            </NTag>
             <NTag
               :type="
                 question.difficulty <= 1
@@ -150,9 +148,9 @@ onMounted(() => {
             type="primary"
             :disabled="userAnswer === ''"
             @click="submitAnswer"
-            >
-提交答案
-</NButton>
+          >
+            提交答案
+          </NButton>
         </NSpace>
 
         <NCard

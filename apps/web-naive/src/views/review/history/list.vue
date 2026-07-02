@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { h } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NDataTable, NTag, NProgress } from 'naive-ui';
+import { NDataTable, NProgress, NTag } from 'naive-ui';
 
 import { getReviewsByStatus } from '#/api/education/review';
 import { $t } from '#/locales';
-
-import { h } from 'vue';
 
 const loading = ref(false);
 const history = ref<any[]>([]);
@@ -20,7 +19,11 @@ const columns: any[] = [
     key: 'reviewRound',
     width: 100,
     render(row: any) {
-      return h(NTag, { type: 'warning', size: 'small' }, () => `第${row.reviewRound}轮`);
+      return h(
+        NTag,
+        { type: 'warning', size: 'small' },
+        () => `第${row.reviewRound}轮`,
+      );
     },
   },
   { title: $t('education.review.reviewDate'), key: 'reviewDate', width: 120 },
@@ -29,8 +32,17 @@ const columns: any[] = [
     key: 'status',
     width: 100,
     render(row: any) {
-      const color: Record<string, string> = { PENDING: 'warning', COMPLETED: 'success', FAILED: 'error', OVERDUE: 'default' };
-      return h(NTag, { type: (color[row.status] || 'default') as any, size: 'small' }, () => row.status);
+      const color: Record<string, string> = {
+        PENDING: 'warning',
+        COMPLETED: 'success',
+        FAILED: 'error',
+        OVERDUE: 'default',
+      };
+      return h(
+        NTag,
+        { type: (color[row.status] || 'default') as any, size: 'small' },
+        () => row.status,
+      );
     },
   },
   {
@@ -60,6 +72,12 @@ onMounted(() => loadHistory());
 
 <template>
   <Page :title="$t('page.review.history')">
-    <NDataTable :columns="columns" :data="history" :loading="loading" striped :row-key="(row: any) => row.id" />
+    <NDataTable
+      :columns="columns"
+      :data="history"
+      :loading="loading"
+      striped
+      :row-key="(row: any) => row.id"
+    />
   </Page>
 </template>

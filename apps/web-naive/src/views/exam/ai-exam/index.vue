@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NSelect, NInputNumber, NSpace, NSpin } from 'naive-ui';
+import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { generateExam } from '#/api/agent/education';
 import { $t } from '#/locales';
@@ -43,17 +43,35 @@ async function handleGenerate() {
   <Page :title="$t('page.exam.aiExam')">
     <NCard>
       <NSpace class="mb-4">
-        <NSelect v-model:value="subjectCode" :options="subjectOptions" style="width: 120px" />
-        <NInputNumber v-model:value="grade" :min="1" :max="12" style="width: 100px" />
-        <NInputNumber v-model:value="duration" :min="30" :max="180" style="width: 120px" />
-        <NButton type="primary" :loading="loading" @click="handleGenerate">AI组卷</NButton>
+        <NSelect
+          v-model:value="subjectCode"
+          :options="subjectOptions"
+          style="width: 120px"
+        />
+        <NInputNumber
+          v-model:value="grade"
+          :min="1"
+          :max="12"
+          style="width: 100px"
+        />
+        <NInputNumber
+          v-model:value="duration"
+          :min="30"
+          :max="180"
+          style="width: 120px"
+        />
+        <NButton type="primary" :loading="loading" @click="handleGenerate">
+AI组卷
+</NButton>
       </NSpace>
 
       <NSpin :show="loading">
         <div v-if="result" class="rounded bg-gray-50 p-4">
           <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">配置参数点击"AI组卷"</div>
+        <div v-else class="py-10 text-center text-gray-400">
+          配置参数点击"AI组卷"
+        </div>
       </NSpin>
     </NCard>
   </Page>

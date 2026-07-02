@@ -75,9 +75,9 @@ async function handlePractice() {
             :loading="loading"
             :disabled="!knowledgeId"
             @click="handlePractice"
-            >
-AI出题
-</NButton>
+          >
+            AI出题
+          </NButton>
         </NSpace>
       </NSpace>
 

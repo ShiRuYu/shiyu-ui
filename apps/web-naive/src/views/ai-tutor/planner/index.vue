@@ -57,9 +57,9 @@ async function handlePlan() {
           :loading="loading"
           :disabled="!knowledgeId"
           @click="handlePlan"
-          >
-生成计划
-</NButton>
+        >
+          生成计划
+        </NButton>
       </NSpace>
 
       <NSpin :show="loading">

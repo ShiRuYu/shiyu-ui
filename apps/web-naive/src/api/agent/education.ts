@@ -73,7 +73,7 @@ async function getTodayReviewTasks() {
   return requestClient.get('/api/v1/agent/review/today');
 }
 
-async function completeReviewTask(data: { result: number; taskId: number; }) {
+async function completeReviewTask(data: { result: number; taskId: number }) {
   return requestClient.post('/api/v1/agent/review/complete', data);
 }
 
