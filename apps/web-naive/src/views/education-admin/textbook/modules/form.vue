@@ -62,10 +62,8 @@ const [Modal, modalApi] = useVbenModal({
     <template #prepend-footer>
       <div class="flex-auto">
         <NButton type="error" @click="formApi.resetForm()">
-{{
-          $t('common.reset')
-        }}
-</NButton>
+          {{ $t('common.reset') }}
+        </NButton>
       </div>
     </template>
   </Modal>

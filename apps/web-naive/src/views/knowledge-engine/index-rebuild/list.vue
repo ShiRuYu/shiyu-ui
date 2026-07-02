@@ -37,15 +37,11 @@ async function handleClear() {
           </p>
           <NSpace>
             <NButton type="primary" @click="handleRebuild">
-{{
-              $t('knowledge.rebuildIndex')
-            }}
-</NButton>
+              {{ $t('knowledge.rebuildIndex') }}
+            </NButton>
             <NButton type="error" @click="handleClear">
-{{
-              $t('knowledge.clearIndex')
-            }}
-</NButton>
+              {{ $t('knowledge.clearIndex') }}
+            </NButton>
           </NSpace>
         </NSpace>
       </NCard>
