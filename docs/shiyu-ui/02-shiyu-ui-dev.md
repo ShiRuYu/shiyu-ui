@@ -1,151 +1,327 @@
-# shiyu-ui 开发文档
+# shiyu-ui 开发文档 — 后端管理开发指南
 
-> **版本**: 2.0.0  
-> **框架**: Vue 3 + Vben Admin 5.x + Naive UI  
-> **应用**: `web-naive`（管理后台 — 覆盖全部后端 API）| `web-client`（用户前台 — 消费入口）  
-> **后端 API**: 27 个 Controller，210+ 端点（6 个后端模块全部纳入管理后台）  
+> **版本**: 3.0.0  
+> **管理后台**: `apps/web-naive`（Vben Admin 5.x + Naive UI）  
+> **后端**: 38 个 Controller 全部实现 / 280+ API 端点  
+> **前端已完成**: 28 页 / 20 模块  
+> **前端待建**: 18 页 / 16 模块  
 > **最后更新**: 2026-07-02
 
 ---
 
-## 一、环境搭建
-
-### 1.1 前置要求
+## 一、开发环境
 
 ```bash
-node >= 22.0
-pnpm >= 10.0
-```
-
-### 1.2 克隆与安装
-
-```bash
-git clone git@github.com:ShiRuYu/shiyu-ui.git
-cd shiyu-ui && pnpm install
-```
-
-### 1.3 启动
-
-```bash
-# 管理后台
-cd apps/web-naive && pnpm dev    # 端口 5888
-# 用户前台
-cd apps/web-client && pnpm dev   # 端口 5889
-# 清缓存 (页面空白第一步)
+cd /root/shiyu-ui && pnpm install
+cd apps/web-naive && pnpm dev    # 管理后台 :5888
+# 清缓存
 rm -rf node_modules/.vite && pnpm dev
 ```
 
 ---
 
-## 二、后端架构速查
+## 二、现有功能总览
 
-### 2.1 模块端口与 API 前缀
+### 2.1 已有页面清单（28页）
 
-| 后端模块 | 端口 | API 根路径 | Controller 数 | API 数 | 纳入管理后台 |
-|---------|------|-----------|--------------|-------|------------|
-| shiyu-ai-agent | 9000 | `/admin/agent`, `/api/agent`, `/ai/*`, `/intent/*` | 8 | 60+ | ✅ |
-| shiyu-ai-auth | 9002 | `/auth`, `/user`, `/role`, `/menu`, `/workspace`, `/tenant`, `/dict`, `/timezone` | 10 | 60+ | ✅ |
-| shiyu-ai-core | 9001 | `/api/chat` | 1 | 5 | ✅ 配置 |
-| shiyu-ai-record | 9005 | `/api/profile`, `/api/timeline`, `/api/media`, `/api/tag`, `/api/record` | 5 | 18 | ✅ |
-| shiyu-ai-knowledge | 9006 | `/api/v1/knowledge`, `/api/v1/knowledge/documents` | 2 | 25 | ✅ |
-| shiyu-ai-education | 9007 | `/api/v1/subject`, `/api/v1/textbook`, ... | 11 | 56 | ✅ 规划 |
-| shiyu-common-web | - | `/upload` | 1 | 1 | ✅ |
+| 模块 | 文件 | 后端 Controller |
+|------|------|----------------|
+| **智能体** (13页) | | |
+| Agent列表 | `views/agent/admin/agent-list.vue` | AgentAdminController |
+| Agent编辑(Graph+版本) | `views/agent/admin/agent-edit.vue` | AgentGraphController, AgentVersionController |
+| Agent表单 | `views/agent/admin/agent-form.vue` | AgentAdminController |
+| 节点编辑弹窗 | `views/agent/admin/modules/node-form.vue` | NodeTypeController |
+| 校验结果弹窗 | `views/agent/admin/modules/validate-result.vue` | AgentGraphController |
+| 对话Modal | `views/agent/agent/modules/chat.vue` | AgentController |
+| 平台列表 | `views/agent/platform/list.vue` | AiPlatformController |
+| 平台表单 | `views/agent/platform/modules/form.vue` | AiPlatformController |
+| 模型列表 | `views/agent/model/list.vue` | AiModelController |
+| 模型表单 | `views/agent/model/modules/form.vue` | AiModelController |
+| 对话弹窗 | `views/agent/model/modules/chat-dialog.vue` | ChatDemoController |
+| 意图列表 | `views/agent/intent/list.vue` | IntentDefController |
+| 意图表单 | `views/agent/intent/modules/form.vue` | IntentDefController |
+| **系统管理** (13页) | | |
+| 用户列表+表单 | `views/system/user/` | UserController |
+| 角色列表+表单(NTree) | `views/system/role/` | RoleController |
+| 菜单列表+表单 | `views/system/menu/` | MenuController |
+| 工作空间列表+表单 | `views/system/workspace/` | WorkspaceController |
+| 租户列表+表单 | `views/system/tenant/` | TenantController |
+| 字典列表+表单 | `views/common/dict/` | DictController |
+| 时区设置 | `views/_core/profile/` | TimezoneController |
+| **日常记录** (10页) | | |
+| 人物列表+表单 | `views/record/profile/` | ProfileController |
+| 时间轴列表+表单 | `views/record/timeline/` | TimelineEventController |
+| 记录列表+表单 | `views/record/records/` | RecordController |
+| 媒体列表+表单 | `views/record/media/` | MediaController |
+| 标签列表+表单 | `views/record/tags/` | TagController |
+| **其他** (2页) | | |
+| 登录 | `views/_core/authentication/login.vue` | AuthController + CaptchaController |
+| 仪表盘 | `views/dashboard/` | — |
 
-### 2.2 API 前缀鉴权规则
+### 2.2 已有API模块
 
-| 前缀 | 鉴权 | 管理后台用途 |
-|------|------|-------------|
-| `/admin/*` | Sa-Token admin role | Agent CRUD, Graph 编排, 版本管理, 节点类型 |
-| `/api/*` | Sa-Token login | Agent 执行, 日常记录CRUD, 对话, 知识库 |
-| `/auth/*` | 部分无登录 | 登录/登出/刷新Token/切换租户空间 |
-| `/ai/*` | Sa-Token login | 平台/模型 CRUD |
-| `/upload` | Sa-Token login | 文件上传 |
+```
+api/
+├── agent/        admin.ts agent.ts chat.ts graph.ts intent-def.ts node-type.ts version.ts
+├── common/       dict.ts model.ts platform.ts timezone.ts
+├── core/         auth.ts captcha.ts menu.ts user.ts
+├── record/       media.ts profile.ts records.ts tag.ts timeline.ts
+├── system/       menu.ts role.ts tenant.ts upload.ts user.ts workspace.ts
+└── request.ts
+```
 
 ---
 
-## 三、添加新功能标准流程
+## 三、待建功能开发指引
 
-### 3.1 管理后台添加新页面（后端路由模式 + CRUD 模板）
+### 3.1 知识库管理（P0 — 5页需新建）
 
-**Step 1: 创建视图文件**
+**需创建的文件：**
 
-```bash
-# 以知识库管理为例
-mkdir -p apps/web-naive/src/views/knowledge
-touch apps/web-naive/src/views/knowledge/list.vue
-touch apps/web-naive/src/views/knowledge/data.ts
-touch apps/web-naive/src/views/knowledge/modules/form.vue
+```
+api/knowledge/
+├── index.ts          — 19个API (KnowledgeController)
+└── document.ts       — 6个API (DocumentController)
+
+views/knowledge/
+├── list.vue
+├── modules/form.vue
+├── relation.vue
+├── graph.vue
+├── document/list.vue
+├── document/modules/form.vue
+└── index.vue
 ```
 
-**Step 2: 创建 API 模块**
+**后端 API 调用速查：**
 
 ```typescript
-// api/knowledge/index.ts
+// 知识点CRUD
 import { requestClient } from '#/api/request';
 
-export function getKnowledgePageApi(params: Recordable) {
-  return requestClient.get<PageResult<KnowledgeItem>>('/api/v1/knowledge', { params });
-}
-export function getKnowledgeDetailApi(id: number) {
-  return requestClient.get(`/api/v1/knowledge/${id}`);
-}
-export function createKnowledgeApi(data: any) {
-  return requestClient.post('/api/v1/knowledge', data);
-}
-export function updateKnowledgeApi(id: number, data: any) {
-  return requestClient.put(`/api/v1/knowledge/${id}`, data);
-}
-export function deleteKnowledgeApi(id: number) {
-  return requestClient.delete(`/api/v1/knowledge/${id}`);
-}
+// 列表（后端GET /api/v1/knowledge — 注意不是/page 后缀）
+await requestClient.get('/api/v1/knowledge', { params: { category: 'MATH' } });
+// 详情
+await requestClient.get('/api/v1/knowledge/1');
+// 创建
+await requestClient.post('/api/v1/knowledge', { code: 'math_algebra', name: '代数', ... });
+// 更新
+await requestClient.put('/api/v1/knowledge/1', { ... });
+// 删除
+await requestClient.delete('/api/v1/knowledge/1');
+
+// 知识关系
+await requestClient.post('/api/v1/knowledge/relation', { sourceId: 1, targetId: 2, type: 'PRE', weight: 1.0 });
+await requestClient.delete('/api/v1/knowledge/relation', { params: { sourceId: 1, targetId: 2, type: 'PRE' } });
+
+// 知识图谱
+await requestClient.get('/api/v1/knowledge/1/graph');
+
+// 文档CRUD
+await requestClient.get('/api/v1/knowledge/documents/by-knowledge/1');
+await requestClient.post('/api/v1/knowledge/documents', { title: '...', content: '...', docType: 'ARTICLE' });
+
+// 索引管理
+await requestClient.post('/api/v1/knowledge/rebuild-index');
+await requestClient.get('/api/v1/knowledge/rebuild-index/taskId');
+await requestClient.get('/api/v1/knowledge/rebuild-index');
+await requestClient.delete('/api/v1/knowledge/index');
 ```
 
-**Step 3: 编写列表页**
+### 3.2 教育管理（P1-P2 — 11页需新建）
+
+**需创建的文件：**
+
+```
+api/education/
+├── subject.ts          — 7 API
+├── textbook.ts         — 6 API
+├── chapter.ts          — 6 API
+├── course.ts           — 7 API
+├── exam.ts             — 6 API
+├── question.ts         — 6 API
+├── plan.ts             — 7 API
+├── review.ts           — 5 API
+├── analytics.ts        — 6 API
+├── resource.ts         — 6 API
+└── wrong-question.ts   — 5 API
+
+views/education/
+├── subject/      list.vue + modules/form.vue
+├── textbook/     list.vue + modules/form.vue
+├── chapter/      list.vue + modules/form.vue  (NTree树形)
+├── course/       list.vue + modules/form.vue
+├── exam/         list.vue + modules/form.vue
+├── question/     list.vue + modules/form.vue
+├── plan/         list.vue + modules/form.vue
+├── review/       list.vue + modules/form.vue
+├── analytics/    index.vue  (ECharts看板)
+├── resource/     list.vue + modules/form.vue
+└── wrong-question/ list.vue  (只读列表)
+```
+
+**后端 API 调用速查：**
+
+```typescript
+// 学科
+await requestClient.get('/api/v1/subject');
+await requestClient.get('/api/v1/subject/1');
+await requestClient.post('/api/v1/subject', { code: 'MATH', name: '数学', ... });
+await requestClient.put('/api/v1/subject/1', { ... });
+await requestClient.delete('/api/v1/subject/1');
+
+// 教材（按学科/年级查）
+await requestClient.get('/api/v1/textbook/subject/MATH/grade/7');
+await requestClient.post('/api/v1/textbook', { ... });
+
+// 章节树（关键：用NTree展示）
+await requestClient.get('/api/v1/chapter/textbook/1/tree');
+// 返回: [{ id, name, children: [{ id, name, children: [...] }] }]
+
+// 课程
+await requestClient.get('/api/v1/course');
+await requestClient.get('/api/v1/course/subject/MATH');
+await requestClient.get('/api/v1/course/grade/7');
+
+// 试卷
+await requestClient.get('/api/v1/exam/subject/MATH');
+await requestClient.post('/api/v1/exam/1/submit', { answers: [...] });
+
+// 题库
+await requestClient.get('/api/v1/question/subject/MATH/grade/7');
+await requestClient.get('/api/v1/question/difficulty/1');
+await requestClient.get('/api/v1/question/type/SINGLE_CHOICE');
+
+// 学情分析
+await requestClient.get('/api/v1/analytics/overview', { params: { studentId: 1 } });
+await requestClient.get('/api/v1/analytics/ability-radar', { params: { studentId: 1, knowledgeId: 1 } });
+await requestClient.get('/api/v1/analytics/weak-points', { params: { studentId: 1 } });
+await requestClient.get('/api/v1/analytics/trend', { params: { studentId: 1 } });
+```
+
+### 3.3 章节树形展示（教育模块特有模式）
 
 ```vue
-<!-- views/knowledge/list.vue -->
+<!-- views/education/chapter/list.vue — 树形展示模式 -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { NButton, NDataTable, NSpace, NTag } from 'naive-ui';
-import { getKnowledgePageApi, deleteKnowledgeApi } from '#/api/knowledge';
-import { getTableColumns } from './data';
+import { NTree, NButton, NSpace } from 'naive-ui';
+import { getChapterTreeApi, deleteChapterApi } from '#/api/education/chapter';
 import FormModal from './modules/form.vue';
 
-const tableData = ref([]);
-const loading = ref(false);
-const columns = getTableColumns();
-const formModalRef = ref();
+const treeData = ref([]);
+const selectedTextbookId = ref(1);
 
-async function fetchData() {
-  loading.value = true;
-  try {
-    const res = await getKnowledgePageApi({ page: 1, pageSize: 20 });
-    tableData.value = res?.items || [];
-  } finally { loading.value = false; }
+async function loadTree() {
+  const res = await getChapterTreeApi(selectedTextbookId.value);
+  // 转为 NTree 需要的格式: { key, label, children }
+  treeData.value = formatTree(res);
 }
 
-onMounted(fetchData);
+function formatTree(nodes: any[]): any[] {
+  return nodes.map(n => ({
+    key: n.id,
+    label: n.name,
+    children: n.children ? formatTree(n.children) : undefined,
+  }));
+}
+</script>
+
+<template>
+  <NSpace vertical>
+    <NButton @click="() => formModalRef.open(null, selectedTextbookId)">新增章节</NButton>
+    <NTree :data="treeData" block-line selectable />
+  </NSpace>
+</template>
+```
+
+### 3.4 学情分析看板（ECharts 模式）
+
+```vue
+<!-- views/education/analytics/index.vue -->
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import * as echarts from 'echarts';
+import { getOverviewApi, getAbilityRadarApi, getWeakPointsApi, getTrendApi } from '#/api/education/analytics';
+
+const studentId = ref(1);
+const overview = ref<any>({});
+const weakPoints = ref([]);
+const trend = ref([]);
+
+onMounted(async () => {
+  overview.value = await getOverviewApi(studentId.value);
+  weakPoints.value = await getWeakPointsApi(studentId.value);
+  trend.value = await getTrendApi(studentId.value);
+  renderRadarChart();
+  renderTrendChart();
+});
+
+function renderRadarChart() { /* ECharts 雷达图 */ }
+function renderTrendChart() { /* ECharts 折线图 */ }
 </script>
 ```
 
-**Step 4: 编写 data.ts**
+---
+
+## 四、开发标准模式
+
+### 4.1 新建 CRUD 模块标准步骤
+
+```bash
+# 1. 创建 API 文件
+touch apps/web-naive/src/api/{module}/{name}.ts
+
+# 2. 创建视图文件
+mkdir -p apps/web-naive/src/views/{module}/{name}/modules
+touch apps/web-naive/src/views/{module}/{name}/list.vue
+touch apps/web-naive/src/views/{module}/{name}/modules/form.vue
+```
+
+### 4.2 API 文件标准模板
+
+```typescript
+import { requestClient } from '#/api/request';
+
+export function getPageApi(params: Recordable) {
+  return requestClient.get<PageResult<Item>>('/api/v1/{module}/page', { params });
+}
+export function getDetailApi(id: number) {
+  return requestClient.get<Item>(`/api/v1/{module}/${id}`);
+}
+export function createApi(data: any) {
+  return requestClient.post('/api/v1/{module}', data);
+}
+export function updateApi(id: number, data: any) {
+  return requestClient.put(`/api/v1/{module}/${id}`, data);
+}
+export function deleteApi(id: number) {
+  return requestClient.delete(`/api/v1/{module}/${id}`);
+}
+export function getOptionsApi() {
+  return requestClient.get<Option[]>('/api/v1/{module}/options');
+}
+```
+
+### 4.3 列定义标准模板
 
 ```typescript
 import { h } from 'vue';
 import type { DataTableColumns } from 'naive-ui';
-import { NButton, NSpace, NPopconfirm } from 'naive-ui';
+import { NButton, NSpace, NPopconfirm, NTag } from 'naive-ui';
+import type { VbenFormSchema } from '#/adapter';
 
-export function getTableColumns(): DataTableColumns<any> {
+export function getTableColumns(onEdit: any, onDelete: any): DataTableColumns<any> {
   return [
     { title: 'ID', key: 'id', width: 80 },
     { title: '名称', key: 'name', width: 200 },
-    { title: '学科', key: 'subject', width: 100 },
-    { title: '年级', key: 'gradeLevel', width: 100 },
-    { title: '状态', key: 'status', width: 80 },
+    { title: '状态', key: 'status', width: 80,
+      render: (row) => h(NTag, { type: row.status === 1 ? 'success' : 'default' },
+        row.status === 1 ? '启用' : '停用'),
+    },
     { title: '操作', key: 'actions', width: 200,
       render: (row) => h(NSpace, null, [
-        h(NButton, { size: 'small', type: 'primary' }, '编辑'),
-        h(NPopconfirm, { onPositiveClick: () => deleteKnowledgeApi(row.id) },
+        h(NButton, { size: 'small', type: 'primary', onClick: () => onEdit(row) }, '编辑'),
+        h(NPopconfirm, { onPositiveClick: () => onDelete(row.id) },
           { default: () => '确认删除？', trigger: () => h(NButton, { size: 'small', type: 'error' }, '删除') }),
       ]),
     },
@@ -153,268 +329,50 @@ export function getTableColumns(): DataTableColumns<any> {
 }
 ```
 
-**Step 5: 编写 modules/form.vue (Modal 表单)**
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-import { createKnowledgeApi, updateKnowledgeApi } from '#/api/knowledge';
-
-const visible = ref(false);
-const formData = ref<any>({});
-const isEdit = ref(false);
-const emit = defineEmits(['success']);
-
-function open(row?: any) {
-  isEdit.value = !!row;
-  formData.value = row ? { ...row } : {};
-  visible.value = true;
-}
-async function handleSubmit() {
-  if (isEdit.value) await updateKnowledgeApi(formData.value.id, formData.value);
-  else await createKnowledgeApi(formData.value);
-  visible.value = false;
-  emit('success');
-}
-defineExpose({ open });
-</script>
-```
-
-**Step 6: 插入 DB 菜单记录**
-
-```sql
--- 在 auth__init.sql 中添加
-INSERT INTO menu (name, code, type, parent_id, path, component, show, ...)
-VALUES ('知识库管理', 'Knowledge', 'CATALOG', NULL, '/knowledge', 'BasicLayout', TRUE, ...);
-
-INSERT INTO menu (name, code, type, parent_id, path, component, show, ...)
-VALUES ('知识点列表', 'KnowledgeList', 'MENU', <knowledge_id>, '/knowledge/list', '/knowledge/list', TRUE, ...);
-
--- 同时添加到 role_workspace_menu
-```
-
-**Step 7: 添加国际化**
-
-```json
-// locales/langs/zh-CN/system.json
-{ "knowledge": { "title": "知识库管理", "list": "知识点列表" } }
-```
-
-### 3.2 用户前台添加新页面（静态路由模式）
-
-```typescript
-// apps/web-client/src/router/index.ts
-const routes = [
-  { path: '/login', component: Login },
-  { path: '/chat', component: ChatIndex, meta: { requiresAuth: true } },
-  { path: '/chat/:sessionId', component: ChatIndex, meta: { requiresAuth: true } },
-  { path: '/agent', component: AgentSquare, meta: { requiresAuth: true } },
-  { path: '/agent/:agentId', component: AgentDetail, meta: { requiresAuth: true } },
-  { path: '/knowledge', component: KnowledgeIndex, meta: { requiresAuth: true } },
-  { path: '/knowledge/:id', component: KnowledgeDetail, meta: { requiresAuth: true } },
-  { path: '/space/settings', component: SpaceSettings, meta: { requiresAuth: true } },
-  { path: '/space/history', component: ChatHistory, meta: { requiresAuth: true } },
-];
-```
-
 ---
 
-## 四、管理后台功能清单
+## 五、开发路线图
 
-### 4.1 已完成模块 (21 个模块, 130+ API 端点)
-
-| 菜单 | 页面文件 | API 文件 | 后端 Controller |
-|------|---------|---------|----------------|
-| Agent管理 | `agent/admin/agent-list.vue` | `api/agent/admin.ts` | AgentAdminController |
-| Agent编辑(Graph+版本) | `agent/admin/agent-edit.vue` | `api/agent/graph.ts`, `version.ts` | AgentGraphController, AgentVersionController |
-| Agent对话 | `agent/agent/modules/chat.vue` | `api/agent/agent.ts` | AgentController |
-| 平台管理 | `agent/platform/list.vue` | `api/common/platform.ts` | AiPlatformController |
-| 模型管理 | `agent/model/list.vue` | `api/common/model.ts` | AiModelController |
-| 模型对话弹窗 | `agent/model/modules/chat-dialog.vue` | `api/agent/chat.ts` | (前端直连 /api/chat) |
-| 意图管理 | `agent/intent/list.vue` | `api/agent/intent-def.ts` | IntentDefController |
-| 用户管理 | `system/user/` | `api/system/user.ts` + `core/user.ts` | UserController |
-| 角色管理 | `system/role/` | `api/system/role.ts` | RoleController |
-| 菜单管理 | `system/menu/` | `api/system/menu.ts` + `core/menu.ts` | MenuController |
-| 工作空间管理 | `system/workspace/` | `api/system/workspace.ts` | WorkspaceController |
-| 租户管理 | `system/tenant/` | `api/system/tenant.ts` | TenantController |
-| 字典管理 | `common/dict/list.vue` | `api/common/dict.ts` | DictController |
-| 时区设置 | 个人中心 | `api/core/user.ts` | TimezoneController |
-| 人物管理 | `record/profile/` | `api/record/profile.ts` | ProfileController |
-| 时间轴管理 | `record/timeline/` | `api/record/timeline.ts` | TimelineEventController |
-| 记录管理 | `record/record/` | `api/record/record.ts` | RecordController |
-| 媒体管理 | `record/media/` | `api/record/media.ts` | MediaController |
-| 标签管理 | `record/tag/` | `api/record/tag.ts` | TagController |
-| 仪表盘 | `dashboard/` | - | - |
-| 登录/认证 | `_core/authentication/` | `api/core/auth.ts`, `captcha.ts` | AuthController, CaptchaController |
-
-### 4.2 规划中模块 (15 个模块, 80+ API 端点)
-
-| 菜单 | 页面 | API 文件 | 后端 Controller | 优先级 |
-|------|------|---------|----------------|--------|
-| 知识点管理 | `knowledge/list.vue` | `api/knowledge/index.ts` | KnowledgeController | 🔴 P0 |
-| 文档管理 | `knowledge/documents/list.vue` | `api/knowledge/document.ts` | DocumentController | 🔴 P0 |
-| 索引管理 | `knowledge/index.vue` | `api/knowledge/index.ts` | KnowledgeController | 🔴 P0 |
-| 知识图谱 | `knowledge/graph.vue` | `api/knowledge/index.ts` | KnowledgeController | 🟡 P1 |
-| 学科管理 | `education/subject/list.vue` | `api/education/subject.ts` | SubjectController | 🟡 P1 |
-| 教材管理 | `education/textbook/list.vue` | `api/education/textbook.ts` | TextbookController | 🟡 P1 |
-| 章节管理 | `education/chapter/list.vue` | `api/education/chapter.ts` | ChapterController | 🟡 P1 |
-| 课程管理 | `education/course/list.vue` | `api/education/course.ts` | CourseController | 🟡 P1 |
-| 试卷管理 | `education/exam/list.vue` | `api/education/exam.ts` | ExamController | 🟡 P1 |
-| 题库管理 | `education/question/list.vue` | `api/education/question.ts` | QuestionController | 🟡 P1 |
-| 学习计划 | `education/plan/list.vue` | `api/education/plan.ts` | StudyPlanController | 🟢 P2 |
-| 复习任务 | `education/review/list.vue` | `api/education/review.ts` | ReviewController | 🟢 P2 |
-| 学情分析 | `education/analytics/index.vue` | `api/education/analytics.ts` | AnalyticsController | 🟢 P2 |
-| 资源管理 | `education/resource/list.vue` | `api/education/resource.ts` | ResourceController | ⚪ P3 |
-| 错题管理 | `education/wrong-question/list.vue` | `api/education/wrong-question.ts` | WrongQuestionController | ⚪ P3 |
-| 文件管理 | `file/list.vue` | `api/common/file.ts` | FileController | ⚪ P3 |
-| 对话配置 | `agent/chat-config/` | `api/agent/chat.ts` | ChatDemoController | 🔴 P0 |
-
----
-
-## 五、API 对接规范
-
-### 5.1 请求客户端
-
-```typescript
-// 管理后台和用户前台共用 requestClient（自动注入 Bearer Token）
-import { requestClient } from '#/api/request';   // web-naive
-import { requestClient } from '@vben/effects/request'; // web-client
-
-// JSON CRUD — 自动处理 code=200 解 data
-await requestClient.get('/admin/agent/page', { params });
-await requestClient.post('/admin/agent', data);
-await requestClient.patch(`/admin/agent/${id}`, data);
-await requestClient.delete(`/admin/agent/${id}`);
-
-// SSE 流式 — 使用统一工具函数
-createSseStream({ url, body, onMessage, onError, onDone }) → AbortController
 ```
+第1周 (P0 — 3天)
+├── 知识库管理 (5页)
+│   ├── api/knowledge/index.ts   (KnowledgeController — 19API)
+│   ├── api/knowledge/document.ts (DocumentController — 6API)
+│   ├── views/knowledge/list.vue + form.vue
+│   ├── views/knowledge/relation.vue
+│   ├── views/knowledge/graph.vue
+│   ├── views/knowledge/document/list.vue + form.vue
+│   └── views/knowledge/index.vue
+├── 对话调试 (1页)
+│   └── views/agent/chat-config/index.vue (复用已有API)
+└── DB菜单入库
+    └── 600-605 菜单记录 + role_workspace_menu 关联
 
-### 5.2 新建 API 模块模板
+第2周 (P1 — 4天)
+├── 教育-基础 (8页)
+│   ├── api/education/subject.ts + textbook.ts + chapter.ts + course.ts
+│   ├── views/education/subject/ + textbook/ + chapter/ + course/
+├── 教育-考试 (4页)
+│   ├── api/education/exam.ts + question.ts
+│   ├── views/education/exam/ + question/
+└── DB菜单入库
+    └── 700-706 菜单记录 + role_workspace_menu 关联
 
-```typescript
-// api/{module}/index.ts
-import { requestClient } from '#/api/request';
+第3周 (P2 — 4天)
+├── 教育-计划/复习 (4页)
+│   ├── api/education/plan.ts + review.ts
+│   ├── views/education/plan/ + review/
+├── 教育-学情/资源/错题 (5页)
+│   ├── api/education/analytics.ts + resource.ts + wrong-question.ts
+│   ├── views/education/analytics/ + resource/ + wrong-question/
+└── DB菜单入库
+    └── 707-711 菜单记录 + role_workspace_menu 关联
 
-// 分页查询
-export function getPageApi(params: Recordable) {
-  return requestClient.get<PageResult<Item>>('/api/v1/{module}/page', { params });
-}
-// 详情
-export function getDetailApi(id: number) {
-  return requestClient.get<Item>(`/api/v1/{module}/${id}`);
-}
-// 创建
-export function createApi(data: any) {
-  return requestClient.post<Item>('/api/v1/{module}', data);
-}
-// 更新
-export function updateApi(id: number, data: any) {
-  return requestClient.put<Item>(`/api/v1/{module}/${id}`, data);
-}
-// 删除
-export function deleteApi(id: number) {
-  return requestClient.delete(`/api/v1/{module}/${id}`);
-}
-// 全部选项
-export function getOptionsApi() {
-  return requestClient.get<Option[]>('/api/v1/{module}/options');
-}
+第4周 (P3 — 0.5天)
+├── 文件管理 (1页)
+│   ├── api/common/file.ts
+│   └── views/file/list.vue
+└── DB菜单入库
+    └── 800 菜单记录 + role_workspace_menu 关联
 ```
-
-### 5.3 CRUD data.ts 模板
-
-```typescript
-import { h } from 'vue';
-import type { DataTableColumns } from 'naive-ui';
-import { NButton, NSpace, NPopconfirm } from 'naive-ui';
-
-export function getTableColumns(
-  onEdit: (row: any) => void,
-  onDelete: (id: number) => void,
-): DataTableColumns<any> {
-  return [
-    { title: 'ID', key: 'id', width: 80 },
-    { title: '名称', key: 'name', width: 200 },
-    { title: '状态', key: 'status', width: 80 },
-    {
-      title: '操作', key: 'actions', width: 200, align: 'center',
-      render: (row) => h(NSpace, { justify: 'center' }, [
-        h(NButton, { size: 'small', type: 'primary', onClick: () => onEdit(row) }, '编辑'),
-        h(NPopconfirm, {
-          onPositiveClick: () => onDelete(row.id),
-        }, {
-          default: () => '确认删除该记录？',
-          trigger: () => h(NButton, { size: 'small', type: 'error' }, '删除'),
-        }),
-      ]),
-    },
-  ];
-}
-```
-
----
-
-## 六、调试指南
-
-### 6.1 页面空白排查
-
-```bash
-# Step 1: 清 Vite 缓存 (90%)
-rm -rf node_modules/.vite && pnpm dev
-
-# Step 2: VueFlow → v-if + onDeactivated
-#         大组件 → v-if 暴力重建
-#         路由 404 → DB menu 路径 vs view 路径
-
-# Step 3: curl 获取错误
-curl -s http://localhost:5888/src/views/agent/admin/agent-edit.vue
-```
-
-### 6.2 API 调试
-
-```bash
-# 认证
-curl -X POST http://localhost:9000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"123456"}'
-
-# Agent 列表 (需 Token)
-curl -H "Authorization: Bearer xxx" \
-  "http://localhost:9000/admin/agent/page?pageNo=1&pageSize=10"
-
-# SSE 流式对话
-curl -N -X POST "http://localhost:9000/api/agent/test/executeStream" \
-  -H "Authorization: Bearer xxx" \
-  -H "Content-Type: application/json" \
-  -d '{"query":"你好"}'
-
-# 知识库搜索
-curl -H "Authorization: Bearer xxx" \
-  "http://localhost:9006/api/v1/knowledge/search?query=数学&topK=10"
-```
-
-### 6.3 常见问题
-
-| 问题 | 原因 | 修复 |
-|------|------|------|
-| SSE 401 | fetch 绕过拦截器 | 手动注入 `useAccessStore().accessToken` |
-| SSE 连接失败 | baseURL 错误 | `requestClient.getBaseUrl()` |
-| 响应 code 异常 | successCode 不匹配 | 后端 `BizResultCode.SUC=200` |
-| ApiSelect 不加载 | api 传字符串 | 传函数引用 |
-| 菜单重复 | mixed + 静态路由 | 删除 modules/*.ts |
-| 页面白屏 | Vite 缓存 | `rm -rf node_modules/.vite` |
-| VueFlow Tab 白屏 | Transition 冲突 | `v-if` + `onDeactivated` |
-| Graph 保存字段丢失 | 缺 11 字段 | 检查 buildGraphConfig() |
-| 路由 404 | DB menu 路径不对 | 检查 menu.path vs view 路径 |
-
----
-
-## 七、版本历史
-
-| 版本 | 日期 | 变更 |
-|------|------|------|
-| 1.0.0 | 2026-07-02 | 初始版本 |
-| 1.1.0 | 2026-07-02 | 新增 dual-app 架构 |
-| 2.0.0 | 2026-07-02 | 管理后台覆盖全部 27 个后端 Controller、210+ API 端点；新增知识库/教育/文件管理规划模块；功能清单区分已完成(21模块)和规划中(15模块) |
 
