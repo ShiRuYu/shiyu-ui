@@ -1,9 +1,9 @@
 # shiyu-ui 开发文档
 
-> **版本**: 1.1.0  
+> **版本**: 2.0.0  
 > **框架**: Vue 3 + Vben Admin 5.x + Naive UI  
 > **应用**: `web-naive`（管理后台）| `web-client`（用户前台 — 新建）  
-> **分支策略**: `main` (开发分支)  
+> **后端 API**: 27 个 Controller，156+ 端点（覆盖 6 个后端模块）  
 > **最后更新**: 2026-07-02
 
 ---
@@ -22,88 +22,87 @@ pnpm >= 10.0
 ```bash
 git clone git@github.com:ShiRuYu/shiyu-ui.git
 cd shiyu-ui
-pnpm install     # 安装所有依赖 (monorepo)
+pnpm install
 ```
 
 ### 1.3 启动开发服务器
 
 ```bash
-# 管理后台 (web-naive) — Vben Admin 5.x 框架
-cd apps/web-naive
-pnpm dev         # 默认端口 5888
+# 管理后台 (web-naive)
+cd apps/web-naive && pnpm dev    # 端口 5888
 
-# 用户前台 (web-client) — 轻量应用
-cd apps/web-client
-pnpm dev         # 默认端口 5889
+# 用户前台 (web-client)
+cd apps/web-client && pnpm dev   # 端口 5889
 ```
 
-### 1.4 清除缓存
+### 1.4 构建
 
 ```bash
-# 页面空白时第一步
-rm -rf node_modules/.vite && pnpm dev
-```
-
-### 1.5 构建
-
-```bash
-pnpm build       # 生产构建 (所有 app 同时构建)
-pnpm build:analyze  # 构建分析
-
-# 单独构建
-pnpm --filter @vben/web-naive build
-pnpm --filter @vben/web-client build
+pnpm build                         # 全部构建
+pnpm --filter @vben/web-naive build  # 单独管理后台
+pnpm --filter @vben/web-client build  # 单独用户前台
 ```
 
 ---
 
-## 二、分支管理
+## 二、后端 API 架构速查
 
-### 2.1 分支策略
+### 2.1 后端模块与端口
 
-| 分支 | 用途 | 说明 |
-|------|------|------|
-| `main` | 开发主线 | 所有功能、修复、新页面直接推送到此分支 |
-| `vue-vben-admin` | 上游跟踪 | 从 main 分出的 Vben 官方版本（含 Demo 页面和 Mock） |
+| 模块 | 端口 | 基础路径 | Controller 数 |
+|------|------|---------|-------------|
+| shiyu-ai-agent | 9000 | `/admin/agent`, `/api/agent`, `/ai/*`, `/intent/*` | 8 |
+| shiyu-ai-auth | 9002 | `/auth`, `/user`, `/role`, `/menu`, `/workspace`, `/tenant`, `/dict` | 10 |
+| shiyu-ai-core | 9001 | `/api/chat` | 1 |
+| shiyu-ai-record | 9005 | `/api/profile`, `/api/timeline`, `/api/media`, `/api/tag`, `/api/record` | 5 |
+| shiyu-ai-knowledge | 9006 | `/api/v1/knowledge`, `/api/v1/knowledge/documents` | 2 |
+| shiyu-common | - | `/upload` | 1 |
 
-### 2.2 Git 操作规范
+### 2.2 API 前缀规则
+
+| 前缀 | 用途 | 鉴权 | 所属 |
+|------|------|------|------|
+| `/admin/*` | 管理后台 CRUD | Sa-Token (admin role) | agent |
+| `/api/*` | 运行时/用户端 | Sa-Token (login) | agent/core/record/knowledge |
+| `/auth/*` | 认证 | 部分无需登录 | auth |
+| `/user/*` | 用户 | Sa-Token (login) | auth |
+| `/ai/*` | 平台/模型 | Sa-Token (login) | agent |
+
+---
+
+## 三、分支管理
+
+### 3.1 策略
+
+| 分支 | 用途 |
+|------|------|
+| `main` | 开发主线 (所有功能直接推送) |
+| `vue-vben-admin` | 上游跟踪 (Vben 官方版本) |
+
+### 3.2 提交规范
 
 ```bash
-# 提交规范
-git add .
 git commit -m "feat(scope): 中文描述
 - bullet 1
 - bullet 2"
+```
 
-# 合并方式 (Squash Merge)
+### 3.3 合并方式 (Squash)
+
+```bash
 git fetch origin main
 git reset --soft <parent-of-range>
 git commit -m "feat(xxx): 功能描述"
 git push --force-with-lease
-
-# 不要用 git rebase -i
-# 不要用 git revert 链
-```
-
-### 2.3 Force Push 安全策略
-
-```bash
-# push --force 前必须检查远程
-git fetch origin main
-git log origin/main --oneline -5
-
-# 如果远程有新提交 → cherry-pick 合并而非覆盖
-git cherry-pick <commit-hash1> <commit-hash2>
-git push origin main   # 无需 force
 ```
 
 ---
 
-## 三、添加新功能标准流程
+## 四、管理后台 (web-naive) 开发
 
-### 3.1 管理后台 (web-naive) 添加新页面 (后端路由模式)
+### 4.1 添加新页面 (后端路由模式)
 
-**Step 1: 创建视图组件**
+**Step 1: 创建文件**
 
 ```bash
 mkdir -p apps/web-naive/src/views/agent/my-module
@@ -115,11 +114,10 @@ touch apps/web-naive/src/views/agent/my-module/modules/form.vue
 **Step 2: 创建 API 模块**
 
 ```typescript
-// apps/web-naive/src/api/agent/my-module.ts
 import { requestClient } from '#/api/request';
 
-export function getMyModulePageApi(params?: Recordable) {
-  return requestClient.get<PageResult<MyModuleItem>>('/admin/agent/my-module/page', { params });
+export function getMyModulePageApi(params: Recordable) {
+  return requestClient.get<PageResult<Item>>('/admin/agent/my-module/page', { params });
 }
 export function createMyModuleApi(data: any) {
   return requestClient.post('/admin/agent/my-module', data);
@@ -132,539 +130,132 @@ export function deleteMyModuleApi(id: number) {
 }
 ```
 
-**Step 3: 编写列表页**
+**Step 3: 插入 DB**
 
-```vue
-<!-- views/agent/my-module/list.vue -->
-<script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { NButton, NDataTable, NSpace } from 'naive-ui';
-import { getTableColumns } from './data';
-import { getMyModulePageApi, deleteMyModuleApi } from '#/api/agent/my-module';
-import FormModal from './modules/form.vue';
+在 `auth__init.sql` 中添加 `menu` 记录 + `role_workspace_menu` 关联。
 
-const tableData = ref([]);
-const loading = ref(false);
-const columns = getTableColumns();
-const formModalRef = ref();
-
-async function fetchData() {
-  loading.value = true;
-  try {
-    const res = await getMyModulePageApi();
-    tableData.value = res?.items || [];
-  } finally { loading.value = false; }
-}
-
-onMounted(fetchData);
-</script>
-```
-
-**Step 4: 插入数据库菜单记录**
-
-在 `auth__init.sql` 的 `menu` 表 INSERT 中添加新记录:
-- `type`: CATALOG（目录）/ MENU（页面）/ BUTTON（按钮权限）
-- `path`: URL 路径
-- `component`: 视图组件路径（不含 `.vue`，如 `/agent/my-module/list`）
-- `show`: true（可见）/ false（隐藏）
-- `layout`: `"none"` 表示全屏
-
-同时在 `role_workspace_menu` 的对应角色 INSERT 中添加关联。
-
-**Step 5: 添加国际化**
+**Step 4: 国际化**
 
 ```json
-// locales/langs/zh-CN/system.json
-{ "myModule": { "title": "我的模块", "name": "名称" } }
+{ "myModule": { "title": "我的模块" } }
 ```
 
-### 3.2 用户前台 (web-client) 添加新页面 (静态路由模式)
+### 4.2 标准 CRUD 页面模式
 
-**Step 1: 创建视图组件**
-
-```bash
-mkdir -p apps/web-client/src/views/chat
-touch apps/web-client/src/views/chat/index.vue
-touch apps/web-client/src/views/chat/modules/sidebar.vue
-touch apps/web-client/src/views/chat/modules/message-list.vue
+```
+api/<module>/xxx.ts        — requestClient 封装
+views/<module>/list.vue    — NDataTable / VxeTableGrid
+views/<module>/data.ts     — 列定义 + 表单 Schema
+views/<module>/modules/form.vue  — Modal 表单
 ```
 
-**Step 2: 添加路由**
+### 4.3 ApiSelect 规范
 
 ```typescript
-// apps/web-client/src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router';
-
-const routes = [
-  { path: '/login', component: () => import('#/views/_core/authentication/login.vue') },
-  { path: '/chat', component: () => import('#/views/chat/index.vue'), meta: { requiresAuth: true } },
-  { path: '/chat/:sessionId', component: () => import('#/views/chat/index.vue'), meta: { requiresAuth: true } },
-  { path: '/agent', component: () => import('#/views/agent/square.vue'), meta: { requiresAuth: true } },
-  { path: '/agent/:agentId', component: () => import('#/views/agent/detail.vue'), meta: { requiresAuth: true } },
-  { path: '/space', redirect: '/space/settings' },
-  { path: '/space/settings', component: () => import('#/views/space/settings.vue'), meta: { requiresAuth: true } },
-  { path: '/space/history', component: () => import('#/views/space/history.vue'), meta: { requiresAuth: true } },
-];
-```
-
-**Step 3: 创建 API 模块**
-
-```typescript
-// apps/web-client/src/api/chat.ts
-// 可重用 packages/effects/request 的 requestClient
-// 或自行封装轻量 fetch
-export async function chatStream(
-  data: ChatRequest,
-  onMessage: (text: string) => void,
-) {
-  // SSE 实现，与 web-naive 模式相同
-}
-```
-
-**Step 4: 注册路由模块到 `package.json` 的 `imports` 映射**
-
-```json
-{
-  "imports": {
-    "#/*": "./src/*",
-    "#/api/*": "./src/api/*",
-    "#/views/*": "./src/views/*"
-  }
-}
-```
-
-### 3.3 页面模板 (Naive UI 标准 CRUD)
-
-**data.ts 模板**:
-
-```typescript
-import { h } from 'vue';
-import type { DataTableColumns } from 'naive-ui';
-import type { VbenFormSchema } from '#/adapter';
-import { NButton, NSpace, NPopconfirm } from 'naive-ui';
-
-export function getTableColumns(handleEdit: any, handleDelete: any): DataTableColumns<any> {
-  return [
-    { title: 'ID', key: 'id', width: 80 },
-    { title: '名称', key: 'name', width: 150 },
-    { title: '状态', key: 'status', width: 80 },
-    {
-      title: '操作', key: 'actions', width: 200,
-      render: (row) => h(NSpace, null, {
-        default: () => [
-          h(NButton, { size: 'small', type: 'primary', onClick: () => handleEdit(row) }, '编辑'),
-          h(NPopconfirm, { onPositiveClick: () => handleDelete(row.id) }, {
-            default: () => '确认删除？',
-            trigger: () => h(NButton, { size: 'small', type: 'error' }, '删除'),
-          }),
-        ],
-      }),
-    },
-  ];
-}
-
-export function getFormSchema(): VbenFormSchema[] {
-  return [
-    { component: 'Input', fieldName: 'name', label: '名称', rules: 'required' },
-    { component: 'Input', fieldName: 'code', label: '编码', rules: 'required' },
-    { component: 'Switch', fieldName: 'status', label: '状态', defaultValue: true },
-  ];
-}
-```
-
-**modules/form.vue 模板**:
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-import { NModal, NForm, NFormItem, NInput, NButton, NSpace } from 'naive-ui';
-import { createMyModuleApi, updateMyModuleApi } from '#/api/agent/my-module';
-
-const visible = ref(false);
-const formData = ref<any>({});
-const isEdit = ref(false);
-const emit = defineEmits(['success']);
-
-function open(row?: any) {
-  isEdit.value = !!row;
-  formData.value = row ? { ...row } : { status: true };
-  visible.value = true;
-}
-async function handleSubmit() {
-  if (isEdit.value) await updateMyModuleApi(formData.value.id, formData.value);
-  else await createMyModuleApi(formData.value);
-  visible.value = false;
-  emit('success');
-}
-defineExpose({ open });
-</script>
-```
-
----
-
-## 四、SSE 流式 API 实现
-
-### 4.1 完整 SSE 模式 (web-naive + web-client 共用)
-
-**建议提取为共享工具函数**，存放在 `packages/effects/request/src/sse.ts`：
-
-```typescript
-// packages/effects/request/src/sse.ts
-import { useAccessStore } from '@vben/stores';
-import { requestClient } from './request';
-
-export interface SseOptions {
-  url: string;
-  body: Record<string, any>;
-  onMessage: (content: string) => void;
-  onError?: (error: any) => void;
-  onDone?: () => void;
-}
-
-export function createSseStream(options: SseOptions): AbortController {
-  const { url, body, onMessage, onError, onDone } = options;
-  const accessStore = useAccessStore();
-  const token = accessStore.accessToken;
-  const baseURL = requestClient.getBaseUrl() ?? '';
-  const controller = new AbortController();
-
-  fetch(`${baseURL}${url}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: JSON.stringify(body),
-    signal: controller.signal,
-  })
-    .then(async (response) => {
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader!.read();
-        if (done) { onDone?.(); break; }
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() ?? '';
-
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed) continue;
-
-          if (trimmed.startsWith('data:')) {
-            const raw = trimmed.slice(5).trim();
-            if (raw && raw !== '[DONE]') {
-              try {
-                const parsed = JSON.parse(raw);
-                const content = parsed?.data?.content;
-                if (content) onMessage(content);
-              } catch {
-                onMessage(raw);
-              }
-            }
-          } else if (trimmed.startsWith('{')) {
-            try {
-              const parsed = JSON.parse(trimmed);
-              const content = parsed?.data?.content;
-              if (content) onMessage(content);
-            } catch { /* ignore */ }
-          }
-        }
-      }
-    })
-    .catch((error) => {
-      if (error.name !== 'AbortError') onError?.(error);
-    });
-
-  return controller;
-}
-```
-
-### 4.2 前端组件使用 SSE
-
-```vue
-<script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
-import { createSseStream } from '@vben/effects/request';
-
-const messages = ref<{ role: string; content: string }[]>([]);
-const abortController = ref<AbortController | null>(null);
-
-async function sendMessage(input: string) {
-  messages.value.push({ role: 'user', content: input });
-  const aiMsg = { role: 'assistant', content: '' };
-  messages.value.push(aiMsg);
-
-  abortController.value = createSseStream({
-    url: '/api/agent/agent-id/executeStream',
-    body: { query: input },
-    onMessage: (text) => { aiMsg.content += text; },
-    onDone: () => { /* 流结束 */ },
-  });
-}
-
-onUnmounted(() => {
-  abortController.value?.abort();
-});
-</script>
-```
-
-### 4.3 SSE Pitfalls
-
-1. **手动注入 Token**: `fetch` 绕过 requestClient 拦截器，必须 `useAccessStore().accessToken`
-2. **baseURL**: 用 `requestClient.getBaseUrl()` 而非内部属性
-3. **跨 chunk 缓冲**: 使用 `buffer = lines.pop()` 处理分割的 SSE 行
-4. **取消支持**: 返回 `AbortController`，组件 `onUnmounted` 时调用 `abort()`
-5. **后端格式**: 每个 chunk 是 `{ code: 200, data: { content: "..." } }`
-
----
-
-## 五、Graph 编排功能实现 (仅管理后台)
-
-### 5.1 节点类型枚举
-
-| NodeType | 说明 |
-|----------|------|
-| `DEFAULT` | 默认节点 |
-| `INTENT` | 意图识别 |
-| `RAG_RETRIEVAL` | RAG 检索 |
-| `RAG_ENHANCEMENT` | RAG 增强 |
-| `LLM_CALL` | LLM 模型调用 |
-| `TOOL_CALL` | 工具调用 |
-| `CONDITION` | 条件分支 |
-| `TRANSFORM` | 数据转换 |
-| `OUTPUT_FORMAT` | 输出格式化 |
-| `AGENT_CALL` | 子 Agent 调用 |
-
-### 5.2 Graph 数据结构
-
-```typescript
-interface GraphConfigRequest {
-  name: string;
-  description: string;
-  startNode: string;
-  endNode: string;
-  nodes: Record<string, NodeConfigDTO>;
-  edges: Record<string, string[]>;
-  conditionalEdges: Record<string, ConditionalEdgeDTO>;
-}
-
-interface NodeConfigDTO {
-  nodeName: string; description: string; nodeType: string; enabled: boolean;
-  timeout: number; retryCount: number; retryInterval: number;
-  errorStrategy: string; logLevel: string;
-  properties: Record<string, any>; config: Record<string, any>;
-}
-```
-
-### 5.3 保存 Graph 时 11 个必填字段
-
-```typescript
-nMap[n.id] = {
-  nodeName: d.nodeName || n.id,
-  description: d.description || '',
-  nodeType: d.nodeType || '',
-  enabled: d.enabled !== false,
-  timeout: d.timeout ?? 30000,          // 必须
-  retryCount: d.retryCount ?? 0,         // 必须
-  retryInterval: d.retryInterval ?? 1000, // 必须
-  errorStrategy: d.errorStrategy ?? 'THROW', // 必须
-  logLevel: d.logLevel ?? 'INFO',        // 必须
-  properties: d.properties ?? {},         // 必须
-  config: d.config || {},
-};
-```
-
-### 5.4 VueFlow + Vben Admin 冲突处理
-
-```vue
-<script setup lang="ts">
-import '@vue-flow/core/dist/style.css';
-import '@vue-flow/core/dist/theme-default.css';
-import '@vue-flow/background/dist/style.css';
-import '@vue-flow/controls/dist/style.css';
-
-const showVueFlow = ref(false);
-const { nodes, edges, onNodesChange, onEdgesChange } = useVueFlow({ id: 'editor' });
-
-onDeactivated(() => {
-  showVueFlow.value = false;
-  nodes.value = [];
-  edges.value = [];
-});
-onActivated(() => {
-  if (selectedVersionId.value) {
-    showVueFlow.value = true;
-    loadGraph();
-  }
-});
-onBeforeUnmount(() => { showVueFlow.value = false; });
-</script>
-
-<template>
-  <div v-if="showVueFlow" class="h-full w-full">
-    <VueFlow class="h-full w-full" id="editor">
-      <Background /><Controls />
-    </VueFlow>
-  </div>
-</template>
-```
-
----
-
-## 六、ApiSelect 组件使用规范
-
-### 6.1 正确用法
-
-```typescript
+// ✅ 正确
 {
   component: 'ApiSelect',
-  fieldName: 'platformId',
-  label: '所属平台',
-  rules: 'required',
   componentProps: {
-    api: getPlatformOptions,      // ✅ 函数引用
-    labelField: 'name',           // ✅ 不是 fieldNames
+    api: getPlatformOptions,   // 函数引用
+    labelField: 'name',        // 不是 fieldNames
     valueField: 'id',
   },
 }
-```
 
-### 6.2 常见错误
-
-```typescript
-// ❌ 错误1: api 传字符串
-api: '/api/platform/options'
-
-// ❌ 错误2: 用 fieldNames 而非 labelField/valueField
-fieldNames: { label: 'name', value: 'id' }
-```
-
-### 6.3 包装分页接口为选项
-
-```typescript
-async function getProfileOptions() {
-  const result = await getProfilePage({ page: 1, pageSize: 1000 });
-  return (result?.items || []).map((p) => ({ id: p.id, name: p.name }));
+// 包装分页接口为选项
+async function getOptions() {
+  const res = await getPageApi({ page: 1, pageSize: 1000 });
+  return (res?.items || []).map(p => ({ id: p.id, name: p.name }));
 }
 ```
 
----
-
-## 七、Naive UI 关键组件注意
-
-### 7.1 NCollapseItem 的 Header Slot
-
-```html
-<!-- ✅ 推荐 -->
-<NCollapseItem name="info">
-  <template #header><span>基本信息</span></template>
-  ...
-</NCollapseItem>
-```
-
-### 7.2 使用 useVbenModal 数据读取
+### 4.4 SSE 流式对话
 
 ```typescript
-// ✅ 正确 - onOpenChange 回调
-const [FormModal, modalApi] = useVbenModal({
-  async onOpenChange(isOpen: boolean) {
-    if (!isOpen) return;
-    const row = modalApi.getData<SomeType>();
-    await nextTick();
-    // row 可正确读取
-  },
-});
+// 统一工具函数 (packages/effects/request/src/sse.ts)
+createSseStream({ url, body, onMessage, onError, onDone }) → AbortController
+// 1. 原生 fetch (requestClient 不支持 SSE)
+// 2. 手动注入 Bearer Token
+// 3. 跨 chunk 缓冲
+// 4. 解析 data: 行
+// 5. 返回 AbortController ⇢ onUnmounted 取消
 ```
 
-### 7.3 connectedComponent 模式
+### 4.5 Graph 编排
 
-```typescript
-// agent-list.vue
-import ChatModal from '../agent/modules/chat.vue';
-
-const [ChatModalComp, chatModalApi] = useVbenModal({
-  connectedComponent: ChatModal,
-  destroyOnClose: true,
-});
-
-function openChat(agent: AgentVO) {
-  chatModalApi.setData({ agentId: agent.agentId }).open();
-}
-```
+- **VueFlow**: `v-if` + `onDeactivated` + `onActivated` 解决 Transition 冲突
+- **11 个必填字段**: nodeName, description, nodeType, enabled, timeout, retryCount, retryInterval, errorStrategy, logLevel, properties, config
+- **VueFlow 与 prop 冲突**: `<VueFlow>` 不加 `:nodes/:edges`
 
 ---
 
-## 八、web-client (用户前台) 开发指南
+## 五、用户前台 (web-client) 开发
 
-### 8.1 与 web-naive 的差异
+### 5.1 与管理后台差异
 
-| 维度 | web-naive (管理后台) | web-client (用户前台) |
+| 维度 | 管理后台 (web-naive) | 用户前台 (web-client) |
 |------|---------------------|---------------------|
-| 框架 | Vben Admin 5.x 全量 | 轻量，不依赖 Vben |
+| 框架 | Vben Admin 5.x 全量 | 轻量, 无 Vben |
 | 路由模式 | 后端动态路由 (mixed) | 前端静态路由 |
-| 权限控制 | 三级 RBAC + 按钮级 Auth | 仅登录鉴权 |
-| UI 组件 | Naive UI 全量 + VxeTable | Naive UI 按需加载 |
-| 布局 | BasicLayout (侧边栏+Header+Tabs) | 自定义简洁布局 |
-| 页面复杂度 | 复杂表格/表单/Graph编排 | 以对话/展示为主 |
-| KeepAlive | 多 Tab 切换需处理冲突 | 单页，无需处理 |
+| 权限 | 三级 RBAC + 按钮级 Auth | 仅登录鉴权 |
+| UI | Naive UI 全量 + VxeTable | Naive UI 按需 |
+| 布局 | BasicLayout (侧边栏+Header+Tabs) | 简洁布局 (TopNav + 内容区) |
+| 复杂度 | 表格/表单/Graph编排 | 对话/卡片展示 |
+| KeepAlive | 多 Tab 需处理冲突 | 单页无需处理 |
 | 端口 | 5888 | 5889 |
 
-### 8.2 web-client 项目初始化步骤
+### 5.2 项目初始化
 
 ```bash
-# 1. 创建应用目录 (从 web-naive 复制基础配置)
 mkdir -p apps/web-client/src/{api,views,router,layouts,locales,assets}
+# 复制基础配置
 cp apps/web-naive/package.json apps/web-client/
 cp apps/web-naive/vite.config.ts apps/web-client/
 cp apps/web-naive/tsconfig.json apps/web-client/
-
-# 2. 修改 package.json
-# name: "@vben/web-client"
-# scripts.dev: "pnpm vite --port 5889"
-
-# 3. 注册到 pnpm-workspace.yaml（如果 apps/* 已匹配则无需操作）
-
-# 4. 安装依赖
-cd apps/web-client && pnpm install
 ```
 
-### 8.3 共享 package 使用
+### 5.3 共享 package 使用
 
 ```json
-// apps/web-client/package.json
 {
   "dependencies": {
-    "@vben/effects": "workspace:*",    // requestClient 等
-    "@vben/stores": "workspace:*",     // Pinia stores
-    "@vben/utils": "workspace:*",      // 工具函数
-    "@vben/types": "workspace:*",      // 类型定义
-    "@vben/hooks": "workspace:*",      // 通用 hooks
-    "naive-ui": "catalog:"             // UI 组件按需引入
+    "@vben/effects": "workspace:*",   // requestClient + SSE
+    "@vben/stores": "workspace:*",    // Pinia stores
+    "@vben/utils": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "naive-ui": "catalog:"
   }
 }
 ```
 
-### 8.4 web-client 路由守卫
+### 5.4 web-client 路由配置
 
 ```typescript
-// router/guard.ts
-import { useAccessStore } from '@vben/stores';
+const routes = [
+  { path: '/login', component: Login },
+  { path: '/chat', component: ChatIndex, meta: { requiresAuth: true } },
+  { path: '/chat/:sessionId', component: ChatIndex, meta: { requiresAuth: true } },
+  { path: '/agent', component: AgentSquare, meta: { requiresAuth: true } },
+  { path: '/agent/:agentId', component: AgentDetail, meta: { requiresAuth: true } },
+  { path: '/knowledge', component: KnowledgeIndex, meta: { requiresAuth: true } },
+  { path: '/knowledge/search', component: KnowledgeSearch, meta: { requiresAuth: true } },
+  { path: '/space/settings', component: SpaceSettings, meta: { requiresAuth: true } },
+  { path: '/space/history', component: ChatHistory, meta: { requiresAuth: true } },
+];
+```
 
+### 5.5 路由守卫
+
+```typescript
 router.beforeEach((to, from, next) => {
   const accessStore = useAccessStore();
-  if (to.meta.requiresAuth && !accessStore.accessToken) {
-    next('/login');
-  } else {
-    next();
-  }
+  if (to.meta.requiresAuth && !accessStore.accessToken) next('/login');
+  else next();
 });
 ```
 
-### 8.5 web-client 布局设计
+### 5.6 用户前台布局
 
 ```vue
 <!-- layouts/AppLayout.vue -->
@@ -673,181 +264,180 @@ router.beforeEach((to, from, next) => {
     <TopNav>
       <NavLink to="/chat">AI 对话</NavLink>
       <NavLink to="/agent">Agent 广场</NavLink>
+      <NavLink to="/knowledge">知识库</NavLink>
       <NavLink to="/space">个人空间</NavLink>
     </TopNav>
-    <main class="app-content">
-      <RouterView />
-    </main>
+    <main class="app-content"><RouterView /></main>
   </div>
 </template>
 ```
 
 ---
 
-## 九、国际化
+## 六、API 对接指南
 
-### 9.1 资源文件
+### 6.1 管理后台 API 调用模式
 
-```json
-// locales/langs/zh-CN/system.json
-{
-  "platform": { "title": "AI 平台管理", "name": "平台名称" }
-}
+| 方法 | 请求客户端 | Token | 错误处理 |
+|------|-----------|-------|---------|
+| JSON CRUD | `requestClient` | 自动 Bearer | 自动弹 message |
+| SSE 流式 | `fetch` + `createSseStream` | 手动注入 | 手动处理 |
+| 文件上传 | `requestClient` (FormData) | 自动 Bearer | 自动弹 message |
+
+### 6.2 用户前台 API 调用模式
+
+```typescript
+// JSON 请求 — 共享 requestClient
+import { requestClient } from '@vben/effects/request';
+const res = await requestClient.get('/api/v1/knowledge/search', { params: { query } });
+
+// SSE 流式 — 共享 createSseStream
+import { createSseStream } from '@vben/effects/request';
+createSseStream({ url: '/api/agent/.../executeStream', body, onMessage });
 ```
 
-### 9.2 在组件中使用
+### 6.3 API 前缀配置
 
-```vue
-<script setup lang="ts">
-const { t } = useI18n();
-</script>
-<template>
-  <h1>{{ t('system.platform.title') }}</h1>
-</template>
+```typescript
+// web-naive: apps/web-naive/.env.development
+VITE_GLOB_API_URL=http://localhost:9000  // shiyu-ai-agent
+
+// web-client: apps/web-client/.env.development
+VITE_GLOB_API_URL=http://localhost:9000  // 同一后端网关
 ```
 
 ---
 
-## 十、调试指南
+## 七、调试指南
 
-### 10.1 页面空白排查
+### 7.1 页面空白排查
 
 ```bash
-# Step 1: 清 Vite 缓存 (90% 的情况)
+# Step 1: 清缓存 (90% 解决)
 rm -rf node_modules/.vite && pnpm dev
 
-# Step 2: 获取错误信息
+# Step 2: 控制台报错信息
+# VueFlow 冲突 → v-if + onDeactivated
+# 大组件白屏 → v-if 暴力重建
+# 路由 404 → DB menu 路径 vs view 路径不一致
+
+# Step 3: 获取 Vite 错误
 curl -s http://localhost:5888/src/views/agent/admin/agent-edit.vue
-
-# Step 3: 检查控制台报错
-# - VueFlow: Transition 冲突 → v-if + onDeactivated
-# - 大组件空白 → v-if "暴力重建"
-# - 路由 404 → 检查后端 menu.component 与 view 路径
 ```
 
-### 10.2 Vite 缓存问题
+### 7.2 API 调试
 
 ```bash
-rm -rf node_modules/.vite && pnpm dev
-```
+# 直接调后端验证
+curl -X POST http://localhost:9000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"vben","password":"123456"}'
 
-### 10.3 LSP 误报
-
-```
-Cannot find module '*.vue' or 'vue-router'
-→ 不影响构建，node_modules 未在 VM 中完整安装
+# SSE 流式
+curl -N -X POST http://localhost:9000/api/agent/test-agent/executeStream \
+  -H "Authorization: Bearer xxx" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"你好"}'
 ```
 
 ---
 
-## 十一、常见 Pitfalls 速查
+## 八、Pitfalls 速查
 
-### 11.1 页面空白
-
-| 原因 | 症状 | 修复 |
-|------|------|------|
-| Vite 缓存损坏 | 所有页面白屏 | `rm -rf node_modules/.vite && pnpm dev` |
-| VueFlow Transition 冲突 | 切换 Tab 后 VueFlow 页面白屏 (web-naive) | `v-if` + `onDeactivated` |
-| 大组件渲染时序 | 大型表单 Tab 切回白屏 (web-naive) | `v-if="showContent"` 暴力重建 |
-| 路由指向不存在的组件 | 特定路径 404 | 删除后端 menu 记录 |
-| web-client 路由未配置 | 访问 /chat 404 | 检查 router/index.ts |
-
-### 11.2 API 调用
+### 8.1 双应用通用
 
 | 问题 | 原因 | 修复 |
 |------|------|------|
-| SSE 401 | 未注入 Token | 手动 `useAccessStore().accessToken` |
-| SSE 连接失败 | baseURL 错误 | `requestClient.getBaseUrl()` |
-| ApiSelect 不加载 | api 传了字符串 | 传函数引用 (仅 web-naive) |
-| 响应 code 异常 | successCode 不匹配 | 后端设 `BizResultCode.SUC=200` |
-| web-client 跨域 | 端口不同 | 配置 vite proxy 或后端 CORS |
+| SSE 401 | fetch 绕过 requestClient | 手动注入 Bearer Token |
+| SSE baseURL 错 | 未用 getBaseUrl() | `requestClient.getBaseUrl()` |
+| API 响应 code!=200 | successCode 不匹配 | 后端 `BizResultCode.SUC=200` |
+| LSP import 报错 | node_modules 不全 | 忽略, 不影响构建 |
+| web-client 跨域 | 不同端口 | vite proxy 或后端 CORS |
 
-### 11.3 Graph 编辑 (仅 web-naive)
-
-| 问题 | 原因 | 修复 |
-|------|------|------|
-| 保存后字段丢失 | 缺少 11 个必填字段 | 检查 buildGraphConfig() |
-| VueFlow 报错 | prop 和 store 冲突 | `<VueFlow>` 不加 `:nodes/:edges` |
-| VueFlow 找不到 handle | 双重映射 | functionCondition 只返回条件键 |
-| Tab 切换 VueFlow 报错 | onDeactivated 未清理 | 销毁 VueFlow + 清空数据 |
-
-### 11.4 路由/菜单
+### 8.2 管理后台 (web-naive)
 
 | 问题 | 原因 | 修复 |
 |------|------|------|
-| 菜单重复 | `accessMode: mixed` + 静态路由 (web-naive) | 删除 `modules/*.ts` |
-| 页面隐藏但可访问 | show=false 只是隐藏菜单 | 搭配 noBasicLayout 做全屏 |
-| 导航参数不对 | path 与后端 menu 不一致 | 严格匹配 `push()` 路径 |
+| 页面白屏 | Vite 缓存 | `rm -rf node_modules/.vite` |
+| VueFlow Tab 白屏 | Transition 冲突 | `v-if` + `onDeactivated` |
+| Graph 保存字段丢失 | 缺 11 个必填字段 | 检查 buildGraphConfig() |
+| VueFlow 报错 | prop 和 store 冲突 | 不加 `:nodes/:edges` |
+| 菜单重复 | mixed 模式 + 静态路由 | 删除 modules/*.ts |
+| ApiSelect 不加载 | api 传字符串 | 传函数引用 |
+| NCollapseItem 警告 | title prop | 用 #header slot |
+| 大组件 Tab 切回白屏 | Transition 渲染时序 | v-if 暴力重建 |
 
-### 11.5 其他
+### 8.3 用户前台 (web-client)
 
 | 问题 | 原因 | 修复 |
 |------|------|------|
-| NCollapseItem 警告 | title prop 警告 (web-naive) | 用 `#header` slot |
-| force-push 丢失提交 | 覆盖了远程新提交 | `cherry-pick` + 正常 push |
-| LSP import 报错 | node_modules 不全 | 忽略，不影响构建 |
-| API 响应 genderLabel=null | 后端 Repository 未填充 | 检查 insert/update 路径 |
+| 路由 404 | 未注册路由 | 检查 router/index.ts |
+| 401 登录循环 | 路由守卫错误 | 检查 requiresAuth 逻辑 |
+| 对话消息不显示 | SSE 解析错误 | 检查 data: 行格式 |
+| 知识库搜索为空 | 索引未重建 | 调 POST /rebuild-index |
 
 ---
 
-## 十二、现有功能清单 (2026-07)
+## 九、功能清单
 
-### 12.1 管理后台 (web-naive) — ✅ 已完成
+### 9.1 管理后台 (web-naive) — ✅ 已完成
 
-| 功能 | 文件 | 状态 |
-|------|------|------|
-| Agent 卡片列表 | `views/agent/admin/agent-list.vue` | ✅ |
-| Agent 统一编辑 (3模式) | `views/agent/admin/agent-edit.vue` | ✅ |
-| Agent 基本信息表单 | `views/agent/admin/agent-form.vue` | ✅ |
-| 版本管理 (内联面板) | `agent-edit.vue` 内 NCollapse | ✅ |
-| Graph 节点编辑弹窗 | `views/agent/admin/modules/node-form.vue` | ✅ |
-| Graph 校验结果弹窗 | `views/agent/admin/modules/validate-result.vue` | ✅ |
-| Agent 执行对话 (Modal) | `views/agent/agent/modules/chat.vue` | ✅ |
-| 平台管理 CRUD | `views/agent/platform/` | ✅ |
-| 模型管理 CRUD | `views/agent/model/` | ✅ |
-| 通用 LLM 对话弹窗 | `views/agent/model/modules/chat-dialog.vue` | ✅ |
-| 意图管理 CRUD | `views/agent/intent/` | ✅ |
-| 用户管理 CRUD | `views/system/user/` | ✅ |
-| 角色管理 CRUD + NTree | `views/system/role/` | ✅ |
-| 菜单管理 CRUD | `views/system/menu/` | ✅ |
-| 工作空间管理 | `views/system/workspace/` | ✅ |
-| 租户管理 | `views/system/tenant/` | ✅ |
-| 字典管理 | `views/common/dict/` | ✅ |
-| 人物档案管理 | `views/record/profile/` | ✅ |
-| 时间轴管理 | `views/record/timeline/` | ✅ |
-| 仪表盘 | `views/dashboard/` | ✅ |
-| 登录/认证 | `api/core/auth.ts` | ✅ |
-| SSE 流式对话 | `api/agent/chat.ts` + `chat-dialog.vue` | ✅ |
+| 功能 | 页面 | API 模块 | 状态 |
+|------|------|---------|------|
+| Agent 卡片列表 | agent-admin-list | agent/admin.ts | ✅ |
+| Agent 统一编辑 (3模式) | agent-admin-edit | agent/admin.ts + graph.ts + version.ts | ✅ |
+| Agent Graph 编排 (VueFlow) | agent-edit 内联 | agent/graph.ts | ✅ |
+| 版本管理 (内联面板) | agent-edit 内联 | agent/version.ts | ✅ |
+| 节点编辑弹窗 | agent-admin-modules-node-form | agent/node-type.ts | ✅ |
+| Graph 校验弹窗 | agent-admin-modules-validate-result | agent/graph.ts | ✅ |
+| Agent 执行对话 (Modal) | agent-agent-modules-chat | agent/agent.ts | ✅ |
+| 平台管理 CRUD | agent-platform | common/platform.ts | ✅ |
+| 模型管理 CRUD | agent-model | common/model.ts | ✅ |
+| 通用 LLM 对话弹窗 | agent-model-chat-dialog | agent/chat.ts | ✅ |
+| 意图管理 CRUD | agent-intent | agent/intent-def.ts | ✅ |
+| 用户管理 CRUD | system-user | core/user.ts + system/user.ts | ✅ |
+| 角色管理 CRUD + NTree | system-role | system/role.ts | ✅ |
+| 菜单管理 CRUD + 树 | system-menu | system/menu.ts + core/menu.ts | ✅ |
+| 工作空间管理 | system-workspace | system/workspace.ts | ✅ |
+| 租户管理 | system-tenant | system/tenant.ts | ✅ |
+| 字典管理 | common-dict | common/dict.ts | ✅ |
+| 人物档案管理 | record-profile | record/profile.ts | ✅ |
+| 时间轴管理 | record-timeline | record/timeline.ts | ✅ |
+| 仪表盘 | dashboard | - | ✅ |
+| 登录/认证 | _core-authentication | core/auth.ts + core/captcha.ts | ✅ |
 
-### 12.2 已清理的死代码
+### 9.2 用户前台 (web-client) — 🔧 规划中
+
+| 功能 | 页面 | API | 状态 |
+|------|------|-----|------|
+| 项目脚手架 | - | - | 🔧 |
+| 登录/注册 | _core-authentication | AuthController (login/captcha) | 🔧 |
+| AI 对话 (SSE) | chat | ChatDemoController (5端点) | 🔧 |
+| 会话管理 | chat/sidebar | - | 🔧 |
+| Agent 广场 | agent/square | AgentController (list/details) | 🔧 |
+| Agent 对话 | agent/detail | AgentController (execute/executeStream) | 🔧 |
+| 知识库浏览 | knowledge | KnowledgeController (列表/详情) | 🔧 |
+| 知识库搜索 | knowledge/search | KnowledgeController (search) | 🔧 |
+| 个人设置 | space/settings | UserController (user/info + password) | 🔧 |
+| 对话历史 | space/history | - | 🔧 |
+
+### 9.3 已清理的死代码
 
 | 文件 | 说明 |
 |------|------|
-| `views/agent/chat.vue` | 独立对话页 → 替换为 Modal |
+| `views/agent/chat.vue` | 独立对话页 → 替换为 chat-dialog Modal |
 | `views/agent/admin/version-list.vue` | 独立版本列表 → 内联面板 |
 | `views/agent/admin/version-form.vue` | 独立版本表单 → 内联面板 |
 | `apps/web-antd/` | Ant Design 实验应用 → 已删除 |
 | `router/routes/modules/demos.ts` | Demo 路由 → 已删除 |
 
-### 12.3 用户前台 (web-client) — 🔧 规划中
-
-| 功能 | 预计文件 | 状态 |
-|------|---------|------|
-| 项目脚手架搭建 | - | 🔧 规划 |
-| 登录/注册页 | `views/_core/authentication/` | 🔧 规划 |
-| AI 对话页 (SSE 流式) | `views/chat/` | 🔧 规划 |
-| 会话管理 (侧边栏) | `views/chat/modules/sidebar.vue` | 🔧 规划 |
-| Agent 广场 (浏览) | `views/agent/square.vue` | 🔧 规划 |
-| Agent 详情 + 对话 | `views/agent/detail.vue` | 🔧 规划 |
-| 个人设置 | `views/space/settings.vue` | 🔧 规划 |
-| 对话历史 | `views/space/history.vue` | 🔧 规划 |
-
 ---
 
-## 十三、版本历史
+## 十、版本历史
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| 1.0.0 | 2026-07-02 | 初始版本，覆盖 web-naive 管理后台 |
-| 1.1.0 | 2026-07-02 | 新增 dual-app 架构：web-naive(管理后台) + web-client(用户前台)；增加模块设计章节、开发进度章节 |
+| 1.0.0 | 2026-07-02 | 初始版本 |
+| 1.1.0 | 2026-07-02 | 新增 dual-app 架构 |
+| 2.0.0 | 2026-07-02 | 全面覆盖后端 27 个 Controller、156+ API 端点；完善双应用映射矩阵、模块设计、开发进度 |
 
