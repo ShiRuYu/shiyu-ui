@@ -61,8 +61,8 @@ async function handleGenerate() {
           style="width: 120px"
         />
         <NButton type="primary" :loading="loading" @click="handleGenerate">
-AI组卷
-</NButton>
+          AI组卷
+        </NButton>
       </NSpace>
 
       <NSpin :show="loading">

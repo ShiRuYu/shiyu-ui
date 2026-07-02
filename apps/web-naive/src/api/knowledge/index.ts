@@ -1,3 +1,3 @@
 export * from './document';
-export * from './index-rebuild';
 export * from './index';
+export * from './index-rebuild';

@@ -22,7 +22,10 @@ const routes: RouteRecordRaw[] = [
         name: 'EduTextbook',
         path: '/edu/textbook',
         component: () => import('#/views/education-admin/textbook/list.vue'),
-        meta: { icon: 'lucide:book-marked', title: $t('page.eduAdmin.textbook') },
+        meta: {
+          icon: 'lucide:book-marked',
+          title: $t('page.eduAdmin.textbook'),
+        },
       },
       {
         name: 'EduChapter',
@@ -33,20 +36,31 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduCourse',
         path: '/edu/course',
-        component: () => import('#/views/education-admin/course-admin/list.vue'),
-        meta: { icon: 'lucide:presentation', title: $t('page.eduAdmin.course') },
+        component: () =>
+          import('#/views/education-admin/course-admin/list.vue'),
+        meta: {
+          icon: 'lucide:presentation',
+          title: $t('page.eduAdmin.course'),
+        },
       },
       {
         name: 'EduQuestion',
         path: '/edu/question',
-        component: () => import('#/views/education-admin/question-admin/list.vue'),
-        meta: { icon: 'lucide:help-circle', title: $t('page.eduAdmin.question') },
+        component: () =>
+          import('#/views/education-admin/question-admin/list.vue'),
+        meta: {
+          icon: 'lucide:help-circle',
+          title: $t('page.eduAdmin.question'),
+        },
       },
       {
         name: 'EduExam',
         path: '/edu/exam',
         component: () => import('#/views/education-admin/exam-admin/list.vue'),
-        meta: { icon: 'lucide:clipboard-list', title: $t('page.eduAdmin.exam') },
+        meta: {
+          icon: 'lucide:clipboard-list',
+          title: $t('page.eduAdmin.exam'),
+        },
       },
       {
         name: 'EduStudent',
@@ -57,7 +71,8 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduResource',
         path: '/edu/resource',
-        component: () => import('#/views/education-admin/resource-admin/list.vue'),
+        component: () =>
+          import('#/views/education-admin/resource-admin/list.vue'),
         meta: { icon: 'lucide:folder', title: $t('page.eduAdmin.resource') },
       },
     ],

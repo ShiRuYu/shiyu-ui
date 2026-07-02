@@ -45,8 +45,8 @@ onMounted(() => loadReviews());
                 review.knowledgeName || `知识点 #${review.knowledgeId}`
               }}</span>
               <NTag type="warning" size="small">
-第{{ review.reviewRound }}轮
-</NTag>
+                第{{ review.reviewRound }}轮
+              </NTag>
             </NSpace>
           </template>
 

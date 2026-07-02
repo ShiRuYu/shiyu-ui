@@ -72,13 +72,12 @@ onMounted(() => loadExam());
           <NSpace>
             <NTag type="info">{{ exam.subjectCode }}</NTag>
             <NTag>
-{{ $t('education.exam.totalScore') }}:
+              {{ $t('education.exam.totalScore') }}:
               {{ exam.totalScore }}
-</NTag>
+            </NTag>
             <NTag>
-{{ $t('education.exam.durationMin') }}:
-              {{ exam.durationMin }}分钟
-</NTag>
+              {{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}分钟
+            </NTag>
           </NSpace>
         </NCard>
 

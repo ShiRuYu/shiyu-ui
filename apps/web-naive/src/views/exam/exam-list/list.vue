@@ -81,8 +81,8 @@ onMounted(() => loadExams());
 
           <template #footer>
             <NButton type="primary" block @click="startExam(exam)">
-开始考试
-</NButton>
+              开始考试
+            </NButton>
           </template>
         </NCard>
       </NGi>

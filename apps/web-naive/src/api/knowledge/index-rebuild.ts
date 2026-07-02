@@ -13,19 +13,25 @@ export namespace KnowledgeIndexApi {
 }
 
 async function rebuildIndex() {
-  return requestClient.post<KnowledgeIndexApi.RebuildTask>('/api/v1/knowledge/rebuild-index');
+  return requestClient.post<KnowledgeIndexApi.RebuildTask>(
+    '/api/v1/knowledge/rebuild-index',
+  );
 }
 
 async function getRebuildTaskStatus(taskId: string) {
-  return requestClient.get<KnowledgeIndexApi.RebuildTask>(`/api/v1/knowledge/rebuild-index/${taskId}`);
+  return requestClient.get<KnowledgeIndexApi.RebuildTask>(
+    `/api/v1/knowledge/rebuild-index/${taskId}`,
+  );
 }
 
 async function getRebuildTasks() {
-  return requestClient.get<KnowledgeIndexApi.RebuildTask[]>('/api/v1/knowledge/rebuild-index');
+  return requestClient.get<KnowledgeIndexApi.RebuildTask[]>(
+    '/api/v1/knowledge/rebuild-index',
+  );
 }
 
 async function clearIndex() {
   return requestClient.delete('/api/v1/knowledge/index');
 }
 
-export { clearIndex, getRebuildTaskStatus, getRebuildTasks, rebuildIndex };
+export { clearIndex, getRebuildTasks, getRebuildTaskStatus, rebuildIndex };

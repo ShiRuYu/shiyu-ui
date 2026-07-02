@@ -1,18 +1,31 @@
 <script lang="ts" setup>
 import type { EducationSubjectApi } from '#/api/education/subject';
+
 import { computed, ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
+
 import { NButton } from 'naive-ui';
+
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { createSubject, updateSubject } from '#/api/education/subject';
 import { $t } from '#/locales';
+
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
 const formData = ref<EducationSubjectApi.Subject>();
-const getTitle = computed(() => formData.value?.id ? $t('ui.actionTitle.edit', [$t('education.subject.name')]) : $t('ui.actionTitle.create', [$t('education.subject.name')]));
-const [Form, formApi] = useVbenForm({ layout: 'vertical', schema: useSchema(), showDefaultActions: false });
+const getTitle = computed(() =>
+  formData.value?.id
+    ? $t('ui.actionTitle.edit', [$t('education.subject.name')])
+    : $t('ui.actionTitle.create', [$t('education.subject.name')]),
+);
+const [Form, formApi] = useVbenForm({
+  layout: 'vertical',
+  schema: useSchema(),
+  showDefaultActions: false,
+});
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
@@ -20,11 +33,17 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       const data = await formApi.getValues();
       try {
-        await (formData.value?.id ? updateSubject(formData.value.id, data) : createSubject(data));
+        await (formData.value?.id
+          ? updateSubject(formData.value.id, data)
+          : createSubject(data));
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();
         emit('success');
-      } catch (error) { console.error(error); } finally { modalApi.lock(false); }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        modalApi.lock(false);
+      }
     }
   },
   onOpenChange(isOpen) {
@@ -42,7 +61,11 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="formApi.resetForm()">{{ $t('common.reset') }}</NButton>
+        <NButton type="error" @click="formApi.resetForm()">
+{{
+          $t('common.reset')
+        }}
+</NButton>
       </div>
     </template>
   </Modal>
