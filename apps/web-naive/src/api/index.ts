@@ -3,3 +3,4 @@ export * from './common';
 export * from './core';
 export * from './record';
 export * from './system';
+export * from './knowledge';
