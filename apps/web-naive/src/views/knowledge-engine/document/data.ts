@@ -10,10 +10,10 @@ export interface Document {
   [key: string]: any;
   id: number;
   title: string;
-  knowledgeId: number;
   content: string;
-  fileType: string;
-  fileSize: number;
+  docType: string;
+  source: string;
+  knowledgeIds: number[];
 }
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -37,8 +37,8 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('knowledge.documentTitle')])),
     },
     {
-      component: 'InputNumber',
-      fieldName: 'knowledgeId',
+      component: 'Input',
+      fieldName: 'knowledgeIds',
       label: $t('knowledge.name'),
       rules: z
         .number()
@@ -59,9 +59,8 @@ export function useColumns(
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'title', title: $t('knowledge.documentTitle'), width: 200 },
-    { field: 'knowledgeId', title: $t('knowledge.name'), width: 120 },
-    { field: 'fileType', title: $t('knowledge.fileType'), width: 100 },
-    { field: 'fileSize', title: $t('knowledge.fileSize'), width: 100 },
+    { field: 'docType', title: $t('knowledge.fileType'), width: 100 },
+    { field: 'source', title: '来源', width: 150 },
     {
       align: 'right',
       cellRender: {

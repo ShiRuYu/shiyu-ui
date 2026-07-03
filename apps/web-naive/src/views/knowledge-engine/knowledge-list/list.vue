@@ -5,16 +5,23 @@ import type {
 } from '#/adapter/vxe-table';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { Plus } from '@vben/icons';
+import { Plus, GitBranch, Network } from '@vben/icons';
 
-import { NButton } from 'naive-ui';
+import { NButton, NSpace } from 'naive-ui';
+import { useRouter } from 'vue-router';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import {
+  getKnowledgeListApi,
+  deleteKnowledgeApi,
+} from '#/api/knowledge';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
+
+const router = useRouter();
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -28,10 +35,13 @@ function onCreate() {
 }
 function onDelete(row: any) {
   const h = message.loading($t('common.deleting'), { duration: 0 });
-  Promise.resolve()
+  deleteKnowledgeApi(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
+    })
+    .catch((err: any) => {
+      message.error(err.message || '删除失败');
     })
     .finally(() => h.destroy());
 }
@@ -54,7 +64,13 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async () => ({ items: [], total: 0 }),
+        query: async ({ formValues }) => {
+          const params: any = { pageNum: 1, pageSize: 1000 };
+          if (formValues?.keyword) params.keyword = formValues.keyword;
+          if (formValues?.category) params.category = formValues.category;
+          const result = await getKnowledgeListApi(params);
+          return { items: result, total: result.length };
+        },
       },
     },
     toolbarConfig: {
@@ -69,16 +85,34 @@ const [Grid, gridApi] = useVbenVxeGrid({
 function refreshGrid() {
   gridApi.query();
 }
+
+function goToGraph() {
+  router.push('/knowledge/graph');
+}
+
+function goToRelation() {
+  router.push('/knowledge/relation');
+}
 </script>
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('knowledge.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate">
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('knowledge.name')]) }}
-        </NButton>
+        <NSpace>
+          <NButton @click="goToGraph">
+            <template #icon><GitBranch class="size-4" /></template>
+            {{ $t('knowledge.viewGraph') }}
+          </NButton>
+          <NButton @click="goToRelation">
+            <template #icon><Network class="size-4" /></template>
+            {{ $t('knowledge.addRelation') }}
+          </NButton>
+          <NButton type="primary" @click="onCreate">
+            <template #icon><Plus class="size-5" /></template>
+            {{ $t('ui.actionTitle.create', [$t('knowledge.name')]) }}
+          </NButton>
+        </NSpace>
       </template>
     </Grid>
   </Page>

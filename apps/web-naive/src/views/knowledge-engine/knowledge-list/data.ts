@@ -17,8 +17,8 @@ export interface KnowledgePoint {
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
-    { component: 'Input', fieldName: 'name', label: $t('knowledge.name') },
-    { component: 'Input', fieldName: 'code', label: $t('knowledge.code') },
+    { component: 'Input', fieldName: 'keyword', label: $t('knowledge.name') },
+    { component: 'Input', fieldName: 'category', label: $t('knowledge.code') },
   ];
 }
 

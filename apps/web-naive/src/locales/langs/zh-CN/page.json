@@ -60,14 +60,14 @@
     "report": "AI报告"
   },
   "knowledge": {
-    "title": "知识引擎",
+    "title": "知识库管理",
     "list": "知识点管理",
     "graph": "知识图谱",
     "document": "文档管理",
     "index": "索引管理"
   },
   "eduAdmin": {
-    "title": "教务管理",
+    "title": "教育管理",
     "subject": "学科管理",
     "textbook": "教材管理",
     "chapter": "章节管理",

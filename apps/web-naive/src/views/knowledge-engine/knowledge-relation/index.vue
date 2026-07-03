@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { NCard, NDataTable, NSpace, NButton, NSelect, NModal, NForm, NFormItem, NInputNumber, NPopconfirm, NTag, useMessage } from 'naive-ui';
-import { useRouter } from 'vue-router';
+import { onMounted, ref, h } from 'vue';
+import { Page } from '@vben/common-ui';
+import { NCard, NDataTable, NSpace, NButton, NSelect, NModal, NForm, NFormItem, NInputNumber, NPopconfirm, NTag, NEmpty, useMessage } from 'naive-ui';
 import { getKnowledgePrerequisitesListApi, getKnowledgeSubsequentListApi, addKnowledgeRelationApi, deleteKnowledgeRelationApi, getKnowledgeListApi } from '#/api/knowledge';
 
-const router = useRouter();
 const message = useMessage();
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
 const selectedKnowledgeId = ref<number | null>(null);
@@ -99,49 +98,53 @@ onMounted(() => { loadOptions(); });
 </script>
 
 <template>
-  <NCard title="知识关系管理" :bordered="false">
-    <template #header-extra>
-      <NSpace>
-        <NSelect
-          v-model:value="selectedKnowledgeId"
-          :options="knowledgeOptions"
-          placeholder="选择知识点"
-          filterable
-          style="width:300px"
-          @update:value="loadRelations"
-        />
-        <NButton v-if="selectedKnowledgeId" type="primary" @click="showAddModal = true">添加关系</NButton>
-      </NSpace>
-    </template>
-
-    <NSpace vertical v-if="selectedKnowledgeId">
-      <h4>前置知识点（当前知识点的前提）</h4>
-      <NDataTable :columns="preColumns" :data="prerequisites" :loading="loading" size="small" striped />
-
-      <h4 class="mt-4">后续知识点（依赖当前知识点）</h4>
-      <NDataTable :columns="subColumns" :data="subsequent" :loading="loading" size="small" striped />
-    </NSpace>
-
-    <NEmpty v-else description="请先选择知识点" />
-
-    <NModal v-model:show="showAddModal" title="添加知识关系" preset="card" style="width:500px">
-      <NForm :model="addForm" label-placement="left" label-width="100">
-        <NFormItem label="目标知识点">
-          <NSelect v-model:value="addForm.targetId" :options="knowledgeOptions" filterable placeholder="选择目标知识点" />
-        </NFormItem>
-        <NFormItem label="关系类型">
-          <NSelect v-model:value="addForm.type" :options="relationTypeOptions" />
-        </NFormItem>
-        <NFormItem label="权重">
-          <NInputNumber v-model:value="addForm.weight" :min="0" :max="2" :step="0.1" style="width:100%" />
-        </NFormItem>
-      </NForm>
-      <template #footer>
-        <NSpace justify="end">
-          <NButton @click="showAddModal = false">取消</NButton>
-          <NButton type="primary" @click="handleAddRelation">添加</NButton>
+  <Page auto-content-height>
+    <NCard :title="$t('knowledge.addRelation')" :bordered="false">
+      <template #header-extra>
+        <NSpace>
+          <NSelect
+            v-model:value="selectedKnowledgeId"
+            :options="knowledgeOptions"
+            placeholder="选择知识点"
+            filterable
+            style="width:300px"
+            @update:value="loadRelations"
+          />
+          <NButton v-if="selectedKnowledgeId" type="primary" @click="showAddModal = true">
+            {{ $t('knowledge.addRelation') }}
+          </NButton>
         </NSpace>
       </template>
-    </NModal>
-  </NCard>
+
+      <NSpace vertical v-if="selectedKnowledgeId">
+        <h4>前置知识点（当前知识点的前提）</h4>
+        <NDataTable :columns="preColumns" :data="prerequisites" :loading="loading" size="small" striped />
+
+        <h4 class="mt-4">后续知识点（依赖当前知识点）</h4>
+        <NDataTable :columns="subColumns" :data="subsequent" :loading="loading" size="small" striped />
+      </NSpace>
+
+      <NEmpty v-else description="请先选择知识点" />
+
+      <NModal v-model:show="showAddModal" title="添加知识关系" preset="card" style="width:500px">
+        <NForm :model="addForm" label-placement="left" label-width="100">
+          <NFormItem label="目标知识点">
+            <NSelect v-model:value="addForm.targetId" :options="knowledgeOptions" filterable placeholder="选择目标知识点" />
+          </NFormItem>
+          <NFormItem label="关系类型">
+            <NSelect v-model:value="addForm.type" :options="relationTypeOptions" />
+          </NFormItem>
+          <NFormItem label="权重">
+            <NInputNumber v-model:value="addForm.weight" :min="0" :max="2" :step="0.1" style="width:100%" />
+          </NFormItem>
+        </NForm>
+        <template #footer>
+          <NSpace justify="end">
+            <NButton @click="showAddModal = false">取消</NButton>
+            <NButton type="primary" @click="handleAddRelation">添加</NButton>
+          </NSpace>
+        </template>
+      </NModal>
+    </NCard>
+  </Page>
 </template>

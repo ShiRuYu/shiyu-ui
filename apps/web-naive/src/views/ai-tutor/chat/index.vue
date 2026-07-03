@@ -64,13 +64,13 @@ async function sendMessage() {
         <NInput
           v-model:value="input"
           :loading="loading"
-          :placeholder="$t('aiTutor.promptPlaceholder')"
+          :placeholder="$t('ai-tutor.promptPlaceholder')"
           clearable
           style="width: 400px"
           @keyup.enter="sendMessage"
         />
         <NButton type="primary" :loading="loading" @click="sendMessage">
-          {{ $t('aiTutor.send') }}
+          {{ $t('ai-tutor.send') }}
         </NButton>
       </NSpace>
     </NCard>

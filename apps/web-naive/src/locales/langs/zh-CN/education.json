@@ -13,7 +13,8 @@
     "list": "教材列表",
     "name": "教材",
     "publisher": "出版社",
-    "isbn": "ISBN"
+    "isbn": "ISBN",
+    "subjectCode": "所属学科"
   },
   "chapter": {
     "title": "章节管理",
@@ -59,7 +60,8 @@
     "difficultyBasic": "基础",
     "difficultyMedium": "提升",
     "difficultyHard": "拔高",
-    "difficultyCompetition": "竞赛"
+    "difficultyCompetition": "竞赛",
+    "subjectCode": "所属学科"
   },
   "exam": {
     "title": "考试管理",

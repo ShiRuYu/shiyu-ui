@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteExam, getExamBySubject } from '#/api/education/exam';
+import { deleteExam, getExamBySubject, getExamList } from '#/api/education/exam';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -59,8 +59,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          const result = await getExamBySubject('');
+        query: async ({ formValues }) => {
+          const subjectCode = formValues?.subjectCode;
+          const result = subjectCode
+            ? await getExamBySubject(subjectCode)
+            : await getExamList();
           return { items: result, total: result.length };
         },
       },

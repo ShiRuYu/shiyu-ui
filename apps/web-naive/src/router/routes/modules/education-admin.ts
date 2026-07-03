@@ -5,75 +5,75 @@ import { $t } from '#/locales';
 const routes: RouteRecordRaw[] = [
   {
     meta: {
-      icon: 'lucide:school',
+      icon: 'carbon:education',
       order: 80,
       title: $t('page.eduAdmin.title'),
     },
-    name: 'EducationAdmin',
+    name: 'Education',
     path: '/edu',
     children: [
       {
-        name: 'EduSubject',
+        name: 'EducationSubject',
         path: '/edu/subject',
         component: () => import('#/views/education-admin/subject/list.vue'),
-        meta: { icon: 'lucide:layers', title: $t('page.eduAdmin.subject') },
+        meta: { icon: 'carbon:book', title: $t('page.eduAdmin.subject') },
       },
       {
-        name: 'EduTextbook',
+        name: 'EducationTextbook',
         path: '/edu/textbook',
         component: () => import('#/views/education-admin/textbook/list.vue'),
         meta: {
-          icon: 'lucide:book-marked',
+          icon: 'carbon:notebook',
           title: $t('page.eduAdmin.textbook'),
         },
       },
       {
-        name: 'EduChapter',
+        name: 'EducationChapter',
         path: '/edu/chapter',
         component: () => import('#/views/education-admin/chapter/list.vue'),
-        meta: { icon: 'lucide:list-tree', title: $t('page.eduAdmin.chapter') },
+        meta: { icon: 'carbon:tree', title: $t('page.eduAdmin.chapter') },
       },
       {
-        name: 'EduCourse',
+        name: 'EducationCourse',
         path: '/edu/course',
         component: () =>
           import('#/views/education-admin/course-admin/list.vue'),
         meta: {
-          icon: 'lucide:presentation',
+          icon: 'carbon:course',
           title: $t('page.eduAdmin.course'),
         },
       },
       {
-        name: 'EduQuestion',
+        name: 'EducationQuestion',
         path: '/edu/question',
         component: () =>
           import('#/views/education-admin/question-admin/list.vue'),
         meta: {
-          icon: 'lucide:help-circle',
+          icon: 'carbon:list-boxes',
           title: $t('page.eduAdmin.question'),
         },
       },
       {
-        name: 'EduExam',
+        name: 'EducationExam',
         path: '/edu/exam',
         component: () => import('#/views/education-admin/exam-admin/list.vue'),
         meta: {
-          icon: 'lucide:clipboard-list',
+          icon: 'carbon:exam',
           title: $t('page.eduAdmin.exam'),
         },
       },
       {
-        name: 'EduStudent',
+        name: 'EducationStudent',
         path: '/edu/student',
         component: () => import('#/views/education-admin/student/list.vue'),
-        meta: { icon: 'lucide:users', title: $t('page.eduAdmin.student') },
+        meta: { icon: 'carbon:user-avatar', title: $t('page.eduAdmin.student') },
       },
       {
-        name: 'EduResource',
+        name: 'EducationResource',
         path: '/edu/resource',
         component: () =>
           import('#/views/education-admin/resource-admin/list.vue'),
-        meta: { icon: 'lucide:folder', title: $t('page.eduAdmin.resource') },
+        meta: { icon: 'carbon:document', title: $t('page.eduAdmin.resource') },
       },
     ],
   },

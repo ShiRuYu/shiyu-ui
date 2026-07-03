@@ -18,6 +18,10 @@ export namespace EducationExamApi {
   }
 }
 
+async function getExamList() {
+  return requestClient.get<EducationExamApi.Exam[]>('/api/v1/exam');
+}
+
 async function getExamById(id: number) {
   return requestClient.get<EducationExamApi.Exam>(`/api/v1/exam/${id}`);
 }
@@ -59,6 +63,7 @@ export {
   getExamById,
   getExamBySubject,
   getExamByTeacher,
+  getExamList,
   submitExam,
   updateExam,
 };

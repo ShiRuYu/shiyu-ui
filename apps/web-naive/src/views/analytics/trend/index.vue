@@ -11,7 +11,7 @@ import { getTrend } from '#/api';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const trendData = ref<EducationAnalyticsApi.TrendResponse>();
+const trendData = ref<EducationAnalyticsApi.TrendResponse>({ dates: [], studyRecords: [], masteredCount: [] });
 
 async function loadTrend() {
   loading.value = true;
@@ -33,7 +33,7 @@ onMounted(() => {
   <Page :title="$t('analytics.trend')">
     <NCard>
       <NSpin :show="loading">
-        <div v-if="trendData" class="py-8">
+        <div v-if="trendData && trendData.dates && trendData.dates.length" class="py-8">
           <p class="text-center text-lg font-medium mb-4">学习趋势 (近7天)</p>
           <div class="space-y-2">
             <div

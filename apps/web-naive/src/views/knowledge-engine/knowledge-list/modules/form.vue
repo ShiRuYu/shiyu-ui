@@ -7,6 +7,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
+import { createKnowledgeApi, updateKnowledgeApi } from '#/api/knowledge';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
@@ -29,6 +30,12 @@ const [Modal, modalApi] = useVbenModal({
     if (valid) {
       modalApi.lock();
       try {
+        const data = await formApi.getValues();
+        if (formData.value?.id) {
+          await updateKnowledgeApi(formData.value.id, data);
+        } else {
+          await createKnowledgeApi(data);
+        }
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();
         emit('success');

@@ -43,7 +43,7 @@ export function useSchema(): VbenFormSchema[] {
           $t('ui.formRules.required', [$t('education.textbook.subjectCode')]),
         ),
     },
-    { component: 'InputNumber', fieldName: 'grade', label: $t('course.grade') },
+    { component: 'InputNumber', fieldName: 'grade', label: $t('education.course.grade') },
     {
       component: 'Input',
       fieldName: 'publisher',
@@ -68,7 +68,7 @@ export function useColumns(
       title: $t('education.textbook.subjectCode'),
       width: 120,
     },
-    { field: 'grade', title: $t('course.grade'), width: 80 },
+    { field: 'grade', title: $t('education.course.grade'), width: 80 },
     {
       field: 'publisher',
       title: $t('education.textbook.publisher'),

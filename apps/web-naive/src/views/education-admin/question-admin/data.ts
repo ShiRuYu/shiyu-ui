@@ -58,7 +58,7 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'subjectCode',
       label: $t('education.question.subjectCode'),
     },
-    { component: 'InputNumber', fieldName: 'grade', label: $t('course.grade') },
+    { component: 'InputNumber', fieldName: 'grade', label: $t('education.course.grade') },
     {
       component: 'Select',
       fieldName: 'difficulty',

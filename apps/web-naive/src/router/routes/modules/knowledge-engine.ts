@@ -5,11 +5,11 @@ import { $t } from '#/locales';
 const routes: RouteRecordRaw[] = [
   {
     meta: {
-      icon: 'lucide:network',
+      icon: 'carbon:knowledge-base',
       order: 70,
       title: $t('page.knowledge.title'),
     },
-    name: 'KnowledgeEngine',
+    name: 'Knowledge',
     path: '/knowledge',
     children: [
       {
@@ -17,21 +17,21 @@ const routes: RouteRecordRaw[] = [
         path: '/knowledge/list',
         component: () =>
           import('#/views/knowledge-engine/knowledge-list/list.vue'),
-        meta: { icon: 'lucide:database', title: $t('page.knowledge.list') },
+        meta: { icon: 'carbon:concept', title: $t('page.knowledge.list') },
       },
       {
         name: 'KnowledgeGraph',
         path: '/knowledge/graph',
         component: () =>
           import('#/views/knowledge-engine/knowledge-graph/index.vue'),
-        meta: { icon: 'lucide:git-branch', title: $t('page.knowledge.graph') },
+        meta: { icon: 'carbon:network-3', title: $t('page.knowledge.graph') },
       },
       {
         name: 'KnowledgeDocument',
         path: '/knowledge/document',
         component: () => import('#/views/knowledge-engine/document/list.vue'),
         meta: {
-          icon: 'lucide:file-text',
+          icon: 'carbon:document',
           title: $t('page.knowledge.document'),
         },
       },
@@ -40,7 +40,14 @@ const routes: RouteRecordRaw[] = [
         path: '/knowledge/index',
         component: () =>
           import('#/views/knowledge-engine/index-rebuild/list.vue'),
-        meta: { icon: 'lucide:refresh-cw', title: $t('page.knowledge.index') },
+        meta: { icon: 'carbon:data-class', title: $t('page.knowledge.index') },
+      },
+      {
+        name: 'KnowledgeRelation',
+        path: '/knowledge/relation',
+        component: () =>
+          import('#/views/knowledge-engine/knowledge-relation/index.vue'),
+        meta: { icon: 'carbon:flow', title: '知识关系' },
       },
     ],
   },
