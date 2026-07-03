@@ -19,4 +19,15 @@
     "menu": "Menu Management",
     "workspace": "Workspace Management"
   }
+  },
+  "educationCenter": {
+    "title": "Education Center",
+    "learning": "Learning",
+    "practice": "Practice",
+    "exam": "Exam",
+    "review": "Review",
+    "data": "Data",
+    "ai": "AI Assistant",
+    "admin": "Admin"
+  }
 }

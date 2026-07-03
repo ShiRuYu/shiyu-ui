@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:bar-chart-3',
       order: 50,
+      hideInMenu: true,
       title: $t('page.analyticsCenter.title'),
     },
     name: 'AnalyticsCenter',

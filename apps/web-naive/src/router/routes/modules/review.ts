@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:repeat',
       order: 40,
+      hideInMenu: true,
       title: $t('page.review.title'),
     },
     name: 'Review',

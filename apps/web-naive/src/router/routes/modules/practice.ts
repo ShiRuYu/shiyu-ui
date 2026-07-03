@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:pen-tool',
       order: 20,
+      hideInMenu: true,
       title: $t('page.practice.title'),
     },
     name: 'Practice',

@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'lucide:bot',
       order: 60,
+      hideInMenu: true,
       title: $t('page.aiTutor.title'),
     },
     name: 'AiTutor',

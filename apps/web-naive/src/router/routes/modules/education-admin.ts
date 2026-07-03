@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       icon: 'carbon:education',
       order: 80,
+      hideInMenu: true,
       title: $t('page.eduAdmin.title'),
     },
     name: 'Education',

@@ -80,4 +80,15 @@
   "file": {
     "title": "文件管理"
   }
+  },
+  "educationCenter": {
+    "title": "教育中心",
+    "learning": "学习",
+    "practice": "练习",
+    "exam": "考试",
+    "review": "复习",
+    "data": "数据",
+    "ai": "AI助手",
+    "admin": "管理"
+  }
 }
