@@ -23,5 +23,8 @@
   "rebuildIndex": "重建索引",
   "clearIndex": "清除索引",
   "taskStatus": "任务状态",
-  "progress": "进度"
+  "progress": "进度",
+  "documentTitle": "文档标题",
+  "fileType": "文件类型",
+  "fileSize": "文件大小"
 }
