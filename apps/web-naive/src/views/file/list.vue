@@ -20,10 +20,14 @@ const uploading = ref(false);
 const uploadProgress = ref(0);
 
 function handleUpload({ file }: any) {
+  // NaiveUI 的 file 是 UploadFileInfo，需要取其 .file 属性才是原生 File
+  const rawFile: File | null = file?.file ?? file;
+  if (!rawFile) return false;
+
   uploading.value = true;
   uploadProgress.value = 0;
   upload_file({
-    file,
+    file: rawFile,
     onProgress: (p) => {
       uploadProgress.value = p.percent;
     },
@@ -79,35 +83,40 @@ const columns = [
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
+                <path
+                  d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="12" y1="18" x2="12" y2="12" />
+                <line x1="9" y1="15" x2="15" y2="15" />
               </svg>
             </NIcon>
-            <p class="mt-4 text-base">点击或拖拽文件到此区域上传</p>
+            <p class="mt-2 text-base">点击或拖拽文件到此区域上传</p>
+            <p class="text-muted-foreground mt-1 text-sm">
+              支持任意格式文件
+            </p>
           </div>
         </NUploadDragger>
       </NUpload>
+
       <NProgress
         v-if="uploading"
-        class="mt-4"
-        type="line"
         :percentage="uploadProgress"
-        :show-indicator="true"
+        :indicator-placement="'inside'"
+        processing
+        class="mt-4"
       />
-    </NCard>
 
-    <NCard class="mt-4" title="已上传文件">
       <NDataTable
+        class="mt-4"
         :columns="columns"
         :data="files"
+        :pagination="{ pageSize: 10 }"
         striped
-        :row-key="(row: any) => row.name"
       />
-      <div v-if="files.length === 0" class="py-10 text-center text-gray-400">
-        暂无文件
-      </div>
     </NCard>
   </Page>
 </template>

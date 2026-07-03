@@ -5,7 +5,7 @@ import { $t } from '#/locales';
 const routes: RouteRecordRaw[] = [
   {
     meta: {
-      icon: 'carbon:knowledge-base',
+      icon: 'lucide:library',
       order: 70,
       title: $t('page.knowledge.title'),
     },
