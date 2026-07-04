@@ -43,21 +43,25 @@ function updateChart(data: any) {
         center: ['50%', '50%'],
         radius: '60%',
       },
-      series: [{
-        type: 'radar',
-        data: [{
-          value: [
-            data.remember ?? 0,
-            data.understand ?? 0,
-            data.apply ?? 0,
-            data.analyze ?? 0,
-            data.evaluate ?? 0,
-            data.create ?? 0,
+      series: [
+        {
+          type: 'radar',
+          data: [
+            {
+              value: [
+                data.remember ?? 0,
+                data.understand ?? 0,
+                data.apply ?? 0,
+                data.analyze ?? 0,
+                data.evaluate ?? 0,
+                data.create ?? 0,
+              ],
+              name: $t('analytics.ability'),
+              areaStyle: { opacity: 0.2 },
+            },
           ],
-          name: $t('analytics.ability'),
-          areaStyle: { opacity: 0.2 },
-        }],
-      }],
+        },
+      ],
       tooltip: { trigger: 'item' },
     });
   });

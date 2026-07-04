@@ -2,7 +2,9 @@ import { requestClient } from '#/api/request';
 
 /** 文档列表（按知识点） */
 export function getDocumentsByKnowledgeApi(knowledgeId: number) {
-  return requestClient.get<any[]>(`/api/knowledge/documents/by-knowledge/${knowledgeId}`);
+  return requestClient.get<any[]>(
+    `/api/knowledge/documents/by-knowledge/${knowledgeId}`,
+  );
 }
 
 /** 文档详情 */

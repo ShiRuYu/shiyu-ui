@@ -241,15 +241,25 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
       :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
     >
       <template #title>
-        {{ $t('dashboard.goodMorning', { name: userStore.userInfo?.realName }) }}
+        {{
+          $t('dashboard.goodMorning', { name: userStore.userInfo?.realName })
+        }}
       </template>
       <template #description> {{ $t('dashboard.weather') }} </template>
     </WorkbenchHeader>
 
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
-        <WorkbenchProject :items="projectItems" :title="$t('dashboard.projects')" @click="navTo" />
-        <WorkbenchTrends :items="trendItems" class="mt-5" :title="$t('dashboard.latestTrends')" />
+        <WorkbenchProject
+          :items="projectItems"
+          :title="$t('dashboard.projects')"
+          @click="navTo"
+        />
+        <WorkbenchTrends
+          :items="trendItems"
+          class="mt-5"
+          :title="$t('dashboard.latestTrends')"
+        />
       </div>
       <div class="w-full lg:w-2/5">
         <WorkbenchQuickNav
@@ -258,7 +268,11 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
           :title="$t('dashboard.quickNav')"
           @click="navTo"
         />
-        <WorkbenchTodo :items="todoItems" class="mt-5" :title="$t('dashboard.todos')" />
+        <WorkbenchTodo
+          :items="todoItems"
+          class="mt-5"
+          :title="$t('dashboard.todos')"
+        />
         <AnalysisChartCard class="mt-5" :title="$t('dashboard.visitSource')">
           <AnalyticsVisitsSource />
         </AnalysisChartCard>

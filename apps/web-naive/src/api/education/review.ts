@@ -19,9 +19,7 @@ export namespace EducationReviewApi {
 }
 
 async function getReviewById(id: number) {
-  return requestClient.get<EducationReviewApi.ReviewTask>(
-    `/api/review/${id}`,
-  );
+  return requestClient.get<EducationReviewApi.ReviewTask>(`/api/review/${id}`);
 }
 
 async function getTodayReviews(studentId: number) {

@@ -34,7 +34,10 @@ const [Modal, modalApi] = useVbenModal({
       const data = await formApi.getValues();
       try {
         await (formData.value?.id
-          ? updateStudent(formData.value.id, data as EducationStudentApi.StudentRequest)
+          ? updateStudent(
+              formData.value.id,
+              data as EducationStudentApi.StudentRequest,
+            )
           : createStudent(data as EducationStudentApi.StudentRequest));
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();

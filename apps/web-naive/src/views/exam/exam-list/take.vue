@@ -55,7 +55,10 @@ async function handleSubmit() {
   if (!exam.value) return;
   submitting.value = true;
   try {
-    await submitExam(exam.value.id, { studentId: 1, answer: JSON.stringify(answers.value) });
+    await submitExam(exam.value.id, {
+      studentId: 1,
+      answer: JSON.stringify(answers.value),
+    });
     message.success($t('education.exam.submitSuccess'));
     router.push({ path: `/exam/result/${exam.value.id}` });
   } catch (error) {
@@ -96,7 +99,8 @@ onMounted(() => loadExam());
               {{ $t('education.exam.totalScore') }}: {{ exam.totalScore }}
             </NTag>
             <NTag>
-              {{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}{{ $t('common.minute') }}
+              {{ $t('education.exam.durationMin') }}: {{ exam.durationMin
+              }}{{ $t('common.minute') }}
             </NTag>
           </NSpace>
         </NCard>
@@ -109,7 +113,15 @@ onMounted(() => loadExam());
           >
             <template #header-extra>
               <NTag size="small">
-                {{ q.type === 'CHOICE' ? $t('education.question.typeChoice') : q.type === 'JUDGE' ? $t('education.question.typeJudge') : q.type === 'FILL' ? $t('education.question.typeFill') : $t('education.question.typeSolve') }}
+                {{
+                  q.type === 'CHOICE'
+                    ? $t('education.question.typeChoice')
+                    : q.type === 'JUDGE'
+                      ? $t('education.question.typeJudge')
+                      : q.type === 'FILL'
+                        ? $t('education.question.typeFill')
+                        : $t('education.question.typeSolve')
+                }}
               </NTag>
             </template>
 
@@ -120,7 +132,7 @@ onMounted(() => loadExam());
             >
               <NSpace vertical>
                 <NRadio
-                  v-for="opt in (q.options || [])"
+                  v-for="opt in q.options || []"
                   :key="opt.value || opt"
                   :value="opt.value || opt"
                 >

@@ -42,8 +42,8 @@ async function chatStream(
   const response = await fetch(`${baseURL}/api/lc4j/chat/stream`, {
     body: JSON.stringify(data),
     headers: {
-      'Accept': 'text/event-stream',
-      'Authorization': token ? `Bearer ${token}` : '',
+      Accept: 'text/event-stream',
+      Authorization: token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
     },
     method: 'POST',

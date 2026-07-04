@@ -22,9 +22,10 @@ import {
   NTooltip,
 } from 'naive-ui';
 
-import { $t } from '#/locales';
 import { message } from '#/adapter/naive';
 import { deleteAgent, getAgentPage } from '#/api/agent/admin';
+import { $t } from '#/locales';
+
 import ChatModal from '../agent/modules/chat.vue';
 
 const router = useRouter();
@@ -80,7 +81,9 @@ function openChat(row: AgentAdminApi.AgentVO) {
 }
 
 async function onDelete(row: AgentAdminApi.AgentVO) {
-  const hideLoading = message.loading($t('agent.adminListDeleting'), { duration: 0 });
+  const hideLoading = message.loading($t('agent.adminListDeleting'), {
+    duration: 0,
+  });
   try {
     await deleteAgent(row.id);
     message.success($t('agent.adminListDeleteSuccess', { name: row.name }));
@@ -116,8 +119,12 @@ function statusTag(s: string) {
             style="width: 240px"
             @keyup.enter="loadAgents"
           />
-          <NButton size="small" @click="loadAgents">{{ $t('agent.adminListSearch') }}</NButton>
-          <div class="flex-1" />
+          <NButton size="small" @click="loadAgents">
+{{
+            $t('agent.adminListSearch')
+          }}
+</NButton>
+          <div class="flex-1"></div>
           <NButton type="primary" @click="onNewAgent">
             <Plus class="size-5" />
             {{ $t('agent.adminListCreate') }}
@@ -153,14 +160,20 @@ function statusTag(s: string) {
                       :type="agent.status === '1' ? 'success' : 'error'"
                       size="tiny"
                     >
-                      {{ agent.status === '1' ? $t('agent.adminListStatusNormal') : $t('agent.adminListStatusDisabled') }}
+                      {{
+                        agent.status === '1'
+                          ? $t('agent.adminListStatusNormal')
+                          : $t('agent.adminListStatusDisabled')
+                      }}
                     </NTag>
                   </NSpace>
                 </template>
 
                 <div class="text-sm text-gray-500">
                   <div class="mb-1 truncate">
-                    <span class="font-medium">{{ $t('agent.adminListIdLabel') }}</span>
+                    <span class="font-medium">{{
+                      $t('agent.adminListIdLabel')
+                    }}</span>
                     <NTooltip :delay="300" style="max-width: 100%">
                       <template #trigger>
                         <span>{{ agent.agentId }}</span>
@@ -169,8 +182,9 @@ function statusTag(s: string) {
                     </NTooltip>
                   </div>
                   <div class="mb-1">
-                    <span class="font-medium">{{ $t('agent.adminListVersionLabel') }}</span
-                    >{{ agent.currentVersion || '-' }}
+                    <span class="font-medium">{{
+                      $t('agent.adminListVersionLabel')
+                    }}</span>{{ agent.currentVersion || '-' }}
                   </div>
                   <div v-if="agent.description" class="truncate text-xs">
                     <NTooltip :delay="300" style="max-width: 100%">
@@ -184,16 +198,34 @@ function statusTag(s: string) {
 
                 <template #footer>
                   <NSpace>
-                    <NButton size="tiny" @click="onView(agent)">{{ $t('agent.adminListView') }}</NButton>
-                    <NButton size="tiny" type="primary" @click="onEdit(agent)"
-                      >{{ $t('agent.adminListEdit') }}</NButton
-                    >
-                    <NButton size="tiny" @click="openChat(agent)">{{ $t('agent.chat') }}</NButton>
+                    <NButton size="tiny" @click="onView(agent)">
+{{
+                      $t('agent.adminListView')
+                    }}
+</NButton>
+                    <NButton
+                      size="tiny"
+                      type="primary"
+                      @click="onEdit(agent)"
+                      >
+{{ $t('agent.adminListEdit') }}
+</NButton>
+                    <NButton size="tiny" @click="openChat(agent)">
+{{
+                      $t('agent.chat')
+                    }}
+</NButton>
                     <NPopconfirm @positive-click="onDelete(agent)">
                       <template #trigger>
-                        <NButton size="tiny" type="error">{{ $t('agent.adminListDelete') }}</NButton>
+                        <NButton size="tiny" type="error">
+{{
+                          $t('agent.adminListDelete')
+                        }}
+</NButton>
                       </template>
-                      {{ $t('agent.adminListConfirmDelete', { name: agent.name }) }}
+                      {{
+                        $t('agent.adminListConfirmDelete', { name: agent.name })
+                      }}
                     </NPopconfirm>
                   </NSpace>
                 </template>

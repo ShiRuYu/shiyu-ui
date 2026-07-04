@@ -52,9 +52,4 @@ async function deleteTimeline(id: number) {
   return requestClient.delete<boolean>(`/api/timeline/${id}`);
 }
 
-export {
-  createTimeline,
-  deleteTimeline,
-  getTimelinePage,
-  updateTimeline,
-};
+export { createTimeline, deleteTimeline, getTimelinePage, updateTimeline };

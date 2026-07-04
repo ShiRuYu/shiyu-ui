@@ -15,7 +15,6 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { $t } from '#/locales';
 import { message } from '#/adapter/naive';
 import {
   activateVersion,
@@ -26,6 +25,7 @@ import {
   getVersionList,
   publishVersion,
 } from '#/api/agent/version';
+import { $t } from '#/locales';
 
 const emit = defineEmits(['success']);
 
@@ -152,9 +152,17 @@ async function handleCopy(version: AgentVersionApi.AgentVersionVO) {
 }
 
 const columns = [
-  { title: $t('agent.versionListVersionNumber'), key: 'versionNumber', width: 120 },
+  {
+    title: $t('agent.versionListVersionNumber'),
+    key: 'versionNumber',
+    width: 120,
+  },
   { title: $t('agent.versionListStatus'), key: 'status', width: 100 },
-  { title: $t('agent.versionListDescription'), key: 'description', ellipsis: { tooltip: true } },
+  {
+    title: $t('agent.versionListDescription'),
+    key: 'description',
+    ellipsis: { tooltip: true },
+  },
   { title: $t('agent.versionListCreateTime'), key: 'createTime', width: 180 },
   { title: $t('agent.versionListUpdateTime'), key: 'updateTime', width: 180 },
   { title: $t('agent.versionListActions'), key: 'actions', width: 360 },
@@ -246,9 +254,17 @@ const columns = [
                   </NButton>
                   <NPopconfirm @positive-click="handleDelete(version)">
                     <template #trigger>
-                      <NButton size="tiny" type="error">{{ $t('agent.versionListDelete') }}</NButton>
+                      <NButton size="tiny" type="error">
+{{
+                        $t('agent.versionListDelete')
+                      }}
+</NButton>
                     </template>
-                    {{ $t('agent.versionListConfirmDelete', { versionNumber: version.versionNumber }) }}
+                    {{
+                      $t('agent.versionListConfirmDelete', {
+                        versionNumber: version.versionNumber,
+                      })
+                    }}
                   </NPopconfirm>
                 </NSpace>
               </td>
@@ -266,7 +282,9 @@ const columns = [
     >
       <div class="space-y-3">
         <div>
-          <label class="text-sm font-medium">{{ $t('agent.versionListVersionNumberLabel') }}</label>
+          <label class="text-sm font-medium">{{
+            $t('agent.versionListVersionNumberLabel')
+          }}</label>
           <input
             v-model="newVersionNumber"
             :placeholder="$t('agent.versionListVersionNumberPlaceholder')"
@@ -274,7 +292,9 @@ const columns = [
           />
         </div>
         <div>
-          <label class="text-sm font-medium">{{ $t('agent.versionListDescriptionLabel') }}</label>
+          <label class="text-sm font-medium">{{
+            $t('agent.versionListDescriptionLabel')
+          }}</label>
           <textarea
             v-model="newVersionDesc"
             :placeholder="$t('agent.versionListDescriptionPlaceholder')"
@@ -283,8 +303,16 @@ const columns = [
           ></textarea>
         </div>
         <NSpace justify="end">
-          <NButton @click="showCreateModal = false">{{ $t('agent.cancel') }}</NButton>
-          <NButton type="primary" @click="handleCreate">{{ $t('agent.versionListConfirmCreate') }}</NButton>
+          <NButton @click="showCreateModal = false">
+{{
+            $t('agent.cancel')
+          }}
+</NButton>
+          <NButton type="primary" @click="handleCreate">
+{{
+            $t('agent.versionListConfirmCreate')
+          }}
+</NButton>
         </NSpace>
       </div>
     </NModal>

@@ -51,10 +51,4 @@ async function setDefaultModel(id: number) {
   return requestClient.put(`/admin/model/${id}/default`);
 }
 
-export {
-  createModel,
-  deleteModel,
-  getModelPage,
-  setDefaultModel,
-  updateModel,
-};
+export { createModel, deleteModel, getModelPage, setDefaultModel, updateModel };

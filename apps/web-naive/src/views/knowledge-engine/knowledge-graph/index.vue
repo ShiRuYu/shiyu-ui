@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from 'vue';
-import { NCard, NSelect, NEmpty, NSpin, NSpace } from 'naive-ui';
+import { nextTick, onMounted, ref } from 'vue';
+
 import { Page } from '@vben/common-ui';
+
+import { NCard, NEmpty, NSelect, NSpace, NSpin } from 'naive-ui';
+
 import { getKnowledgeGraphApi, getKnowledgeListApi } from '#/api/knowledge';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
-const selectedId = ref<number | null>(null);
-const graphData = ref<{ nodes: any[]; edges: any[] } | null>(null);
+const selectedId = ref<null | number>(null);
+const graphData = ref<null | { edges: any[]; nodes: any[]; }>(null);
 const loading = ref(false);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 async function loadOptions() {
   const list = await getKnowledgeListApi();
-  knowledgeOptions.value = (list || []).map((k: any) => ({ label: `[${k.code}] ${k.name}`, value: k.id }));
+  knowledgeOptions.value = (list || []).map((k: any) => ({
+    label: `[${k.code}] ${k.name}`,
+    value: k.id,
+  }));
 }
 
 async function loadGraph() {
@@ -23,7 +29,9 @@ async function loadGraph() {
     graphData.value = res || null;
     await nextTick();
     if (graphData.value) renderGraph();
-  } finally { loading.value = false; }
+  } finally {
+    loading.value = false;
+  }
 }
 
 function renderGraph() {
@@ -45,8 +53,12 @@ function renderGraph() {
 
   // Place nodes in a circle
   const positions = nodes.map((_: any, i: number) => ({
-    x: centerX + radius * Math.cos((2 * Math.PI * i) / nodes.length - Math.PI / 2),
-    y: centerY + radius * Math.sin((2 * Math.PI * i) / nodes.length - Math.PI / 2),
+    x:
+      centerX +
+      radius * Math.cos((2 * Math.PI * i) / nodes.length - Math.PI / 2),
+    y:
+      centerY +
+      radius * Math.sin((2 * Math.PI * i) / nodes.length - Math.PI / 2),
     label: _.name || _.id,
   }));
 
@@ -55,8 +67,12 @@ function renderGraph() {
   ctx.lineWidth = 1;
   if (edges) {
     edges.forEach((e: any) => {
-      const s = positions.find((p: any) => p.label === (e.sourceId || e.source));
-      const t = positions.find((p: any) => p.label === (e.targetId || e.target));
+      const s = positions.find(
+        (p: any) => p.label === (e.sourceId || e.source),
+      );
+      const t = positions.find(
+        (p: any) => p.label === (e.targetId || e.target),
+      );
       if (s && t) {
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
@@ -66,8 +82,14 @@ function renderGraph() {
         const angle = Math.atan2(t.y - s.y, t.x - s.x);
         ctx.beginPath();
         ctx.moveTo(t.x, t.y);
-        ctx.lineTo(t.x - 10 * Math.cos(angle - 0.3), t.y - 10 * Math.sin(angle - 0.3));
-        ctx.lineTo(t.x - 10 * Math.cos(angle + 0.3), t.y - 10 * Math.sin(angle + 0.3));
+        ctx.lineTo(
+          t.x - 10 * Math.cos(angle - 0.3),
+          t.y - 10 * Math.sin(angle - 0.3),
+        );
+        ctx.lineTo(
+          t.x - 10 * Math.cos(angle + 0.3),
+          t.y - 10 * Math.sin(angle + 0.3),
+        );
         ctx.closePath();
         ctx.fillStyle = '#aaa';
         ctx.fill();
@@ -105,7 +127,7 @@ onMounted(loadOptions);
             :options="knowledgeOptions"
             :placeholder="$t('knowledge.viewGraph')"
             filterable
-            style="width:300px"
+            style="width: 300px"
             @update:value="loadGraph"
           />
         </NSpace>
@@ -113,7 +135,12 @@ onMounted(loadOptions);
 
       <NSpin :show="loading">
         <div v-if="graphData" class="graph-container">
-          <canvas ref="canvasRef" width="800" height="500" class="graph-canvas" />
+          <canvas
+            ref="canvasRef"
+            width="800"
+            height="500"
+            class="graph-canvas"
+          ></canvas>
         </div>
         <NEmpty v-else :description="$t('knowledge.viewGraph')" />
       </NSpin>

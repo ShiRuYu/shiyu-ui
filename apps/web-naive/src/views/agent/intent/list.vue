@@ -3,15 +3,17 @@ import type { IntentDefApi } from '#/api/agent/intent-def';
 
 import { useVbenModal } from '@vben/common-ui';
 import { Page } from '@vben/common-ui';
-import { $t } from '#/locales';
-import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { message } from '#/adapter/naive';
-import { deleteIntentDef, getIntentDefPage } from '#/api/agent/intent-def';
 import { Plus } from '@vben/icons';
+
 import { NButton } from 'naive-ui';
 
+import { message } from '#/adapter/naive';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { deleteIntentDef, getIntentDefPage } from '#/api/agent/intent-def';
+import { $t } from '#/locales';
+
+import { initCategoryLabelMap, useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
-import { useColumns, useGridFormSchema, initCategoryLabelMap } from './data';
 
 // 预加载分类字典映射
 initCategoryLabelMap();
@@ -42,8 +44,12 @@ async function onDelete(row: IntentDefApi.IntentDefVO) {
 
 function onActionClick({ code, row }: any) {
   switch (code) {
-    case 'edit': onEdit(row); break;
-    case 'delete': onDelete(row); break;
+    case 'delete':
+      onDelete(row);
+      break;
+    case 'edit':
+      onEdit(row);
+      break;
   }
 }
 
@@ -61,7 +67,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async (params: any, formValues: any) => {
           const search = Object.fromEntries(
-            Object.entries(formValues || {}).filter(([, v]) => v !== '' && v !== null && v !== undefined),
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
           );
           return await getIntentDefPage({
             page: params.page?.currentPage || 1,

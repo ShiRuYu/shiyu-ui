@@ -38,7 +38,9 @@ function onCreate() {
 }
 
 function onDelete(row: ModelApi.ModelItem) {
-  const hideLoading = message.loading($t('agent.modelDeleting'), { duration: 0 });
+  const hideLoading = message.loading($t('agent.modelDeleting'), {
+    duration: 0,
+  });
   deleteModel(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.modelName]));

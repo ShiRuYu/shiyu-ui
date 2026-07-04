@@ -30,19 +30,17 @@ async function getStudentList() {
 }
 
 async function getStudentById(id: number) {
-  return requestClient.get<EducationStudentApi.Student>(
-    `/api/student/${id}`,
-  );
+  return requestClient.get<EducationStudentApi.Student>(`/api/student/${id}`);
 }
 
 async function createStudent(data: EducationStudentApi.StudentRequest) {
-  return requestClient.post<EducationStudentApi.Student>(
-    '/api/student',
-    data,
-  );
+  return requestClient.post<EducationStudentApi.Student>('/api/student', data);
 }
 
-async function updateStudent(id: number, data: EducationStudentApi.StudentRequest) {
+async function updateStudent(
+  id: number,
+  data: EducationStudentApi.StudentRequest,
+) {
   return requestClient.put(`/api/student/${id}`, data);
 }
 

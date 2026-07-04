@@ -13,9 +13,7 @@ export namespace EducationChapterApi {
 }
 
 async function getChapterById(id: number) {
-  return requestClient.get<EducationChapterApi.Chapter>(
-    `/api/chapter/${id}`,
-  );
+  return requestClient.get<EducationChapterApi.Chapter>(`/api/chapter/${id}`);
 }
 
 async function getChaptersByTextbook(textbookId: number) {

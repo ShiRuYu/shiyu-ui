@@ -66,15 +66,18 @@ async function executeAgentStream(
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
-  const response = await fetch(`${baseURL}/api/agent/${agentId}/executeStream`, {
-    body: JSON.stringify(data),
-    headers: {
-      'Accept': 'text/event-stream',
-      'Authorization': token ? `Bearer ${token}` : '',
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${baseURL}/api/agent/${agentId}/executeStream`,
+    {
+      body: JSON.stringify(data),
+      headers: {
+        Accept: 'text/event-stream',
+        Authorization: token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
     },
-    method: 'POST',
-  });
+  );
 
   if (!response.ok || !response.body) {
     throw new Error(`Stream error: ${response.status}`);
@@ -91,8 +94,4 @@ async function executeAgentStream(
   }
 }
 
-export {
-  deleteAgentDefinition,
-  executeAgent,
-  executeAgentStream,
-};
+export { deleteAgentDefinition, executeAgent, executeAgentStream };

@@ -17,8 +17,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduLearning',
         path: '/education-center/learning',
-        component: () =>
-          import('#/views/education-center/learning/index.vue'),
+        component: () => import('#/views/education-center/learning/index.vue'),
         meta: {
           icon: 'lucide:book-open',
           title: $t('page.educationCenter.learning'),
@@ -28,8 +27,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduPractice',
         path: '/education-center/practice',
-        component: () =>
-          import('#/views/education-center/practice/index.vue'),
+        component: () => import('#/views/education-center/practice/index.vue'),
         meta: {
           icon: 'lucide:pen-tool',
           title: $t('page.educationCenter.practice'),
@@ -49,8 +47,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduReview',
         path: '/education-center/review',
-        component: () =>
-          import('#/views/education-center/review/index.vue'),
+        component: () => import('#/views/education-center/review/index.vue'),
         meta: {
           icon: 'lucide:repeat',
           title: $t('page.educationCenter.review'),
@@ -60,8 +57,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'EduAdmin',
         path: '/education-center/admin',
-        component: () =>
-          import('#/views/education-center/admin/index.vue'),
+        component: () => import('#/views/education-center/admin/index.vue'),
         meta: {
           icon: 'carbon:education',
           title: $t('page.educationCenter.admin'),

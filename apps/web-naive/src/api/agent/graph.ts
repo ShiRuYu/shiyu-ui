@@ -78,7 +78,7 @@ export namespace AgentGraphApi {
     id: string;
     source: string;
     target: string;
-    edgeType: 'normal' | 'conditional';
+    edgeType: 'conditional' | 'normal';
     conditionType?: string;
     conditionMapping?: string;
     isDefault?: boolean;
@@ -113,8 +113,4 @@ async function validateGraphConfig(
   );
 }
 
-export {
-  getGraphConfig,
-  updateGraphConfig,
-  validateGraphConfig,
-};
+export { getGraphConfig, updateGraphConfig, validateGraphConfig };

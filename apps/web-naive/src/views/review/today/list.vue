@@ -44,7 +44,8 @@ onMounted(() => loadReviews());
           <template #header>
             <NSpace>
               <span class="text-base font-medium">{{
-                review.knowledgeName || `${$t('knowledge.name')} #${review.knowledgeId}`
+                review.knowledgeName ||
+                `${$t('knowledge.name')} #${review.knowledgeId}`
               }}</span>
               <NTag type="warning" size="small">
                 {{ $t('education.review.round', [review.reviewRound]) }}

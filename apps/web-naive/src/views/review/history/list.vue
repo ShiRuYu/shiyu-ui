@@ -24,10 +24,8 @@ const columns: any[] = [
     key: 'reviewRound',
     width: 100,
     render(row: any) {
-      return h(
-        NTag,
-        { type: 'warning', size: 'small' },
-        () => $t('education.review.round', [row.reviewRound]),
+      return h(NTag, { type: 'warning', size: 'small' }, () =>
+        $t('education.review.round', [row.reviewRound]),
       );
     },
   },

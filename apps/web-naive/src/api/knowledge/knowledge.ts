@@ -9,7 +9,6 @@ export function updateKnowledgeApi(id: number, data: any) {
   return requestClient.put(`/api/knowledge/${id}`, data);
 }
 
-
 /** 获取知识点列表（后端返回 PageData，自动展开 rows） */
 export async function getKnowledgeListApi(params?: any) {
   const res = await requestClient.get<any>('/api/knowledge', { params });
@@ -38,7 +37,11 @@ export function deleteKnowledgeApi(id: number) {
 }
 
 /** 搜索知识点 */
-export async function searchKnowledgeApi(params: { query: string; topK?: number; mode?: string }) {
+export async function searchKnowledgeApi(params: {
+  mode?: string;
+  query: string;
+  topK?: number;
+}) {
   const res = await requestClient.get<any>('/api/knowledge/search', { params });
   return res ?? [];
 }

@@ -17,9 +17,7 @@ async function getSubjectList() {
 }
 
 async function getSubjectById(id: number) {
-  return requestClient.get<EducationSubjectApi.Subject>(
-    `/api/subject/${id}`,
-  );
+  return requestClient.get<EducationSubjectApi.Subject>(`/api/subject/${id}`);
 }
 
 async function getSubjectByCode(code: string) {

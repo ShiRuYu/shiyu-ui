@@ -20,8 +20,12 @@ const periodOptions = [
 async function handleGenerate() {
   loading.value = true;
   try {
-    const res: any = await generateReport({ studentId: 1, period: period.value });
-    reportContent.value = typeof res === 'string' ? res : JSON.stringify(res, null, 2);
+    const res: any = await generateReport({
+      studentId: 1,
+      period: period.value,
+    });
+    reportContent.value =
+      typeof res === 'string' ? res : JSON.stringify(res, null, 2);
   } catch (error) {
     console.error('Failed to generate report:', error);
     reportContent.value = $t('analytics.reportError');

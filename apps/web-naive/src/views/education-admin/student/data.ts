@@ -28,7 +28,9 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'name',
       label: $t('education.student.name'),
-      rules: z.string().min(1, $t('ui.formRules.required', [$t('education.student.name')])),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('education.student.name')])),
     },
     {
       component: 'Input',
@@ -63,12 +65,24 @@ export function useColumns(
 ): VxeTableGridColumns<EducationStudentApi.Student> {
   return [
     { field: 'id', title: 'ID', width: 80 },
-    { field: 'studentNo', title: $t('education.student.studentNo'), width: 120 },
+    {
+      field: 'studentNo',
+      title: $t('education.student.studentNo'),
+      width: 120,
+    },
     { field: 'name', title: $t('education.student.name'), width: 150 },
     { field: 'school', title: $t('education.student.school'), width: 200 },
-    { field: 'className', title: $t('education.student.className'), width: 120 },
+    {
+      field: 'className',
+      title: $t('education.student.className'),
+      width: 120,
+    },
     { field: 'grade', title: $t('education.student.grade'), width: 80 },
-    { field: 'gradeLevel', title: $t('education.student.gradeLevel'), width: 100 },
+    {
+      field: 'gradeLevel',
+      title: $t('education.student.gradeLevel'),
+      width: 100,
+    },
     {
       align: 'right',
       cellRender: {

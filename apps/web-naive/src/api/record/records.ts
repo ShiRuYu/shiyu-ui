@@ -40,9 +40,4 @@ async function deleteRecord(id: number) {
   return requestClient.delete(`/api/record/${id}`);
 }
 
-export {
-  createRecord,
-  deleteRecord,
-  getRecordPage,
-  updateRecord,
-};
+export { createRecord, deleteRecord, getRecordPage, updateRecord };

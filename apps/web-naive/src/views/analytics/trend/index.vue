@@ -12,7 +12,11 @@ import { getTrend } from '#/api/education/analytics';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const trendData = ref<{ dates: string[]; studyRecords: number[]; masteredCount: number[] }>({ dates: [], studyRecords: [], masteredCount: [] });
+const trendData = ref<{
+  dates: string[];
+  masteredCount: number[];
+  studyRecords: number[];
+}>({ dates: [], studyRecords: [], masteredCount: [] });
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 

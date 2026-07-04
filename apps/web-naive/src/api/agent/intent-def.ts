@@ -43,9 +43,9 @@ export namespace IntentDefApi {
 
 async function getIntentDefPage(params: {
   agentId?: string;
-  name?: string;
-  code?: string;
   category?: string;
+  code?: string;
+  name?: string;
   page: number;
   pageSize: number;
 }) {
@@ -70,9 +70,4 @@ async function deleteIntentDef(id: number) {
   return requestClient.delete(`/admin/intent/${id}`);
 }
 
-export {
-  createIntentDef,
-  deleteIntentDef,
-  getIntentDefPage,
-  updateIntentDef,
-};
+export { createIntentDef, deleteIntentDef, getIntentDefPage, updateIntentDef };

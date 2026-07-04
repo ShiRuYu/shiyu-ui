@@ -9,7 +9,9 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'name',
       label: $t('education.plan.name'),
-      rules: z.string().min(1, $t('ui.formRules.required', [$t('education.plan.name')])),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('education.plan.name')])),
     },
     {
       component: 'DatePicker',

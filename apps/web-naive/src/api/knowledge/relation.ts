@@ -2,12 +2,16 @@ import { requestClient } from '#/api/request';
 
 /** 获取前置知识点列表 */
 export function getKnowledgePrerequisitesListApi(knowledgeId: number) {
-  return requestClient.get<any[]>(`/api/knowledge/${knowledgeId}/prerequisites-list`);
+  return requestClient.get<any[]>(
+    `/api/knowledge/${knowledgeId}/prerequisites-list`,
+  );
 }
 
 /** 获取后续知识点列表 */
 export function getKnowledgeSubsequentListApi(knowledgeId: number) {
-  return requestClient.get<any[]>(`/api/knowledge/${knowledgeId}/subsequent-list`);
+  return requestClient.get<any[]>(
+    `/api/knowledge/${knowledgeId}/subsequent-list`,
+  );
 }
 
 /** 添加知识关系 */
@@ -26,7 +30,11 @@ export function addKnowledgeRelationApi(data: {
 }
 
 /** 删除知识关系 */
-export function deleteKnowledgeRelationApi(sourceId: number, targetId: number, type: string) {
+export function deleteKnowledgeRelationApi(
+  sourceId: number,
+  targetId: number,
+  type: string,
+) {
   return requestClient.delete('/api/knowledge/relation', {
     params: { sourceId, targetId, type },
   });

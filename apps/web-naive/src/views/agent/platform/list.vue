@@ -37,7 +37,9 @@ function onCreate() {
 }
 
 function onDelete(row: PlatformApi.PlatformItem) {
-  const hideLoading = message.loading($t('agent.platformDeleting'), { duration: 0 });
+  const hideLoading = message.loading($t('agent.platformDeleting'), {
+    duration: 0,
+  });
   deletePlatform(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));

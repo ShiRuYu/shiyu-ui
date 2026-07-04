@@ -28,17 +28,7 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { $t } from '#/locales';
-import { requestClient } from '#/api/request';
 import { message } from '#/adapter/naive';
-import {
-  activateVersion,
-  archiveVersion,
-  createVersion,
-  deleteVersion,
-  getVersionList,
-  publishVersion,
-} from '#/api/agent/version';
 import {
   createAgent,
   getAgentById,
@@ -51,6 +41,16 @@ import {
   validateGraphConfig,
 } from '#/api/agent/graph';
 import { getNodeTypes } from '#/api/agent/node-type';
+import {
+  activateVersion,
+  archiveVersion,
+  createVersion,
+  deleteVersion,
+  getVersionList,
+  publishVersion,
+} from '#/api/agent/version';
+import { requestClient } from '#/api/request';
+import { $t } from '#/locales';
 
 import NodeForm from './modules/node-form.vue';
 import ValidateResult from './modules/validate-result.vue';
@@ -64,7 +64,7 @@ const isNew = ref(route.query.new === 'true');
 
 // Agent selector (for direct entry without id)
 const agentOptions = ref<Array<{ label: string; value: number }>>([]);
-const selectedAgentId = ref<number | null>(null);
+const selectedAgentId = ref<null | number>(null);
 const loadingOptions = ref(false);
 
 // Agent info
@@ -78,9 +78,9 @@ const loadingAgent = ref(false);
 // Version management
 const versions = ref<Array<{ label: string; value: number }>>([]);
 const versionMap = ref<
-  Record<number, { versionNumber: string; status: string; description: string }>
+  Record<number, { description: string; status: string; versionNumber: string; }>
 >({});
-const selectedVersionId = ref<number | null>(null);
+const selectedVersionId = ref<null | number>(null);
 const loadingVersions = ref(false);
 const showCreateVersion = ref(false);
 const newVersionNumber = ref('');
@@ -135,7 +135,7 @@ const condEdgeIntentOptions = ref<Array<{ label: string; value: string }>>([]);
 async function loadCondEdgeIntentOptions() {
   try {
     const res: any = await requestClient.get('/dict/type/INTENT_CODE');
-    const data = Array.isArray(res) ? res : res?.data ?? [];
+    const data = Array.isArray(res) ? res : (res?.data ?? []);
     condEdgeIntentOptions.value = data.map((item: any) => ({
       label: item.dictLabel,
       value: item.dictValue,
@@ -179,9 +179,16 @@ const nodeColumns = computed(() => [
     title: $t('agent.adminEditTableColumnStatus'),
     key: 'enabled',
     width: 70,
-    render: (row: AgentGraphApi.FormNode) => (row.enabled ? $t('agent.adminEditEnabled') : $t('agent.adminEditDisabled')),
+    render: (row: AgentGraphApi.FormNode) =>
+      row.enabled
+        ? $t('agent.adminEditEnabled')
+        : $t('agent.adminEditDisabled'),
   },
-  { title: $t('agent.adminEditTableColumnDescription'), key: 'description', ellipsis: { tooltip: true } },
+  {
+    title: $t('agent.adminEditTableColumnDescription'),
+    key: 'description',
+    ellipsis: { tooltip: true },
+  },
   {
     title: $t('agent.adminEditTableColumnActions'),
     key: 'actions',
@@ -189,7 +196,11 @@ const nodeColumns = computed(() => [
     fixed: 'right' as const,
     render: (row: AgentGraphApi.FormNode) =>
       h(NSpace, {}, [
-        h(NButton, { size: 'tiny', onClick: () => openEditNode(row) }, $t('agent.adminEditEditAction')),
+        h(
+          NButton,
+          { size: 'tiny', onClick: () => openEditNode(row) },
+          $t('agent.adminEditEditAction'),
+        ),
         h(
           NButton,
           {
@@ -226,13 +237,22 @@ const normalEdgeColumns = [
 const conditionalEdgeColumns = [
   { title: $t('agent.adminEditTableColumnSource'), key: 'source', width: 120 },
   { title: $t('agent.adminEditTableColumnTarget'), key: 'target', width: 120 },
-  { title: $t('agent.adminEditTableColumnConditionType'), key: 'conditionType', width: 90 },
-  { title: $t('agent.adminEditTableColumnMappingValue'), key: 'conditionMapping', width: 90 },
+  {
+    title: $t('agent.adminEditTableColumnConditionType'),
+    key: 'conditionType',
+    width: 90,
+  },
+  {
+    title: $t('agent.adminEditTableColumnMappingValue'),
+    key: 'conditionMapping',
+    width: 90,
+  },
   {
     title: $t('agent.adminEditTableColumnDefaultTarget'),
     key: 'isDefault',
     width: 80,
-    render: (row: AgentGraphApi.FormEdge) => (row.isDefault ? $t('agent.adminEditYes') : $t('agent.adminEditNo')),
+    render: (row: AgentGraphApi.FormEdge) =>
+      row.isDefault ? $t('agent.adminEditYes') : $t('agent.adminEditNo'),
   },
   {
     title: $t('agent.adminEditTableColumnActions'),
@@ -744,21 +764,28 @@ function onBack() {
         <span v-if="agentDetailId" class="text-lg font-semibold">{{
           agentName || $t('agent.adminEditLoading')
         }}</span>
-        <span v-else-if="isNew" class="text-lg font-semibold">{{ $t('agent.adminEditAddAgent') }}</span>
-        <span v-else class="text-lg font-semibold">{{ $t('agent.adminEditAgentManage') }}</span>
-        <div class="flex-1" />
+        <span v-else-if="isNew" class="text-lg font-semibold">{{
+          $t('agent.adminEditAddAgent')
+        }}</span>
+        <span v-else class="text-lg font-semibold">{{
+          $t('agent.adminEditAgentManage')
+        }}</span>
+        <div class="flex-1"></div>
         <NTag
           v-if="readonly && agentDetailId"
           :bordered="false"
           type="info"
           size="small"
-          >{{ $t('agent.adminEditReadOnly') }}</NTag
-        >
+          >
+{{ $t('agent.adminEditReadOnly') }}
+</NTag>
       </NSpace>
 
       <!-- Agent selector (direct entry without id) -->
       <div v-if="!agentDetailId && !isNew" class="flex items-center gap-2 p-4">
-        <span class="text-sm font-medium whitespace-nowrap">{{ $t('agent.adminEditSelectAgent') }}</span>
+        <span class="text-sm font-medium whitespace-nowrap">{{
+          $t('agent.adminEditSelectAgent')
+        }}</span>
         <NSelect
           v-model:value="selectedAgentId"
           :loading="loadingOptions"
@@ -783,7 +810,10 @@ function onBack() {
             </NGi>
             <NGi>
               <NFormItemGi :label="$t('agent.adminEditName')">
-                <NInput v-model:value="agentName" :placeholder="$t('agent.adminEditNamePlaceholder')" />
+                <NInput
+                  v-model:value="agentName"
+                  :placeholder="$t('agent.adminEditNamePlaceholder')"
+                />
               </NFormItemGi>
             </NGi>
             <NGi>
@@ -803,9 +833,11 @@ function onBack() {
               </NFormItemGi>
             </NGi>
           </NGrid>
-          <NButton type="primary" @click="handleCreateNewAgent"
-            >{{ $t('agent.adminEditCreateAgent') }}</NButton
-          >
+          <NButton type="primary" @click="handleCreateNewAgent">
+{{
+            $t('agent.adminEditCreateAgent')
+          }}
+</NButton>
         </NForm>
       </div>
 
@@ -816,7 +848,9 @@ function onBack() {
             <!-- Agent Info Section -->
             <NCollapse :default-expanded-names="['info']">
               <NCollapseItem name="info">
-                <template #header><span>{{ $t('agent.adminEditBasicInfo') }}</span></template>
+                <template #header>
+<span>{{ $t('agent.adminEditBasicInfo') }}</span>
+</template>
                 <NForm label-placement="top" label-width="auto">
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
@@ -824,7 +858,9 @@ function onBack() {
                         <NInput
                           v-model:value="agentId"
                           :disabled="true"
-                          :placeholder="$t('agent.adminEditAgentIdPlaceholderReadonly')"
+                          :placeholder="
+                            $t('agent.adminEditAgentIdPlaceholderReadonly')
+                          "
                         />
                       </NFormItemGi>
                     </NGi>
@@ -844,7 +880,9 @@ function onBack() {
                           :disabled="readonly"
                           :maxlength="500"
                           :rows="2"
-                          :placeholder="$t('agent.adminEditDescriptionPlaceholder')"
+                          :placeholder="
+                            $t('agent.adminEditDescriptionPlaceholder')
+                          "
                           type="textarea"
                         />
                       </NFormItemGi>
@@ -860,9 +898,11 @@ function onBack() {
                     </NGi>
                   </NGrid>
                   <div v-if="!readonly" class="mt-2">
-                    <NButton type="primary" @click="handleSaveAgent"
-                      >{{ $t('agent.adminEditSaveInfo') }}</NButton
-                    >
+                    <NButton type="primary" @click="handleSaveAgent">
+{{
+                      $t('agent.adminEditSaveInfo')
+                    }}
+</NButton>
                   </div>
                 </NForm>
               </NCollapseItem>
@@ -871,10 +911,16 @@ function onBack() {
             <!-- Version Control Section -->
             <NCollapse :default-expanded-names="['version']">
               <NCollapseItem name="version">
-                <template #header><span>{{ $t('agent.adminEditVersionManagement') }}</span></template>
+                <template #header>
+<span>{{
+                    $t('agent.adminEditVersionManagement')
+                  }}</span>
+</template>
                 <div class="space-y-3">
                   <NSpace vertical>
-                    <label class="text-sm font-medium">{{ $t('agent.adminEditSelectVersion') }}</label>
+                    <label class="text-sm font-medium">{{
+                      $t('agent.adminEditSelectVersion')
+                    }}</label>
                     <NSpace>
                       <NSelect
                         v-model:value="selectedVersionId"
@@ -882,7 +928,9 @@ function onBack() {
                         :loading="loadingVersions"
                         :options="versions"
                         class="flex-1"
-                        :placeholder="$t('agent.adminEditSelectVersionPlaceholder')"
+                        :placeholder="
+                          $t('agent.adminEditSelectVersionPlaceholder')
+                        "
                       />
                       <NButton
                         v-if="!readonly"
@@ -899,14 +947,18 @@ function onBack() {
                     <NSpace vertical>
                       <NInput
                         v-model:value="newVersionNumber"
-                        :placeholder="$t('agent.adminEditVersionNumberPlaceholder')"
+                        :placeholder="
+                          $t('agent.adminEditVersionNumberPlaceholder')
+                        "
                         size="small"
                       />
                       <NInput
                         v-model:value="newVersionDesc"
                         :maxlength="500"
                         :rows="1"
-                        :placeholder="$t('agent.adminEditVersionDescPlaceholder')"
+                        :placeholder="
+                          $t('agent.adminEditVersionDescPlaceholder')
+                        "
                         size="small"
                         type="textarea"
                       />
@@ -915,8 +967,8 @@ function onBack() {
                         type="primary"
                         @click="handleCreateVersion"
                       >
-                         {{ $t('agent.adminEditConfirmCreate') }}
-                       </NButton>
+                        {{ $t('agent.adminEditConfirmCreate') }}
+                      </NButton>
                     </NSpace>
                   </div>
 
@@ -925,15 +977,21 @@ function onBack() {
                     v-if="selectedVersionInfo"
                     class="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800"
                   >
-                    <div>{{ $t('agent.adminEditVersionPrefix') }}: {{ selectedVersionInfo.versionNumber }}</div>
+                    <div>
+                      {{ $t('agent.adminEditVersionPrefix') }}:
+                      {{ selectedVersionInfo.versionNumber }}
+                    </div>
                     <div>
                       {{ $t('agent.adminEditStatus') }}:
-                      <NTag :bordered="false" size="small">{{
+                      <NTag :bordered="false" size="small">
+{{
                         statusLabel(selectedVersionInfo.status)
-                      }}</NTag>
+                      }}
+</NTag>
                     </div>
                     <div v-if="selectedVersionInfo.description" class="mt-1">
-                       {{ $t('agent.description') }}: {{ selectedVersionInfo.description }}
+                      {{ $t('agent.description') }}:
+                      {{ selectedVersionInfo.description }}
                     </div>
                   </div>
 
@@ -967,7 +1025,11 @@ function onBack() {
                     </NButton>
                     <NPopconfirm @positive-click="handleDeleteVersion">
                       <template #trigger>
-                        <NButton size="small" type="error">{{ $t('agent.adminEditDeleteVersion') }}</NButton>
+                        <NButton size="small" type="error">
+{{
+                          $t('agent.adminEditDeleteVersion')
+                        }}
+</NButton>
                       </template>
                       {{ $t('agent.adminEditConfirmDeleteVersion') }}
                     </NPopconfirm>
@@ -984,9 +1046,12 @@ function onBack() {
               <span class="text-sm font-medium">
                 {{ $t('agent.adminEditGraphEditor') }}
                 <span v-if="selectedVersionInfo">
-                  {{ $t('agent.adminEditVersionPrefix') }} {{ selectedVersionInfo.versionNumber }}
+                  {{ $t('agent.adminEditVersionPrefix') }}
+                  {{ selectedVersionInfo.versionNumber }}
                 </span>
-                <span v-else class="text-gray-400">{{ $t('agent.adminEditSelectVersionHint') }}</span>
+                <span v-else class="text-gray-400">{{
+                  $t('agent.adminEditSelectVersionHint')
+                }}</span>
               </span>
               <div class="flex-1"></div>
               <NButton
@@ -1013,7 +1078,9 @@ function onBack() {
               v-if="!selectedVersionId"
               class="flex flex-1 items-center justify-center"
             >
-              <NEmpty :description="$t('agent.adminEditSelectVersionForGraph')" />
+              <NEmpty
+                :description="$t('agent.adminEditSelectVersionForGraph')"
+              />
             </div>
             <NSpin v-else :show="loading" class="flex-1">
               <div class="flex-1 space-y-4 overflow-auto p-3">
@@ -1040,15 +1107,17 @@ function onBack() {
                 <!-- Nodes Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{ $t('agent.adminEditNodeList') }}</span>
+                    <span class="text-sm font-bold">{{
+                      $t('agent.adminEditNodeList')
+                    }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
                       type="primary"
                       @click="openAddNode"
-                      >
-                       {{ $t('agent.adminEditAddNode') }}
-                     </NButton>
+                    >
+                      {{ $t('agent.adminEditAddNode') }}
+                    </NButton>
                   </NSpace>
                   <NDataTable
                     :columns="nodeColumns"
@@ -1063,7 +1132,9 @@ function onBack() {
                 <!-- Normal Edges Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{ $t('agent.adminEditNormalEdges') }}</span>
+                    <span class="text-sm font-bold">{{
+                      $t('agent.adminEditNormalEdges')
+                    }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
@@ -1086,7 +1157,9 @@ function onBack() {
                 <!-- Conditional Edges Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{ $t('agent.adminEditConditionalEdges') }}</span>
+                    <span class="text-sm font-bold">{{
+                      $t('agent.adminEditConditionalEdges')
+                    }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
@@ -1116,7 +1189,11 @@ function onBack() {
     <NModal
       v-model:show="showNodeModal"
       preset="card"
-      :title="isNewNode ? $t('agent.adminEditAddNodeModal') : $t('agent.adminEditEditNodeModal')"
+      :title="
+        isNewNode
+          ? $t('agent.adminEditAddNodeModal')
+          : $t('agent.adminEditEditNodeModal')
+      "
       class="w-[480px]"
     >
       <NodeForm
@@ -1125,8 +1202,16 @@ function onBack() {
       />
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showNodeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
-          <NButton type="primary" @click="confirmNode">{{ $t('agent.adminEditConfirm') }}</NButton>
+          <NButton @click="showNodeModal = false">
+{{
+            $t('agent.adminEditCancel')
+          }}
+</NButton>
+          <NButton type="primary" @click="confirmNode">
+{{
+            $t('agent.adminEditConfirm')
+          }}
+</NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1156,8 +1241,16 @@ function onBack() {
       </NForm>
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showEdgeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
-          <NButton type="primary" @click="confirmEdge">{{ $t('agent.adminEditConfirm') }}</NButton>
+          <NButton @click="showEdgeModal = false">
+{{
+            $t('agent.adminEditCancel')
+          }}
+</NButton>
+          <NButton type="primary" @click="confirmEdge">
+{{
+            $t('agent.adminEditConfirm')
+          }}
+</NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1185,7 +1278,10 @@ function onBack() {
           />
         </NFormItem>
         <NFormItem :label="$t('agent.adminEditConditionType')">
-          <NInput v-model:value="condEdgeType" :placeholder="$t('agent.adminEditConditionTypePlaceholder')" />
+          <NInput
+            v-model:value="condEdgeType"
+            :placeholder="$t('agent.adminEditConditionTypePlaceholder')"
+          />
         </NFormItem>
         <NFormItem :label="$t('agent.adminEditMappingValue')">
           <NSelect
@@ -1198,13 +1294,23 @@ function onBack() {
           />
         </NFormItem>
         <NFormItem>
-          <NCheckbox v-model:checked="condEdgeIsDefault"> {{ $t('agent.adminEditDefaultTarget') }} </NCheckbox>
+          <NCheckbox v-model:checked="condEdgeIsDefault">
+            {{ $t('agent.adminEditDefaultTarget') }}
+          </NCheckbox>
         </NFormItem>
       </NForm>
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showCondEdgeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
-          <NButton type="primary" @click="confirmCondEdge">{{ $t('agent.adminEditConfirm') }}</NButton>
+          <NButton @click="showCondEdgeModal = false">
+{{
+            $t('agent.adminEditCancel')
+          }}
+</NButton>
+          <NButton type="primary" @click="confirmCondEdge">
+{{
+            $t('agent.adminEditConfirm')
+          }}
+</NButton>
         </NSpace>
       </template>
     </NModal>

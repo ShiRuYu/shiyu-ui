@@ -98,7 +98,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
             ),
           );
           if ((params as any)?.page) query.pageNo = (params as any).page;
-          if ((params as any)?.pageSize) query.pageSize = (params as any).pageSize;
+          if ((params as any)?.pageSize)
+            query.pageSize = (params as any).pageSize;
           const data = await getRoleList(query);
           if (data && typeof data === 'object' && 'items' in data) {
             return { items: data.items, total: data.total };
