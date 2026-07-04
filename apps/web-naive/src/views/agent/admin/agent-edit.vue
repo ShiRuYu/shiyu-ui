@@ -78,7 +78,7 @@ const loadingAgent = ref(false);
 // Version management
 const versions = ref<Array<{ label: string; value: number }>>([]);
 const versionMap = ref<
-  Record<number, { description: string; status: string; versionNumber: string; }>
+  Record<number, { description: string; status: string; versionNumber: string }>
 >({});
 const selectedVersionId = ref<null | number>(null);
 const loadingVersions = ref(false);
@@ -776,9 +776,9 @@ function onBack() {
           :bordered="false"
           type="info"
           size="small"
-          >
-{{ $t('agent.adminEditReadOnly') }}
-</NTag>
+        >
+          {{ $t('agent.adminEditReadOnly') }}
+        </NTag>
       </NSpace>
 
       <!-- Agent selector (direct entry without id) -->
@@ -834,10 +834,8 @@ function onBack() {
             </NGi>
           </NGrid>
           <NButton type="primary" @click="handleCreateNewAgent">
-{{
-            $t('agent.adminEditCreateAgent')
-          }}
-</NButton>
+            {{ $t('agent.adminEditCreateAgent') }}
+          </NButton>
         </NForm>
       </div>
 
@@ -849,8 +847,8 @@ function onBack() {
             <NCollapse :default-expanded-names="['info']">
               <NCollapseItem name="info">
                 <template #header>
-<span>{{ $t('agent.adminEditBasicInfo') }}</span>
-</template>
+                  <span>{{ $t('agent.adminEditBasicInfo') }}</span>
+                </template>
                 <NForm label-placement="top" label-width="auto">
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
@@ -899,10 +897,8 @@ function onBack() {
                   </NGrid>
                   <div v-if="!readonly" class="mt-2">
                     <NButton type="primary" @click="handleSaveAgent">
-{{
-                      $t('agent.adminEditSaveInfo')
-                    }}
-</NButton>
+                      {{ $t('agent.adminEditSaveInfo') }}
+                    </NButton>
                   </div>
                 </NForm>
               </NCollapseItem>
@@ -912,10 +908,8 @@ function onBack() {
             <NCollapse :default-expanded-names="['version']">
               <NCollapseItem name="version">
                 <template #header>
-<span>{{
-                    $t('agent.adminEditVersionManagement')
-                  }}</span>
-</template>
+                  <span>{{ $t('agent.adminEditVersionManagement') }}</span>
+                </template>
                 <div class="space-y-3">
                   <NSpace vertical>
                     <label class="text-sm font-medium">{{
@@ -984,10 +978,8 @@ function onBack() {
                     <div>
                       {{ $t('agent.adminEditStatus') }}:
                       <NTag :bordered="false" size="small">
-{{
-                        statusLabel(selectedVersionInfo.status)
-                      }}
-</NTag>
+                        {{ statusLabel(selectedVersionInfo.status) }}
+                      </NTag>
                     </div>
                     <div v-if="selectedVersionInfo.description" class="mt-1">
                       {{ $t('agent.description') }}:
@@ -1026,10 +1018,8 @@ function onBack() {
                     <NPopconfirm @positive-click="handleDeleteVersion">
                       <template #trigger>
                         <NButton size="small" type="error">
-{{
-                          $t('agent.adminEditDeleteVersion')
-                        }}
-</NButton>
+                          {{ $t('agent.adminEditDeleteVersion') }}
+                        </NButton>
                       </template>
                       {{ $t('agent.adminEditConfirmDeleteVersion') }}
                     </NPopconfirm>
@@ -1203,15 +1193,11 @@ function onBack() {
       <template #footer>
         <NSpace justify="end">
           <NButton @click="showNodeModal = false">
-{{
-            $t('agent.adminEditCancel')
-          }}
-</NButton>
+            {{ $t('agent.adminEditCancel') }}
+          </NButton>
           <NButton type="primary" @click="confirmNode">
-{{
-            $t('agent.adminEditConfirm')
-          }}
-</NButton>
+            {{ $t('agent.adminEditConfirm') }}
+          </NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1242,15 +1228,11 @@ function onBack() {
       <template #footer>
         <NSpace justify="end">
           <NButton @click="showEdgeModal = false">
-{{
-            $t('agent.adminEditCancel')
-          }}
-</NButton>
+            {{ $t('agent.adminEditCancel') }}
+          </NButton>
           <NButton type="primary" @click="confirmEdge">
-{{
-            $t('agent.adminEditConfirm')
-          }}
-</NButton>
+            {{ $t('agent.adminEditConfirm') }}
+          </NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1302,15 +1284,11 @@ function onBack() {
       <template #footer>
         <NSpace justify="end">
           <NButton @click="showCondEdgeModal = false">
-{{
-            $t('agent.adminEditCancel')
-          }}
-</NButton>
+            {{ $t('agent.adminEditCancel') }}
+          </NButton>
           <NButton type="primary" @click="confirmCondEdge">
-{{
-            $t('agent.adminEditConfirm')
-          }}
-</NButton>
+            {{ $t('agent.adminEditConfirm') }}
+          </NButton>
         </NSpace>
       </template>
     </NModal>

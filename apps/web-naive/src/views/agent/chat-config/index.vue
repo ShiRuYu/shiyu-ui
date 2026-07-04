@@ -113,10 +113,8 @@ loadPlatforms();
       <NFormItem>
         <NSpace>
           <NButton type="primary" :loading="loading" @click="handleSend">
-{{
-            $t('agent.chatConfigSend')
-          }}
-</NButton>
+            {{ $t('agent.chatConfigSend') }}
+          </NButton>
           <NButton
             @click="
               () => {
@@ -124,9 +122,9 @@ loadPlatforms();
                 result = '';
               }
             "
-            >
-{{ $t('agent.chatConfigClear') }}
-</NButton>
+          >
+            {{ $t('agent.chatConfigClear') }}
+          </NButton>
         </NSpace>
       </NFormItem>
     </NForm>

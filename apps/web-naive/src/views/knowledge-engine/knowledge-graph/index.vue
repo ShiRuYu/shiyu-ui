@@ -9,7 +9,7 @@ import { getKnowledgeGraphApi, getKnowledgeListApi } from '#/api/knowledge';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
 const selectedId = ref<null | number>(null);
-const graphData = ref<null | { edges: any[]; nodes: any[]; }>(null);
+const graphData = ref<null | { edges: any[]; nodes: any[] }>(null);
 const loading = ref(false);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 

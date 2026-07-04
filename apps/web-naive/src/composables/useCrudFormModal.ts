@@ -8,7 +8,7 @@ import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { $t } from '#/locales';
 
-export function useCrudFormModal<T extends { [key: string]: any; id?: number; }>(
+export function useCrudFormModal<T extends { [key: string]: any; id?: number }>(
   schema: VbenFormSchema[],
   createFn: (data: any) => Promise<any>,
   updateFn: (id: number, data: any) => Promise<any>,

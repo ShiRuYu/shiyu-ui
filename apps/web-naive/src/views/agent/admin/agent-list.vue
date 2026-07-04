@@ -120,10 +120,8 @@ function statusTag(s: string) {
             @keyup.enter="loadAgents"
           />
           <NButton size="small" @click="loadAgents">
-{{
-            $t('agent.adminListSearch')
-          }}
-</NButton>
+            {{ $t('agent.adminListSearch') }}
+          </NButton>
           <div class="flex-1"></div>
           <NButton type="primary" @click="onNewAgent">
             <Plus class="size-5" />
@@ -199,29 +197,19 @@ function statusTag(s: string) {
                 <template #footer>
                   <NSpace>
                     <NButton size="tiny" @click="onView(agent)">
-{{
-                      $t('agent.adminListView')
-                    }}
-</NButton>
-                    <NButton
-                      size="tiny"
-                      type="primary"
-                      @click="onEdit(agent)"
-                      >
-{{ $t('agent.adminListEdit') }}
-</NButton>
+                      {{ $t('agent.adminListView') }}
+                    </NButton>
+                    <NButton size="tiny" type="primary" @click="onEdit(agent)">
+                      {{ $t('agent.adminListEdit') }}
+                    </NButton>
                     <NButton size="tiny" @click="openChat(agent)">
-{{
-                      $t('agent.chat')
-                    }}
-</NButton>
+                      {{ $t('agent.chat') }}
+                    </NButton>
                     <NPopconfirm @positive-click="onDelete(agent)">
                       <template #trigger>
                         <NButton size="tiny" type="error">
-{{
-                          $t('agent.adminListDelete')
-                        }}
-</NButton>
+                          {{ $t('agent.adminListDelete') }}
+                        </NButton>
                       </template>
                       {{
                         $t('agent.adminListConfirmDelete', { name: agent.name })

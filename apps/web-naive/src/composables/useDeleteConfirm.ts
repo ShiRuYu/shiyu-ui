@@ -1,7 +1,7 @@
 import { message } from '#/adapter/naive';
 import { $t } from '#/locales';
 
-export function useDeleteConfirm<T extends { [key: string]: any; id: number; }>(
+export function useDeleteConfirm<T extends { [key: string]: any; id: number }>(
   deleteFn: (id: number) => Promise<any>,
   options?: {
     loadingText?: string;

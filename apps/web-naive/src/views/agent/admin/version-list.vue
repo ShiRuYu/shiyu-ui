@@ -255,10 +255,8 @@ const columns = [
                   <NPopconfirm @positive-click="handleDelete(version)">
                     <template #trigger>
                       <NButton size="tiny" type="error">
-{{
-                        $t('agent.versionListDelete')
-                      }}
-</NButton>
+                        {{ $t('agent.versionListDelete') }}
+                      </NButton>
                     </template>
                     {{
                       $t('agent.versionListConfirmDelete', {
@@ -304,15 +302,11 @@ const columns = [
         </div>
         <NSpace justify="end">
           <NButton @click="showCreateModal = false">
-{{
-            $t('agent.cancel')
-          }}
-</NButton>
+            {{ $t('agent.cancel') }}
+          </NButton>
           <NButton type="primary" @click="handleCreate">
-{{
-            $t('agent.versionListConfirmCreate')
-          }}
-</NButton>
+            {{ $t('agent.versionListConfirmCreate') }}
+          </NButton>
         </NSpace>
       </div>
     </NModal>
