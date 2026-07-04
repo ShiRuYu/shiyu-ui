@@ -29,53 +29,43 @@ export namespace PlatformApi {
 async function getPlatformPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<PlatformApi.PageResult<PlatformApi.PlatformItem>>(
-    '/ai/platform/page',
+    '/admin/platform/page',
     { params: { pageNo: page, pageSize, ...rest } },
   );
 }
 
-async function getEnabledPlatforms() {
-  return requestClient.get<PlatformApi.PlatformItem[]>('/ai/platform/enabled');
-}
-
-async function getPlatformById(id: number) {
-  return requestClient.get<PlatformApi.PlatformItem>(`/ai/platform/${id}`);
-}
-
 async function createPlatform(data: Omit<PlatformApi.PlatformItem, 'id'>) {
-  return requestClient.post('/ai/platform', data);
+  return requestClient.post('/admin/platform', data);
 }
 
 async function updatePlatform(
   id: number,
   data: Partial<PlatformApi.PlatformItem>,
 ) {
-  return requestClient.patch(`/ai/platform/${id}`, data);
+  return requestClient.patch(`/admin/platform/${id}`, data);
 }
 
 async function deletePlatform(id: number) {
-  return requestClient.delete(`/ai/platform/${id}`);
+  return requestClient.delete(`/admin/platform/${id}`);
 }
 
 async function setDefaultPlatform(id: number) {
-  return requestClient.put(`/ai/platform/${id}/default`);
+  return requestClient.put(`/admin/platform/${id}/default`);
 }
 
 async function getPlatformOptions() {
   return requestClient.get<{ id: number; name: string }[]>(
-    '/ai/platform/options',
+    '/admin/platform/options',
   );
 }
 
 async function reloadPlatforms() {
-  return requestClient.post('/ai/platform/reload');
+  return requestClient.post('/admin/platform/reload');
 }
 
 export {
   createPlatform,
   deletePlatform,
-  getEnabledPlatforms,
-  getPlatformById,
   getPlatformOptions,
   getPlatformPage,
   reloadPlatforms,

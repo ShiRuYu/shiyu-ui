@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import type { EducationAnalyticsApi } from '#/api/education/analytics';
+import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { NCard, NSpin } from 'naive-ui';
 
-import { getAbilityRadar } from '#/api';
+import { getAbilityRadar } from '#/api/education/analytics';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const radarData = ref<EducationAnalyticsApi.AbilityRadarResponse>();
+const radarData = ref<any>();
+const chartRef = ref<EchartsUIType>();
+const { renderEcharts } = useEcharts(chartRef);
 
 async function loadRadar() {
   loading.value = true;
@@ -24,6 +27,44 @@ async function loadRadar() {
   }
 }
 
+function updateChart(data: any) {
+  if (!data) return;
+  nextTick(() => {
+    renderEcharts({
+      radar: {
+        indicator: [
+          { name: $t('analytics.remember'), max: 100 },
+          { name: $t('analytics.understand'), max: 100 },
+          { name: $t('analytics.apply'), max: 100 },
+          { name: $t('analytics.analyze'), max: 100 },
+          { name: $t('analytics.evaluate'), max: 100 },
+          { name: $t('analytics.create'), max: 100 },
+        ],
+        center: ['50%', '50%'],
+        radius: '60%',
+      },
+      series: [{
+        type: 'radar',
+        data: [{
+          value: [
+            data.remember ?? 0,
+            data.understand ?? 0,
+            data.apply ?? 0,
+            data.analyze ?? 0,
+            data.evaluate ?? 0,
+            data.create ?? 0,
+          ],
+          name: $t('analytics.ability'),
+          areaStyle: { opacity: 0.2 },
+        }],
+      }],
+      tooltip: { trigger: 'item' },
+    });
+  });
+}
+
+watch(radarData, updateChart, { immediate: false });
+
 onMounted(() => {
   loadRadar();
 });
@@ -33,41 +74,12 @@ onMounted(() => {
   <Page :title="$t('analytics.radar')">
     <NCard>
       <NSpin :show="loading">
-        <div v-if="radarData" class="flex items-center justify-center py-8">
-          <div class="text-center">
-            <p class="text-lg font-medium mb-4">Bloom 六维度能力雷达图</p>
-            <div class="grid grid-cols-3 gap-4 text-sm">
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.remember') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.remember }}</span>
-              </div>
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.understand') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.understand }}</span>
-              </div>
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.apply') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.apply }}</span>
-              </div>
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.analyze') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.analyze }}</span>
-              </div>
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.evaluate') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.evaluate }}</span>
-              </div>
-              <div>
-                <span class="text-gray-500">{{ $t('analytics.create') }}:</span>
-                <span class="ml-1 font-medium">{{ radarData.create }}</span>
-              </div>
-            </div>
-            <p class="mt-4 text-xs text-gray-400">
-              (ECharts Radar 图表组件占位)
-            </p>
-          </div>
+        <div v-if="radarData" class="h-[400px] w-full">
+          <EchartsUI ref="chartRef" />
         </div>
-        <div v-else class="py-20 text-center text-gray-400">暂无数据</div>
+        <div v-else class="py-20 text-center text-gray-400">
+          {{ $t('common.noData') }}
+        </div>
       </NSpin>
     </NCard>
   </Page>

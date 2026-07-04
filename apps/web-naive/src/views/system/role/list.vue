@@ -91,14 +91,18 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params, formValues) => {
-          // 过滤空值，避免空字符串传给后端
-          const params = Object.fromEntries(
+        query: async (params: any, formValues) => {
+          const query: Record<string, any> = Object.fromEntries(
             Object.entries(formValues || {}).filter(
               ([, v]) => v !== '' && v !== null && v !== undefined,
             ),
           );
-          const data = await getRoleList(params);
+          if ((params as any)?.page) query.pageNo = (params as any).page;
+          if ((params as any)?.pageSize) query.pageSize = (params as any).pageSize;
+          const data = await getRoleList(query);
+          if (data && typeof data === 'object' && 'items' in data) {
+            return { items: data.items, total: data.total };
+          }
           const list = Array.isArray(data) ? data : [];
           return { items: list, total: list.length };
         },

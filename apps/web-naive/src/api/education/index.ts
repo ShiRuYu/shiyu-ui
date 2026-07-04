@@ -6,6 +6,7 @@ export * from './plan';
 export * from './question';
 export * from './resource';
 export * from './review';
+export * from './student';
 export * from './subject';
 export * from './textbook';
 export * from './wrong-question';

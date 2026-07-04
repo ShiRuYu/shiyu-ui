@@ -20,7 +20,7 @@ export namespace SystemWorkspaceApi {
  */
 async function getWorkspaceList(params?: Recordable<any>) {
   return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>(
-    '/workspace/list',
+    '/admin/workspace/list',
     {
       params,
     },
@@ -33,7 +33,7 @@ async function getWorkspaceList(params?: Recordable<any>) {
 async function getWorkspaceListForGrid(params?: Recordable<any>) {
   const data = await requestClient.get<
     Array<SystemWorkspaceApi.SystemWorkspace>
-  >('/workspace/list', { params });
+  >('/admin/workspace/list', { params });
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }
@@ -48,7 +48,7 @@ async function createWorkspace(
     'children' | 'createTime' | 'id'
   >,
 ) {
-  return requestClient.post('/workspace', data);
+  return requestClient.post('/admin/workspace', data);
 }
 
 /**
@@ -64,7 +64,7 @@ async function updateWorkspace(
     'children' | 'createTime' | 'id'
   >,
 ) {
-  return requestClient.patch(`/workspace/${id}`, data);
+  return requestClient.patch(`/admin/workspace/${id}`, data);
 }
 
 /**
@@ -72,7 +72,7 @@ async function updateWorkspace(
  * @param id 工作空间 ID
  */
 async function deleteWorkspace(id: number) {
-  return requestClient.delete(`/workspace/${id}`);
+  return requestClient.delete(`/admin/workspace/${id}`);
 }
 
 export {

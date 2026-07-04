@@ -18,7 +18,7 @@ import {
   getKnowledgeDetailApi,
   getKnowledgeGraphApi,
   getKnowledgePathApi,
-} from '#/api';
+} from '#/api/knowledge';
 import { $t } from '#/locales';
 
 const route = useRoute();

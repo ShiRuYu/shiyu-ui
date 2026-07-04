@@ -55,7 +55,13 @@ const formSchema = computed((): VbenFormSchema[] => {
  * @param values 登录表单数据
  */
 async function handleLogin(values: Recordable<any>) {
-  void values;
+  loading.value = true;
+  try {
+    // TODO: 对接后端短信验证码登录接口 POST /api/auth/code-login
+    console.warn('短信登录功能待对接后端接口', values);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 

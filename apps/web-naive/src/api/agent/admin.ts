@@ -1,9 +1,5 @@
+import type { PageResult } from '#/api/types';
 import { requestClient } from '#/api/request';
-
-export interface PageResult<T> {
-  items: T[];
-  total: number;
-}
 
 export namespace AgentAdminApi {
   export interface AgentVO {
@@ -71,11 +67,11 @@ async function deleteAgent(id: number) {
   return requestClient.delete(`/admin/agent/${id}`);
 }
 
-async function toggleAgentStatus(id: number, status: string) {
-  return requestClient.put(`/admin/agent/${id}/status`, null, {
-    params: { status },
-  });
-}
+// async function toggleAgentStatus(id: number, status: string) {
+//   return requestClient.put(`/admin/agent/${id}/status`, null, {
+//     params: { status },
+//   });
+// }
 
 export {
   createAgent,
@@ -83,6 +79,5 @@ export {
   getAgentById,
   getAgentListAll,
   getAgentPage,
-  toggleAgentStatus,
   updateAgent,
 };

@@ -1,18 +1,11 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
+import type { OnActionClickFn } from '#/adapter/vxe-table';
+import type { EducationStudentApi } from '#/api/education/student';
 
+import { z } from '#/adapter/form';
 import { $t } from '#/locales';
-
-export interface StudentRecord {
-  [key: string]: any;
-  id: number;
-  name: string;
-  school: string;
-  studyDays: number;
-  masteredKnowledge: number;
-  accuracy: number;
-}
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -23,27 +16,76 @@ export function useGridFormSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'school',
-      label: $t('education.student.school'),
+      fieldName: 'studentNo',
+      label: $t('education.student.studentNo'),
     },
   ];
 }
 
-export function useColumns(): VxeTableGridColumns<StudentRecord> {
+export function useSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('education.student.name'),
+      rules: z.string().min(1, $t('ui.formRules.required', [$t('education.student.name')])),
+    },
+    {
+      component: 'Input',
+      fieldName: 'studentNo',
+      label: $t('education.student.studentNo'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'school',
+      label: $t('education.student.school'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'className',
+      label: $t('education.student.className'),
+    },
+    {
+      component: 'InputNumber',
+      fieldName: 'grade',
+      label: $t('education.student.grade'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'gradeLevel',
+      label: $t('education.student.gradeLevel'),
+    },
+  ];
+}
+
+export function useColumns(
+  onActionClick?: OnActionClickFn<EducationStudentApi.Student>,
+): VxeTableGridColumns<EducationStudentApi.Student> {
   return [
     { field: 'id', title: 'ID', width: 80 },
+    { field: 'studentNo', title: $t('education.student.studentNo'), width: 120 },
     { field: 'name', title: $t('education.student.name'), width: 150 },
     { field: 'school', title: $t('education.student.school'), width: 200 },
+    { field: 'className', title: $t('education.student.className'), width: 120 },
+    { field: 'grade', title: $t('education.student.grade'), width: 80 },
+    { field: 'gradeLevel', title: $t('education.student.gradeLevel'), width: 100 },
     {
-      field: 'studyDays',
-      title: $t('education.student.studyDays'),
-      width: 100,
+      align: 'right',
+      cellRender: {
+        attrs: {
+          nameField: 'name',
+          nameTitle: $t('education.student.name'),
+          onClick: onActionClick,
+        },
+        name: 'CellOperation',
+        options: ['edit', 'delete'],
+      },
+      field: 'operation',
+      fixed: 'right',
+      headerAlign: 'center',
+      showOverflow: false,
+      title: $t('common.operation'),
+      width: 150,
     },
-    {
-      field: 'masteredKnowledge',
-      title: $t('education.student.masteredKnowledge'),
-      width: 140,
-    },
-    { field: 'accuracy', title: $t('education.student.accuracy'), width: 100 },
   ];
 }

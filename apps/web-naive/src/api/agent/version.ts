@@ -39,29 +39,12 @@ async function getVersionList(agentId: string) {
   );
 }
 
-async function getVersionDetail(agentId: string, versionId: number) {
-  return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    `/admin/agent/${agentId}/version/${versionId}`,
-  );
-}
-
 async function createVersion(
   agentId: string,
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
     `/admin/agent/${agentId}/version`,
-    data,
-  );
-}
-
-async function updateVersion(
-  agentId: string,
-  versionId: number,
-  data: AgentVersionApi.VersionRequest,
-) {
-  return requestClient.patch<AgentVersionApi.AgentVersionVO>(
-    `/admin/agent/${agentId}/version/${versionId}`,
     data,
   );
 }
@@ -105,8 +88,6 @@ export {
   copyVersion,
   createVersion,
   deleteVersion,
-  getVersionDetail,
   getVersionList,
   publishVersion,
-  updateVersion,
 };

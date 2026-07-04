@@ -108,7 +108,7 @@ export namespace SystemMenuApi {
  * 获取根节点菜单（懒加载初始加载）
  */
 async function getMenuRoots() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list/roots');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/admin/menu/list/roots');
 }
 
 /**
@@ -117,7 +117,7 @@ async function getMenuRoots() {
  */
 async function getMenuChildren(parentId: number) {
   return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/menu/list/children/' + parentId,
+    '/admin/menu/list/children/' + parentId,
   );
 }
 
@@ -125,7 +125,7 @@ async function getMenuChildren(parentId: number) {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/admin/menu/list');
 }
 
 /**
@@ -133,27 +133,9 @@ async function getMenuList() {
  */
 async function getMenuListForGrid() {
   const data =
-    await requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
+    await requestClient.get<Array<SystemMenuApi.SystemMenu>>('/admin/menu/list');
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
-}
-
-async function isMenuNameExists(
-  name: string,
-  id?: SystemMenuApi.SystemMenu['id'],
-) {
-  return requestClient.get<boolean>('/menu/name-exists', {
-    params: { id, name },
-  });
-}
-
-async function isMenuPathExists(
-  path: string,
-  id?: SystemMenuApi.SystemMenu['id'],
-) {
-  return requestClient.get<boolean>('/menu/path-exists', {
-    params: { id, path },
-  });
 }
 
 /**
@@ -163,7 +145,7 @@ async function isMenuPathExists(
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu', data);
+  return requestClient.post('/admin/menu', data);
 }
 
 /**
@@ -176,7 +158,7 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.patch(`/menu/${id}`, data);
+  return requestClient.patch(`/admin/menu/${id}`, data);
 }
 
 /**
@@ -184,7 +166,7 @@ async function updateMenu(
  * @param id 菜单 ID
  */
 async function deleteMenu(id: number) {
-  return requestClient.delete(`/menu/${id}`);
+  return requestClient.delete(`/admin/menu/${id}`);
 }
 
 export {
@@ -194,7 +176,5 @@ export {
   getMenuList,
   getMenuListForGrid,
   getMenuRoots,
-  isMenuNameExists,
-  isMenuPathExists,
   updateMenu,
 };

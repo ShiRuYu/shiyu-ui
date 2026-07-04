@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { $t } from '#/locales';
 import { NCard, NForm, NFormItem, NSelect, NInput, NButton, NSpace, NRadioGroup, NRadio, useMessage } from 'naive-ui';
 import { chat, chatStream } from '#/api/agent/chat';
 import { getPlatformOptions } from '#/api/common/platform';
@@ -28,7 +29,7 @@ async function loadPlatforms() {
 }
 
 async function handleSend() {
-  if (!prompt.value) { message.warning('请输入对话内容'); return; }
+  if (!prompt.value) { message.warning($t('agent.chatConfigInputPrompt')); return; }
   loading.value = true;
   result.value = '';
 
@@ -44,7 +45,7 @@ async function handleSend() {
       );
     }
   } catch (e: any) {
-    result.value = '错误: ' + (e.message || '未知错误');
+    result.value = $t('agent.chatConfigError', { message: e.message || $t('agent.chatConfigUnknownError') });
   } finally { loading.value = false; }
 }
 
@@ -52,28 +53,28 @@ loadPlatforms();
 </script>
 
 <template>
-  <NCard title="AI 对话调试" :bordered="false" class="h-full">
+  <NCard :title="$t('agent.chatConfigTitle')" :bordered="false" class="h-full">
     <NForm label-placement="left" label-width="100">
-      <NFormItem label="平台">
+      <NFormItem :label="$t('agent.chatConfigPlatform')">
         <NSelect v-model:value="platform" :options="platforms" filterable style="width:250px" />
       </NFormItem>
-      <NFormItem label="模式">
+      <NFormItem :label="$t('agent.chatConfigMode')">
         <NRadioGroup v-model:value="mode">
-          <NRadio value="sync">同步</NRadio>
-          <NRadio value="stream">流式 (SSE)</NRadio>
+          <NRadio value="sync">{{ $t('agent.chatConfigSync') }}</NRadio>
+          <NRadio value="stream">{{ $t('agent.chatConfigStream') }}</NRadio>
         </NRadioGroup>
       </NFormItem>
-      <NFormItem label="Prompt">
-        <NInput v-model:value="prompt" type="textarea" rows="4" placeholder="输入对话内容..." />
+      <NFormItem :label="$t('agent.chatConfigPrompt')">
+        <NInput v-model:value="prompt" type="textarea" rows="4" :placeholder="$t('agent.chatConfigPromptPlaceholder')" />
       </NFormItem>
       <NFormItem>
         <NSpace>
-          <NButton type="primary" :loading="loading" @click="handleSend">发送</NButton>
-          <NButton @click="() => { prompt = ''; result = ''; }">清空</NButton>
+          <NButton type="primary" :loading="loading" @click="handleSend">{{ $t('agent.chatConfigSend') }}</NButton>
+          <NButton @click="() => { prompt = ''; result = ''; }">{{ $t('agent.chatConfigClear') }}</NButton>
         </NSpace>
       </NFormItem>
     </NForm>
-    <NCard v-if="result" title="返回结果" size="small" class="mt-4">
+    <NCard v-if="result" :title="$t('agent.chatConfigResult')" size="small" class="mt-4">
       <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
     </NCard>
   </NCard>

@@ -113,87 +113,8 @@ async function validateGraphConfig(
   );
 }
 
-async function addNode(
-  agentId: string,
-  versionId: number,
-  data: AgentGraphApi.NodeConfigRequest,
-) {
-  return requestClient.post(
-    `/admin/agent/${agentId}/version/${versionId}/graph/node`,
-    data,
-  );
-}
-
-async function updateNode(
-  agentId: string,
-  versionId: number,
-  nodeId: string,
-  data: AgentGraphApi.NodeConfigRequest,
-) {
-  return requestClient.put(
-    `/admin/agent/${agentId}/version/${versionId}/graph/node/${nodeId}`,
-    data,
-  );
-}
-
-async function deleteNode(agentId: string, versionId: number, nodeId: string) {
-  return requestClient.delete(
-    `/admin/agent/${agentId}/version/${versionId}/graph/node/${nodeId}`,
-  );
-}
-
-async function addEdge(
-  agentId: string,
-  versionId: number,
-  data: AgentGraphApi.EdgeRequest,
-) {
-  return requestClient.post(
-    `/admin/agent/${agentId}/version/${versionId}/graph/edge`,
-    data,
-  );
-}
-
-async function deleteEdge(
-  agentId: string,
-  versionId: number,
-  sourceNodeId: string,
-  targetNodeId: string,
-) {
-  return requestClient.delete(
-    `/admin/agent/${agentId}/version/${versionId}/graph/edge`,
-    { params: { sourceNodeId, targetNodeId } },
-  );
-}
-
-async function getCanvasConfig(agentId: string, versionId: number) {
-  return requestClient.get<string>(
-    `/admin/agent/${agentId}/version/${versionId}/graph/canvas`,
-  );
-}
-
-async function updateCanvasConfig(
-  agentId: string,
-  versionId: number,
-  canvasConfig: string,
-) {
-  return requestClient.put(
-    `/admin/agent/${agentId}/version/${versionId}/graph/canvas`,
-    canvasConfig,
-    {
-      headers: { 'Content-Type': 'application/json' },
-    },
-  );
-}
-
 export {
-  addEdge,
-  addNode,
-  deleteEdge,
-  deleteNode,
-  getCanvasConfig,
   getGraphConfig,
-  updateCanvasConfig,
   updateGraphConfig,
-  updateNode,
   validateGraphConfig,
 };

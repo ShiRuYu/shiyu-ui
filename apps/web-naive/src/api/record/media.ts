@@ -33,11 +33,6 @@ async function getMediaPage(params?: Recordable<any>) {
     },
   );
 }
-
-async function getMediaById(id: number) {
-  return requestClient.get<MediaApi.Media>(`/api/media/${id}`);
-}
-
 async function createMedia(data: Omit<MediaApi.Media, 'id'>) {
   return requestClient.post('/api/media', data);
 }
@@ -50,4 +45,4 @@ async function deleteMedia(id: number) {
   return requestClient.delete(`/api/media/${id}`);
 }
 
-export { createMedia, deleteMedia, getMediaById, getMediaPage, updateMedia };
+export { createMedia, deleteMedia, getMediaPage, updateMedia };

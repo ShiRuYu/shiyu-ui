@@ -28,6 +28,7 @@ import {
   NTag,
 } from 'naive-ui';
 
+import { $t } from '#/locales';
 import { requestClient } from '#/api/request';
 import { message } from '#/adapter/naive';
 import {
@@ -150,8 +151,8 @@ const selectedVersionInfo = computed(() => {
 });
 
 const statusOptions = [
-  { label: '启用', value: '1' },
-  { label: '停用', value: '0' },
+  { label: $t('agent.adminEditEnabled'), value: '1' },
+  { label: $t('agent.adminEditDisabled'), value: '0' },
 ];
 
 const nodeOptions = computed(() =>
@@ -172,23 +173,23 @@ const conditionalEdges = computed(() =>
 // --------------- Table columns ---------------
 
 const nodeColumns = computed(() => [
-  { title: '名称', key: 'nodeName', width: 130 },
-  { title: '类型', key: 'nodeType', width: 100 },
+  { title: $t('agent.adminEditTableColumnName'), key: 'nodeName', width: 130 },
+  { title: $t('agent.adminEditTableColumnType'), key: 'nodeType', width: 100 },
   {
-    title: '状态',
+    title: $t('agent.adminEditTableColumnStatus'),
     key: 'enabled',
     width: 70,
-    render: (row: AgentGraphApi.FormNode) => (row.enabled ? '启用' : '停用'),
+    render: (row: AgentGraphApi.FormNode) => (row.enabled ? $t('agent.adminEditEnabled') : $t('agent.adminEditDisabled')),
   },
-  { title: '描述', key: 'description', ellipsis: { tooltip: true } },
+  { title: $t('agent.adminEditTableColumnDescription'), key: 'description', ellipsis: { tooltip: true } },
   {
-    title: '操作',
+    title: $t('agent.adminEditTableColumnActions'),
     key: 'actions',
     width: 110,
     fixed: 'right' as const,
     render: (row: AgentGraphApi.FormNode) =>
       h(NSpace, {}, [
-        h(NButton, { size: 'tiny', onClick: () => openEditNode(row) }, '编辑'),
+        h(NButton, { size: 'tiny', onClick: () => openEditNode(row) }, $t('agent.adminEditEditAction')),
         h(
           NButton,
           {
@@ -196,17 +197,17 @@ const nodeColumns = computed(() => [
             type: 'error',
             onClick: () => handleDeleteNode(row.id),
           },
-          '删除',
+          $t('agent.adminEditDeleteAction'),
         ),
       ]),
   },
 ]);
 
 const normalEdgeColumns = [
-  { title: '源节点', key: 'source', width: 130 },
-  { title: '目标节点', key: 'target', width: 130 },
+  { title: $t('agent.adminEditTableColumnSource'), key: 'source', width: 130 },
+  { title: $t('agent.adminEditTableColumnTarget'), key: 'target', width: 130 },
   {
-    title: '操作',
+    title: $t('agent.adminEditTableColumnActions'),
     key: 'actions',
     width: 80,
     render: (row: AgentGraphApi.FormEdge) =>
@@ -217,24 +218,24 @@ const normalEdgeColumns = [
           type: 'error',
           onClick: () => handleDeleteEdge(row.id),
         },
-        '删除',
+        $t('agent.adminEditDeleteAction'),
       ),
   },
 ];
 
 const conditionalEdgeColumns = [
-  { title: '源节点', key: 'source', width: 120 },
-  { title: '目标节点', key: 'target', width: 120 },
-  { title: '条件类型', key: 'conditionType', width: 90 },
-  { title: '映射值', key: 'conditionMapping', width: 90 },
+  { title: $t('agent.adminEditTableColumnSource'), key: 'source', width: 120 },
+  { title: $t('agent.adminEditTableColumnTarget'), key: 'target', width: 120 },
+  { title: $t('agent.adminEditTableColumnConditionType'), key: 'conditionType', width: 90 },
+  { title: $t('agent.adminEditTableColumnMappingValue'), key: 'conditionMapping', width: 90 },
   {
-    title: '默认目标',
+    title: $t('agent.adminEditTableColumnDefaultTarget'),
     key: 'isDefault',
     width: 80,
-    render: (row: AgentGraphApi.FormEdge) => (row.isDefault ? '是' : '否'),
+    render: (row: AgentGraphApi.FormEdge) => (row.isDefault ? $t('agent.adminEditYes') : $t('agent.adminEditNo')),
   },
   {
-    title: '操作',
+    title: $t('agent.adminEditTableColumnActions'),
     key: 'actions',
     width: 80,
     render: (row: AgentGraphApi.FormEdge) =>
@@ -245,7 +246,7 @@ const conditionalEdgeColumns = [
           type: 'error',
           onClick: () => handleDeleteEdge(row.id),
         },
-        '删除',
+        $t('agent.adminEditDeleteAction'),
       ),
   },
 ];
@@ -332,9 +333,9 @@ async function loadVersions() {
 
 function statusLabel(s: string): string {
   const map: Record<string, string> = {
-    DRAFT: '草稿',
-    PUBLISHED: '已发布',
-    ARCHIVED: '已归档',
+    DRAFT: $t('agent.versionListDraft'),
+    PUBLISHED: $t('agent.versionListPublishedText'),
+    ARCHIVED: $t('agent.versionListArchivedText'),
   };
   return map[s] || s;
 }
@@ -354,7 +355,7 @@ watch(selectedVersionId, async (newId) => {
 
 async function handleCreateNewAgent() {
   if (!agentId.value || !agentName.value) {
-    message.error('请填写 Agent 标识和名称');
+    message.error($t('agent.adminEditFillRequired'));
     return;
   }
   try {
@@ -364,10 +365,10 @@ async function handleCreateNewAgent() {
       description: agentDescription.value,
       status: agentStatus.value,
     });
-    message.success('Agent 创建成功');
+    message.success($t('agent.adminEditCreated'));
     agentDetailId.value = vo.id;
   } catch {
-    message.error('创建 Agent 失败');
+    message.error($t('agent.adminEditCreateFailed'));
   }
 }
 
@@ -382,9 +383,9 @@ async function handleSaveAgent() {
       description: agentDescription.value,
       status: agentStatus.value,
     });
-    message.success('Agent信息保存成功');
+    message.success($t('agent.adminEditSaveSuccess'));
   } catch {
-    message.error('保存Agent信息失败');
+    message.error($t('agent.adminEditSaveFailed'));
   }
 }
 
@@ -524,9 +525,9 @@ async function handleSaveGraph() {
       selectedVersionId.value,
       buildGraphConfig(),
     );
-    message.success('Graph 保存成功');
+    message.success($t('agent.adminEditGraphSaved'));
   } catch {
-    message.error('保存 Graph 失败');
+    message.error($t('agent.adminEditGraphSaveFailed'));
   } finally {
     saving.value = false;
   }
@@ -598,7 +599,7 @@ function openAddEdge() {
 
 function confirmEdge() {
   if (!edgeSource.value || !edgeTarget.value) {
-    message.warning('请选择源节点和目标节点');
+    message.warning($t('agent.adminEditSelectSourceAndTarget'));
     return;
   }
   const id = `${edgeSource.value}->${edgeTarget.value}`;
@@ -626,7 +627,7 @@ function openAddConditionalEdge() {
 
 function confirmCondEdge() {
   if (!condEdgeSource.value || !condEdgeTarget.value) {
-    message.warning('请选择源节点和目标节点');
+    message.warning($t('agent.adminEditSelectSourceAndTarget'));
     return;
   }
   const suffix = condEdgeIsDefault.value
@@ -662,13 +663,13 @@ async function handleCreateVersion() {
       versionNumber: newVersionNumber.value,
       description: newVersionDesc.value,
     });
-    message.success('版本创建成功');
+    message.success($t('agent.adminEditVersionCreated'));
     showCreateVersion.value = false;
     newVersionNumber.value = '';
     newVersionDesc.value = '';
     await loadVersions();
   } catch {
-    message.error('创建版本失败');
+    message.error($t('agent.adminEditVersionCreateFailed'));
   }
 }
 
@@ -676,15 +677,15 @@ async function handlePublish() {
   if (!agentId.value || !selectedVersionId.value) return;
   const info = selectedVersionInfo.value;
   if (info && info.status === 'PUBLISHED') {
-    message.warning('该版本已发布');
+    message.warning($t('agent.adminEditVersionAlreadyPublished'));
     return;
   }
   try {
     await publishVersion(agentId.value, selectedVersionId.value);
-    message.success('版本已发布');
+    message.success($t('agent.adminEditVersionPublished'));
     await loadVersions();
   } catch {
-    message.error('发布失败');
+    message.error($t('agent.adminEditVersionPublishFailed'));
   }
 }
 
@@ -692,9 +693,9 @@ async function handleActivate() {
   if (!agentId.value || !selectedVersionId.value) return;
   try {
     await activateVersion(agentId.value, selectedVersionId.value);
-    message.success('版本已激活');
+    message.success($t('agent.adminEditVersionActivated'));
   } catch {
-    message.error('激活失败');
+    message.error($t('agent.adminEditVersionActivateFailed'));
   }
 }
 
@@ -702,10 +703,10 @@ async function handleArchive() {
   if (!agentId.value || !selectedVersionId.value) return;
   try {
     await archiveVersion(agentId.value, selectedVersionId.value);
-    message.success('版本已归档');
+    message.success($t('agent.adminEditVersionArchived'));
     await loadVersions();
   } catch {
-    message.error('归档失败');
+    message.error($t('agent.adminEditVersionArchiveFailed'));
   }
 }
 
@@ -713,11 +714,11 @@ async function handleDeleteVersion() {
   if (!agentId.value || !selectedVersionId.value) return;
   try {
     await deleteVersion(agentId.value, selectedVersionId.value);
-    message.success('版本已删除');
+    message.success($t('agent.adminEditVersionDeleted'));
     selectedVersionId.value = null;
     await loadVersions();
   } catch {
-    message.error('删除失败');
+    message.error($t('agent.adminEditVersionDeleteFailed'));
   }
 }
 
@@ -739,31 +740,31 @@ function onBack() {
     <div class="flex h-full flex-col gap-3 p-4">
       <!-- Top bar -->
       <NSpace align="center">
-        <NButton @click="onBack">← 返回列表</NButton>
+        <NButton @click="onBack">{{ $t('agent.adminEditBackToList') }}</NButton>
         <span v-if="agentDetailId" class="text-lg font-semibold">{{
-          agentName || '加载中...'
+          agentName || $t('agent.adminEditLoading')
         }}</span>
-        <span v-else-if="isNew" class="text-lg font-semibold">新增 Agent</span>
-        <span v-else class="text-lg font-semibold">Agent 管理</span>
+        <span v-else-if="isNew" class="text-lg font-semibold">{{ $t('agent.adminEditAddAgent') }}</span>
+        <span v-else class="text-lg font-semibold">{{ $t('agent.adminEditAgentManage') }}</span>
         <div class="flex-1" />
         <NTag
           v-if="readonly && agentDetailId"
           :bordered="false"
           type="info"
           size="small"
-          >只读</NTag
+          >{{ $t('agent.adminEditReadOnly') }}</NTag
         >
       </NSpace>
 
       <!-- Agent selector (direct entry without id) -->
       <div v-if="!agentDetailId && !isNew" class="flex items-center gap-2 p-4">
-        <span class="text-sm font-medium whitespace-nowrap">选择 Agent：</span>
+        <span class="text-sm font-medium whitespace-nowrap">{{ $t('agent.adminEditSelectAgent') }}</span>
         <NSelect
           v-model:value="selectedAgentId"
           :loading="loadingOptions"
           :options="agentOptions"
           class="w-[320px]"
-          placeholder="请选择一个 Agent"
+          :placeholder="$t('agent.adminEditSelectAgentPlaceholder')"
           @update:value="(val: any) => (selectedAgentId = val)"
         />
       </div>
@@ -773,37 +774,37 @@ function onBack() {
         <NForm label-placement="top" label-width="auto">
           <NGrid :cols="1" :x-gap="12">
             <NGi>
-              <NFormItemGi label="Agent 标识">
+              <NFormItemGi :label="$t('agent.adminEditAgentId')">
                 <NInput
                   v-model:value="agentId"
-                  placeholder="唯一标识（如 my-agent）"
+                  :placeholder="$t('agent.adminEditAgentIdPlaceholder')"
                 />
               </NFormItemGi>
             </NGi>
             <NGi>
-              <NFormItemGi label="名称">
-                <NInput v-model:value="agentName" placeholder="Agent 名称" />
+              <NFormItemGi :label="$t('agent.adminEditName')">
+                <NInput v-model:value="agentName" :placeholder="$t('agent.adminEditNamePlaceholder')" />
               </NFormItemGi>
             </NGi>
             <NGi>
-              <NFormItemGi label="描述">
+              <NFormItemGi :label="$t('agent.description')">
                 <NInput
                   v-model:value="agentDescription"
                   :maxlength="500"
                   :rows="2"
-                  placeholder="描述"
+                  :placeholder="$t('agent.adminEditDescriptionPlaceholder')"
                   type="textarea"
                 />
               </NFormItemGi>
             </NGi>
             <NGi>
-              <NFormItemGi label="状态">
+              <NFormItemGi :label="$t('agent.adminEditStatus')">
                 <NSelect v-model:value="agentStatus" :options="statusOptions" />
               </NFormItemGi>
             </NGi>
           </NGrid>
           <NButton type="primary" @click="handleCreateNewAgent"
-            >创建 Agent</NButton
+            >{{ $t('agent.adminEditCreateAgent') }}</NButton
           >
         </NForm>
       </div>
@@ -815,41 +816,41 @@ function onBack() {
             <!-- Agent Info Section -->
             <NCollapse :default-expanded-names="['info']">
               <NCollapseItem name="info">
-                <template #header><span>基本信息</span></template>
+                <template #header><span>{{ $t('agent.adminEditBasicInfo') }}</span></template>
                 <NForm label-placement="top" label-width="auto">
                   <NGrid :cols="1" :x-gap="12">
                     <NGi>
-                      <NFormItemGi label="Agent 标识">
+                      <NFormItemGi :label="$t('agent.adminEditAgentId')">
                         <NInput
                           v-model:value="agentId"
                           :disabled="true"
-                          placeholder="Agent 唯一标识"
+                          :placeholder="$t('agent.adminEditAgentIdPlaceholderReadonly')"
                         />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
-                      <NFormItemGi label="名称">
+                      <NFormItemGi :label="$t('agent.adminEditName')">
                         <NInput
                           v-model:value="agentName"
                           :disabled="readonly"
-                          placeholder="Agent 名称"
+                          :placeholder="$t('agent.adminEditNamePlaceholder')"
                         />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
-                      <NFormItemGi label="描述">
+                      <NFormItemGi :label="$t('agent.description')">
                         <NInput
                           v-model:value="agentDescription"
                           :disabled="readonly"
                           :maxlength="500"
                           :rows="2"
-                          placeholder="描述"
+                          :placeholder="$t('agent.adminEditDescriptionPlaceholder')"
                           type="textarea"
                         />
                       </NFormItemGi>
                     </NGi>
                     <NGi>
-                      <NFormItemGi label="状态">
+                      <NFormItemGi :label="$t('agent.adminEditStatus')">
                         <NSelect
                           v-model:value="agentStatus"
                           :disabled="readonly"
@@ -860,7 +861,7 @@ function onBack() {
                   </NGrid>
                   <div v-if="!readonly" class="mt-2">
                     <NButton type="primary" @click="handleSaveAgent"
-                      >保存信息</NButton
+                      >{{ $t('agent.adminEditSaveInfo') }}</NButton
                     >
                   </div>
                 </NForm>
@@ -870,10 +871,10 @@ function onBack() {
             <!-- Version Control Section -->
             <NCollapse :default-expanded-names="['version']">
               <NCollapseItem name="version">
-                <template #header><span>版本管理</span></template>
+                <template #header><span>{{ $t('agent.adminEditVersionManagement') }}</span></template>
                 <div class="space-y-3">
                   <NSpace vertical>
-                    <label class="text-sm font-medium">选择版本</label>
+                    <label class="text-sm font-medium">{{ $t('agent.adminEditSelectVersion') }}</label>
                     <NSpace>
                       <NSelect
                         v-model:value="selectedVersionId"
@@ -881,14 +882,14 @@ function onBack() {
                         :loading="loadingVersions"
                         :options="versions"
                         class="flex-1"
-                        placeholder="选择版本"
+                        :placeholder="$t('agent.adminEditSelectVersionPlaceholder')"
                       />
                       <NButton
                         v-if="!readonly"
                         size="small"
                         @click="showCreateVersion = !showCreateVersion"
                       >
-                        新建
+                        {{ $t('agent.adminEditCreateVersion') }}
                       </NButton>
                     </NSpace>
                   </NSpace>
@@ -898,14 +899,14 @@ function onBack() {
                     <NSpace vertical>
                       <NInput
                         v-model:value="newVersionNumber"
-                        placeholder="版本号（如 v2.0.0）"
+                        :placeholder="$t('agent.adminEditVersionNumberPlaceholder')"
                         size="small"
                       />
                       <NInput
                         v-model:value="newVersionDesc"
                         :maxlength="500"
                         :rows="1"
-                        placeholder="版本描述（可选）"
+                        :placeholder="$t('agent.adminEditVersionDescPlaceholder')"
                         size="small"
                         type="textarea"
                       />
@@ -914,8 +915,8 @@ function onBack() {
                         type="primary"
                         @click="handleCreateVersion"
                       >
-                        确定创建
-                      </NButton>
+                         {{ $t('agent.adminEditConfirmCreate') }}
+                       </NButton>
                     </NSpace>
                   </div>
 
@@ -924,15 +925,15 @@ function onBack() {
                     v-if="selectedVersionInfo"
                     class="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800"
                   >
-                    <div>版本号: {{ selectedVersionInfo.versionNumber }}</div>
+                    <div>{{ $t('agent.adminEditVersionPrefix') }}: {{ selectedVersionInfo.versionNumber }}</div>
                     <div>
-                      状态:
+                      {{ $t('agent.adminEditStatus') }}:
                       <NTag :bordered="false" size="small">{{
                         statusLabel(selectedVersionInfo.status)
                       }}</NTag>
                     </div>
                     <div v-if="selectedVersionInfo.description" class="mt-1">
-                      描述: {{ selectedVersionInfo.description }}
+                       {{ $t('agent.description') }}: {{ selectedVersionInfo.description }}
                     </div>
                   </div>
 
@@ -947,7 +948,7 @@ function onBack() {
                       type="primary"
                       @click="handlePublish"
                     >
-                      发布
+                      {{ $t('agent.adminEditPublish') }}
                     </NButton>
                     <NButton
                       v-if="selectedVersionInfo?.status === 'PUBLISHED'"
@@ -955,20 +956,20 @@ function onBack() {
                       type="success"
                       @click="handleActivate"
                     >
-                      激活
+                      {{ $t('agent.adminEditActivate') }}
                     </NButton>
                     <NButton
                       v-if="selectedVersionInfo?.status === 'PUBLISHED'"
                       size="small"
                       @click="handleArchive"
                     >
-                      归档
+                      {{ $t('agent.adminEditArchive') }}
                     </NButton>
                     <NPopconfirm @positive-click="handleDeleteVersion">
                       <template #trigger>
-                        <NButton size="small" type="error">删除</NButton>
+                        <NButton size="small" type="error">{{ $t('agent.adminEditDeleteVersion') }}</NButton>
                       </template>
-                      确认删除该版本？
+                      {{ $t('agent.adminEditConfirmDeleteVersion') }}
                     </NPopconfirm>
                   </div>
                 </div>
@@ -981,11 +982,11 @@ function onBack() {
             <!-- Graph editor toolbar -->
             <NSpace align="center" class="border-b p-2">
               <span class="text-sm font-medium">
-                Graph 编排 —
+                {{ $t('agent.adminEditGraphEditor') }}
                 <span v-if="selectedVersionInfo">
-                  版本 {{ selectedVersionInfo.versionNumber }}
+                  {{ $t('agent.adminEditVersionPrefix') }} {{ selectedVersionInfo.versionNumber }}
                 </span>
-                <span v-else class="text-gray-400">请选择版本</span>
+                <span v-else class="text-gray-400">{{ $t('agent.adminEditSelectVersionHint') }}</span>
               </span>
               <div class="flex-1"></div>
               <NButton
@@ -993,7 +994,7 @@ function onBack() {
                 size="small"
                 @click="handleValidate"
               >
-                校验
+                {{ $t('agent.adminEditValidate') }}
               </NButton>
               <NButton
                 v-if="!readonly"
@@ -1003,7 +1004,7 @@ function onBack() {
                 type="primary"
                 @click="handleSaveGraph"
               >
-                保存 Graph
+                {{ $t('agent.adminEditSaveGraph') }}
               </NButton>
             </NSpace>
 
@@ -1012,7 +1013,7 @@ function onBack() {
               v-if="!selectedVersionId"
               class="flex flex-1 items-center justify-center"
             >
-              <NEmpty description="请选择一个版本以编辑 Graph" />
+              <NEmpty :description="$t('agent.adminEditSelectVersionForGraph')" />
             </div>
             <NSpin v-else :show="loading" class="flex-1">
               <div class="flex-1 space-y-4 overflow-auto p-3">
@@ -1022,7 +1023,7 @@ function onBack() {
                     v-model:value="startNode"
                     :options="nodeOptions"
                     :disabled="readonly"
-                    placeholder="起始节点"
+                    :placeholder="$t('agent.adminEditStartNode')"
                     class="w-[200px]"
                     clearable
                   />
@@ -1030,7 +1031,7 @@ function onBack() {
                     v-model:value="endNode"
                     :options="nodeOptions"
                     :disabled="readonly"
-                    placeholder="结束节点"
+                    :placeholder="$t('agent.adminEditEndNode')"
                     class="w-[200px]"
                     clearable
                   />
@@ -1039,15 +1040,15 @@ function onBack() {
                 <!-- Nodes Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">节点列表</span>
+                    <span class="text-sm font-bold">{{ $t('agent.adminEditNodeList') }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
                       type="primary"
                       @click="openAddNode"
-                    >
-                      添加节点
-                    </NButton>
+                      >
+                       {{ $t('agent.adminEditAddNode') }}
+                     </NButton>
                   </NSpace>
                   <NDataTable
                     :columns="nodeColumns"
@@ -1055,21 +1056,21 @@ function onBack() {
                     :max-height="280"
                     :bordered="true"
                     size="small"
-                    :empty-text="'暂无节点，点击上方添加节点'"
+                    :empty-text="$t('agent.adminEditNoNodeHint')"
                   />
                 </div>
 
                 <!-- Normal Edges Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">普通连线</span>
+                    <span class="text-sm font-bold">{{ $t('agent.adminEditNormalEdges') }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
                       type="primary"
                       @click="openAddEdge"
                     >
-                      添加连线
+                      {{ $t('agent.adminEditAddEdge') }}
                     </NButton>
                   </NSpace>
                   <NDataTable
@@ -1078,21 +1079,21 @@ function onBack() {
                     :max-height="200"
                     :bordered="true"
                     size="small"
-                    :empty-text="'暂无普通连线'"
+                    :empty-text="$t('agent.adminEditNoNormalEdge')"
                   />
                 </div>
 
                 <!-- Conditional Edges Table -->
                 <div>
                   <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">条件连线</span>
+                    <span class="text-sm font-bold">{{ $t('agent.adminEditConditionalEdges') }}</span>
                     <NButton
                       v-if="!readonly"
                       size="small"
                       type="primary"
                       @click="openAddConditionalEdge"
                     >
-                      添加条件连线
+                      {{ $t('agent.adminEditAddCondEdge') }}
                     </NButton>
                   </NSpace>
                   <NDataTable
@@ -1101,7 +1102,7 @@ function onBack() {
                     :max-height="200"
                     :bordered="true"
                     size="small"
-                    :empty-text="'暂无条件连线'"
+                    :empty-text="$t('agent.adminEditNoCondEdge')"
                   />
                 </div>
               </div>
@@ -1115,7 +1116,7 @@ function onBack() {
     <NModal
       v-model:show="showNodeModal"
       preset="card"
-      :title="isNewNode ? '添加节点' : '编辑节点'"
+      :title="isNewNode ? $t('agent.adminEditAddNodeModal') : $t('agent.adminEditEditNodeModal')"
       class="w-[480px]"
     >
       <NodeForm
@@ -1124,8 +1125,8 @@ function onBack() {
       />
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showNodeModal = false">取消</NButton>
-          <NButton type="primary" @click="confirmNode">确定</NButton>
+          <NButton @click="showNodeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
+          <NButton type="primary" @click="confirmNode">{{ $t('agent.adminEditConfirm') }}</NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1134,29 +1135,29 @@ function onBack() {
     <NModal
       v-model:show="showEdgeModal"
       preset="card"
-      title="添加连线"
+      :title="$t('agent.adminEditAddEdgeModal')"
       class="w-[420px]"
     >
       <NForm label-placement="top">
-        <NFormItem label="源节点">
+        <NFormItem :label="$t('agent.adminEditSourceNode')">
           <NSelect
             v-model:value="edgeSource"
             :options="nodeOptions"
-            placeholder="选择源节点"
+            :placeholder="$t('agent.adminEditSourceNodePlaceholder')"
           />
         </NFormItem>
-        <NFormItem label="目标节点">
+        <NFormItem :label="$t('agent.adminEditTargetNode')">
           <NSelect
             v-model:value="edgeTarget"
             :options="nodeOptions"
-            placeholder="选择目标节点"
+            :placeholder="$t('agent.adminEditTargetNodePlaceholder')"
           />
         </NFormItem>
       </NForm>
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showEdgeModal = false">取消</NButton>
-          <NButton type="primary" @click="confirmEdge">确定</NButton>
+          <NButton @click="showEdgeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
+          <NButton type="primary" @click="confirmEdge">{{ $t('agent.adminEditConfirm') }}</NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1165,45 +1166,45 @@ function onBack() {
     <NModal
       v-model:show="showCondEdgeModal"
       preset="card"
-      title="添加条件连线"
+      :title="$t('agent.adminEditAddCondEdgeModal')"
       class="w-[480px]"
     >
       <NForm label-placement="top">
-        <NFormItem label="源节点">
+        <NFormItem :label="$t('agent.adminEditSourceNode')">
           <NSelect
             v-model:value="condEdgeSource"
             :options="nodeOptions"
-            placeholder="选择源节点"
+            :placeholder="$t('agent.adminEditSourceNodePlaceholder')"
           />
         </NFormItem>
-        <NFormItem label="目标节点">
+        <NFormItem :label="$t('agent.adminEditTargetNode')">
           <NSelect
             v-model:value="condEdgeTarget"
             :options="nodeOptions"
-            placeholder="选择目标节点"
+            :placeholder="$t('agent.adminEditTargetNodePlaceholder')"
           />
         </NFormItem>
-        <NFormItem label="条件类型">
-          <NInput v-model:value="condEdgeType" placeholder="例如：classify" />
+        <NFormItem :label="$t('agent.adminEditConditionType')">
+          <NInput v-model:value="condEdgeType" :placeholder="$t('agent.adminEditConditionTypePlaceholder')" />
         </NFormItem>
-        <NFormItem label="映射值">
+        <NFormItem :label="$t('agent.adminEditMappingValue')">
           <NSelect
             v-model:value="condEdgeMapping"
             :disabled="condEdgeIsDefault"
             :options="condEdgeIntentOptions"
-            placeholder="选择意图编码"
+            :placeholder="$t('agent.adminEditMappingValuePlaceholder')"
             :clearable="true"
             filterable
           />
         </NFormItem>
         <NFormItem>
-          <NCheckbox v-model:checked="condEdgeIsDefault"> 默认目标 </NCheckbox>
+          <NCheckbox v-model:checked="condEdgeIsDefault"> {{ $t('agent.adminEditDefaultTarget') }} </NCheckbox>
         </NFormItem>
       </NForm>
       <template #footer>
         <NSpace justify="end">
-          <NButton @click="showCondEdgeModal = false">取消</NButton>
-          <NButton type="primary" @click="confirmCondEdge">确定</NButton>
+          <NButton @click="showCondEdgeModal = false">{{ $t('agent.adminEditCancel') }}</NButton>
+          <NButton type="primary" @click="confirmCondEdge">{{ $t('agent.adminEditConfirm') }}</NButton>
         </NSpace>
       </template>
     </NModal>
@@ -1212,7 +1213,7 @@ function onBack() {
     <NModal
       v-model:show="showValidateResult"
       preset="card"
-      title="校验结果"
+      :title="$t('agent.adminEditValidationResult')"
       class="w-[480px]"
     >
       <ValidateResult :result="validationResult" />

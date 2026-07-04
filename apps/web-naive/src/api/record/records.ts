@@ -28,11 +28,6 @@ async function getRecordPage(params?: Recordable<any>) {
     },
   );
 }
-
-async function getRecordById(id: number) {
-  return requestClient.get<RecordsApi.Record>(`/api/record/${id}`);
-}
-
 async function createRecord(data: Omit<RecordsApi.Record, 'id'>) {
   return requestClient.post('/api/record', data);
 }
@@ -48,7 +43,6 @@ async function deleteRecord(id: number) {
 export {
   createRecord,
   deleteRecord,
-  getRecordById,
   getRecordPage,
   updateRecord,
 };

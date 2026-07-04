@@ -16,11 +16,21 @@ export namespace SystemRoleApi {
 }
 
 /**
- * 获取角色列表数据（全部）
+ * 获取角色列表（分页）
  */
 async function getRoleList(params?: Recordable<any>) {
-  return requestClient.get<Array<SystemRoleApi.SystemRole>>('/role', {
-    params,
+  return requestClient.get<{
+    items: SystemRoleApi.SystemRole[];
+    total: number;
+  }>('/admin/role/list', { params });
+}
+
+/**
+ * 获取所有角色（下拉选择用）
+ */
+async function getAllRoles(status?: string) {
+  return requestClient.get<Array<SystemRoleApi.SystemRole>>('/admin/role', {
+    params: { status },
   });
 }
 
@@ -31,7 +41,7 @@ async function getRoleList(params?: Recordable<any>) {
 async function createRole(
   data: Omit<SystemRoleApi.SystemRole, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/role', data);
+  return requestClient.post('/admin/role', data);
 }
 
 /**
@@ -44,7 +54,7 @@ async function updateRole(
   id: number,
   data: Omit<SystemRoleApi.SystemRole, 'createTime' | 'id'>,
 ) {
-  return requestClient.patch(`/role/${id}`, data);
+  return requestClient.patch(`/admin/role/${id}`, data);
 }
 
 /**
@@ -52,25 +62,7 @@ async function updateRole(
  * @param id 角色 ID
  */
 async function deleteRole(id: number) {
-  return requestClient.delete(`/role/${id}`);
+  return requestClient.delete(`/admin/role/${id}`);
 }
 
-/**
- * 分配角色给用户
- * @param id 角色 ID
- * @param userIds 用户 ID 列表
- */
-async function assignRoles(id: number, userIds: number[]) {
-  return requestClient.patch(`/role/users/add/${id}`, { userIds });
-}
-
-/**
- * 取消分配角色
- * @param id 角色 ID
- * @param userIds 用户 ID 列表
- */
-async function removeRoles(id: number, userIds: number[]) {
-  return requestClient.patch(`/role/users/remove/${id}`, { userIds });
-}
-
-export { assignRoles, createRole, deleteRole, getRoleList, removeRoles, updateRole };
+export { createRole, deleteRole, getAllRoles, getRoleList, updateRole };

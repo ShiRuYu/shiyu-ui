@@ -2,12 +2,12 @@ import { requestClient } from '#/api/request';
 
 /** 获取前置知识点列表 */
 export function getKnowledgePrerequisitesListApi(knowledgeId: number) {
-  return requestClient.get<any[]>(`/api/v1/knowledge/${knowledgeId}/prerequisites-list`);
+  return requestClient.get<any[]>(`/api/knowledge/${knowledgeId}/prerequisites-list`);
 }
 
 /** 获取后续知识点列表 */
 export function getKnowledgeSubsequentListApi(knowledgeId: number) {
-  return requestClient.get<any[]>(`/api/v1/knowledge/${knowledgeId}/subsequent-list`);
+  return requestClient.get<any[]>(`/api/knowledge/${knowledgeId}/subsequent-list`);
 }
 
 /** 添加知识关系 */
@@ -17,14 +17,17 @@ export function addKnowledgeRelationApi(data: {
   type: string;
   weight?: number;
 }) {
-  return requestClient.post('/api/v1/knowledge/relation', null, {
-    params: { sourceId: data.sourceId, targetId: data.targetId, type: data.type, weight: data.weight ?? 1.0 },
+  return requestClient.post('/api/knowledge/relation', {
+    sourceId: data.sourceId,
+    targetId: data.targetId,
+    type: data.type,
+    weight: data.weight ?? 1.0,
   });
 }
 
 /** 删除知识关系 */
 export function deleteKnowledgeRelationApi(sourceId: number, targetId: number, type: string) {
-  return requestClient.delete('/api/v1/knowledge/relation', {
+  return requestClient.delete('/api/knowledge/relation', {
     params: { sourceId, targetId, type },
   });
 }

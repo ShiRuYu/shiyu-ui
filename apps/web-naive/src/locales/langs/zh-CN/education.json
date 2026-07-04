@@ -71,6 +71,10 @@
     "durationMin": "时长(分钟)",
     "totalScore": "总分",
     "takeExam": "开始考试",
+    "submit": "交卷",
+    "submitFailed": "交卷失败",
+    "submitSuccess": "交卷成功",
+    "noQuestions": "暂无试题",
     "submitExam": "交卷",
     "aiGenerate": "AI组卷",
     "typeDailyQuiz": "课堂小测",
@@ -93,7 +97,9 @@
     "statusCompleted": "已完成",
     "statusFailed": "未通过",
     "statusOverdue": "已过期",
-    "round": "第{round}轮"
+    "round": "第{round}轮",
+    "complete": "完成复习",
+    "noTasks": "今日没有复习任务"
   },
   "plan": {
     "title": "学习计划",
@@ -136,9 +142,21 @@
     "title": "学生管理",
     "list": "学生列表",
     "name": "学生",
+    "className": "班级",
+    "grade": "年级",
+    "gradeLevel": "学段",
+    "studentNo": "学号",
     "school": "学校",
     "studyDays": "学习天数",
     "masteredKnowledge": "已掌握知识点",
     "accuracy": "准确率"
+  },
+  "question": {
+    "inputAnswer": "请输入答案"
+  },
+  "user": {
+    "confirmResetPassword": "确定要重置用户\"{0}\"的密码吗？",
+    "passwordPlaceholder": "留空则由系统生成随机密码",
+    "resetPassword": "重置密码"
   }
 }

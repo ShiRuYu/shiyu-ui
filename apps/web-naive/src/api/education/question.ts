@@ -21,41 +21,41 @@ export namespace EducationQuestionApi {
 
 async function getQuestionById(id: number) {
   return requestClient.get<EducationQuestionApi.Question>(
-    `/api/v1/question/${id}`,
+    `/api/question/${id}`,
   );
 }
 
 async function getQuestionBySubjectGrade(subjectCode: string, grade: number) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/v1/question/subject/${subjectCode}/grade/${grade}`,
+    `/api/question/subject/${subjectCode}/grade/${grade}`,
   );
 }
 
 async function getQuestionByDifficulty(difficulty: number) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/v1/question/difficulty/${difficulty}`,
+    `/api/question/difficulty/${difficulty}`,
   );
 }
 
 async function getQuestionByType(type: string) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/v1/question/type/${type}`,
+    `/api/question/type/${type}`,
   );
 }
 
 async function createQuestion(data: Omit<EducationQuestionApi.Question, 'id'>) {
-  return requestClient.post('/api/v1/question', data);
+  return requestClient.post('/api/question', data);
 }
 
 async function updateQuestion(
   id: number,
   data: Partial<EducationQuestionApi.Question>,
 ) {
-  return requestClient.put(`/api/v1/question/${id}`, data);
+  return requestClient.put(`/api/question/${id}`, data);
 }
 
 async function deleteQuestion(id: number) {
-  return requestClient.delete(`/api/v1/question/${id}`);
+  return requestClient.delete(`/api/question/${id}`);
 }
 
 export {

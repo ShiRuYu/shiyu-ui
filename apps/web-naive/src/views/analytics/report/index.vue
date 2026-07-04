@@ -5,6 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NSelect, NSpace } from 'naive-ui';
 
+import { generateReport } from '#/api/agent/education';
 import { $t } from '#/locales';
 
 const period = ref('WEEKLY');
@@ -16,11 +17,14 @@ const periodOptions = [
   { label: $t('analytics.periodMonthly'), value: 'MONTHLY' },
 ];
 
-async function generateReport() {
+async function handleGenerate() {
   loading.value = true;
   try {
-    // TODO: Call ReportAgent API
-    reportContent.value = '# 学习报告\n\n报告内容占位...';
+    const res: any = await generateReport({ studentId: 1, period: period.value });
+    reportContent.value = typeof res === 'string' ? res : JSON.stringify(res, null, 2);
+  } catch (error) {
+    console.error('Failed to generate report:', error);
+    reportContent.value = $t('analytics.reportError');
   } finally {
     loading.value = false;
   }
@@ -36,7 +40,7 @@ async function generateReport() {
           :options="periodOptions"
           style="width: 150px"
         />
-        <NButton type="primary" :loading="loading" @click="generateReport">
+        <NButton type="primary" :loading="loading" @click="handleGenerate">
           {{ $t('analytics.generateReport') }}
         </NButton>
       </NSpace>
@@ -45,7 +49,7 @@ async function generateReport() {
         <pre class="whitespace-pre-wrap">{{ reportContent }}</pre>
       </div>
       <div v-else class="py-20 text-center text-gray-400">
-        点击"生成报告"按钮生成学习报告
+        {{ $t('analytics.clickToGenerate') }}
       </div>
     </NCard>
   </Page>

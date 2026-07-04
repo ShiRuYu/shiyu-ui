@@ -94,7 +94,9 @@
     "remark": "备注",
     "createTime": "创建时间",
     "operation": "操作",
-    "resetPassword": "重置密码"
+    "resetPassword": "重置密码",
+    "confirmResetPassword": "确定要重置用户\"{0}\"的密码吗？",
+    "passwordPlaceholder": "留空则由系统生成随机密码"
   },
   "dict": {
     "title": "字典管理",

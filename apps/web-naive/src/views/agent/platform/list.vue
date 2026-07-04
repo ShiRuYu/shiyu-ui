@@ -37,7 +37,7 @@ function onCreate() {
 }
 
 function onDelete(row: PlatformApi.PlatformItem) {
-  const hideLoading = message.loading('正在删除...', { duration: 0 });
+  const hideLoading = message.loading($t('agent.platformDeleting'), { duration: 0 });
   deletePlatform(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
@@ -61,7 +61,7 @@ async function onReload() {
 async function onSetDefault(row: PlatformApi.PlatformItem) {
   try {
     await setDefaultPlatform(row.id);
-    message.success(`已设为默认平台: ${row.name}`);
+    message.success($t('agent.platformSetDefault', { name: row.name }));
     refreshGrid();
   } catch {
     // handled by request interceptor

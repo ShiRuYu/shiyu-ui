@@ -13,34 +13,34 @@ export namespace EducationTextbookApi {
 }
 
 async function getTextbookList() {
-  return requestClient.get<EducationTextbookApi.Textbook[]>('/api/v1/textbook');
+  return requestClient.get<EducationTextbookApi.Textbook[]>('/api/textbook');
 }
 
 async function getTextbookById(id: number) {
   return requestClient.get<EducationTextbookApi.Textbook>(
-    `/api/v1/textbook/${id}`,
+    `/api/textbook/${id}`,
   );
 }
 
 async function getTextbookBySubjectGrade(subjectCode: string, grade: number) {
   return requestClient.get<EducationTextbookApi.Textbook[]>(
-    `/api/v1/textbook/subject/${subjectCode}/grade/${grade}`,
+    `/api/textbook/subject/${subjectCode}/grade/${grade}`,
   );
 }
 
 async function createTextbook(data: Omit<EducationTextbookApi.Textbook, 'id'>) {
-  return requestClient.post('/api/v1/textbook', data);
+  return requestClient.post('/api/textbook', data);
 }
 
 async function updateTextbook(
   id: number,
   data: Partial<EducationTextbookApi.Textbook>,
 ) {
-  return requestClient.put(`/api/v1/textbook/${id}`, data);
+  return requestClient.put(`/api/textbook/${id}`, data);
 }
 
 async function deleteTextbook(id: number) {
-  return requestClient.delete(`/api/v1/textbook/${id}`);
+  return requestClient.delete(`/api/textbook/${id}`);
 }
 
 export {

@@ -10,9 +10,9 @@ import { Plus } from '@vben/icons';
 
 import { NButton } from 'naive-ui';
 
-import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteTenant, getTenantList } from '#/api/system/tenant';
+import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -31,20 +31,9 @@ function onCreate() {
   formModalApi.setData(null).open();
 }
 
-function onDelete(row: SystemTenantApi.SystemTenant) {
-  const hideLoading = message.loading('正在删除...', {
-    duration: 0,
-  });
-  deleteTenant(row.id)
-    .then(() => {
-      message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
-      refreshGrid();
-      hideLoading.destroy();
-    })
-    .catch(() => {
-      hideLoading.destroy();
-    });
-}
+const onDelete = useDeleteConfirm(deleteTenant, {
+  onSuccess: refreshGrid,
+});
 
 function onActionClick({
   code,

@@ -11,6 +11,6 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     loginExpiredMode: 'page',
     accessMode: 'mixed',
-    enableRefreshToken: false,
+    enableRefreshToken: true,
   },
 });

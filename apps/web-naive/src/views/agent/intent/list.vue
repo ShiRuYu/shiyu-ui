@@ -3,6 +3,7 @@ import type { IntentDefApi } from '#/api/agent/intent-def';
 
 import { useVbenModal } from '@vben/common-ui';
 import { Page } from '@vben/common-ui';
+import { $t } from '#/locales';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { message } from '#/adapter/naive';
 import { deleteIntentDef, getIntentDefPage } from '#/api/agent/intent-def';
@@ -29,10 +30,10 @@ function onCreate() {
 }
 
 async function onDelete(row: IntentDefApi.IntentDefVO) {
-  const hide = message.loading('正在删除...', { duration: 0 });
+  const hide = message.loading($t('agent.adminListDeleting'), { duration: 0 });
   try {
     await deleteIntentDef(row.id);
-    message.success('删除成功');
+    message.success($t('agent.intentListDeleteSuccess'));
     refreshGrid();
   } finally {
     hide.destroy();
@@ -88,11 +89,11 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid table-title="意图定义管理">
+    <Grid :table-title="$t('agent.intentListTitle')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          新增意图
+          {{ $t('agent.intentListCreate') }}
         </NButton>
       </template>
     </Grid>

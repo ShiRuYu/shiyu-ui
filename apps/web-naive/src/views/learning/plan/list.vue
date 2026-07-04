@@ -4,21 +4,49 @@ import type { EducationPlanApi } from '#/api/education/plan';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
 
-import { NCard, NGi, NGrid, NProgress, NTag } from 'naive-ui';
+import {
+  NButton,
+  NCard,
+  NGi,
+  NGrid,
+  NPopconfirm,
+  NProgress,
+  NSpin,
+  NTag,
+  NTimeline,
+  NTimelineItem,
+} from 'naive-ui';
 
-import { getPlansByStudent } from '#/api';
+import { message } from '#/adapter/naive';
+import {
+  deletePlan,
+  getPlansByStudent,
+  getTodayTasks,
+} from '#/api/education/plan';
 import { $t } from '#/locales';
+
+import { getStatusType } from './data';
+import Form from './modules/form.vue';
 
 const router = useRouter();
 const loading = ref(false);
 const plans = ref<EducationPlanApi.StudyPlan[]>([]);
+const todayTasks = ref<EducationPlanApi.DailyTask[]>([]);
+const tasksLoading = ref(false);
+const currentStudentId = 1;
+
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
+  destroyOnClose: true,
+});
 
 async function loadPlans() {
   loading.value = true;
   try {
-    plans.value = await getPlansByStudent(1);
+    plans.value = await getPlansByStudent(currentStudentId);
   } catch (error) {
     console.error('Failed to load plans:', error);
   } finally {
@@ -26,33 +54,90 @@ async function loadPlans() {
   }
 }
 
+async function loadTodayTasks() {
+  tasksLoading.value = true;
+  try {
+    todayTasks.value = await getTodayTasks(currentStudentId);
+  } catch (error) {
+    console.error('Failed to load tasks:', error);
+  } finally {
+    tasksLoading.value = false;
+  }
+}
+
 function goToPlan(plan: EducationPlanApi.StudyPlan) {
   router.push({ path: `/learning/plan/${plan.id}` });
 }
 
-function getStatusType(status: string) {
-  switch (status) {
-    case 'ACTIVE':
-      return 'success';
-    case 'COMPLETED':
-      return 'info';
-    case 'PAUSED':
-      return 'warning';
-    default:
-      return 'default';
+function onEdit(plan: EducationPlanApi.StudyPlan) {
+  formModalApi.setData(plan).open();
+}
+
+function onCreate() {
+  formModalApi.setData({}).open();
+}
+
+async function onDelete(plan: EducationPlanApi.StudyPlan) {
+  const h = message.loading($t('common.deleting'), { duration: 0 });
+  try {
+    await deletePlan(plan.id);
+    message.success($t('ui.actionMessage.deleteSuccess', [plan.name]));
+    loadPlans();
+  } finally {
+    h.destroy();
   }
+}
+
+function refresh() {
+  loadPlans();
+  loadTodayTasks();
 }
 
 onMounted(() => {
   loadPlans();
+  loadTodayTasks();
 });
 </script>
 
 <template>
   <Page :title="$t('page.learning.plan')">
+    <FormModal @success="refresh" />
+
+    <template #extra>
+      <NButton type="primary" @click="onCreate">
+        <Plus class="size-5" />
+        {{ $t('ui.actionTitle.create', [$t('education.plan.name')]) }}
+      </NButton>
+    </template>
+
+    <NCard
+      class="mb-4"
+      :title="$t('education.plan.todayTasks')"
+      :bordered="true"
+    >
+      <NSpin :show="tasksLoading">
+        <NTimeline v-if="todayTasks.length">
+          <NTimelineItem
+            v-for="task in todayTasks"
+            :key="task.id"
+            :type="task.status === 'COMPLETED' ? 'success' : 'info'"
+            :title="task.knowledgeName"
+            :content="task.planDate"
+          />
+        </NTimeline>
+        <div v-else class="py-8 text-center text-gray-400">
+          {{ $t('common.noData') }}
+        </div>
+      </NSpin>
+    </NCard>
+
     <NGrid :cols="3" :x-gap="16" :y-gap="16" responsive="screen">
       <NGi v-for="plan in plans" :key="plan.id">
-        <NCard hoverable class="cursor-pointer" @click="goToPlan(plan)">
+        <NCard
+          hoverable
+          class="cursor-pointer"
+          @click="goToPlan(plan)"
+        >
           <template #header>
             <span class="text-base font-medium">{{ plan.name }}</span>
           </template>
@@ -86,6 +171,22 @@ onMounted(() => {
               />
             </div>
           </div>
+
+          <template #footer>
+            <div class="flex justify-end gap-2">
+              <NButton size="small" @click.stop="onEdit(plan)">
+                {{ $t('common.edit') }}
+              </NButton>
+              <NPopconfirm @positive-click.stop="onDelete(plan)">
+                <template #trigger>
+                  <NButton size="small" type="error">
+                    {{ $t('common.delete') }}
+                  </NButton>
+                </template>
+                {{ $t('ui.actionMessage.confirmDelete', [plan.name]) }}
+              </NPopconfirm>
+            </div>
+          </template>
         </NCard>
       </NGi>
     </NGrid>

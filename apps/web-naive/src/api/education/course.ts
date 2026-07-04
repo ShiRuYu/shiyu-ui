@@ -17,44 +17,44 @@ export namespace EducationCourseApi {
 }
 
 async function getCourseList() {
-  return requestClient.get<EducationCourseApi.Course[]>('/api/v1/course');
+  return requestClient.get<EducationCourseApi.Course[]>('/api/course');
 }
 
 async function getCourseById(id: number) {
-  return requestClient.get<EducationCourseApi.Course>(`/api/v1/course/${id}`);
+  return requestClient.get<EducationCourseApi.Course>(`/api/course/${id}`);
 }
 
 async function getCourseBySubject(subjectCode: string) {
   return requestClient.get<EducationCourseApi.Course[]>(
-    `/api/v1/course/subject/${subjectCode}`,
+    `/api/course/subject/${subjectCode}`,
   );
 }
 
 async function getCourseByGrade(grade: number) {
   return requestClient.get<EducationCourseApi.Course[]>(
-    `/api/v1/course/grade/${grade}`,
+    `/api/course/grade/${grade}`,
   );
 }
 
 async function createCourse(data: Omit<EducationCourseApi.Course, 'id'>) {
-  return requestClient.post('/api/v1/course', data);
+  return requestClient.post('/api/course', data);
 }
 
 async function updateCourse(
   id: number,
   data: Partial<EducationCourseApi.Course>,
 ) {
-  return requestClient.put(`/api/v1/course/${id}`, data);
+  return requestClient.put(`/api/course/${id}`, data);
 }
 
 async function startLearning(courseId: number, studentId: number) {
-  return requestClient.post(`/api/v1/course/${courseId}/learn`, null, {
+  return requestClient.post(`/api/course/${courseId}/learn`, null, {
     params: { studentId },
   });
 }
 
 async function deleteCourse(id: number) {
-  return requestClient.delete(`/api/v1/course/${id}`);
+  return requestClient.delete(`/api/course/${id}`);
 }
 
 export {

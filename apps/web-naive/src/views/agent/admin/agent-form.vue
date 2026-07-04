@@ -7,6 +7,7 @@ import { useVbenModal } from '@vben/common-ui';
 
 import { NButton } from 'naive-ui';
 
+import { $t } from '#/locales';
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { createAgent, updateAgent } from '#/api/agent/admin';
@@ -17,7 +18,7 @@ const emit = defineEmits(['success']);
 const formData = ref<AgentAdminApi.AgentVO>();
 
 const getTitle = computed(() => {
-  return formData.value?.id ? '编辑 Agent' : '新增 Agent';
+  return formData.value?.id ? $t('agent.adminFormEdit') : $t('agent.adminFormCreate');
 });
 
 const [Form, formApi] = useVbenForm({
@@ -46,7 +47,7 @@ const [Modal, modalApi] = useVbenModal({
         await (formData.value?.id
           ? updateAgent(formData.value.id, submitData)
           : createAgent(submitData));
-        message.success('操作成功');
+        message.success($t('agent.adminFormSuccess'));
         modalApi.close();
         emit('success');
       } catch (error) {
@@ -75,7 +76,7 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="resetForm"> 重置 </NButton>
+        <NButton type="error" @click="resetForm"> {{ $t('agent.adminFormReset') }} </NButton>
       </div>
     </template>
   </Modal>

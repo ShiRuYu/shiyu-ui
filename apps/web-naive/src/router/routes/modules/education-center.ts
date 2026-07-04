@@ -56,26 +56,6 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.educationCenter.review'),
         },
       },
-      // ===== 数据 =====
-      {
-        name: 'EduData',
-        path: '/education-center/data',
-        component: () => import('#/views/education-center/data/index.vue'),
-        meta: {
-          icon: 'lucide:bar-chart-3',
-          title: $t('page.educationCenter.data'),
-        },
-      },
-      // ===== AI助手 =====
-      {
-        name: 'EduAi',
-        path: '/education-center/ai',
-        component: () => import('#/views/education-center/ai/index.vue'),
-        meta: {
-          icon: 'lucide:bot',
-          title: $t('page.educationCenter.ai'),
-        },
-      },
       // ===== 管理 =====
       {
         name: 'EduAdmin',

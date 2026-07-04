@@ -38,7 +38,7 @@ function onCreate() {
 }
 
 function onDelete(row: ModelApi.ModelItem) {
-  const hideLoading = message.loading('正在删除...', { duration: 0 });
+  const hideLoading = message.loading($t('agent.modelDeleting'), { duration: 0 });
   deleteModel(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.modelName]));
@@ -57,7 +57,7 @@ function onChat(row: ModelApi.ModelItem) {
 async function onSetDefault(row: ModelApi.ModelItem) {
   try {
     await setDefaultModel(row.id);
-    message.success(`已设为默认模型: ${row.modelName}`);
+    message.success($t('agent.modelSetDefault', { name: row.modelName }));
     refreshGrid();
   } catch {
     // handled by request interceptor

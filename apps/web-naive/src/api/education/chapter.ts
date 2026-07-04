@@ -14,37 +14,37 @@ export namespace EducationChapterApi {
 
 async function getChapterById(id: number) {
   return requestClient.get<EducationChapterApi.Chapter>(
-    `/api/v1/chapter/${id}`,
+    `/api/chapter/${id}`,
   );
 }
 
 async function getChaptersByTextbook(textbookId: number) {
   return requestClient.get<EducationChapterApi.Chapter[]>(
-    `/api/v1/chapter/textbook/${textbookId}`,
+    `/api/chapter/textbook/${textbookId}`,
   );
 }
 
 async function getChapterTree(textbookId: number) {
   return requestClient.get<EducationChapterApi.Chapter[]>(
-    `/api/v1/chapter/textbook/${textbookId}/tree`,
+    `/api/chapter/textbook/${textbookId}/tree`,
   );
 }
 
 async function createChapter(
   data: Omit<EducationChapterApi.Chapter, 'children' | 'id'>,
 ) {
-  return requestClient.post('/api/v1/chapter', data);
+  return requestClient.post('/api/chapter', data);
 }
 
 async function updateChapter(
   id: number,
   data: Partial<EducationChapterApi.Chapter>,
 ) {
-  return requestClient.put(`/api/v1/chapter/${id}`, data);
+  return requestClient.put(`/api/chapter/${id}`, data);
 }
 
 async function deleteChapter(id: number) {
-  return requestClient.delete(`/api/v1/chapter/${id}`);
+  return requestClient.delete(`/api/chapter/${id}`);
 }
 
 export {

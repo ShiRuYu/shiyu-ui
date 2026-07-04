@@ -37,10 +37,4 @@ async function getNodeTypes() {
   );
 }
 
-async function getNodeType(nodeType: string) {
-  return requestClient.get<NodeTypeApi.NodeTypeMetaVO>(
-    `/admin/agent/node-types/${nodeType}`,
-  );
-}
-
-export { getNodeType, getNodeTypes };
+export { getNodeTypes };

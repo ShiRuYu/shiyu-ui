@@ -30,48 +30,31 @@ async function getModelPage(params?: Recordable<any>) {
     query.platformId = platformId;
   }
   return requestClient.get<ModelApi.PageResult<ModelApi.ModelItem>>(
-    '/ai/model/page',
+    '/admin/model/page',
     { params: query },
   );
 }
 
-async function getModelsByPlatform(platformId: number) {
-  return requestClient.get<ModelApi.ModelItem[]>(
-    `/ai/model/platform/${platformId}`,
-  );
-}
-
-async function getModelById(id: number) {
-  return requestClient.get<ModelApi.ModelItem>(`/ai/model/${id}`);
-}
-
 async function createModel(data: Omit<ModelApi.ModelItem, 'id'>) {
-  return requestClient.post('/ai/model', data);
+  return requestClient.post('/admin/model', data);
 }
 
 async function updateModel(id: number, data: Partial<ModelApi.ModelItem>) {
-  return requestClient.patch(`/ai/model/${id}`, data);
+  return requestClient.patch(`/admin/model/${id}`, data);
 }
 
 async function deleteModel(id: number) {
-  return requestClient.delete(`/ai/model/${id}`);
-}
-
-async function batchDeleteModels(ids: number[]) {
-  return requestClient.delete('/ai/model/batch', { data: ids });
+  return requestClient.delete(`/admin/model/${id}`);
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.put(`/ai/model/${id}/default`);
+  return requestClient.put(`/admin/model/${id}/default`);
 }
 
 export {
-  batchDeleteModels,
   createModel,
   deleteModel,
-  getModelById,
   getModelPage,
-  getModelsByPlatform,
   setDefaultModel,
   updateModel,
 };

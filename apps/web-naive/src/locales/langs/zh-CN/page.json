@@ -24,7 +24,10 @@
     "course": "课程学习",
     "knowledge": "知识浏览",
     "plan": "学习计划",
-    "resource": "学习资源"
+    "resource": "学习资源",
+    "courseDetail": "课程详情",
+    "knowledgeDetail": "知识点详情",
+    "planDetail": "计划详情"
   },
   "practice": {
     "title": "练习中心",
@@ -64,7 +67,8 @@
     "list": "知识点管理",
     "graph": "知识图谱",
     "document": "文档管理",
-    "index": "索引管理"
+    "index": "索引管理",
+    "relation": "知识关系"
   },
   "eduAdmin": {
     "title": "教育管理",

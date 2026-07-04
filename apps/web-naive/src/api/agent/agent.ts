@@ -39,31 +39,10 @@ export namespace AgentApi {
 }
 
 /**
- * 注册 Agent
+ * 删除 Agent 定义
  */
-async function registerAgent(data: AgentApi.RegisterAgentRequest) {
-  return requestClient.post<{ agentId: string }>('/api/agent/register', data);
-}
-
-/**
- * 获取 Agent 列表
- */
-async function getAgentList() {
-  return requestClient.get<AgentApi.AgentDefinition[]>('/api/agent/list');
-}
-
-/**
- * 获取 Agent 定义
- */
-async function getAgent(agentId: string) {
-  return requestClient.get<AgentApi.AgentDefinition>(`/api/agent/${agentId}`);
-}
-
-/**
- * 删除 Agent
- */
-async function deleteAgent(agentId: string) {
-  return requestClient.post(`/api/agent/${agentId}`);
+async function deleteAgentDefinition(agentId: string) {
+  return requestClient.delete(`/api/agent/${agentId}`);
 }
 
 /**
@@ -112,21 +91,8 @@ async function executeAgentStream(
   }
 }
 
-/**
- * 切换 Agent 版本
- */
-async function switchAgentVersion(agentId: string, version: string) {
-  return requestClient.post(`/api/agent/${agentId}/version/switch`, null, {
-    params: { version },
-  });
-}
-
 export {
-  deleteAgent,
+  deleteAgentDefinition,
   executeAgent,
   executeAgentStream,
-  getAgent,
-  getAgentList,
-  registerAgent,
-  switchAgentVersion,
 };

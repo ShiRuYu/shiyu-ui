@@ -8,6 +8,7 @@ import {
   NButton,
   NCard,
   NCountdown,
+  NInput,
   NRadio,
   NRadioGroup,
   NSpace,
@@ -15,21 +16,30 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { getExamById, submitExam } from '#/api';
+import { message } from '#/adapter/naive';
+import { getExamById, submitExam } from '#/api/education/exam';
 import { $t } from '#/locales';
 
 const route = useRoute();
 const router = useRouter();
 const exam = ref<any>(null);
+const questions = ref<any[]>([]);
 const answers = ref<Record<number, string>>({});
 const loading = ref(false);
+const submitting = ref(false);
 
 async function loadExam() {
   const id = Number(route.params.id);
   if (!id) return;
   loading.value = true;
   try {
-    exam.value = await getExamById(id);
+    const data = await getExamById(id);
+    exam.value = data;
+    if (data?.questions?.length) {
+      questions.value = data.questions;
+    } else if (data?.sections?.length) {
+      questions.value = data.sections.flatMap((s: any) => s.questions || []);
+    }
   } catch (error) {
     console.error('Failed to load exam:', error);
   } finally {
@@ -41,12 +51,19 @@ function setAnswer(questionId: number, answer: string) {
   answers.value[questionId] = answer;
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   if (!exam.value) return;
-  const data = { studentId: 1, answer: JSON.stringify(answers.value) };
-  submitExam(exam.value.id, data).then(() => {
+  submitting.value = true;
+  try {
+    await submitExam(exam.value.id, { studentId: 1, answer: JSON.stringify(answers.value) });
+    message.success($t('education.exam.submitSuccess'));
     router.push({ path: `/exam/result/${exam.value.id}` });
-  });
+  } catch (error) {
+    console.error('Failed to submit exam:', error);
+    message.error($t('education.exam.submitFailed'));
+  } finally {
+    submitting.value = false;
+  }
 }
 
 onMounted(() => loadExam());
@@ -61,8 +78,12 @@ onMounted(() => loadExam());
           :duration="exam.durationMin * 60 * 1000"
           :active="true"
         />
-        <NButton @click="router.back()">退出</NButton>
-        <NButton type="primary" @click="handleSubmit">交卷</NButton>
+        <NButton @click="router.back()">
+          {{ $t('common.back') }}
+        </NButton>
+        <NButton type="primary" :loading="submitting" @click="handleSubmit">
+          {{ $t('education.exam.submit') }}
+        </NButton>
       </NSpace>
     </template>
 
@@ -72,33 +93,54 @@ onMounted(() => loadExam());
           <NSpace>
             <NTag type="info">{{ exam.subjectCode }}</NTag>
             <NTag>
-              {{ $t('education.exam.totalScore') }}:
-              {{ exam.totalScore }}
+              {{ $t('education.exam.totalScore') }}: {{ exam.totalScore }}
             </NTag>
             <NTag>
-              {{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}分钟
+              {{ $t('education.exam.durationMin') }}: {{ exam.durationMin }}{{ $t('common.minute') }}
             </NTag>
           </NSpace>
         </NCard>
 
-        <!-- Question list - for demo purposes showing mock questions -->
-        <NCard v-for="i in 5" :key="i" :title="`第 ${i} 题`">
-          <p class="mb-4">题目占位内容</p>
-          <NRadioGroup
-            :value="answers[i]"
-            @update:value="(v: string) => setAnswer(i, v)"
+        <div v-if="questions.length" class="space-y-4">
+          <NCard
+            v-for="(q, idx) in questions"
+            :key="q.id"
+            :title="`${idx + 1}. ${q.title || q.name || ''}`"
           >
-            <NSpace vertical>
-              <NRadio
-                v-for="opt in ['A', 'B', 'C', 'D']"
-                :key="opt"
-                :value="opt"
-              >
-                {{ opt }}. 选项内容...
-              </NRadio>
-            </NSpace>
-          </NRadioGroup>
-        </NCard>
+            <template #header-extra>
+              <NTag size="small">
+                {{ q.type === 'CHOICE' ? $t('education.question.typeChoice') : q.type === 'JUDGE' ? $t('education.question.typeJudge') : q.type === 'FILL' ? $t('education.question.typeFill') : $t('education.question.typeSolve') }}
+              </NTag>
+            </template>
+
+            <NRadioGroup
+              v-if="q.type === 'CHOICE' || q.type === 'JUDGE'"
+              :value="answers[q.id]"
+              @update:value="(v: string) => setAnswer(q.id, v)"
+            >
+              <NSpace vertical>
+                <NRadio
+                  v-for="opt in (q.options || [])"
+                  :key="opt.value || opt"
+                  :value="opt.value || opt"
+                >
+                  {{ opt.label || opt.value || opt }}
+                </NRadio>
+              </NSpace>
+            </NRadioGroup>
+
+            <NInput
+              v-else
+              :value="answers[q.id] || ''"
+              :placeholder="$t('education.question.inputAnswer')"
+              type="textarea"
+              :rows="3"
+              @update:value="(v: string) => setAnswer(q.id, v)"
+            />
+          </NCard>
+        </div>
+
+        <NEmpty v-else :description="$t('education.exam.noQuestions')" />
       </div>
     </NSpin>
   </Page>

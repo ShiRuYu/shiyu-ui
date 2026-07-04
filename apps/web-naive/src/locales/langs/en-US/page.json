@@ -1,32 +1,8 @@
 {
-  "auth": {
-    "login": "Login",
-    "register": "Register",
-    "codeLogin": "Code Login",
-    "qrcodeLogin": "Qr Code Login",
-    "forgetPassword": "Forget Password",
-    "profile": "Profile"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "analytics": "Analytics",
-    "workspace": "Workspace"
-  },
-  "system": {
-    "title": "System Management",
-    "user": "User Management",
-    "role": "Role Management",
-    "menu": "Menu Management",
-    "workspace": "Workspace Management"
-  },
-  "educationCenter": {
-    "title": "Education Center",
-    "learning": "Learning",
-    "practice": "Practice",
-    "exam": "Exam",
-    "review": "Review",
-    "data": "Data",
-    "ai": "AI Assistant",
-    "admin": "Admin"
+  "title": "Page Management",
+  "learning": {
+    "courseDetail": "Course Detail",
+    "knowledgeDetail": "Knowledge Detail",
+    "planDetail": "Plan Detail"
   }
 }

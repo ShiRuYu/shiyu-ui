@@ -1,0 +1,29 @@
+{
+  "actionMessage": {
+    "confirmDelete": "Are you sure you want to delete the selected record?",
+    "createSuccess": "Created successfully",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "deleteSuccess": "Deleted successfully: {0}",
+    "editSuccess": "Updated successfully",
+    "operationSuccess": "Operation successful"
+  },
+  "actionTitle": {
+    "create": "Create {0}",
+    "edit": "Edit {0}"
+  },
+  "formRules": {
+    "email": "Please enter a valid email address",
+    "maxLength": "Maximum {0} characters",
+    "minLength": "Minimum {0} characters",
+    "phone": "Please enter a valid phone number",
+    "required": "Please enter {0}",
+    "selectRequired": "Please select {0}"
+  },
+  "placeholder": {
+    "select": "Please select"
+  },
+  "widgets": {
+    "document": "Document",
+    "qa": "Q&A"
+  }
+}

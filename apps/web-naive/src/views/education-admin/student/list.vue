@@ -1,23 +1,68 @@
 <script lang="ts" setup>
-import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
+import type { EducationStudentApi } from '#/api/education/student';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
 
+import { NButton } from 'naive-ui';
+
+import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { deleteStudent, getStudentList } from '#/api/education/student';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
+import Form from './modules/form.vue';
 
-const [Grid] = useVbenVxeGrid({
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
+  destroyOnClose: true,
+});
+function onEdit(row: EducationStudentApi.Student) {
+  formModalApi.setData(row).open();
+}
+function onCreate() {
+  formModalApi.setData({}).open();
+}
+function onDelete(row: EducationStudentApi.Student) {
+  const h = message.loading($t('common.deleting'), { duration: 0 });
+  deleteStudent(row.id)
+    .then(() => {
+      message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
+      refreshGrid();
+    })
+    .finally(() => h.destroy());
+}
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<EducationStudentApi.Student>) {
+  switch (code) {
+    case 'delete':
+      onDelete(row);
+      break;
+    case 'edit':
+      onEdit(row);
+      break;
+  }
+}
+const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: { schema: useGridFormSchema(), submitOnChange: true },
   gridOptions: {
-    columns: useColumns(),
+    columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async () => ({ items: [], total: 0 }),
+        query: async () => {
+          const result = await getStudentList();
+          return { items: result, total: result.length };
+        },
       },
     },
     toolbarConfig: {
@@ -29,9 +74,20 @@ const [Grid] = useVbenVxeGrid({
     },
   } as VxeTableGridOptions,
 });
+function refreshGrid() {
+  gridApi.query();
+}
 </script>
 <template>
   <Page auto-content-height>
-    <Grid :table-title="$t('education.student.list')" />
+    <FormModal @success="refreshGrid" />
+    <Grid :table-title="$t('education.student.list')">
+      <template #toolbar-tools>
+        <NButton v-access:code="'admin:student:create'" type="primary" @click="onCreate">
+          <Plus class="size-5" />
+          {{ $t('ui.actionTitle.create', [$t('education.student.name')]) }}
+        </NButton>
+      </template>
+    </Grid>
   </Page>
 </template>

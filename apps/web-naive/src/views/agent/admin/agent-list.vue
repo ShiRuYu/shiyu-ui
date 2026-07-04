@@ -22,6 +22,7 @@ import {
   NTooltip,
 } from 'naive-ui';
 
+import { $t } from '#/locales';
 import { message } from '#/adapter/naive';
 import { deleteAgent, getAgentPage } from '#/api/agent/admin';
 import ChatModal from '../agent/modules/chat.vue';
@@ -79,10 +80,10 @@ function openChat(row: AgentAdminApi.AgentVO) {
 }
 
 async function onDelete(row: AgentAdminApi.AgentVO) {
-  const hideLoading = message.loading('正在删除...', { duration: 0 });
+  const hideLoading = message.loading($t('agent.adminListDeleting'), { duration: 0 });
   try {
     await deleteAgent(row.id);
-    message.success(`删除成功: ${row.name}`);
+    message.success($t('agent.adminListDeleteSuccess', { name: row.name }));
     await loadAgents();
   } finally {
     hideLoading.destroy();
@@ -110,23 +111,23 @@ function statusTag(s: string) {
           <NInput
             v-model:value="searchName"
             clearable
-            placeholder="搜索 Agent 名称..."
+            :placeholder="$t('agent.adminListSearchPlaceholder')"
             size="small"
             style="width: 240px"
             @keyup.enter="loadAgents"
           />
-          <NButton size="small" @click="loadAgents">搜索</NButton>
+          <NButton size="small" @click="loadAgents">{{ $t('agent.adminListSearch') }}</NButton>
           <div class="flex-1" />
           <NButton type="primary" @click="onNewAgent">
             <Plus class="size-5" />
-            新增 Agent
+            {{ $t('agent.adminListCreate') }}
           </NButton>
         </NSpace>
 
         <!-- Card List -->
         <NSpin :show="loading">
           <template v-if="agents.length === 0">
-            <NEmpty description="暂无 Agent" />
+            <NEmpty :description="$t('agent.adminListEmpty')" />
           </template>
           <NGrid v-else :cols="3" :x-gap="12" :y-gap="12">
             <NGi v-for="agent in agents" :key="agent.id">
@@ -152,14 +153,14 @@ function statusTag(s: string) {
                       :type="agent.status === '1' ? 'success' : 'error'"
                       size="tiny"
                     >
-                      {{ agent.status === '1' ? '正常' : '停用' }}
+                      {{ agent.status === '1' ? $t('agent.adminListStatusNormal') : $t('agent.adminListStatusDisabled') }}
                     </NTag>
                   </NSpace>
                 </template>
 
                 <div class="text-sm text-gray-500">
                   <div class="mb-1 truncate">
-                    <span class="font-medium">标识：</span>
+                    <span class="font-medium">{{ $t('agent.adminListIdLabel') }}</span>
                     <NTooltip :delay="300" style="max-width: 100%">
                       <template #trigger>
                         <span>{{ agent.agentId }}</span>
@@ -168,7 +169,7 @@ function statusTag(s: string) {
                     </NTooltip>
                   </div>
                   <div class="mb-1">
-                    <span class="font-medium">版本：</span
+                    <span class="font-medium">{{ $t('agent.adminListVersionLabel') }}</span
                     >{{ agent.currentVersion || '-' }}
                   </div>
                   <div v-if="agent.description" class="truncate text-xs">
@@ -183,17 +184,16 @@ function statusTag(s: string) {
 
                 <template #footer>
                   <NSpace>
-                    <NButton size="tiny" @click="onView(agent)">查看</NButton>
+                    <NButton size="tiny" @click="onView(agent)">{{ $t('agent.adminListView') }}</NButton>
                     <NButton size="tiny" type="primary" @click="onEdit(agent)"
-                      >修改</NButton
+                      >{{ $t('agent.adminListEdit') }}</NButton
                     >
-                    <NButton size="tiny" @click="openChat(agent)">对话</NButton>
+                    <NButton size="tiny" @click="openChat(agent)">{{ $t('agent.chat') }}</NButton>
                     <NPopconfirm @positive-click="onDelete(agent)">
                       <template #trigger>
-                        <NButton size="tiny" type="error">删除</NButton>
+                        <NButton size="tiny" type="error">{{ $t('agent.adminListDelete') }}</NButton>
                       </template>
-                      确认删除 <b>{{ agent.name }}</b
-                      >？
+                      {{ $t('agent.adminListConfirmDelete', { name: agent.name }) }}
                     </NPopconfirm>
                   </NSpace>
                 </template>

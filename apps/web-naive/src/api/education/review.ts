@@ -20,31 +20,31 @@ export namespace EducationReviewApi {
 
 async function getReviewById(id: number) {
   return requestClient.get<EducationReviewApi.ReviewTask>(
-    `/api/v1/review/${id}`,
+    `/api/review/${id}`,
   );
 }
 
 async function getTodayReviews(studentId: number) {
   return requestClient.get<EducationReviewApi.ReviewTask[]>(
-    `/api/v1/review/today/${studentId}`,
+    `/api/review/today/${studentId}`,
   );
 }
 
 async function getReviewsByStatus(studentId: number, status: string) {
   return requestClient.get<EducationReviewApi.ReviewTask[]>(
-    `/api/v1/review/student/${studentId}/status/${status}`,
+    `/api/review/student/${studentId}/status/${status}`,
   );
 }
 
 async function createReview(data: Omit<EducationReviewApi.ReviewTask, 'id'>) {
-  return requestClient.post('/api/v1/review', data);
+  return requestClient.post('/api/review', data);
 }
 
 async function completeReview(
   id: number,
   data: EducationReviewApi.CompleteReviewRequest,
 ) {
-  return requestClient.put(`/api/v1/review/${id}/complete`, data);
+  return requestClient.put(`/api/review/${id}/complete`, data);
 }
 
 export {

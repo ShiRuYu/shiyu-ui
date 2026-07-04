@@ -28,8 +28,14 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit(value: Recordable<any>) {
-  void value;
+async function handleSubmit(value: Recordable<any>) {
+  loading.value = true;
+  try {
+    // TODO: 对接后端忘记密码接口 POST /api/auth/forget-password
+    console.warn('忘记密码功能待对接后端接口', value);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 

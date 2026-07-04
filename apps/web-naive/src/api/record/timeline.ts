@@ -32,22 +32,6 @@ async function getTimelinePage(params: Recordable<any>) {
 }
 
 /**
- * 根据 ID 获取事件
- */
-async function getTimelineById(id: number) {
-  return requestClient.get<TimelineApi.TimelineEvent>(`/api/timeline/${id}`);
-}
-
-/**
- * 获取档案的完整时间线
- */
-async function getTimelineByProfile(profileId: number) {
-  return requestClient.get<TimelineApi.TimelineEvent[]>(
-    `/api/timeline/profile/${profileId}`,
-  );
-}
-
-/**
  * 创建时间线事件
  */
 async function createTimeline(data: Omit<TimelineApi.TimelineEvent, 'id'>) {
@@ -71,8 +55,6 @@ async function deleteTimeline(id: number) {
 export {
   createTimeline,
   deleteTimeline,
-  getTimelineById,
-  getTimelineByProfile,
   getTimelinePage,
   updateTimeline,
 };

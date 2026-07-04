@@ -79,7 +79,9 @@
     "remark": "Remark",
     "createTime": "Create Time",
     "operation": "Operation",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "confirmResetPassword": "Are you sure you want to reset password for \"{0}\"?",
+    "passwordPlaceholder": "Leave blank to generate a random password"
   },
   "dict": {
     "title": "Dictionary Management",

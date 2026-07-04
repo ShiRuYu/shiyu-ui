@@ -81,8 +81,15 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit(value: Recordable<any>) {
-  void value;
+async function handleSubmit(value: Recordable<any>) {
+  loading.value = true;
+  try {
+    // TODO: 对接后端注册接口 POST /api/auth/register
+    // const res = await requestClient.post('/api/auth/register', value);
+    console.warn('注册功能待对接后端接口', value);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 

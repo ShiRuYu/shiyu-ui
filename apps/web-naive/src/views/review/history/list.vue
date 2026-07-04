@@ -13,7 +13,12 @@ const loading = ref(false);
 const history = ref<any[]>([]);
 
 const columns: any[] = [
-  { title: '知识点ID', key: 'knowledgeId', width: 100 },
+  { title: 'ID', key: 'id', width: 80 },
+  {
+    title: $t('education.review.knowledgeName'),
+    key: 'knowledgeName',
+    width: 150,
+  },
   {
     title: $t('education.review.reviewRound'),
     key: 'reviewRound',
@@ -22,7 +27,7 @@ const columns: any[] = [
       return h(
         NTag,
         { type: 'warning', size: 'small' },
-        () => `第${row.reviewRound}轮`,
+        () => $t('education.review.round', [row.reviewRound]),
       );
     },
   },
@@ -41,7 +46,10 @@ const columns: any[] = [
       return h(
         NTag,
         { type: (color[row.status] || 'default') as any, size: 'small' },
-        () => row.status,
+        () =>
+          $t(
+            `education.review.status${row.status === 'COMPLETED' ? 'Completed' : row.status === 'PENDING' ? 'Pending' : row.status}`,
+          ),
       );
     },
   },

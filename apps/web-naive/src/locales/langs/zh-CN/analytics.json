@@ -24,5 +24,8 @@
   "period": "周期",
   "periodWeekly": "周报",
   "periodMonthly": "月报",
-  "generateReport": "生成报告"
+  "generateReport": "生成报告",
+  "clickToGenerate": "点击«生成报告»按钮生成学习报告",
+  "reportError": "报告生成失败",
+  "ability": "能力"
 }

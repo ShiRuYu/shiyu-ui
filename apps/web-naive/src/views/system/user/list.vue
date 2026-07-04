@@ -13,6 +13,7 @@ import { NButton } from 'naive-ui';
 import { dialog, message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteUser, getUserList, resetUserPassword } from '#/api/system/user';
+import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -38,24 +39,10 @@ function onCreate() {
   formModalApi.setData(null).open();
 }
 
-/**
- * 删除用户
- * @param row
- */
-function onDelete(row: SystemUserApi.SystemUser) {
-  const hideLoading = message.loading('正在删除...', {
-    duration: 0,
-  });
-  deleteUser(row.id)
-    .then(() => {
-      message.success($t('ui.actionMessage.deleteSuccess', [row.username]));
-      refreshGrid();
-      hideLoading.destroy();
-    })
-    .catch(() => {
-      hideLoading.destroy();
-    });
-}
+const onDelete = useDeleteConfirm(deleteUser, {
+  nameField: 'username',
+  onSuccess: refreshGrid,
+});
 
 /**
  * 重置密码
@@ -63,8 +50,8 @@ function onDelete(row: SystemUserApi.SystemUser) {
  */
 function onResetPassword(row: SystemUserApi.SystemUser) {
   dialog.warning({
-    title: '重置密码',
-    content: `确定要重置用户"${row.username}"的密码吗？`,
+    title: $t('education.user.resetPassword'),
+    content: $t('education.user.confirmResetPassword', [row.username]),
     positiveText: '确定',
     negativeText: '取消',
     onPositiveClick: async () => {
@@ -72,9 +59,8 @@ function onResetPassword(row: SystemUserApi.SystemUser) {
         duration: 0,
       });
       try {
-        // 这里可以调用后端接口生成随机密码或设置默认密码
-        await resetUserPassword(row.id, '123456');
-        message.success('密码已重置为：123456');
+        await resetUserPassword(row.id, '');
+        message.success($t('ui.actionMessage.operationSuccess'));
         hideLoading.destroy();
       } catch (error) {
         hideLoading.destroy();
@@ -111,6 +97,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
     submitOnChange: true,
+    collapsedRows: 1,
+    actionWrapperClass: 'flex justify-end',
   },
   gridEvents: {},
   gridOptions: {

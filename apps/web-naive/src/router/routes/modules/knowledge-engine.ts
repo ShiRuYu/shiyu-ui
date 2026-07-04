@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
         path: '/knowledge/relation',
         component: () =>
           import('#/views/knowledge-engine/knowledge-relation/index.vue'),
-        meta: { icon: 'carbon:flow', title: '知识关系' },
+        meta: { icon: 'carbon:flow', title: $t('page.knowledge.relation') },
       },
     ],
   },

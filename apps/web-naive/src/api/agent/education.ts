@@ -31,7 +31,7 @@ export namespace EducationAgentApi {
 }
 
 async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post('/api/v1/agent/teacher', data);
+  return requestClient.post('/api/agent/teacher', data);
 }
 
 async function teachStream(
@@ -41,7 +41,7 @@ async function teachStream(
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
-  const response = await fetch(`${baseURL}/api/v1/agent/teacher`, {
+  const response = await fetch(`${baseURL}/api/agent/teacher`, {
     body: JSON.stringify({ ...data, stream: true }),
     headers: {
       Accept: 'text/event-stream',
@@ -62,27 +62,27 @@ async function teachStream(
 }
 
 async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post('/api/v1/agent/practice', data);
+  return requestClient.post('/api/agent/practice', data);
 }
 
 async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post('/api/v1/agent/exam', data);
+  return requestClient.post('/api/agent/exam', data);
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/api/v1/agent/review/today');
+  return requestClient.get('/api/agent/review/today');
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post('/api/v1/agent/review/complete', data);
+  return requestClient.post('/api/agent/review/complete', data);
 }
 
 async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post('/api/v1/agent/planner', data);
+  return requestClient.post('/api/agent/planner', data);
 }
 
 async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post('/api/v1/agent/report', data);
+  return requestClient.post('/api/agent/report', data);
 }
 
 export {

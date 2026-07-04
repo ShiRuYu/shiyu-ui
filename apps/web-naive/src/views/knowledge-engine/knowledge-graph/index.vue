@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from 'vue';
 import { NCard, NSelect, NEmpty, NSpin, NSpace } from 'naive-ui';
+import { Page } from '@vben/common-ui';
 import { getKnowledgeGraphApi, getKnowledgeListApi } from '#/api/knowledge';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);

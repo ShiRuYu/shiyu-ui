@@ -29,30 +29,23 @@ export namespace DictApi {
  */
 async function getDictPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>('/dict/page', {
+  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>('/admin/dict/page', {
     params: { pageNo: page, pageSize, ...rest },
   });
-}
-
-/**
- * 根据 ID 获取字典
- */
-async function getDictById(id: number) {
-  return requestClient.get<DictApi.DictItem>(`/dict/${id}`);
 }
 
 /**
  * 根据字典类型获取字典列表
  */
 async function getDictByType(dictType: string) {
-  return requestClient.get<DictApi.DictItem[]>(`/dict/type/${dictType}`);
+  return requestClient.get<DictApi.DictItem[]>(`/admin/dict/type/${dictType}`);
 }
 
 /**
  * 创建字典
  */
 async function createDict(data: Omit<DictApi.DictItem, 'id'>) {
-  return requestClient.post('/dict', data);
+  return requestClient.post('/admin/dict', data);
 }
 
 /**
@@ -73,14 +66,14 @@ async function deleteDict(id: number) {
  * 批量删除字典
  */
 async function batchDeleteDict(ids: number[]) {
-  return requestClient.delete('/dict/batch', { data: ids });
+  return requestClient.delete('/admin/dict/batch', { data: ids });
 }
 
 export {
   batchDeleteDict,
   createDict,
   deleteDict,
-  getDictById,
+  // getDictById,
   getDictByType,
   getDictPage,
   updateDict,

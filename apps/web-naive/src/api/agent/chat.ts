@@ -23,7 +23,7 @@ export namespace ChatApi {
 }
 
 async function getModelOptions(platformId?: number) {
-  return requestClient.get<ChatApi.OptionItem[]>('/ai/model/options', {
+  return requestClient.get<ChatApi.OptionItem[]>('/admin/model/options', {
     params: platformId ? { platformId } : {},
   });
 }

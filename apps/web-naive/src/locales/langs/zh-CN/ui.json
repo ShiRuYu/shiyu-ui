@@ -1,0 +1,29 @@
+{
+  "actionMessage": {
+    "confirmDelete": "确定要删除选中的记录吗？",
+    "createSuccess": "创建成功",
+    "deleteConfirm": "确定删除吗？",
+    "deleteSuccess": "删除成功：{0}",
+    "editSuccess": "修改成功",
+    "operationSuccess": "操作成功"
+  },
+  "actionTitle": {
+    "create": "新增{0}",
+    "edit": "编辑{0}"
+  },
+  "formRules": {
+    "email": "请输入正确的邮箱地址",
+    "maxLength": "最多输入{0}个字符",
+    "minLength": "最少输入{0}个字符",
+    "phone": "请输入正确的手机号",
+    "required": "请输入{0}",
+    "selectRequired": "请选择{0}"
+  },
+  "placeholder": {
+    "select": "请选择"
+  },
+  "widgets": {
+    "document": "文档",
+    "qa": "问答"
+  }
+}

@@ -21,15 +21,6 @@ async function getTagPage(params?: Recordable<any>) {
     params: { pageNo: page, pageSize, ...rest },
   });
 }
-
-async function getAllTags() {
-  return requestClient.get<TagApi.Tag[]>('/api/tag/all');
-}
-
-async function getTagById(id: number) {
-  return requestClient.get<TagApi.Tag>(`/api/tag/${id}`);
-}
-
 async function createTag(data: Omit<TagApi.Tag, 'id'>) {
   return requestClient.post('/api/tag', data);
 }
@@ -42,4 +33,4 @@ async function deleteTag(id: number) {
   return requestClient.delete(`/api/tag/${id}`);
 }
 
-export { createTag, deleteTag, getAllTags, getTagById, getTagPage, updateTag };
+export { createTag, deleteTag, getTagPage, updateTag };

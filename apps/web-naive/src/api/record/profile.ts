@@ -33,13 +33,6 @@ async function getProfilePage(params?: Recordable<any>) {
 }
 
 /**
- * 根据 ID 获取档案
- */
-async function getProfileById(id: number) {
-  return requestClient.get<ProfileApi.Profile>(`/api/profile/${id}`);
-}
-
-/**
  * 创建档案
  */
 async function createProfile(data: Omit<ProfileApi.Profile, 'delFlag' | 'id'>) {
@@ -71,7 +64,6 @@ async function getProfileOptions() {
 export {
   createProfile,
   deleteProfile,
-  getProfileById,
   getProfileOptions,
   getProfilePage,
   updateProfile,

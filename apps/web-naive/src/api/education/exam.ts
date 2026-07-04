@@ -19,42 +19,42 @@ export namespace EducationExamApi {
 }
 
 async function getExamList() {
-  return requestClient.get<EducationExamApi.Exam[]>('/api/v1/exam');
+  return requestClient.get<EducationExamApi.Exam[]>('/api/exam');
 }
 
 async function getExamById(id: number) {
-  return requestClient.get<EducationExamApi.Exam>(`/api/v1/exam/${id}`);
+  return requestClient.get<EducationExamApi.Exam>(`/api/exam/${id}`);
 }
 
 async function getExamBySubject(subjectCode: string) {
   return requestClient.get<EducationExamApi.Exam[]>(
-    `/api/v1/exam/subject/${subjectCode}`,
+    `/api/exam/subject/${subjectCode}`,
   );
 }
 
 async function getExamByTeacher(teacherId: number) {
   return requestClient.get<EducationExamApi.Exam[]>(
-    `/api/v1/exam/teacher/${teacherId}`,
+    `/api/exam/teacher/${teacherId}`,
   );
 }
 
 async function createExam(data: Omit<EducationExamApi.Exam, 'id'>) {
-  return requestClient.post('/api/v1/exam', data);
+  return requestClient.post('/api/exam', data);
 }
 
 async function updateExam(id: number, data: Partial<EducationExamApi.Exam>) {
-  return requestClient.put(`/api/v1/exam/${id}`, data);
+  return requestClient.put(`/api/exam/${id}`, data);
 }
 
 async function submitExam(
   id: number,
   data: EducationExamApi.SubmitAnswerRequest,
 ) {
-  return requestClient.post(`/api/v1/exam/${id}/submit`, data);
+  return requestClient.post(`/api/exam/${id}/submit`, data);
 }
 
 async function deleteExam(id: number) {
-  return requestClient.delete(`/api/v1/exam/${id}`);
+  return requestClient.delete(`/api/exam/${id}`);
 }
 
 export {

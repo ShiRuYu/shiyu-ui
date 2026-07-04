@@ -40,14 +40,14 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/auth/login', data);
+  return requestClient.post<AuthApi.LoginResult>('/api/auth/login', data);
 }
 
 /**
  * 刷新accessToken
  */
 export async function refreshTokenApi(accessToken?: string) {
-  return baseRequestClient.post('/auth/refresh', {
+  return baseRequestClient.post('/api/auth/refresh', {
     accessToken,
   });
 }
@@ -56,7 +56,7 @@ export async function refreshTokenApi(accessToken?: string) {
  * 退出登录
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', {
+  return baseRequestClient.post('/api/auth/logout', {}, {
     withCredentials: true,
   });
 }
@@ -65,14 +65,14 @@ export async function logoutApi() {
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
+  return requestClient.get<string[]>('/api/auth/codes');
 }
 
 /**
  * 切换当前角色
  */
 export async function switchCurrentRoleApi(roleId: number) {
-  return requestClient.patch('/auth/current-role', { roleId });
+  return requestClient.patch('/api/auth/current-role', { roleId });
 }
 
 /**
@@ -80,7 +80,7 @@ export async function switchCurrentRoleApi(roleId: number) {
  * 返回租户下的工作空间列表
  */
 export async function switchTenantApi(tenantId: number) {
-  return requestClient.post<WorkspaceContextInfo[]>('/auth/switch-tenant', {
+  return requestClient.post<WorkspaceContextInfo[]>('/api/auth/switch-tenant', {
     tenantId,
   });
 }
@@ -89,19 +89,19 @@ export async function switchTenantApi(tenantId: number) {
  * 切换当前工作空间
  */
 export async function switchWorkspaceApi(workspaceId: number) {
-  return requestClient.post('/auth/switch-workspace', { workspaceId });
+  return requestClient.post('/api/auth/switch-workspace', { workspaceId });
 }
 
 /**
  * 获取用户工作空间列表
  */
 export async function getUserWorkspacesApi() {
-  return requestClient.get<WorkspaceContextInfo[]>('/auth/workspaces');
+  return requestClient.get<WorkspaceContextInfo[]>('/api/auth/workspaces');
 }
 
 /**
  * 获取用户租户列表
  */
 export async function getUserTenantsApi() {
-  return requestClient.get<TenantInfo[]>('/auth/tenants');
+  return requestClient.get<TenantInfo[]>('/api/auth/tenants');
 }

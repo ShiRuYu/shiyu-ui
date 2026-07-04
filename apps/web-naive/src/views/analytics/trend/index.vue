@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import type { EducationAnalyticsApi } from '#/api/education/analytics';
+import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import { NCard, NSpin } from 'naive-ui';
 
-import { getTrend } from '#/api';
+import { getTrend } from '#/api/education/analytics';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const trendData = ref<EducationAnalyticsApi.TrendResponse>({ dates: [], studyRecords: [], masteredCount: [] });
+const trendData = ref<{ dates: string[]; studyRecords: number[]; masteredCount: number[] }>({ dates: [], studyRecords: [], masteredCount: [] });
+const chartRef = ref<EchartsUIType>();
+const { renderEcharts } = useEcharts(chartRef);
 
 async function loadTrend() {
   loading.value = true;
@@ -24,6 +27,41 @@ async function loadTrend() {
   }
 }
 
+function updateChart(data: any) {
+  if (!data?.dates?.length) return;
+  nextTick(() => {
+    renderEcharts({
+      tooltip: { trigger: 'axis' },
+      legend: {
+        data: [$t('analytics.studyRecords'), $t('analytics.masteredCount')],
+      },
+      xAxis: {
+        type: 'category',
+        data: data.dates,
+      },
+      yAxis: { type: 'value' },
+      series: [
+        {
+          name: $t('analytics.studyRecords'),
+          type: 'line',
+          data: data.studyRecords || [],
+          smooth: true,
+          areaStyle: { opacity: 0.15 },
+        },
+        {
+          name: $t('analytics.masteredCount'),
+          type: 'line',
+          data: data.masteredCount || [],
+          smooth: true,
+          areaStyle: { opacity: 0.15 },
+        },
+      ],
+    });
+  });
+}
+
+watch(trendData, updateChart, { immediate: false });
+
 onMounted(() => {
   loadTrend();
 });
@@ -33,33 +71,12 @@ onMounted(() => {
   <Page :title="$t('analytics.trend')">
     <NCard>
       <NSpin :show="loading">
-        <div v-if="trendData && trendData.dates && trendData.dates.length" class="py-8">
-          <p class="text-center text-lg font-medium mb-4">学习趋势 (近7天)</p>
-          <div class="space-y-2">
-            <div
-              v-for="(date, idx) in trendData.dates"
-              :key="date"
-              class="flex items-center gap-4"
-            >
-              <span class="w-24 text-sm text-gray-500">{{ date }}</span>
-              <div class="flex-1">
-                <div class="flex items-center gap-2">
-                  <div
-                    class="h-4 rounded bg-blue-400"
-                    :style="{
-                      width: `${(trendData.studyRecords[idx] || 0) * 10}%`,
-                    }"
-                  ></div>
-                  <span class="text-sm">{{ trendData.studyRecords[idx] || 0 }} 次学习</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="mt-4 text-center text-xs text-gray-400">
-            (ECharts Line 图表组件占位)
-          </p>
+        <div v-if="trendData?.dates?.length" class="h-[400px] w-full">
+          <EchartsUI ref="chartRef" />
         </div>
-        <div v-else class="py-20 text-center text-gray-400">暂无数据</div>
+        <div v-else class="py-20 text-center text-gray-400">
+          {{ $t('common.noData') }}
+        </div>
       </NSpin>
     </NCard>
   </Page>

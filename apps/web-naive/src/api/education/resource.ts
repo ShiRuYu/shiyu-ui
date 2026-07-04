@@ -17,40 +17,40 @@ export namespace EducationResourceApi {
 }
 
 async function getResourceList() {
-  return requestClient.get<EducationResourceApi.Resource[]>('/api/v1/resource');
+  return requestClient.get<EducationResourceApi.Resource[]>('/api/resource');
 }
 
 async function getResourceById(id: number) {
   return requestClient.get<EducationResourceApi.Resource>(
-    `/api/v1/resource/${id}`,
+    `/api/resource/${id}`,
   );
 }
 
 async function getResourceBySubject(subjectCode: string) {
   return requestClient.get<EducationResourceApi.Resource[]>(
-    `/api/v1/resource/subject/${subjectCode}`,
+    `/api/resource/subject/${subjectCode}`,
   );
 }
 
 async function getResourceByType(type: string) {
   return requestClient.get<EducationResourceApi.Resource[]>(
-    `/api/v1/resource/type/${type}`,
+    `/api/resource/type/${type}`,
   );
 }
 
 async function createResource(data: Omit<EducationResourceApi.Resource, 'id'>) {
-  return requestClient.post('/api/v1/resource', data);
+  return requestClient.post('/api/resource', data);
 }
 
 async function updateResource(
   id: number,
   data: Partial<EducationResourceApi.Resource>,
 ) {
-  return requestClient.put(`/api/v1/resource/${id}`, data);
+  return requestClient.put(`/api/resource/${id}`, data);
 }
 
 async function deleteResource(id: number) {
-  return requestClient.delete(`/api/v1/resource/${id}`);
+  return requestClient.delete(`/api/resource/${id}`);
 }
 
 export {

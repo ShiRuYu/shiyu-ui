@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { EducationReviewApi } from '#/api/education/review';
+
 import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -9,7 +11,7 @@ import { completeReview, getTodayReviews } from '#/api/education/review';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const reviews = ref<any[]>([]);
+const reviews = ref<EducationReviewApi.ReviewTask[]>([]);
 
 async function loadReviews() {
   loading.value = true;
@@ -22,7 +24,7 @@ async function loadReviews() {
   }
 }
 
-async function handleComplete(review: any) {
+async function handleComplete(review: EducationReviewApi.ReviewTask) {
   try {
     await completeReview(review.id, { studentId: 1, resultScore: 80 });
     review.status = 'COMPLETED';
@@ -42,10 +44,10 @@ onMounted(() => loadReviews());
           <template #header>
             <NSpace>
               <span class="text-base font-medium">{{
-                review.knowledgeName || `知识点 #${review.knowledgeId}`
+                review.knowledgeName || `${$t('knowledge.name')} #${review.knowledgeId}`
               }}</span>
               <NTag type="warning" size="small">
-                第{{ review.reviewRound }}轮
+                {{ $t('education.review.round', [review.reviewRound]) }}
               </NTag>
             </NSpace>
           </template>
@@ -81,7 +83,7 @@ onMounted(() => loadReviews());
               block
               @click="handleComplete(review)"
             >
-              完成复习
+              {{ $t('education.review.complete') }}
             </NButton>
           </template>
         </NCard>
@@ -92,7 +94,7 @@ onMounted(() => loadReviews());
       v-if="!loading && reviews.length === 0"
       class="py-20 text-center text-gray-400"
     >
-      今日没有复习任务
+      {{ $t('education.review.noTasks') }}
     </div>
   </Page>
 </template>
