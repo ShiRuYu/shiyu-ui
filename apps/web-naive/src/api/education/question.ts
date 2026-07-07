@@ -1,6 +1,11 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationQuestionApi {
+  export interface PageData<T> {
+    items: T[];
+    total: number;
+  }
+
   export interface Question {
     [key: string]: any;
     id: number;
@@ -25,6 +30,12 @@ async function getQuestionById(id: number) {
   );
 }
 
+
+async function getAllQuestions(pageNum = 1, pageSize = 10) {
+  return requestClient.get<EducationQuestionApi.PageData<EducationQuestionApi.Question>>('/api/question', {
+    params: { pageNum, pageSize },
+  });
+}
 async function getQuestionBySubjectGrade(subjectCode: string, grade: number) {
   return requestClient.get<EducationQuestionApi.Question[]>(
     `/api/question/subject/${subjectCode}/grade/${grade}`,
@@ -59,6 +70,7 @@ async function deleteQuestion(id: number) {
 }
 
 export {
+  getAllQuestions,
   createQuestion,
   deleteQuestion,
   getQuestionByDifficulty,

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { EducationReviewApi } from '#/api/education/review';
+
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
@@ -7,17 +9,17 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createPlan, updatePlan } from '#/api/education/plan';
+import { createReview } from '#/api/education/review';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
-const formData = ref<any>();
+const formData = ref<EducationReviewApi.ReviewTask>();
 const getTitle = computed(() =>
   formData.value?.id
-    ? $t('ui.actionTitle.edit', [$t('education.plan.name')])
-    : $t('ui.actionTitle.create', [$t('education.plan.name')]),
+    ? $t('ui.actionTitle.edit', [$t('education.review.title')])
+    : $t('ui.actionTitle.create', [$t('education.review.title')]),
 );
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
@@ -30,19 +32,10 @@ const [Modal, modalApi] = useVbenModal({
     if (valid) {
       modalApi.lock();
       const data = await formApi.getValues();
-      // 格式化日期: DatePicker 返回时间戳，转换为 yyyy-MM-dd 字符串
-      if (data.startDate && typeof data.startDate === 'number') {
-        const d = new Date(data.startDate);
-        data.startDate = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-      }
-      if (data.endDate && typeof data.endDate === 'number') {
-        const d = new Date(data.endDate);
-        data.endDate = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-      }
       try {
         await (formData.value?.id
-          ? updatePlan(formData.value.id, data)
-          : createPlan(data));
+          ? Promise.resolve()
+          : createReview(data));
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();
         emit('success');
@@ -55,7 +48,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<any>();
+      const data = modalApi.getData<EducationReviewApi.ReviewTask>();
       formApi.resetForm();
       formData.value = data?.id ? data : undefined;
       if (data?.id) formApi.setValues(data);

@@ -64,12 +64,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async ({ formValues }) => {
-          const params: any = { pageNum: 1, pageSize: 1000 };
+        query: async ({ page, pageSize, formValues }) => {
+          const params: any = { pageNum: page, pageSize };
           if (formValues?.keyword) params.keyword = formValues.keyword;
           if (formValues?.category) params.category = formValues.category;
           const result = await getKnowledgeListApi(params);
-          return { items: result, total: result.length };
+          return { items: result?.items || result, total: result?.total || (result?.items || result)?.length || 0 };
         },
       },
     },

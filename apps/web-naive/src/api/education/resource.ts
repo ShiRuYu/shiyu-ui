@@ -1,6 +1,11 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationResourceApi {
+  export interface PageData<T> {
+    items: T[];
+    total: number;
+  }
+
   export interface Resource {
     [key: string]: any;
     id: number;
@@ -16,8 +21,10 @@ export namespace EducationResourceApi {
   }
 }
 
-async function getResourceList() {
-  return requestClient.get<EducationResourceApi.Resource[]>('/api/resource');
+async function getResourceList(pageNum = 1, pageSize = 10) {
+  return requestClient.get<EducationResourceApi.PageData<EducationResourceApi.Resource>>('/api/resource', {
+    params: { pageNum, pageSize },
+  });
 }
 
 async function getResourceById(id: number) {

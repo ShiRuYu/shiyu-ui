@@ -62,7 +62,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'InputNumber',
       fieldName: 'difficulty',
-      label: $t('education.question.difficulty'),
+      label: '难度',
     },
     {
       component: 'Input',

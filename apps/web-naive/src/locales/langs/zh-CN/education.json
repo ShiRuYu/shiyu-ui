@@ -61,7 +61,8 @@
     "difficultyMedium": "提升",
     "difficultyHard": "拔高",
     "difficultyCompetition": "竞赛",
-    "subjectCode": "所属学科"
+    "subjectCode": "所属学科",
+    "inputAnswer": "请输入答案"
   },
   "exam": {
     "title": "考试管理",
@@ -150,9 +151,6 @@
     "studyDays": "学习天数",
     "masteredKnowledge": "已掌握知识点",
     "accuracy": "准确率"
-  },
-  "question": {
-    "inputAnswer": "请输入答案"
   },
   "user": {
     "confirmResetPassword": "确定要重置用户\"{0}\"的密码吗？",

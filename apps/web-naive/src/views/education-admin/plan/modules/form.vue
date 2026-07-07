@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { EducationPlanApi } from '#/api/education/plan';
+
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
@@ -13,7 +15,7 @@ import { $t } from '#/locales';
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
-const formData = ref<any>();
+const formData = ref<EducationPlanApi.StudyPlan>();
 const getTitle = computed(() =>
   formData.value?.id
     ? $t('ui.actionTitle.edit', [$t('education.plan.name')])
@@ -55,7 +57,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<any>();
+      const data = modalApi.getData<EducationPlanApi.StudyPlan>();
       formApi.resetForm();
       formData.value = data?.id ? data : undefined;
       if (data?.id) formApi.setValues(data);

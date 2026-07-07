@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { EducationQuestionApi } from '#/api/education/question';
+import type { EducationReviewApi } from '#/api/education/review';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -12,11 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  deleteQuestion,
-  getAllQuestions,
-  getQuestionBySubjectGrade,
-} from '#/api/education/question';
+import { getReviewsByStatus, createReview, completeReview } from '#/api/education/review';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -26,17 +22,17 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
-function onEdit(row: EducationQuestionApi.Question) {
+function onEdit(row: EducationReviewApi.ReviewTask) {
   formModalApi.setData(row).open();
 }
 function onCreate() {
   formModalApi.setData({}).open();
 }
-function onDelete(row: EducationQuestionApi.Question) {
+function onComplete(row: EducationReviewApi.ReviewTask) {
   const h = message.loading($t('common.deleting'), { duration: 0 });
-  deleteQuestion(row.id)
+  completeReview(row.id, { studentId: row.studentId, resultScore: 100 })
     .then(() => {
-      message.success($t('ui.actionMessage.deleteSuccess', [row.code]));
+      message.success($t('ui.actionMessage.operationSuccess'));
       refreshGrid();
     })
     .finally(() => h.destroy());
@@ -44,10 +40,10 @@ function onDelete(row: EducationQuestionApi.Question) {
 function onActionClick({
   code,
   row,
-}: OnActionClickParams<EducationQuestionApi.Question>) {
+}: OnActionClickParams<EducationReviewApi.ReviewTask>) {
   switch (code) {
-    case 'delete':
-      onDelete(row);
+    case 'complete':
+      onComplete(row);
       break;
     case 'edit':
       onEdit(row);
@@ -63,14 +59,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize, formValues }) => {
-          const subjectCode = formValues?.subjectCode || null;
-          if (subjectCode) {
-            const result = await getQuestionBySubjectGrade(subjectCode, formValues?.grade || 0);
-            return { items: result, total: result.length };
-          }
-          const result = await getAllQuestions(page, pageSize);
-          return { items: result.items, total: result.total };
+        query: async () => {
+          const result = await getReviewsByStatus(1, 'PENDING');
+          return { items: result, total: result.length };
         },
       },
     },
@@ -90,11 +81,11 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('education.question.list')">
+    <Grid :table-title="$t('education.review.title')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('education.question.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('education.review.title')]) }}
         </NButton>
       </template>
     </Grid>

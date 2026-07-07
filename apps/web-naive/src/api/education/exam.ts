@@ -1,6 +1,11 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationExamApi {
+  export interface PageData<T> {
+    items: T[];
+    total: number;
+  }
+
   export interface Exam {
     [key: string]: any;
     id: number;
@@ -18,8 +23,10 @@ export namespace EducationExamApi {
   }
 }
 
-async function getExamList() {
-  return requestClient.get<EducationExamApi.Exam[]>('/api/exam');
+async function getExamList(pageNum = 1, pageSize = 10) {
+  return requestClient.get<EducationExamApi.PageData<EducationExamApi.Exam>>('/api/exam', {
+    params: { pageNum, pageSize },
+  });
 }
 
 async function getExamById(id: number) {

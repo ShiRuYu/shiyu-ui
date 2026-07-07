@@ -76,6 +76,42 @@ const routes: RouteRecordRaw[] = [
           import('#/views/education-admin/resource-admin/list.vue'),
         meta: { icon: 'carbon:document', title: $t('page.eduAdmin.resource') },
       },
+      {
+        name: 'EducationPlan',
+        path: '/edu/plan',
+        component: () => import('#/views/education-admin/plan/list.vue'),
+        meta: {
+          icon: 'carbon:task',
+          title: $t('page.eduAdmin.plan'),
+        },
+      },
+      {
+        name: 'EducationReview',
+        path: '/edu/review',
+        component: () => import('#/views/education-admin/review/list.vue'),
+        meta: {
+          icon: 'carbon:rotate',
+          title: $t('page.eduAdmin.review'),
+        },
+      },
+      {
+        name: 'EducationAnalytics',
+        path: '/edu/analytics',
+        component: () => import('#/views/education-admin/analytics/index.vue'),
+        meta: {
+          icon: 'carbon:chart-radar',
+          title: $t('page.eduAdmin.analytics'),
+        },
+      },
+      {
+        name: 'EducationWrongQuestion',
+        path: '/edu/wrong-question',
+        component: () => import('#/views/education-admin/wrong-question/list.vue'),
+        meta: {
+          icon: 'carbon:error',
+          title: $t('page.eduAdmin.wrongQuestion'),
+        },
+      },
     ],
   },
 ];

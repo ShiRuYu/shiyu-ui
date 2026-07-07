@@ -58,9 +58,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          const result = await searchDocumentsApi({ keyword: '' });
-          return { items: result, total: result.length };
+        query: async ({ page, pageSize }) => {
+          const result = await searchDocumentsApi({ keyword: '', pageNum: page, pageSize });
+          return { items: result.items || result, total: result.total || result.length };
         },
       },
     },

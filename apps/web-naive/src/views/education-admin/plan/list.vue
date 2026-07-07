@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { EducationQuestionApi } from '#/api/education/question';
+import type { EducationPlanApi } from '#/api/education/plan';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -12,11 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  deleteQuestion,
-  getAllQuestions,
-  getQuestionBySubjectGrade,
-} from '#/api/education/question';
+import { deletePlan, getPlansByStudent, createPlan, updatePlan } from '#/api/education/plan';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -26,17 +22,17 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
-function onEdit(row: EducationQuestionApi.Question) {
+function onEdit(row: EducationPlanApi.StudyPlan) {
   formModalApi.setData(row).open();
 }
 function onCreate() {
   formModalApi.setData({}).open();
 }
-function onDelete(row: EducationQuestionApi.Question) {
+function onDelete(row: EducationPlanApi.StudyPlan) {
   const h = message.loading($t('common.deleting'), { duration: 0 });
-  deleteQuestion(row.id)
+  deletePlan(row.id)
     .then(() => {
-      message.success($t('ui.actionMessage.deleteSuccess', [row.code]));
+      message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
     })
     .finally(() => h.destroy());
@@ -44,7 +40,7 @@ function onDelete(row: EducationQuestionApi.Question) {
 function onActionClick({
   code,
   row,
-}: OnActionClickParams<EducationQuestionApi.Question>) {
+}: OnActionClickParams<EducationPlanApi.StudyPlan>) {
   switch (code) {
     case 'delete':
       onDelete(row);
@@ -63,13 +59,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize, formValues }) => {
-          const subjectCode = formValues?.subjectCode || null;
-          if (subjectCode) {
-            const result = await getQuestionBySubjectGrade(subjectCode, formValues?.grade || 0);
-            return { items: result, total: result.length };
-          }
-          const result = await getAllQuestions(page, pageSize);
+        query: async ({ page, pageSize }) => {
+          const result = await getPlansByStudent(1);
           return { items: result.items, total: result.total };
         },
       },
@@ -90,11 +81,11 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('education.question.list')">
+    <Grid :table-title="$t('education.plan.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('education.question.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('education.plan.name')]) }}
         </NButton>
       </template>
     </Grid>

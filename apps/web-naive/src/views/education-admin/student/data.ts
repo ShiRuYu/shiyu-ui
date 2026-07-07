@@ -25,6 +25,11 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
+      component: 'InputNumber',
+      fieldName: 'userId',
+      label: '用户ID',
+    },
+    {
       component: 'Input',
       fieldName: 'name',
       label: $t('education.student.name'),
@@ -65,6 +70,7 @@ export function useColumns(
 ): VxeTableGridColumns<EducationStudentApi.Student> {
   return [
     { field: 'id', title: 'ID', width: 80 },
+    { field: 'userId', title: '用户ID', width: 80 },
     {
       field: 'studentNo',
       title: $t('education.student.studentNo'),

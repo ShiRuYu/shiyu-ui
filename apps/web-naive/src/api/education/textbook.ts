@@ -1,6 +1,11 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationTextbookApi {
+  export interface PageData<T> {
+    items: T[];
+    total: number;
+  }
+
   export interface Textbook {
     [key: string]: any;
     id: number;
@@ -12,8 +17,10 @@ export namespace EducationTextbookApi {
   }
 }
 
-async function getTextbookList() {
-  return requestClient.get<EducationTextbookApi.Textbook[]>('/api/textbook');
+async function getTextbookList(pageNum = 1, pageSize = 10) {
+  return requestClient.get<EducationTextbookApi.PageData<EducationTextbookApi.Textbook>>('/api/textbook', {
+    params: { pageNum, pageSize },
+  });
 }
 
 async function getTextbookById(id: number) {

@@ -11,9 +11,7 @@ export function updateKnowledgeApi(id: number, data: any) {
 
 /** 获取知识点列表（后端返回 PageData，自动展开 rows） */
 export async function getKnowledgeListApi(params?: any) {
-  const res = await requestClient.get<any>('/api/knowledge', { params });
-  // 后端 Result<PageData<KnowledgeResponse>>，data 字段是 PageData{rows, total}
-  return (res?.items || res) ?? [];
+  return requestClient.get<any>('/api/knowledge', { params });
 }
 
 /** 获取知识图谱 */

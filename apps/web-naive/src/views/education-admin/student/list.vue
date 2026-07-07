@@ -59,9 +59,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          const result = await getStudentList();
-          return { items: result, total: result.length };
+        query: async ({ page, pageSize }) => {
+          const result = await getStudentList(page, pageSize);
+          return { items: result.items, total: result.total };
         },
       },
     },
@@ -84,7 +84,6 @@ function refreshGrid() {
     <Grid :table-title="$t('education.student.list')">
       <template #toolbar-tools>
         <NButton
-          v-access:code="'admin:student:create'"
           type="primary"
           @click="onCreate"
         >

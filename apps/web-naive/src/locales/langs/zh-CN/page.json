@@ -79,7 +79,11 @@
     "question": "题库管理",
     "exam": "考试管理",
     "student": "学生管理",
-    "resource": "资源管理"
+    "resource": "资源管理",
+    "plan": "学习计划",
+    "review": "复习任务",
+    "analytics": "学情分析",
+    "wrongQuestion": "错题管理"
   },
   "file": {
     "title": "文件管理"
