@@ -22,22 +22,22 @@ export namespace RecordsApi {
 async function getRecordPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<RecordsApi.PageResult<RecordsApi.Record>>(
-    '/api/record/page',
+    '/record/record/list',
     {
       params: { pageNo: page, pageSize, ...rest },
     },
   );
 }
 async function createRecord(data: Omit<RecordsApi.Record, 'id'>) {
-  return requestClient.post('/api/record', data);
+  return requestClient.post('/record/record/create', data);
 }
 
 async function updateRecord(data: RecordsApi.Record) {
-  return requestClient.put('/api/record', data);
+  return requestClient.post('/record/record/update', data, { params: { id: data.id } });
 }
 
 async function deleteRecord(id: number) {
-  return requestClient.delete(`/api/record/${id}`);
+  return requestClient.post('/record/record/delete', null, { params: { id } });
 }
 
 export { createRecord, deleteRecord, getRecordPage, updateRecord };

@@ -26,47 +26,50 @@ export namespace EducationQuestionApi {
 
 async function getQuestionById(id: number) {
   return requestClient.get<EducationQuestionApi.Question>(
-    `/api/question/${id}`,
+    '/edu/question/detail', { params: { id } },
   );
 }
 
 
 async function getAllQuestions(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationQuestionApi.PageData<EducationQuestionApi.Question>>('/api/question', {
+  return requestClient.get<EducationQuestionApi.PageData<EducationQuestionApi.Question>>('/edu/question/list', {
     params: { pageNum, pageSize },
   });
 }
 async function getQuestionBySubjectGrade(subjectCode: string, grade: number) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/question/subject/${subjectCode}/grade/${grade}`,
+    '/edu/question/subject-grade',
+    { params: { subjectCode, grade } },
   );
 }
 
 async function getQuestionByDifficulty(difficulty: number) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/question/difficulty/${difficulty}`,
+    '/edu/question/difficulty',
+    { params: { difficulty } },
   );
 }
 
 async function getQuestionByType(type: string) {
   return requestClient.get<EducationQuestionApi.Question[]>(
-    `/api/question/type/${type}`,
+    '/edu/question/type',
+    { params: { type } },
   );
 }
 
 async function createQuestion(data: Omit<EducationQuestionApi.Question, 'id'>) {
-  return requestClient.post('/api/question', data);
+  return requestClient.post('/edu/question/create', data);
 }
 
 async function updateQuestion(
   id: number,
   data: Partial<EducationQuestionApi.Question>,
 ) {
-  return requestClient.put(`/api/question/${id}`, data);
+  return requestClient.post('/edu/question/update', data, { params: { id } });
 }
 
 async function deleteQuestion(id: number) {
-  return requestClient.delete(`/api/question/${id}`);
+  return requestClient.post('/edu/question/delete', null, { params: { id } });
 }
 
 export {

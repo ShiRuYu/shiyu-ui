@@ -39,7 +39,7 @@ async function getUserList(params: Recordable<any>) {
   const data = await requestClient.get<
     | SystemUserApi.PageResult<SystemUserApi.SystemUser>
     | SystemUserApi.SystemUser[]
-  >('/admin/user', {
+  >('/auth/user/list', {
     params: {
       pageNo: page || 1,
       pageSize: pageSize || 10,
@@ -58,7 +58,7 @@ async function getUserList(params: Recordable<any>) {
  */
 async function getRolesForUserForm() {
   return requestClient.get<Array<{ code: string; id: number; name: string }>>(
-    '/admin/role',
+    '/auth/role/all',
   );
 }
 
@@ -69,7 +69,7 @@ async function getRolesForUserForm() {
 async function createUser(
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/admin/user', data);
+  return requestClient.post('/auth/user/create', data);
 }
 
 /**
@@ -82,7 +82,7 @@ async function updateUser(
   id: number,
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.patch(`/admin/user/${id}`, data);
+  return requestClient.post('/auth/user/update', data, { params: { userId: id } });
 }
 
 /**
@@ -90,7 +90,7 @@ async function updateUser(
  * @param id 用户 ID
  */
 async function deleteUser(id: number) {
-  return requestClient.delete(`/admin/user/${id}`);
+  return requestClient.post('/auth/user/delete', null, { params: { userId: id } });
 }
 
 /**
@@ -99,7 +99,7 @@ async function deleteUser(id: number) {
  * @param password 新密码
  */
 async function resetUserPassword(id: number, password: string) {
-  return requestClient.patch(`/admin/user/${id}/password/reset`, { password });
+  return requestClient.post('/auth/user/password/reset', { password }, { params: { userId: id } });
 }
 
 /**
@@ -113,10 +113,10 @@ async function changePassword(
   oldPassword: string,
   newPassword: string,
 ) {
-  return requestClient.patch(`/admin/user/${id}/password`, {
+  return requestClient.post('/auth/user/password/change', {
     oldPassword,
     newPassword,
-  });
+  }, { params: { userId: id } });
 }
 
 export {

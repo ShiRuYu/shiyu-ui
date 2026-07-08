@@ -43,29 +43,31 @@ async function getAgentPage(params: {
   status?: string;
 }) {
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
-    '/admin/agent/page',
-    { params },
+    '/agent/admin/list',
+    { params: { pageNo: params.page, pageSize: params.pageSize, name: params.name, status: params.status } },
   );
 }
 
 async function getAgentById(id: number) {
-  return requestClient.get<AgentAdminApi.AgentDetailVO>(`/admin/agent/${id}`);
+  return requestClient.get<AgentAdminApi.AgentDetailVO>('/agent/admin/detail', {
+    params: { id },
+  });
 }
 
 async function getAgentListAll() {
-  return requestClient.get('/admin/agent/list/all');
+  return requestClient.get('/agent/admin/options');
 }
 
 async function createAgent(data: AgentAdminApi.AgentRequest) {
-  return requestClient.post<AgentAdminApi.AgentVO>('/admin/agent', data);
+  return requestClient.post<AgentAdminApi.AgentVO>('/agent/admin/create', data);
 }
 
 async function updateAgent(id: number, data: AgentAdminApi.AgentRequest) {
-  return requestClient.patch<AgentAdminApi.AgentVO>(`/admin/agent/${id}`, data);
+  return requestClient.post<AgentAdminApi.AgentVO>('/agent/admin/update', data, { params: { id } });
 }
 
 async function deleteAgent(id: number) {
-  return requestClient.delete(`/admin/agent/${id}`);
+  return requestClient.post('/agent/admin/delete', null, { params: { id } });
 }
 
 // async function toggleAgentStatus(id: number, status: string) {

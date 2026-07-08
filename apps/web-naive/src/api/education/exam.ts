@@ -24,44 +24,48 @@ export namespace EducationExamApi {
 }
 
 async function getExamList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationExamApi.PageData<EducationExamApi.Exam>>('/api/exam', {
+  return requestClient.get<EducationExamApi.PageData<EducationExamApi.Exam>>('/edu/exam/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getExamById(id: number) {
-  return requestClient.get<EducationExamApi.Exam>(`/api/exam/${id}`);
+  return requestClient.get<EducationExamApi.Exam>('/edu/exam/detail', {
+    params: { id },
+  });
 }
 
 async function getExamBySubject(subjectCode: string) {
   return requestClient.get<EducationExamApi.Exam[]>(
-    `/api/exam/subject/${subjectCode}`,
+    '/edu/exam/subject',
+    { params: { subjectCode } },
   );
 }
 
 async function getExamByTeacher(teacherId: number) {
   return requestClient.get<EducationExamApi.Exam[]>(
-    `/api/exam/teacher/${teacherId}`,
+    '/edu/exam/teacher',
+    { params: { teacherId } },
   );
 }
 
 async function createExam(data: Omit<EducationExamApi.Exam, 'id'>) {
-  return requestClient.post('/api/exam', data);
+  return requestClient.post('/edu/exam/create', data);
 }
 
 async function updateExam(id: number, data: Partial<EducationExamApi.Exam>) {
-  return requestClient.put(`/api/exam/${id}`, data);
+  return requestClient.post('/edu/exam/update', data, { params: { id } });
 }
 
 async function submitExam(
   id: number,
   data: EducationExamApi.SubmitAnswerRequest,
 ) {
-  return requestClient.post(`/api/exam/${id}/submit`, data);
+  return requestClient.post('/edu/exam/submit', data, { params: { id } });
 }
 
 async function deleteExam(id: number) {
-  return requestClient.delete(`/api/exam/${id}`);
+  return requestClient.post('/edu/exam/delete', null, { params: { id } });
 }
 
 export {

@@ -23,13 +23,13 @@ export namespace ChatApi {
 }
 
 async function getModelOptions(platformId?: number) {
-  return requestClient.get<ChatApi.OptionItem[]>('/admin/model/options', {
+  return requestClient.get<ChatApi.OptionItem[]>('/agent/model/options', {
     params: platformId ? { platformId } : {},
   });
 }
 
 async function chat(data: ChatApi.ChatRequest) {
-  return requestClient.post<ChatApi.ChatResponse>('/api/lc4j/chat', data);
+  return requestClient.post<ChatApi.ChatResponse>('/chat/send', data);
 }
 
 async function chatStream(
@@ -39,7 +39,7 @@ async function chatStream(
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
-  const response = await fetch(`${baseURL}/api/lc4j/chat/stream`, {
+  const response = await fetch(`${baseURL}/chat/send-stream`, {
     body: JSON.stringify(data),
     headers: {
       Accept: 'text/event-stream',

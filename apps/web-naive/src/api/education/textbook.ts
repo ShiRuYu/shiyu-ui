@@ -18,36 +18,37 @@ export namespace EducationTextbookApi {
 }
 
 async function getTextbookList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationTextbookApi.PageData<EducationTextbookApi.Textbook>>('/api/textbook', {
+  return requestClient.get<EducationTextbookApi.PageData<EducationTextbookApi.Textbook>>('/edu/textbook/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getTextbookById(id: number) {
   return requestClient.get<EducationTextbookApi.Textbook>(
-    `/api/textbook/${id}`,
+    '/edu/textbook/detail', { params: { id } },
   );
 }
 
 async function getTextbookBySubjectGrade(subjectCode: string, grade: number) {
   return requestClient.get<EducationTextbookApi.Textbook[]>(
-    `/api/textbook/subject/${subjectCode}/grade/${grade}`,
+    '/edu/textbook/subject-grade',
+    { params: { subjectCode, grade } },
   );
 }
 
 async function createTextbook(data: Omit<EducationTextbookApi.Textbook, 'id'>) {
-  return requestClient.post('/api/textbook', data);
+  return requestClient.post('/edu/textbook/create', data);
 }
 
 async function updateTextbook(
   id: number,
   data: Partial<EducationTextbookApi.Textbook>,
 ) {
-  return requestClient.put(`/api/textbook/${id}`, data);
+  return requestClient.post('/edu/textbook/update', data, { params: { id } });
 }
 
 async function deleteTextbook(id: number) {
-  return requestClient.delete(`/api/textbook/${id}`);
+  return requestClient.post('/edu/textbook/delete', null, { params: { id } });
 }
 
 export {

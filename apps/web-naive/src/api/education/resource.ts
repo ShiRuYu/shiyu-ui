@@ -22,42 +22,44 @@ export namespace EducationResourceApi {
 }
 
 async function getResourceList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationResourceApi.PageData<EducationResourceApi.Resource>>('/api/resource', {
+  return requestClient.get<EducationResourceApi.PageData<EducationResourceApi.Resource>>('/edu/resource/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getResourceById(id: number) {
   return requestClient.get<EducationResourceApi.Resource>(
-    `/api/resource/${id}`,
+    '/edu/resource/detail', { params: { id } },
   );
 }
 
 async function getResourceBySubject(subjectCode: string) {
   return requestClient.get<EducationResourceApi.Resource[]>(
-    `/api/resource/subject/${subjectCode}`,
+    '/edu/resource/subject',
+    { params: { subjectCode } },
   );
 }
 
 async function getResourceByType(type: string) {
   return requestClient.get<EducationResourceApi.Resource[]>(
-    `/api/resource/type/${type}`,
+    '/edu/resource/type',
+    { params: { type } },
   );
 }
 
 async function createResource(data: Omit<EducationResourceApi.Resource, 'id'>) {
-  return requestClient.post('/api/resource', data);
+  return requestClient.post('/edu/resource/create', data);
 }
 
 async function updateResource(
   id: number,
   data: Partial<EducationResourceApi.Resource>,
 ) {
-  return requestClient.put(`/api/resource/${id}`, data);
+  return requestClient.post('/edu/resource/update', data, { params: { id } });
 }
 
 async function deleteResource(id: number) {
-  return requestClient.delete(`/api/resource/${id}`);
+  return requestClient.post('/edu/resource/delete', null, { params: { id } });
 }
 
 export {

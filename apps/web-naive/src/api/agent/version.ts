@@ -35,7 +35,8 @@ export namespace AgentVersionApi {
 
 async function getVersionList(agentId: string) {
   return requestClient.get<AgentVersionApi.AgentVersionVO[]>(
-    `/admin/agent/${agentId}/version`,
+    '/agent/version/list',
+    { params: { agentId } },
   );
 }
 
@@ -44,31 +45,26 @@ async function createVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    `/admin/agent/${agentId}/version`,
+    '/agent/version/create',
     data,
+    { params: { agentId } },
   );
 }
 
 async function deleteVersion(agentId: string, versionId: number) {
-  return requestClient.delete(`/admin/agent/${agentId}/version/${versionId}`);
+  return requestClient.post('/agent/version/delete', null, { params: { agentId, versionId } });
 }
 
 async function publishVersion(agentId: string, versionId: number) {
-  return requestClient.post(
-    `/admin/agent/${agentId}/version/${versionId}/publish`,
-  );
+  return requestClient.post('/agent/version/publish', null, { params: { agentId, versionId } });
 }
 
 async function archiveVersion(agentId: string, versionId: number) {
-  return requestClient.post(
-    `/admin/agent/${agentId}/version/${versionId}/archive`,
-  );
+  return requestClient.post('/agent/version/archive', null, { params: { agentId, versionId } });
 }
 
 async function activateVersion(agentId: string, versionId: number) {
-  return requestClient.post(
-    `/admin/agent/${agentId}/version/${versionId}/activate`,
-  );
+  return requestClient.post('/agent/version/activate', null, { params: { agentId, versionId } });
 }
 
 async function copyVersion(
@@ -77,8 +73,9 @@ async function copyVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    `/admin/agent/${agentId}/version/${sourceVersionId}/copy`,
+    '/agent/version/copy',
     data,
+    { params: { agentId } },
   );
 }
 

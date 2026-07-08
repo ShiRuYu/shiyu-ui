@@ -26,7 +26,7 @@ export namespace TimelineApi {
 async function getTimelinePage(params: Recordable<any>) {
   const { page = 1, pageSize = 20, ...rest } = params || {};
   return requestClient.get<TimelineApi.PageResult<TimelineApi.TimelineEvent>>(
-    '/api/timeline/page',
+    '/record/timeline/list',
     { params: { pageNo: page, pageSize, ...rest } },
   );
 }
@@ -35,21 +35,21 @@ async function getTimelinePage(params: Recordable<any>) {
  * 创建时间线事件
  */
 async function createTimeline(data: Omit<TimelineApi.TimelineEvent, 'id'>) {
-  return requestClient.post<TimelineApi.TimelineEvent>('/api/timeline', data);
+  return requestClient.post<TimelineApi.TimelineEvent>('/record/timeline/create', data);
 }
 
 /**
  * 更新时间线事件
  */
 async function updateTimeline(data: TimelineApi.TimelineEvent) {
-  return requestClient.put<boolean>('/api/timeline', data);
+  return requestClient.post<boolean>('/record/timeline/update', data, { params: { id: data.id } });
 }
 
 /**
  * 删除时间线事件
  */
 async function deleteTimeline(id: number) {
-  return requestClient.delete<boolean>(`/api/timeline/${id}`);
+  return requestClient.post<boolean>('/record/timeline/delete', null, { params: { id } });
 }
 
 export { createTimeline, deleteTimeline, getTimelinePage, updateTimeline };

@@ -24,40 +24,45 @@ export namespace EducationPlanApi {
 }
 
 async function getPlanById(id: number) {
-  return requestClient.get<EducationPlanApi.StudyPlan>(`/api/plan/${id}`);
+  return requestClient.get<EducationPlanApi.StudyPlan>('/edu/plan/detail', {
+    params: { id },
+  });
 }
 
 async function getPlansByStudent(studentId: number) {
   return requestClient.get<EducationPlanApi.StudyPlan[]>(
-    `/api/plan/student/${studentId}`,
+    '/edu/plan/student',
+    { params: { studentId } },
   );
 }
 
 async function getActivePlans(studentId: number) {
   return requestClient.get<EducationPlanApi.StudyPlan[]>(
-    `/api/plan/student/${studentId}/active`,
+    '/edu/plan/active',
+    { params: { studentId } },
   );
 }
 
 async function getTodayTasks(studentId: number) {
   return requestClient.get<EducationPlanApi.DailyTask[]>(
-    `/api/plan/today/${studentId}`,
+    '/edu/plan/today',
+    { params: { studentId } },
   );
 }
 
 async function createPlan(data: Omit<EducationPlanApi.StudyPlan, 'id'>) {
-  return requestClient.post('/api/plan', data);
+  return requestClient.post('/edu/plan/create', data);
 }
 
 async function updatePlan(
   id: number,
   data: Partial<EducationPlanApi.StudyPlan>,
 ) {
-  return requestClient.put(`/api/plan/${id}`, data);
+  return requestClient.post('/edu/plan/update', data, { params: { id } });
 }
 
 async function deletePlan(id: number) {
-  return requestClient.delete(`/api/plan/${id}`);
+  return requestClient.post('/edu/plan/delete', null, { params: { id } });
 }
 
 export {

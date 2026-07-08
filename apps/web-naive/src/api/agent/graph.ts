@@ -87,7 +87,8 @@ export namespace AgentGraphApi {
 
 async function getGraphConfig(agentId: string, versionId: number) {
   return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    `/admin/agent/${agentId}/version/${versionId}/graph`,
+    '/agent/graph/detail',
+    { params: { agentId, versionId } },
   );
 }
 
@@ -96,9 +97,10 @@ async function updateGraphConfig(
   versionId: number,
   data: AgentGraphApi.GraphConfigRequest,
 ) {
-  return requestClient.put<AgentVersionApi.AgentVersionDetailVO>(
-    `/admin/agent/${agentId}/version/${versionId}/graph`,
+  return requestClient.post<AgentVersionApi.AgentVersionDetailVO>(
+    '/agent/graph/update',
     data,
+    { params: { agentId, versionId } },
   );
 }
 
@@ -108,8 +110,9 @@ async function validateGraphConfig(
   data: AgentGraphApi.GraphConfigRequest,
 ) {
   return requestClient.post<AgentGraphApi.GraphValidationVO>(
-    `/admin/agent/${agentId}/version/${versionId}/graph/validate`,
+    '/agent/graph/validate',
     data,
+    { params: { agentId, versionId } },
   );
 }
 

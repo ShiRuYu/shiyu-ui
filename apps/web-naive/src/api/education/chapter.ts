@@ -13,36 +13,40 @@ export namespace EducationChapterApi {
 }
 
 async function getChapterById(id: number) {
-  return requestClient.get<EducationChapterApi.Chapter>(`/api/chapter/${id}`);
+  return requestClient.get<EducationChapterApi.Chapter>('/edu/chapter/detail', {
+    params: { id },
+  });
 }
 
 async function getChaptersByTextbook(textbookId: number) {
   return requestClient.get<EducationChapterApi.Chapter[]>(
-    `/api/chapter/textbook/${textbookId}`,
+    '/edu/chapter/textbook',
+    { params: { textbookId } },
   );
 }
 
 async function getChapterTree(textbookId: number) {
   return requestClient.get<EducationChapterApi.Chapter[]>(
-    `/api/chapter/textbook/${textbookId}/tree`,
+    '/edu/chapter/textbook-tree',
+    { params: { textbookId } },
   );
 }
 
 async function createChapter(
   data: Omit<EducationChapterApi.Chapter, 'children' | 'id'>,
 ) {
-  return requestClient.post('/api/chapter', data);
+  return requestClient.post('/edu/chapter/create', data);
 }
 
 async function updateChapter(
   id: number,
   data: Partial<EducationChapterApi.Chapter>,
 ) {
-  return requestClient.put(`/api/chapter/${id}`, data);
+  return requestClient.post('/edu/chapter/update', data, { params: { id } });
 }
 
 async function deleteChapter(id: number) {
-  return requestClient.delete(`/api/chapter/${id}`);
+  return requestClient.post('/edu/chapter/delete', null, { params: { id } });
 }
 
 export {

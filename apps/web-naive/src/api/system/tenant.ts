@@ -22,7 +22,7 @@ export namespace SystemTenantApi {
 async function getTenantList(_params?: Recordable<any>) {
   const data =
     await requestClient.get<SystemTenantApi.SystemTenant[]>(
-      '/admin/tenant/all',
+      '/auth/tenant/list',
     );
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
@@ -31,18 +31,18 @@ async function getTenantList(_params?: Recordable<any>) {
 async function createTenant(
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.post('/admin/tenant', data);
+  return requestClient.post('/auth/tenant/create', data);
 }
 
 async function updateTenant(
   id: number,
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.patch(`/admin/tenant/${id}`, data);
+  return requestClient.post('/auth/tenant/update', data, { params: { id } });
 }
 
 async function deleteTenant(id: number) {
-  return requestClient.delete(`/admin/tenant/${id}`);
+  return requestClient.post('/auth/tenant/delete', null, { params: { id } });
 }
 
 export { createTenant, deleteTenant, getTenantList, updateTenant };

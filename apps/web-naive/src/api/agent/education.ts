@@ -31,7 +31,7 @@ export namespace EducationAgentApi {
 }
 
 async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post('/api/agent/teacher', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'teacher' } });
 }
 
 async function teachStream(
@@ -41,15 +41,18 @@ async function teachStream(
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
-  const response = await fetch(`${baseURL}/api/agent/teacher`, {
-    body: JSON.stringify({ ...data, stream: true }),
-    headers: {
-      Accept: 'text/event-stream',
-      Authorization: token ? `Bearer ${token}` : '',
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${baseURL}/agent/agent/execute-stream?agentId=${encodeURIComponent('teacher')}`,
+    {
+      body: JSON.stringify({ ...data, stream: true }),
+      headers: {
+        Accept: 'text/event-stream',
+        Authorization: token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
     },
-    method: 'POST',
-  });
+  );
   if (!response.ok || !response.body)
     throw new Error(`Stream error: ${response.status}`);
   const reader = response.body.getReader();
@@ -62,27 +65,27 @@ async function teachStream(
 }
 
 async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post('/api/agent/practice', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'practice' } });
 }
 
 async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post('/api/agent/exam', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'exam' } });
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/api/agent/review/today');
+  return requestClient.get('/agent/agent/list', { params: { agentId: 'review' } });
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post('/api/agent/review/complete', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'review' } });
 }
 
 async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post('/api/agent/planner', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'planner' } });
 }
 
 async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post('/api/agent/report', data);
+  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'report' } });
 }
 
 export {

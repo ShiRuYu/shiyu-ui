@@ -42,7 +42,7 @@ export namespace AgentApi {
  * 删除 Agent 定义
  */
 async function deleteAgentDefinition(agentId: string) {
-  return requestClient.delete(`/api/agent/${agentId}`);
+  return requestClient.post('/agent/agent/delete', null, { params: { agentId } });
 }
 
 /**
@@ -50,8 +50,9 @@ async function deleteAgentDefinition(agentId: string) {
  */
 async function executeAgent(agentId: string, data?: AgentApi.ExecuteRequest) {
   return requestClient.post<AgentApi.ExecuteResponse>(
-    `/api/agent/${agentId}/execute`,
+    '/agent/agent/execute',
     data,
+    { params: { agentId } },
   );
 }
 
@@ -67,7 +68,7 @@ async function executeAgentStream(
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
   const response = await fetch(
-    `${baseURL}/api/agent/${agentId}/executeStream`,
+    `${baseURL}/agent/agent/execute-stream?agentId=${encodeURIComponent(agentId)}`,
     {
       body: JSON.stringify(data),
       headers: {

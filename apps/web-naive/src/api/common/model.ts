@@ -30,25 +30,25 @@ async function getModelPage(params?: Recordable<any>) {
     query.platformId = platformId;
   }
   return requestClient.get<ModelApi.PageResult<ModelApi.ModelItem>>(
-    '/admin/model/page',
+    '/agent/model/page',
     { params: query },
   );
 }
 
 async function createModel(data: Omit<ModelApi.ModelItem, 'id'>) {
-  return requestClient.post('/admin/model', data);
+  return requestClient.post('/agent/model', data);
 }
 
 async function updateModel(id: number, data: Partial<ModelApi.ModelItem>) {
-  return requestClient.patch(`/admin/model/${id}`, data);
+  return requestClient.patch(`/agent/model/${id}`, data);
 }
 
 async function deleteModel(id: number) {
-  return requestClient.delete(`/admin/model/${id}`);
+  return requestClient.delete(`/agent/model/${id}`);
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.put(`/admin/model/${id}/default`);
+  return requestClient.put(`/agent/model/${id}/default`);
 }
 
 export { createModel, deleteModel, getModelPage, setDefaultModel, updateModel };

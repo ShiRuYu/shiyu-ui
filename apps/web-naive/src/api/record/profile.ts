@@ -27,7 +27,7 @@ export namespace ProfileApi {
 async function getProfilePage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<ProfileApi.PageResult<ProfileApi.Profile>>(
-    '/api/profile/page',
+    '/record/profile/list',
     { params: { pageNo: page, pageSize, ...rest } },
   );
 }
@@ -36,21 +36,21 @@ async function getProfilePage(params?: Recordable<any>) {
  * 创建档案
  */
 async function createProfile(data: Omit<ProfileApi.Profile, 'delFlag' | 'id'>) {
-  return requestClient.post<ProfileApi.Profile>('/api/profile', data);
+  return requestClient.post<ProfileApi.Profile>('/record/profile/create', data);
 }
 
 /**
  * 更新档案
  */
 async function updateProfile(data: ProfileApi.Profile) {
-  return requestClient.put<boolean>('/api/profile', data);
+  return requestClient.post<boolean>('/record/profile/update', data, { params: { id: data.id } });
 }
 
 /**
  * 删除档案
  */
 async function deleteProfile(id: number) {
-  return requestClient.delete<boolean>(`/api/profile/${id}`);
+  return requestClient.post<boolean>('/record/profile/delete', null, { params: { id } });
 }
 
 /**

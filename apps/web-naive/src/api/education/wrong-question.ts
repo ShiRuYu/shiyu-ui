@@ -14,31 +14,32 @@ export namespace EducationWrongQuestionApi {
 
 async function getWrongQuestionById(id: number) {
   return requestClient.get<EducationWrongQuestionApi.WrongQuestion>(
-    `/api/wrong-question/${id}`,
+    '/edu/wrong-question/detail', { params: { id } },
   );
 }
 
 async function getWrongQuestionsByStudent(studentId: number) {
   return requestClient.get<EducationWrongQuestionApi.WrongQuestion[]>(
-    `/api/wrong-question/student/${studentId}`,
+    '/edu/wrong-question/student',
+    { params: { studentId } },
   );
 }
 
 async function createWrongQuestion(
   data: Omit<EducationWrongQuestionApi.WrongQuestion, 'id'>,
 ) {
-  return requestClient.post('/api/wrong-question', data);
+  return requestClient.post('/edu/wrong-question/create', data);
 }
 
 async function updateWrongQuestion(
   id: number,
   data: Partial<EducationWrongQuestionApi.WrongQuestion>,
 ) {
-  return requestClient.put(`/api/wrong-question/${id}`, data);
+  return requestClient.post('/edu/wrong-question/update', data, { params: { id } });
 }
 
 async function deleteWrongQuestion(id: number) {
-  return requestClient.delete(`/api/wrong-question/${id}`);
+  return requestClient.post('/edu/wrong-question/delete', null, { params: { id } });
 }
 
 export {

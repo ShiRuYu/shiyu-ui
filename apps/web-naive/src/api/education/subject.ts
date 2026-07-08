@@ -18,40 +18,44 @@ export namespace EducationSubjectApi {
 }
 
 async function getSubjectList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationSubjectApi.PageData<EducationSubjectApi.Subject>>('/api/subject', {
+  return requestClient.get<EducationSubjectApi.PageData<EducationSubjectApi.Subject>>('/edu/subject/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getSubjectById(id: number) {
-  return requestClient.get<EducationSubjectApi.Subject>(`/api/subject/${id}`);
+  return requestClient.get<EducationSubjectApi.Subject>('/edu/subject/detail', {
+    params: { id },
+  });
 }
 
 async function getSubjectByCode(code: string) {
   return requestClient.get<EducationSubjectApi.Subject>(
-    `/api/subject/code/${code}`,
+    '/edu/subject/code',
+    { params: { code } },
   );
 }
 
 async function getSubjectByGradeLevel(gradeLevel: string) {
   return requestClient.get<EducationSubjectApi.Subject[]>(
-    `/api/subject/grade-level/${gradeLevel}`,
+    '/edu/subject/grade-level',
+    { params: { gradeLevel } },
   );
 }
 
 async function createSubject(data: Omit<EducationSubjectApi.Subject, 'id'>) {
-  return requestClient.post('/api/subject', data);
+  return requestClient.post('/edu/subject/create', data);
 }
 
 async function updateSubject(
   id: number,
   data: Partial<EducationSubjectApi.Subject>,
 ) {
-  return requestClient.put(`/api/subject/${id}`, data);
+  return requestClient.post('/edu/subject/update', data, { params: { id } });
 }
 
 async function deleteSubject(id: number) {
-  return requestClient.delete(`/api/subject/${id}`);
+  return requestClient.post('/edu/subject/delete', null, { params: { id } });
 }
 
 export {
