@@ -36,19 +36,23 @@ async function getModelPage(params?: Recordable<any>) {
 }
 
 async function createModel(data: Omit<ModelApi.ModelItem, 'id'>) {
-  return requestClient.post('/agent/model', data);
+  return requestClient.post('/agent/model/create', data);
 }
 
 async function updateModel(id: number, data: Partial<ModelApi.ModelItem>) {
-  return requestClient.patch(`/agent/model/${id}`, data);
+  return requestClient.post('/agent/model/update', data, { params: { id } });
 }
 
 async function deleteModel(id: number) {
-  return requestClient.delete(`/agent/model/${id}`);
+  return requestClient.post('/agent/model/delete', null, { params: { id } });
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.put(`/agent/model/${id}/default`);
+  return requestClient.post('/agent/model/set-default', null, { params: { id } });
 }
 
-export { createModel, deleteModel, getModelPage, setDefaultModel, updateModel };
+async function batchDeleteModel(ids: number[]) {
+  return requestClient.post('/agent/model/batch-delete', ids);
+}
+
+export { batchDeleteModel, createModel, deleteModel, getModelPage, setDefaultModel, updateModel };

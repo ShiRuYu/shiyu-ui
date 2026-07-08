@@ -49,21 +49,26 @@ async function getIntentDefPage(params?: Recordable<any>) {
 }
 
 async function createIntentDef(data: IntentDefApi.IntentDefRequest) {
-  return requestClient.post<IntentDefApi.IntentDefVO>('/admin/intent', data);
+  return requestClient.post<IntentDefApi.IntentDefVO>('/admin/intent/create', data);
 }
 
 async function updateIntentDef(
   id: number,
   data: IntentDefApi.IntentDefRequest,
 ) {
-  return requestClient.patch<IntentDefApi.IntentDefVO>(
-    `/admin/intent/${id}`,
+  return requestClient.post<IntentDefApi.IntentDefVO>(
+    '/admin/intent/update',
     data,
+    { params: { id } },
   );
 }
 
 async function deleteIntentDef(id: number) {
-  return requestClient.delete(`/admin/intent/${id}`);
+  return requestClient.post('/admin/intent/delete', null, { params: { id } });
 }
 
-export { createIntentDef, deleteIntentDef, getIntentDefPage, updateIntentDef };
+async function batchDeleteIntentDef(ids: number[]) {
+  return requestClient.post('/admin/intent/batch-delete', ids);
+}
+
+export { batchDeleteIntentDef, createIntentDef, deleteIntentDef, getIntentDefPage, updateIntentDef };

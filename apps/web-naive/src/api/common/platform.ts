@@ -35,22 +35,22 @@ async function getPlatformPage(params?: Recordable<any>) {
 }
 
 async function createPlatform(data: Omit<PlatformApi.PlatformItem, 'id'>) {
-  return requestClient.post('/admin/platform', data);
+  return requestClient.post('/admin/platform/create', data);
 }
 
 async function updatePlatform(
   id: number,
   data: Partial<PlatformApi.PlatformItem>,
 ) {
-  return requestClient.patch(`/admin/platform/${id}`, data);
+  return requestClient.post('/admin/platform/update', data, { params: { id } });
 }
 
 async function deletePlatform(id: number) {
-  return requestClient.delete(`/admin/platform/${id}`);
+  return requestClient.post('/admin/platform/delete', null, { params: { id } });
 }
 
 async function setDefaultPlatform(id: number) {
-  return requestClient.put(`/admin/platform/${id}/default`);
+  return requestClient.post('/admin/platform/set-default', null, { params: { id } });
 }
 
 async function getPlatformOptions() {
