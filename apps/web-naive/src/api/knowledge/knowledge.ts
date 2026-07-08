@@ -8,7 +8,9 @@ export function createKnowledgeApi(data: any) {
 
 /** 更新知识点 */
 export function updateKnowledgeApi(id: number, data: any) {
-  return requestClient.post('/knowledge/knowledge/update', data, { params: { id } });
+  return requestClient.post('/knowledge/knowledge/update', data, {
+    params: { id },
+  });
 }
 
 /** 获取知识点列表（后端返回 PageData） */
@@ -42,7 +44,9 @@ export function getKnowledgePathApi(id: number) {
 
 /** 删除知识点 */
 export function deleteKnowledgeApi(id: number) {
-  return requestClient.post('/knowledge/knowledge/delete', null, { params: { id } });
+  return requestClient.post('/knowledge/knowledge/delete', null, {
+    params: { id },
+  });
 }
 
 /** 搜索知识点 */
@@ -51,7 +55,9 @@ export async function searchKnowledgeApi(params: {
   query: string;
   topK?: number;
 }) {
-  const res = await requestClient.get<any>('/knowledge/knowledge/search', { params });
+  const res = await requestClient.get<any>('/knowledge/knowledge/search', {
+    params,
+  });
   return res ?? [];
 }
 

@@ -30,7 +30,10 @@ const subjectOptions = ref<Array<{ label: string; value: string }>>([]);
 async function loadSubjectOptions() {
   try {
     const data = await getSubjectOptions();
-    subjectOptions.value = data.map((s: any) => ({ label: s.name, value: s.code }));
+    subjectOptions.value = data.map((s: any) => ({
+      label: s.name,
+      value: s.code,
+    }));
   } catch (error) {
     console.error('Failed to load subject options:', error);
   }

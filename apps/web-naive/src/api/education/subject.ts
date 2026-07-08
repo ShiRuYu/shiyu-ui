@@ -18,7 +18,9 @@ export namespace EducationSubjectApi {
 }
 
 async function getSubjectList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationSubjectApi.PageData<EducationSubjectApi.Subject>>('/edu/subject/list', {
+  return requestClient.get<
+    EducationSubjectApi.PageData<EducationSubjectApi.Subject>
+  >('/edu/subject/list', {
     params: { pageNum, pageSize },
   });
 }
@@ -30,10 +32,9 @@ async function getSubjectById(id: number) {
 }
 
 async function getSubjectByCode(code: string) {
-  return requestClient.get<EducationSubjectApi.Subject>(
-    '/edu/subject/code',
-    { params: { code } },
-  );
+  return requestClient.get<EducationSubjectApi.Subject>('/edu/subject/code', {
+    params: { code },
+  });
 }
 
 async function getSubjectByGradeLevel(gradeLevel: string) {
@@ -60,7 +61,11 @@ async function deleteSubject(id: number) {
 
 async function getSubjectOptions() {
   const result = await getSubjectList(1, 1000);
-  return (result?.items || []).map((s) => ({ id: s.id, name: s.name, code: s.code }));
+  return (result?.items || []).map((s) => ({
+    id: s.id,
+    name: s.name,
+    code: s.code,
+  }));
 }
 
 export {

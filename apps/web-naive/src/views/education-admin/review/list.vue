@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getReviewsByStatus, completeReview } from '#/api/education/review';
+import { completeReview, getReviewsByStatus } from '#/api/education/review';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -64,7 +64,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getReviewsByStatus(getCurrentStudentId(), 'PENDING');
+          const result = await getReviewsByStatus(
+            getCurrentStudentId(),
+            'PENDING',
+          );
           return { items: result, total: result.length };
         },
       },

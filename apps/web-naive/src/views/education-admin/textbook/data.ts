@@ -51,7 +51,11 @@ export function useSchema(): VbenFormSchema[] {
           $t('ui.formRules.required', [$t('education.textbook.subjectCode')]),
         ),
     },
-    { component: 'InputNumber', fieldName: 'grade', label: $t('education.course.grade') },
+    {
+      component: 'InputNumber',
+      fieldName: 'grade',
+      label: $t('education.course.grade'),
+    },
     {
       component: 'Input',
       fieldName: 'publisher',

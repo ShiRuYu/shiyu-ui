@@ -87,8 +87,16 @@ export function useColumns(
       cellRender: {
         name: 'CellTag',
         options: [
-          { color: 'success', label: $t('agent.adminListStatusNormal'), value: '1' },
-          { color: 'error', label: $t('agent.adminListStatusDisabled'), value: '0' },
+          {
+            color: 'success',
+            label: $t('agent.adminListStatusNormal'),
+            value: '1',
+          },
+          {
+            color: 'error',
+            label: $t('agent.adminListStatusDisabled'),
+            value: '0',
+          },
         ],
       },
       field: 'status',
@@ -105,7 +113,11 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete', { code: 'version', label: $t('agent.version') }],
+        options: [
+          'edit',
+          'delete',
+          { code: 'version', label: $t('agent.version') },
+        ],
       },
       field: 'operation',
       fixed: 'right',

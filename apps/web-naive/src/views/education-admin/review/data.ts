@@ -4,9 +4,9 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationReviewApi } from '#/api/education/review';
 
-import { $t } from '#/locales';
-import { getUserOptions } from '#/api/system/user';
 import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
+import { getUserOptions } from '#/api/system/user';
+import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -97,10 +97,26 @@ export function useColumns(
 ): VxeTableGridColumns<EducationReviewApi.ReviewTask> {
   return [
     { field: 'id', title: 'ID', width: 80 },
-    { field: 'knowledgeName', title: $t('education.review.knowledgeName'), width: 200 },
-    { field: 'reviewRound', title: $t('education.review.reviewRound'), width: 100 },
-    { field: 'reviewDate', title: $t('education.review.reviewDate'), width: 120 },
-    { field: 'resultScore', title: $t('education.review.resultScore'), width: 100 },
+    {
+      field: 'knowledgeName',
+      title: $t('education.review.knowledgeName'),
+      width: 200,
+    },
+    {
+      field: 'reviewRound',
+      title: $t('education.review.reviewRound'),
+      width: 100,
+    },
+    {
+      field: 'reviewDate',
+      title: $t('education.review.reviewDate'),
+      width: 120,
+    },
+    {
+      field: 'resultScore',
+      title: $t('education.review.resultScore'),
+      width: 100,
+    },
     {
       align: 'right',
       cellRender: {

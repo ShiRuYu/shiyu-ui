@@ -53,10 +53,14 @@ async function onBatchDelete() {
     message.warning($t('system.dict.selectFirst'));
     return;
   }
-  const hideLoading = message.loading($t('system.dict.batchDeleting'), { duration: 0 });
+  const hideLoading = message.loading($t('system.dict.batchDeleting'), {
+    duration: 0,
+  });
   try {
     await batchDeleteDict(selectedIds.value);
-    message.success($t('system.dict.batchDeleteSuccess', [selectedIds.value.length]));
+    message.success(
+      $t('system.dict.batchDeleteSuccess', [selectedIds.value.length]),
+    );
     selectedIds.value = [];
     refreshGrid();
   } catch {

@@ -65,7 +65,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page, pageSize }) => {
           const result = await getPlansByStudent(getCurrentStudentId());
-          const items = Array.isArray(result) ? result : (result?.items || []);
+          const items = Array.isArray(result) ? result : result?.items || [];
           return { items, total: items.length };
         },
       },

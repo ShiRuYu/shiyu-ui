@@ -4,18 +4,16 @@ import type {
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 
+import { useRouter } from 'vue-router';
+
 import { Page, useVbenModal } from '@vben/common-ui';
-import { Plus, GitBranch, Network } from '@vben/icons';
+import { GitBranch, Network, Plus } from '@vben/icons';
 
 import { NButton, NSpace } from 'naive-ui';
-import { useRouter } from 'vue-router';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  getKnowledgeListApi,
-  deleteKnowledgeApi,
-} from '#/api/knowledge';
+import { deleteKnowledgeApi, getKnowledgeListApi } from '#/api/knowledge';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -69,7 +67,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
           if (formValues?.keyword) params.keyword = formValues.keyword;
           if (formValues?.category) params.category = formValues.category;
           const result = await getKnowledgeListApi(params);
-          return { items: result?.items || result, total: result?.total || (result?.items || result)?.length || 0 };
+          return {
+            items: result?.items || result,
+            total: result?.total || (result?.items || result)?.length || 0,
+          };
         },
       },
     },

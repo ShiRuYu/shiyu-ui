@@ -13,7 +13,7 @@ const selectedId = ref<null | number>(null);
 const graphData = ref<null | { edges: any[]; nodes: any[] }>(null);
 const loading = ref(false);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-let resizeObserver: ResizeObserver | null = null;
+let resizeObserver: null | ResizeObserver = null;
 
 async function loadOptions() {
   const result = await getKnowledgeListApi({ pageSize: 9999 });
@@ -49,7 +49,11 @@ async function loadGraph() {
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: n.name, target: res.node.name, label: $t('knowledge.relationPre') });
+        edges.push({
+          source: n.name,
+          target: res.node.name,
+          label: $t('knowledge.relationPre'),
+        });
       }
     });
 
@@ -59,7 +63,11 @@ async function loadGraph() {
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: res.node.name, target: n.name, label: $t('knowledge.relationNext') });
+        edges.push({
+          source: res.node.name,
+          target: n.name,
+          label: $t('knowledge.relationNext'),
+        });
       }
     });
 
@@ -69,7 +77,11 @@ async function loadGraph() {
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: res.node.name, target: n.name, label: $t('knowledge.relationRelated') });
+        edges.push({
+          source: res.node.name,
+          target: n.name,
+          label: $t('knowledge.relationRelated'),
+        });
       }
     });
 
@@ -135,8 +147,14 @@ function renderGraph() {
         const angle = Math.atan2(t.y - s.y, t.x - s.x);
         ctx.beginPath();
         ctx.moveTo(t.x, t.y);
-        ctx.lineTo(t.x - 10 * Math.cos(angle - 0.3), t.y - 10 * Math.sin(angle - 0.3));
-        ctx.lineTo(t.x - 10 * Math.cos(angle + 0.3), t.y - 10 * Math.sin(angle + 0.3));
+        ctx.lineTo(
+          t.x - 10 * Math.cos(angle - 0.3),
+          t.y - 10 * Math.sin(angle - 0.3),
+        );
+        ctx.lineTo(
+          t.x - 10 * Math.cos(angle + 0.3),
+          t.y - 10 * Math.sin(angle + 0.3),
+        );
         ctx.closePath();
         ctx.fillStyle = '#aaa';
         ctx.fill();
@@ -158,7 +176,13 @@ function renderGraph() {
     if (!p) return;
     const nodeRadius = n.type === 'center' ? 28 : 20;
     const color =
-      n.type === 'center' ? '#2080f0' : n.type === 'parent' ? '#18a058' : n.type === 'child' ? '#d03050' : '#f0a020';
+      n.type === 'center'
+        ? '#2080f0'
+        : n.type === 'parent'
+          ? '#18a058'
+          : n.type === 'child'
+            ? '#d03050'
+            : '#f0a020';
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, nodeRadius, 0, 2 * Math.PI);
@@ -223,10 +247,7 @@ onUnmounted(() => {
 
       <NSpin :show="loading">
         <div v-if="graphData?.nodes?.length" class="graph-container">
-          <canvas
-            ref="canvasRef"
-            class="graph-canvas"
-          ></canvas>
+          <canvas ref="canvasRef" class="graph-canvas"></canvas>
         </div>
         <NEmpty v-else-if="!loading" :description="$t('knowledge.viewGraph')" />
       </NSpin>

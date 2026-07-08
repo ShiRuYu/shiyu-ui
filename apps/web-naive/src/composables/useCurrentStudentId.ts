@@ -11,7 +11,8 @@ export function useCurrentStudentId() {
     // 尝试从 extInfo 中获取 studentId
     const extInfo = userStore.userInfo?.extInfo;
     if (extInfo) {
-      const parsed = typeof extInfo === 'string' ? JSON.parse(extInfo) : extInfo;
+      const parsed =
+        typeof extInfo === 'string' ? JSON.parse(extInfo) : extInfo;
       if (parsed?.studentId != null) {
         return parsed.studentId;
       }

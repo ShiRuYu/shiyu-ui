@@ -12,7 +12,10 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getWrongQuestionsByStudent, deleteWrongQuestion } from '#/api/education/wrong-question';
+import {
+  deleteWrongQuestion,
+  getWrongQuestionsByStudent,
+} from '#/api/education/wrong-question';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -64,7 +67,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getWrongQuestionsByStudent(getCurrentStudentId());
+          const result = await getWrongQuestionsByStudent(
+            getCurrentStudentId(),
+          );
           return { items: result, total: result.length };
         },
       },
@@ -89,7 +94,9 @@ function refreshGrid() {
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('education.wrongQuestion.name')]) }}
+          {{
+            $t('ui.actionTitle.create', [$t('education.wrongQuestion.name')])
+          }}
         </NButton>
       </template>
     </Grid>

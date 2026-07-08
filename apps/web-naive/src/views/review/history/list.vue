@@ -67,7 +67,10 @@ const columns: any[] = [
 async function loadHistory() {
   loading.value = true;
   try {
-    history.value = await getReviewsByStatus(getCurrentStudentId(), 'COMPLETED');
+    history.value = await getReviewsByStatus(
+      getCurrentStudentId(),
+      'COMPLETED',
+    );
   } catch (error) {
     console.error(error);
   } finally {

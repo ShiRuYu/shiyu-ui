@@ -81,7 +81,9 @@ async function updateUser(
   id: number,
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/auth/user/update', data, { params: { userId: id } });
+  return requestClient.post('/auth/user/update', data, {
+    params: { userId: id },
+  });
 }
 
 /**
@@ -89,7 +91,9 @@ async function updateUser(
  * @param id 用户 ID
  */
 async function deleteUser(id: number) {
-  return requestClient.post('/auth/user/delete', null, { params: { userId: id } });
+  return requestClient.post('/auth/user/delete', null, {
+    params: { userId: id },
+  });
 }
 
 /**
@@ -98,7 +102,11 @@ async function deleteUser(id: number) {
  * @param password 新密码
  */
 async function resetUserPassword(id: number, password: string) {
-  return requestClient.post('/auth/user/password/reset', { password }, { params: { userId: id } });
+  return requestClient.post(
+    '/auth/user/password/reset',
+    { password },
+    { params: { userId: id } },
+  );
 }
 
 /**
@@ -112,15 +120,22 @@ async function changePassword(
   oldPassword: string,
   newPassword: string,
 ) {
-  return requestClient.post('/auth/user/password/change', {
-    oldPassword,
-    newPassword,
-  }, { params: { userId: id } });
+  return requestClient.post(
+    '/auth/user/password/change',
+    {
+      oldPassword,
+      newPassword,
+    },
+    { params: { userId: id } },
+  );
 }
 
 async function getUserOptions() {
   const result = await getUserList({ page: 1, pageSize: 1000 });
-  return (result?.items || []).map((u) => ({ id: u.id, nickName: u.nickName || u.username }));
+  return (result?.items || []).map((u) => ({
+    id: u.id,
+    nickName: u.nickName || u.username,
+  }));
 }
 
 export {

@@ -5,8 +5,8 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationChapterApi } from '#/api/education/chapter';
 
 import { z } from '#/adapter/form';
-import { getTextbookOptions } from '#/api/education/textbook';
 import { getChapterOptions } from '#/api/education/chapter';
+import { getTextbookOptions } from '#/api/education/textbook';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {

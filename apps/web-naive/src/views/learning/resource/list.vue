@@ -22,7 +22,10 @@ const typeOptions = ref<Array<{ label: string; value: string }>>([]);
 async function loadTypeOptions() {
   try {
     const data = await getDictByType('RESOURCE_TYPE');
-    typeOptions.value = data.map((d: any) => ({ label: d.dictLabel, value: d.dictValue }));
+    typeOptions.value = data.map((d: any) => ({
+      label: d.dictLabel,
+      value: d.dictValue,
+    }));
   } catch (error) {
     console.error('Failed to load type options:', error);
   }

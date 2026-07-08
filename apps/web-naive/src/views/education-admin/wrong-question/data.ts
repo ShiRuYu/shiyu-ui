@@ -4,10 +4,10 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationWrongQuestionApi } from '#/api/education/wrong-question';
 
-import { $t } from '#/locales';
-import { getUserOptions } from '#/api/system/user';
 import { getQuestionOptions } from '#/api/education/question';
 import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
+import { getUserOptions } from '#/api/system/user';
+import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -76,8 +76,16 @@ export function useColumns(
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'questionId', title: '题目ID', width: 100 },
-    { field: 'studentAnswer', title: $t('education.wrongQuestion.studentAnswer'), width: 200 },
-    { field: 'correctTimes', title: $t('education.wrongQuestion.correctTimes'), width: 100 },
+    {
+      field: 'studentAnswer',
+      title: $t('education.wrongQuestion.studentAnswer'),
+      width: 200,
+    },
+    {
+      field: 'correctTimes',
+      title: $t('education.wrongQuestion.correctTimes'),
+      width: 100,
+    },
     {
       align: 'right',
       cellRender: {

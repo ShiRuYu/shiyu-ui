@@ -39,7 +39,9 @@ function setPartial(partial: Partial<AgentGraphApi.FormNode>) {
 
 // ---------- API/Dict field rendering ----------
 
-const apiOptionsCache = ref<Record<string, Array<{ label: string; value: any }>>>({});
+const apiOptionsCache = ref<
+  Record<string, Array<{ label: string; value: any }>>
+>({});
 
 function buildUrl(url: string): string {
   return url.replace(/\{(\w+)\}/g, (_: string, key: string) => {
@@ -56,35 +58,43 @@ async function loadApiOptions(field: NodeTypeApi.FieldMeta) {
   if (src.type === 'dict' && src.dictType) {
     try {
       const res: any = await getDictByType(src.dictType);
-      const items = Array.isArray(res) ? res : res?.data ?? [];
+      const items = Array.isArray(res) ? res : (res?.data ?? []);
       options = items.map((item: any) => ({
         label: src.labelKey ? item[src.labelKey] : item.dictLabel,
         value: src.valueKey ? item[src.valueKey] : item.dictValue,
       }));
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   } else if (src.type === 'api' && src.url) {
     const resolvedUrl = buildUrl(src.url);
     try {
       const res: any = await requestClient.get(resolvedUrl);
-      const items = Array.isArray(res) ? res : res?.data ?? [];
+      const items = Array.isArray(res) ? res : (res?.data ?? []);
       options = items.map((item: any) => ({
         label: src.labelKey ? item[src.labelKey] : item.name,
         value: src.valueKey ? item[src.valueKey] : item.id,
       }));
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   apiOptionsCache.value[cacheKey] = options;
 }
 
 // Load non-dependent fields on mount
-watch(fieldSchemas, (schemas) => {
-  for (const f of schemas) {
-    if (f.source && !f.source.dependsOn) {
-      loadApiOptions(f);
+watch(
+  fieldSchemas,
+  (schemas) => {
+    for (const f of schemas) {
+      if (f.source && !f.source.dependsOn) {
+        loadApiOptions(f);
+      }
     }
-  }
-}, { immediate: true });
+  },
+  { immediate: true },
+);
 
 // Watch dependencies for cascade reload
 watch(
@@ -171,7 +181,11 @@ function getFieldOptions(field: NodeTypeApi.FieldMeta) {
           v-if="field.source || field.options"
           :value="getConfigValue(field.key) ?? field.defaultValue"
           :options="getFieldOptions(field)"
-          :loading="field.source && !apiOptionsCache[field.key] && !field.source.dependsOn"
+          :loading="
+            field.source &&
+            !apiOptionsCache[field.key] &&
+            !field.source.dependsOn
+          "
           size="small"
           :placeholder="field.description || '请选择'"
           :clearable="true"

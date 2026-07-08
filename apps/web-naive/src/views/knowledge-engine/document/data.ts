@@ -9,7 +9,10 @@ import { $t } from '#/locales';
 
 async function getKnowledgeOptions() {
   const result = await getKnowledgeListApi({ pageSize: 1000 });
-  return (result?.items || result || []).map((k: any) => ({ id: k.id, name: `[${k.code}] ${k.name}` }));
+  return (result?.items || result || []).map((k: any) => ({
+    id: k.id,
+    name: `[${k.code}] ${k.name}`,
+  }));
 }
 
 export interface Document {

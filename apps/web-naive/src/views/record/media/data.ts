@@ -4,8 +4,8 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { MediaApi } from '#/api/record/media';
 
-import { $t } from '#/locales';
 import { getRecordOptions } from '#/api/record/records';
+import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [

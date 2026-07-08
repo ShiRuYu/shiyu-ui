@@ -33,7 +33,9 @@ async function createRecord(data: Omit<RecordsApi.Record, 'id'>) {
 }
 
 async function updateRecord(data: RecordsApi.Record) {
-  return requestClient.post('/record/record/update', data, { params: { id: data.id } });
+  return requestClient.post('/record/record/update', data, {
+    params: { id: data.id },
+  });
 }
 
 async function deleteRecord(id: number) {
@@ -42,7 +44,16 @@ async function deleteRecord(id: number) {
 
 async function getRecordOptions() {
   const result = await getRecordPage({ page: 1, pageSize: 1000 });
-  return (result?.items || []).map((r) => ({ id: r.id, content: (r.content || '').substring(0, 20) }));
+  return (result?.items || []).map((r) => ({
+    id: r.id,
+    content: (r.content || '').substring(0, 20),
+  }));
 }
 
-export { createRecord, deleteRecord, getRecordOptions, getRecordPage, updateRecord };
+export {
+  createRecord,
+  deleteRecord,
+  getRecordOptions,
+  getRecordPage,
+  updateRecord,
+};

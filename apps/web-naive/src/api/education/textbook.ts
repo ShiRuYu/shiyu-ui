@@ -18,14 +18,17 @@ export namespace EducationTextbookApi {
 }
 
 async function getTextbookList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationTextbookApi.PageData<EducationTextbookApi.Textbook>>('/edu/textbook/list', {
+  return requestClient.get<
+    EducationTextbookApi.PageData<EducationTextbookApi.Textbook>
+  >('/edu/textbook/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getTextbookById(id: number) {
   return requestClient.get<EducationTextbookApi.Textbook>(
-    '/edu/textbook/detail', { params: { id } },
+    '/edu/textbook/detail',
+    { params: { id } },
   );
 }
 

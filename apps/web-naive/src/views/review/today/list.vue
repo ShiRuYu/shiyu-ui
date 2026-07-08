@@ -28,7 +28,10 @@ async function loadReviews() {
 
 async function handleComplete(review: EducationReviewApi.ReviewTask) {
   try {
-    await completeReview(review.id, { studentId: getCurrentStudentId(), resultScore: 80 });
+    await completeReview(review.id, {
+      studentId: getCurrentStudentId(),
+      resultScore: 80,
+    });
     review.status = 'COMPLETED';
   } catch (error) {
     console.error(error);

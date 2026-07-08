@@ -26,13 +26,15 @@ export namespace EducationQuestionApi {
 
 async function getQuestionById(id: number) {
   return requestClient.get<EducationQuestionApi.Question>(
-    '/edu/question/detail', { params: { id } },
+    '/edu/question/detail',
+    { params: { id } },
   );
 }
 
-
 async function getAllQuestions(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationQuestionApi.PageData<EducationQuestionApi.Question>>('/edu/question/list', {
+  return requestClient.get<
+    EducationQuestionApi.PageData<EducationQuestionApi.Question>
+  >('/edu/question/list', {
     params: { pageNum, pageSize },
   });
 }
@@ -78,9 +80,9 @@ async function getQuestionOptions() {
 }
 
 export {
-  getAllQuestions,
   createQuestion,
   deleteQuestion,
+  getAllQuestions,
   getQuestionByDifficulty,
   getQuestionById,
   getQuestionBySubjectGrade,

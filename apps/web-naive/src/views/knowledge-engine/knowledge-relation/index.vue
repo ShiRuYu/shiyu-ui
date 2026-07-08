@@ -30,12 +30,16 @@ import { $t } from '#/locales';
 
 const message = useMessage();
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
-const selectedKnowledgeId = ref<number | null>(null);
+const selectedKnowledgeId = ref<null | number>(null);
 const prerequisites = ref<any[]>([]);
 const subsequent = ref<any[]>([]);
 const loading = ref(false);
 const showAddModal = ref(false);
-const addForm = ref({ targetId: null as number | null, type: 'PRE', weight: 1.0 });
+const addForm = ref({
+  targetId: null as null | number,
+  type: 'PRE',
+  weight: 1.0,
+});
 
 const relationTypeOptions = computed(() => [
   { label: `${$t('knowledge.relationPre')} (PRE)`, value: 'PRE' },
@@ -47,13 +51,18 @@ const relationTypeOptions = computed(() => [
 ]);
 
 const targetKnowledgeOptions = computed(() => {
-  return knowledgeOptions.value.filter((opt) => opt.value !== selectedKnowledgeId.value);
+  return knowledgeOptions.value.filter(
+    (opt) => opt.value !== selectedKnowledgeId.value,
+  );
 });
 
 async function loadOptions() {
   const result = await getKnowledgeListApi({ pageSize: 9999 });
   const list = result?.items || result || [];
-  knowledgeOptions.value = list.map((k: any) => ({ label: `[${k.code}] ${k.name}`, value: k.id }));
+  knowledgeOptions.value = list.map((k: any) => ({
+    label: `[${k.code}] ${k.name}`,
+    value: k.id,
+  }));
 }
 
 async function loadRelations() {
@@ -64,8 +73,12 @@ async function loadRelations() {
       getKnowledgePrerequisitesListApi(selectedKnowledgeId.value),
       getKnowledgeSubsequentListApi(selectedKnowledgeId.value),
     ]);
-    prerequisites.value = Array.isArray(pre) ? pre : ((pre as any)?.items || (pre as any)?.data || []);
-    subsequent.value = Array.isArray(sub) ? sub : ((sub as any)?.items || (sub as any)?.data || []);
+    prerequisites.value = Array.isArray(pre)
+      ? pre
+      : (pre as any)?.items || (pre as any)?.data || [];
+    subsequent.value = Array.isArray(sub)
+      ? sub
+      : (sub as any)?.items || (sub as any)?.data || [];
   } finally {
     loading.value = false;
   }
@@ -89,7 +102,11 @@ async function handleAddRelation() {
   }
 }
 
-async function handleDeleteRelation(targetId: number, type: string, isPre: boolean) {
+async function handleDeleteRelation(
+  targetId: number,
+  type: string,
+  isPre: boolean,
+) {
   if (!selectedKnowledgeId.value) return;
   const sourceId = isPre ? targetId : selectedKnowledgeId.value;
   const tarId = isPre ? selectedKnowledgeId.value : targetId;
@@ -116,9 +133,18 @@ const preColumns = computed(() => [
       h(
         NPopconfirm,
         {
-          onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'PRE', true),
+          onPositiveClick: () =>
+            handleDeleteRelation(row.id, row.relationType || 'PRE', true),
         },
-        { default: () => $t('knowledge.confirmDelete'), trigger: () => h(NButton, { size: 'small', type: 'error' }, $t('knowledge.release')) },
+        {
+          default: () => $t('knowledge.confirmDelete'),
+          trigger: () =>
+            h(
+              NButton,
+              { size: 'small', type: 'error' },
+              $t('knowledge.release'),
+            ),
+        },
       ),
   },
 ]);
@@ -131,7 +157,8 @@ const subColumns = computed(() => [
     title: $t('knowledge.relationType'),
     key: 'relationType',
     width: 120,
-    render: (row: any) => h(NTag, { size: 'small' }, row.relationType || 'NEXT'),
+    render: (row: any) =>
+      h(NTag, { size: 'small' }, row.relationType || 'NEXT'),
   },
   {
     title: $t('common.operation'),
@@ -141,9 +168,18 @@ const subColumns = computed(() => [
       h(
         NPopconfirm,
         {
-          onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'NEXT', false),
+          onPositiveClick: () =>
+            handleDeleteRelation(row.id, row.relationType || 'NEXT', false),
         },
-        { default: () => $t('knowledge.confirmDelete'), trigger: () => h(NButton, { size: 'small', type: 'error' }, $t('knowledge.release')) },
+        {
+          default: () => $t('knowledge.confirmDelete'),
+          trigger: () =>
+            h(
+              NButton,
+              { size: 'small', type: 'error' },
+              $t('knowledge.release'),
+            ),
+        },
       ),
   },
 ]);
@@ -166,7 +202,11 @@ onMounted(() => {
             style="width: 300px"
             @update:value="loadRelations"
           />
-          <NButton v-if="selectedKnowledgeId" type="primary" @click="showAddModal = true">
+          <NButton
+            v-if="selectedKnowledgeId"
+            type="primary"
+            @click="showAddModal = true"
+          >
             {{ $t('knowledge.addRelation') }}
           </NButton>
         </NSpace>
@@ -174,15 +214,32 @@ onMounted(() => {
 
       <NSpace v-if="selectedKnowledgeId" vertical>
         <h4>{{ $t('knowledge.prerequisiteKnowledge') }}</h4>
-        <NDataTable :columns="preColumns" :data="prerequisites" :loading="loading" size="small" striped />
+        <NDataTable
+          :columns="preColumns"
+          :data="prerequisites"
+          :loading="loading"
+          size="small"
+          striped
+        />
 
         <h4 class="mt-4">{{ $t('knowledge.subsequentKnowledge') }}</h4>
-        <NDataTable :columns="subColumns" :data="subsequent" :loading="loading" size="small" striped />
+        <NDataTable
+          :columns="subColumns"
+          :data="subsequent"
+          :loading="loading"
+          size="small"
+          striped
+        />
       </NSpace>
 
       <NEmpty v-else :description="$t('knowledge.selectKnowledge')" />
 
-      <NModal v-model:show="showAddModal" :title="$t('knowledge.addRelationTitle')" preset="card" style="width: 500px">
+      <NModal
+        v-model:show="showAddModal"
+        :title="$t('knowledge.addRelationTitle')"
+        preset="card"
+        style="width: 500px"
+      >
         <NForm :model="addForm" label-placement="left" label-width="100">
           <NFormItem :label="$t('knowledge.targetKnowledge')">
             <NSelect
@@ -193,16 +250,33 @@ onMounted(() => {
             />
           </NFormItem>
           <NFormItem :label="$t('knowledge.relationType')">
-            <NSelect v-model:value="addForm.type" :options="relationTypeOptions" />
+            <NSelect
+              v-model:value="addForm.type"
+              :options="relationTypeOptions"
+            />
           </NFormItem>
           <NFormItem :label="$t('knowledge.weight')">
-            <NInputNumber v-model:value="addForm.weight" :min="0" :max="2" :step="0.1" style="width: 100%" />
+            <NInputNumber
+              v-model:value="addForm.weight"
+              :min="0"
+              :max="2"
+              :step="0.1"
+              style="width: 100%"
+            />
           </NFormItem>
         </NForm>
         <template #footer>
           <NSpace justify="end">
-            <NButton @click="showAddModal = false">{{ $t('common.cancel') }}</NButton>
-            <NButton type="primary" @click="handleAddRelation">{{ $t('common.confirm') }}</NButton>
+            <NButton @click="showAddModal = false">
+{{
+              $t('common.cancel')
+            }}
+</NButton>
+            <NButton type="primary" @click="handleAddRelation">
+{{
+              $t('common.confirm')
+            }}
+</NButton>
           </NSpace>
         </template>
       </NModal>

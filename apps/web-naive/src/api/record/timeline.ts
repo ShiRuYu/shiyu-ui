@@ -35,21 +35,28 @@ async function getTimelinePage(params: Recordable<any>) {
  * 创建时间线事件
  */
 async function createTimeline(data: Omit<TimelineApi.TimelineEvent, 'id'>) {
-  return requestClient.post<TimelineApi.TimelineEvent>('/record/timeline/create', data);
+  return requestClient.post<TimelineApi.TimelineEvent>(
+    '/record/timeline/create',
+    data,
+  );
 }
 
 /**
  * 更新时间线事件
  */
 async function updateTimeline(data: TimelineApi.TimelineEvent) {
-  return requestClient.post<boolean>('/record/timeline/update', data, { params: { id: data.id } });
+  return requestClient.post<boolean>('/record/timeline/update', data, {
+    params: { id: data.id },
+  });
 }
 
 /**
  * 删除时间线事件
  */
 async function deleteTimeline(id: number) {
-  return requestClient.post<boolean>('/record/timeline/delete', null, { params: { id } });
+  return requestClient.post<boolean>('/record/timeline/delete', null, {
+    params: { id },
+  });
 }
 
 async function getTimelineOptions() {
@@ -57,4 +64,10 @@ async function getTimelineOptions() {
   return (result?.items || []).map((e: any) => ({ id: e.id, title: e.title }));
 }
 
-export { createTimeline, deleteTimeline, getTimelineOptions, getTimelinePage, updateTimeline };
+export {
+  createTimeline,
+  deleteTimeline,
+  getTimelineOptions,
+  getTimelinePage,
+  updateTimeline,
+};

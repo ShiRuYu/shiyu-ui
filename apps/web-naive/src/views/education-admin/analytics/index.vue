@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+
 import { Page } from '@vben/common-ui';
-import { NCard, NStatistic, NGrid, NGi } from 'naive-ui';
+
+import { NCard, NGi, NGrid, NStatistic } from 'naive-ui';
+
 import { getOverview } from '#/api/education/analytics';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';

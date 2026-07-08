@@ -59,7 +59,11 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'subjectCode',
       label: $t('education.course.subjectCode'),
     },
-    { component: 'InputNumber', fieldName: 'grade', label: $t('education.course.grade') },
+    {
+      component: 'InputNumber',
+      fieldName: 'grade',
+      label: $t('education.course.grade'),
+    },
     {
       component: 'InputNumber',
       fieldName: 'durationMin',
@@ -80,7 +84,11 @@ export function useColumns(
     { field: 'id', title: 'ID', width: 80 },
     { field: 'name', title: $t('education.exam.name'), width: 180 },
     { field: 'type', title: $t('education.exam.type'), width: 100 },
-    { field: 'subjectCode', title: $t('education.course.subjectCode'), width: 100 },
+    {
+      field: 'subjectCode',
+      title: $t('education.course.subjectCode'),
+      width: 100,
+    },
     { field: 'grade', title: $t('education.course.grade'), width: 80 },
     {
       field: 'durationMin',

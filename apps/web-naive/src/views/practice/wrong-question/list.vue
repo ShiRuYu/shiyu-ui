@@ -42,7 +42,9 @@ const columns: any[] = [
 async function loadWrongQuestions() {
   loading.value = true;
   try {
-    wrongQuestions.value = await getWrongQuestionsByStudent(getCurrentStudentId());
+    wrongQuestions.value = await getWrongQuestionsByStudent(
+      getCurrentStudentId(),
+    );
   } catch (error) {
     console.error('Failed to load wrong questions:', error);
   } finally {
