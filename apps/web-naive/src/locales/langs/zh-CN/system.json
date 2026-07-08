@@ -9,7 +9,8 @@
     "parentWorkspace": "上级工作空间",
     "remark": "备注",
     "status": "状态",
-    "title": "工作空间管理"
+    "title": "工作空间管理",
+    "appendChild": "新增下级"
   },
   "menu": {
     "list": "菜单列表",
@@ -55,7 +56,8 @@
     "method": "请求方法",
     "description": "描述",
     "show": "是否显示",
-    "order": "排序"
+    "order": "排序",
+    "appendChild": "新增下级"
   },
   "role": {
     "title": "角色管理",
@@ -96,7 +98,8 @@
     "operation": "操作",
     "resetPassword": "重置密码",
     "confirmResetPassword": "确定要重置用户\"{0}\"的密码吗？",
-    "passwordPlaceholder": "留空则由系统生成随机密码"
+    "passwordPlaceholder": "留空则由系统生成随机密码",
+    "resettingPassword": "正在重置密码..."
   },
   "dict": {
     "title": "字典管理",
@@ -110,7 +113,12 @@
     "listClass": "表格回显样式",
     "isDefault": "是否默认",
     "status": "状态",
-    "remark": "备注"
+    "remark": "备注",
+    "batchDelete": "批量删除",
+    "batchDeleteConfirm": "确认删除选中的 {0} 项？",
+    "batchDeleting": "正在批量删除...",
+    "batchDeleteSuccess": "批量删除成功，共 {0} 项",
+    "selectFirst": "请先选择要删除的字典项"
   },
   "platform": {
     "title": "AI 平台管理",

@@ -6,11 +6,13 @@ import { Page } from '@vben/common-ui';
 import { NButton, NCard, NSelect, NSpace } from 'naive-ui';
 
 import { generateReport } from '#/api/agent/education';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const period = ref('WEEKLY');
 const reportContent = ref('');
 const loading = ref(false);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 const periodOptions = [
   { label: $t('analytics.periodWeekly'), value: 'WEEKLY' },
@@ -21,7 +23,7 @@ async function handleGenerate() {
   loading.value = true;
   try {
     const res: any = await generateReport({
-      studentId: 1,
+      studentId: getCurrentStudentId(),
       period: period.value,
     });
     reportContent.value =

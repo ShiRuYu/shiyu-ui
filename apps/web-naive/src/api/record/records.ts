@@ -40,4 +40,9 @@ async function deleteRecord(id: number) {
   return requestClient.post('/record/record/delete', null, { params: { id } });
 }
 
-export { createRecord, deleteRecord, getRecordPage, updateRecord };
+async function getRecordOptions() {
+  const result = await getRecordPage({ page: 1, pageSize: 1000 });
+  return (result?.items || []).map((r) => ({ id: r.id, content: (r.content || '').substring(0, 20) }));
+}
+
+export { createRecord, deleteRecord, getRecordOptions, getRecordPage, updateRecord };

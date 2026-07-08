@@ -51,11 +51,17 @@ async function deleteTextbook(id: number) {
   return requestClient.post('/edu/textbook/delete', null, { params: { id } });
 }
 
+async function getTextbookOptions() {
+  const result = await getTextbookList(1, 1000);
+  return (result?.items || []).map((t) => ({ id: t.id, name: t.name }));
+}
+
 export {
   createTextbook,
   deleteTextbook,
   getTextbookById,
   getTextbookBySubjectGrade,
   getTextbookList,
+  getTextbookOptions,
   updateTextbook,
 };

@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { MediaApi } from '#/api/record/media';
 
 import { $t } from '#/locales';
+import { getRecordOptions } from '#/api/record/records';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -15,7 +16,14 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getRecordOptions,
+        class: 'w-full',
+        labelField: 'content',
+        valueField: 'id',
+      },
       fieldName: 'recordId',
       label: $t('record.media.recordId'),
     },
@@ -24,10 +32,10 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         options: [
-          { label: '图片', value: 'image' },
-          { label: '视频', value: 'video' },
-          { label: '音频', value: 'audio' },
-          { label: '文件', value: 'file' },
+          { label: $t('record.media.typeImage'), value: 'image' },
+          { label: $t('record.media.typeVideo'), value: 'video' },
+          { label: $t('record.media.typeAudio'), value: 'audio' },
+          { label: $t('record.media.typeFile'), value: 'file' },
         ],
       },
       fieldName: 'type',

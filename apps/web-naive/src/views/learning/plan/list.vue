@@ -26,6 +26,7 @@ import {
   getPlansByStudent,
   getTodayTasks,
 } from '#/api/education/plan';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 import { getStatusType } from './data';
@@ -36,7 +37,7 @@ const loading = ref(false);
 const plans = ref<EducationPlanApi.StudyPlan[]>([]);
 const todayTasks = ref<EducationPlanApi.DailyTask[]>([]);
 const tasksLoading = ref(false);
-const currentStudentId = 1;
+const { getCurrentStudentId } = useCurrentStudentId();
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -46,7 +47,7 @@ const [FormModal, formModalApi] = useVbenModal({
 async function loadPlans() {
   loading.value = true;
   try {
-    plans.value = await getPlansByStudent(currentStudentId);
+    plans.value = await getPlansByStudent(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load plans:', error);
   } finally {
@@ -57,7 +58,7 @@ async function loadPlans() {
 async function loadTodayTasks() {
   tasksLoading.value = true;
   try {
-    todayTasks.value = await getTodayTasks(currentStudentId);
+    todayTasks.value = await getTodayTasks(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load tasks:', error);
   } finally {

@@ -4,6 +4,7 @@
     "createSuccess": "创建成功",
     "deleteConfirm": "确定删除吗？",
     "deleteSuccess": "删除成功：{0}",
+    "deleteFailed": "删除失败",
     "editSuccess": "修改成功",
     "operationSuccess": "操作成功"
   },

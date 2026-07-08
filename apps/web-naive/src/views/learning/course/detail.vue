@@ -19,6 +19,7 @@ import {
 
 import { message } from '#/adapter/naive';
 import { getChapterTree, getCourseById, startLearning } from '#/api';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const route = useRoute();
@@ -26,6 +27,7 @@ const router = useRouter();
 const course = ref<EducationCourseApi.Course>();
 const chapters = ref<EducationChapterApi.Chapter[]>([]);
 const loading = ref(false);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadCourse() {
   const id = Number(route.params.id);
@@ -52,7 +54,7 @@ async function loadChapters() {
 async function handleStartLearning() {
   if (!course.value) return;
   try {
-    await startLearning(course.value.id, 1);
+    await startLearning(course.value.id, getCurrentStudentId());
     message.success($t('ui.actionMessage.operationSuccess'));
   } catch (error) {
     console.error('Failed to start learning:', error);

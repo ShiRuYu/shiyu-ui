@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { generateExam } from '#/api/agent/education';
+import { getSubjectOptions } from '#/api/education/subject';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
@@ -13,19 +15,23 @@ const result = ref('');
 const subjectCode = ref('MATH');
 const grade = ref(9);
 const duration = ref(90);
+const subjectOptions = ref<Array<{ label: string; value: string }>>([]);
+const { getCurrentStudentId } = useCurrentStudentId();
 
-const subjectOptions = [
-  { label: '数学', value: 'MATH' },
-  { label: '物理', value: 'PHYSICS' },
-  { label: '英语', value: 'ENGLISH' },
-  { label: '化学', value: 'CHEMISTRY' },
-];
+async function loadSubjectOptions() {
+  try {
+    const data = await getSubjectOptions();
+    subjectOptions.value = data.map((s: any) => ({ label: s.name, value: s.code }));
+  } catch (error) {
+    console.error('Failed to load subject options:', error);
+  }
+}
 
 async function handleGenerate() {
   loading.value = true;
   try {
     const res = await generateExam({
-      studentId: 1,
+      studentId: getCurrentStudentId(),
       knowledgeIds: [5, 6],
       duration: duration.value,
     });
@@ -37,6 +43,10 @@ async function handleGenerate() {
     loading.value = false;
   }
 }
+
+onMounted(() => {
+  loadSubjectOptions();
+});
 </script>
 
 <template>

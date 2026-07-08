@@ -58,6 +58,11 @@ async function deleteSubject(id: number) {
   return requestClient.post('/edu/subject/delete', null, { params: { id } });
 }
 
+async function getSubjectOptions() {
+  const result = await getSubjectList(1, 1000);
+  return (result?.items || []).map((s) => ({ id: s.id, name: s.name, code: s.code }));
+}
+
 export {
   createSubject,
   deleteSubject,
@@ -65,5 +70,6 @@ export {
   getSubjectByGradeLevel,
   getSubjectById,
   getSubjectList,
+  getSubjectOptions,
   updateSubject,
 };

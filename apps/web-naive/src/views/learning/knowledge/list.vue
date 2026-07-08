@@ -39,7 +39,8 @@ const columns: DataTableColumns<any> = [
 
 async function loadSubjects() {
   try {
-    subjects.value = await getSubjectList();
+    const result = await getSubjectList();
+    subjects.value = result?.items || result || [];
   } catch (error) {
     console.error('Failed to load subjects:', error);
   }

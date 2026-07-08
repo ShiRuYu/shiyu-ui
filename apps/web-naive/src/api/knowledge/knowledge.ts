@@ -54,3 +54,9 @@ export async function searchKnowledgeApi(params: {
   const res = await requestClient.get<any>('/knowledge/knowledge/search', { params });
   return res ?? [];
 }
+
+/** 获取知识点下拉选项 */
+export async function getKnowledgeOptions() {
+  const result = await getKnowledgeListApi({ page: 1, pageSize: 1000 });
+  return (result?.items || []).map((k: any) => ({ id: k.id, name: k.name }));
+}

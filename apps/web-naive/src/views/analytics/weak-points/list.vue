@@ -11,10 +11,12 @@ import { Page } from '@vben/common-ui';
 import { NDataTable, NProgress } from 'naive-ui';
 
 import { getWeakPoints } from '#/api';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const weakPoints = ref<EducationAnalyticsApi.WeakPointResponse[]>([]);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 const columns: DataTableColumns<EducationAnalyticsApi.WeakPointResponse> = [
   { title: $t('knowledge.name'), key: 'knowledgeName' },
@@ -38,7 +40,7 @@ const columns: DataTableColumns<EducationAnalyticsApi.WeakPointResponse> = [
 async function loadWeakPoints() {
   loading.value = true;
   try {
-    weakPoints.value = await getWeakPoints(1);
+    weakPoints.value = await getWeakPoints(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load weak points:', error);
   } finally {

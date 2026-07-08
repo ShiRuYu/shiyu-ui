@@ -49,7 +49,7 @@ import {
   getVersionList,
   publishVersion,
 } from '#/api/agent/version';
-import { requestClient } from '#/api/request';
+import { getDictByType } from '#/api/common/dict';
 import { $t } from '#/locales';
 
 import NodeForm from './modules/node-form.vue';
@@ -134,7 +134,7 @@ const condEdgeIntentOptions = ref<Array<{ label: string; value: string }>>([]);
 
 async function loadCondEdgeIntentOptions() {
   try {
-    const res: any = await requestClient.get('/dict/type/INTENT_CODE');
+    const res: any = await getDictByType('INTENT_CODE');
     const data = Array.isArray(res) ? res : (res?.data ?? []);
     condEdgeIntentOptions.value = data.map((item: any) => ({
       label: item.dictLabel,

@@ -5,6 +5,9 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationWrongQuestionApi } from '#/api/education/wrong-question';
 
 import { $t } from '#/locales';
+import { getUserOptions } from '#/api/system/user';
+import { getQuestionOptions } from '#/api/education/question';
+import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -18,6 +21,42 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useSchema(): VbenFormSchema[] {
   return [
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getUserOptions,
+        labelField: 'nickname',
+        valueField: 'id',
+        placeholder: $t('education.wrongQuestion.selectStudent'),
+      },
+      fieldName: 'studentId',
+      label: $t('education.wrongQuestion.student'),
+      rules: 'required',
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getQuestionOptions,
+        labelField: 'title',
+        valueField: 'id',
+        placeholder: $t('education.wrongQuestion.selectQuestion'),
+      },
+      fieldName: 'questionId',
+      label: $t('education.wrongQuestion.question'),
+      rules: 'required',
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getKnowledgeOptions,
+        labelField: 'name',
+        valueField: 'id',
+        placeholder: $t('education.wrongQuestion.selectKnowledge'),
+      },
+      fieldName: 'knowledgeId',
+      label: $t('education.wrongQuestion.knowledge'),
+      rules: 'required',
+    },
     {
       component: 'Input',
       fieldName: 'studentAnswer',

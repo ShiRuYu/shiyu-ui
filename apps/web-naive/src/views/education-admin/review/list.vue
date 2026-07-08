@@ -12,7 +12,8 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getReviewsByStatus, createReview, completeReview } from '#/api/education/review';
+import { getReviewsByStatus, completeReview } from '#/api/education/review';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -22,6 +23,9 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
+
+const { getCurrentStudentId } = useCurrentStudentId();
+
 function onEdit(row: EducationReviewApi.ReviewTask) {
   formModalApi.setData(row).open();
 }
@@ -60,7 +64,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getReviewsByStatus(1, 'PENDING');
+          const result = await getReviewsByStatus(getCurrentStudentId(), 'PENDING');
           return { items: result, total: result.length };
         },
       },

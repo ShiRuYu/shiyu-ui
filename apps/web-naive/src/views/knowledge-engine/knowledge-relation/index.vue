@@ -1,8 +1,32 @@
 <script setup lang="ts">
-import { onMounted, ref, h } from 'vue';
+import { computed, h, onMounted, ref } from 'vue';
+
 import { Page } from '@vben/common-ui';
-import { NCard, NDataTable, NSpace, NButton, NSelect, NModal, NForm, NFormItem, NInputNumber, NPopconfirm, NTag, NEmpty, useMessage } from 'naive-ui';
-import { getKnowledgePrerequisitesListApi, getKnowledgeSubsequentListApi, addKnowledgeRelationApi, deleteKnowledgeRelationApi, getKnowledgeListApi } from '#/api/knowledge';
+
+import {
+  NButton,
+  NCard,
+  NDataTable,
+  NEmpty,
+  NForm,
+  NFormItem,
+  NInputNumber,
+  NModal,
+  NPopconfirm,
+  NSelect,
+  NSpace,
+  NTag,
+  useMessage,
+} from 'naive-ui';
+
+import {
+  addKnowledgeRelationApi,
+  deleteKnowledgeRelationApi,
+  getKnowledgeListApi,
+  getKnowledgePrerequisitesListApi,
+  getKnowledgeSubsequentListApi,
+} from '#/api/knowledge';
+import { $t } from '#/locales';
 
 const message = useMessage();
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
@@ -13,18 +37,23 @@ const loading = ref(false);
 const showAddModal = ref(false);
 const addForm = ref({ targetId: null as number | null, type: 'PRE', weight: 1.0 });
 
-const relationTypeOptions = [
-  { label: '前置知识 (PRE)', value: 'PRE' },
-  { label: '后续知识 (NEXT)', value: 'NEXT' },
-  { label: '包含关系 (INCLUDE)', value: 'INCLUDE' },
-  { label: '关联 (RELATED)', value: 'RELATED' },
-  { label: '相似 (SIMILAR)', value: 'SIMILAR' },
-  { label: '属于 (BELONG)', value: 'BELONG' },
-];
+const relationTypeOptions = computed(() => [
+  { label: `${$t('knowledge.relationPre')} (PRE)`, value: 'PRE' },
+  { label: `${$t('knowledge.relationNext')} (NEXT)`, value: 'NEXT' },
+  { label: `${$t('knowledge.relationInclude')} (INCLUDE)`, value: 'INCLUDE' },
+  { label: `${$t('knowledge.relationRelated')} (RELATED)`, value: 'RELATED' },
+  { label: `${$t('knowledge.relationSimilar')} (SIMILAR)`, value: 'SIMILAR' },
+  { label: `${$t('knowledge.relationBelong')} (BELONG)`, value: 'BELONG' },
+]);
+
+const targetKnowledgeOptions = computed(() => {
+  return knowledgeOptions.value.filter((opt) => opt.value !== selectedKnowledgeId.value);
+});
 
 async function loadOptions() {
-  const list = await getKnowledgeListApi();
-  knowledgeOptions.value = (list || []).map((k: any) => ({ label: `[${k.code}] ${k.name}`, value: k.id }));
+  const result = await getKnowledgeListApi({ pageSize: 9999 });
+  const list = result?.items || result || [];
+  knowledgeOptions.value = list.map((k: any) => ({ label: `[${k.code}] ${k.name}`, value: k.id }));
 }
 
 async function loadRelations() {
@@ -35,9 +64,11 @@ async function loadRelations() {
       getKnowledgePrerequisitesListApi(selectedKnowledgeId.value),
       getKnowledgeSubsequentListApi(selectedKnowledgeId.value),
     ]);
-    prerequisites.value = pre || [];
-    subsequent.value = sub || [];
-  } finally { loading.value = false; }
+    prerequisites.value = Array.isArray(pre) ? pre : ((pre as any)?.items || (pre as any)?.data || []);
+    subsequent.value = Array.isArray(sub) ? sub : ((sub as any)?.items || (sub as any)?.data || []);
+  } finally {
+    loading.value = false;
+  }
 }
 
 async function handleAddRelation() {
@@ -49,12 +80,12 @@ async function handleAddRelation() {
       type: addForm.value.type,
       weight: addForm.value.weight,
     });
-    message.success('关系已添加');
+    message.success($t('knowledge.relationAdded'));
     showAddModal.value = false;
     addForm.value = { targetId: null, type: 'PRE', weight: 1.0 };
     await loadRelations();
   } catch (e: any) {
-    message.error(e.message || '添加失败');
+    message.error(e.message || $t('knowledge.addFailed'));
   }
 }
 
@@ -63,38 +94,63 @@ async function handleDeleteRelation(targetId: number, type: string, isPre: boole
   const sourceId = isPre ? targetId : selectedKnowledgeId.value;
   const tarId = isPre ? selectedKnowledgeId.value : targetId;
   await deleteKnowledgeRelationApi(sourceId, tarId, type);
-  message.success('关系已删除');
+  message.success($t('knowledge.relationDeleted'));
   await loadRelations();
 }
 
-const preColumns = [
+const preColumns = computed(() => [
   { title: 'ID', key: 'id', width: 80 },
-  { title: '编码', key: 'code', width: 120 },
-  { title: '名称', key: 'name', width: 200 },
-  { title: '关系类型', key: 'relationType', width: 120,
+  { title: $t('knowledge.code'), key: 'code', width: 120 },
+  { title: $t('knowledge.name'), key: 'name', width: 200 },
+  {
+    title: $t('knowledge.relationType'),
+    key: 'relationType',
+    width: 120,
     render: (row: any) => h(NTag, { size: 'small' }, row.relationType || 'PRE'),
   },
-  { title: '操作', key: 'actions', width: 100,
-    render: (row: any) => h(NPopconfirm, {
-      onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'PRE', true),
-    }, { default: () => '确认删除？', trigger: () => h(NButton, { size: 'small', type: 'error' }, '解除') }),
+  {
+    title: $t('common.operation'),
+    key: 'actions',
+    width: 100,
+    render: (row: any) =>
+      h(
+        NPopconfirm,
+        {
+          onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'PRE', true),
+        },
+        { default: () => $t('knowledge.confirmDelete'), trigger: () => h(NButton, { size: 'small', type: 'error' }, $t('knowledge.release')) },
+      ),
   },
-];
-const subColumns = [
+]);
+
+const subColumns = computed(() => [
   { title: 'ID', key: 'id', width: 80 },
-  { title: '编码', key: 'code', width: 120 },
-  { title: '名称', key: 'name', width: 200 },
-  { title: '关系类型', key: 'relationType', width: 120,
+  { title: $t('knowledge.code'), key: 'code', width: 120 },
+  { title: $t('knowledge.name'), key: 'name', width: 200 },
+  {
+    title: $t('knowledge.relationType'),
+    key: 'relationType',
+    width: 120,
     render: (row: any) => h(NTag, { size: 'small' }, row.relationType || 'NEXT'),
   },
-  { title: '操作', key: 'actions', width: 100,
-    render: (row: any) => h(NPopconfirm, {
-      onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'NEXT', false),
-    }, { default: () => '确认删除？', trigger: () => h(NButton, { size: 'small', type: 'error' }, '解除') }),
+  {
+    title: $t('common.operation'),
+    key: 'actions',
+    width: 100,
+    render: (row: any) =>
+      h(
+        NPopconfirm,
+        {
+          onPositiveClick: () => handleDeleteRelation(row.id, row.relationType || 'NEXT', false),
+        },
+        { default: () => $t('knowledge.confirmDelete'), trigger: () => h(NButton, { size: 'small', type: 'error' }, $t('knowledge.release')) },
+      ),
   },
-];
+]);
 
-onMounted(() => { loadOptions(); });
+onMounted(() => {
+  loadOptions();
+});
 </script>
 
 <template>
@@ -105,9 +161,9 @@ onMounted(() => { loadOptions(); });
           <NSelect
             v-model:value="selectedKnowledgeId"
             :options="knowledgeOptions"
-            placeholder="选择知识点"
+            :placeholder="$t('knowledge.selectKnowledge')"
             filterable
-            style="width:300px"
+            style="width: 300px"
             @update:value="loadRelations"
           />
           <NButton v-if="selectedKnowledgeId" type="primary" @click="showAddModal = true">
@@ -116,32 +172,37 @@ onMounted(() => { loadOptions(); });
         </NSpace>
       </template>
 
-      <NSpace vertical v-if="selectedKnowledgeId">
-        <h4>前置知识点（当前知识点的前提）</h4>
+      <NSpace v-if="selectedKnowledgeId" vertical>
+        <h4>{{ $t('knowledge.prerequisiteKnowledge') }}</h4>
         <NDataTable :columns="preColumns" :data="prerequisites" :loading="loading" size="small" striped />
 
-        <h4 class="mt-4">后续知识点（依赖当前知识点）</h4>
+        <h4 class="mt-4">{{ $t('knowledge.subsequentKnowledge') }}</h4>
         <NDataTable :columns="subColumns" :data="subsequent" :loading="loading" size="small" striped />
       </NSpace>
 
-      <NEmpty v-else description="请先选择知识点" />
+      <NEmpty v-else :description="$t('knowledge.selectKnowledge')" />
 
-      <NModal v-model:show="showAddModal" title="添加知识关系" preset="card" style="width:500px">
+      <NModal v-model:show="showAddModal" :title="$t('knowledge.addRelationTitle')" preset="card" style="width: 500px">
         <NForm :model="addForm" label-placement="left" label-width="100">
-          <NFormItem label="目标知识点">
-            <NSelect v-model:value="addForm.targetId" :options="knowledgeOptions" filterable placeholder="选择目标知识点" />
+          <NFormItem :label="$t('knowledge.targetKnowledge')">
+            <NSelect
+              v-model:value="addForm.targetId"
+              :options="targetKnowledgeOptions"
+              filterable
+              :placeholder="$t('knowledge.selectTarget')"
+            />
           </NFormItem>
-          <NFormItem label="关系类型">
+          <NFormItem :label="$t('knowledge.relationType')">
             <NSelect v-model:value="addForm.type" :options="relationTypeOptions" />
           </NFormItem>
-          <NFormItem label="权重">
-            <NInputNumber v-model:value="addForm.weight" :min="0" :max="2" :step="0.1" style="width:100%" />
+          <NFormItem :label="$t('knowledge.weight')">
+            <NInputNumber v-model:value="addForm.weight" :min="0" :max="2" :step="0.1" style="width: 100%" />
           </NFormItem>
         </NForm>
         <template #footer>
           <NSpace justify="end">
-            <NButton @click="showAddModal = false">取消</NButton>
-            <NButton type="primary" @click="handleAddRelation">添加</NButton>
+            <NButton @click="showAddModal = false">{{ $t('common.cancel') }}</NButton>
+            <NButton type="primary" @click="handleAddRelation">{{ $t('common.confirm') }}</NButton>
           </NSpace>
         </template>
       </NModal>

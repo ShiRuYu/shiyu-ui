@@ -6,6 +6,7 @@ import { computed, ref, watch } from 'vue';
 
 import { NCheckbox, NInput, NInputNumber, NSelect } from 'naive-ui';
 
+import { getDictByType } from '#/api/common/dict';
 import { requestClient } from '#/api/request';
 
 const props = defineProps<{
@@ -54,7 +55,7 @@ async function loadApiOptions(field: NodeTypeApi.FieldMeta) {
 
   if (src.type === 'dict' && src.dictType) {
     try {
-      const res: any = await requestClient.get(`/dict/type/${src.dictType}`);
+      const res: any = await getDictByType(src.dictType);
       const items = Array.isArray(res) ? res : res?.data ?? [];
       options = items.map((item: any) => ({
         label: src.labelKey ? item[src.labelKey] : item.dictLabel,

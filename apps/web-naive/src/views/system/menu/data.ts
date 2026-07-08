@@ -333,7 +333,7 @@ export function useColumns(
         options: [
           {
             code: 'append',
-            label: '新增下级',
+            text: $t('system.menu.appendChild'),
           },
           'edit',
           'delete',

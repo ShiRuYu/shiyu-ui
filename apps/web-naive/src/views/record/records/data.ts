@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { RecordsApi } from '#/api/record/records';
 
 import { $t } from '#/locales';
+import { getTimelineOptions } from '#/api/record/timeline';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -19,7 +20,14 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getTimelineOptions,
+        class: 'w-full',
+        labelField: 'title',
+        valueField: 'id',
+      },
       fieldName: 'eventId',
       label: $t('record.records.eventId'),
     },

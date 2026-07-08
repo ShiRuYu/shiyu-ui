@@ -49,10 +49,18 @@ async function deleteChapter(id: number) {
   return requestClient.post('/edu/chapter/delete', null, { params: { id } });
 }
 
+async function getChapterOptions(textbookId?: number) {
+  const chapters = textbookId
+    ? await getChaptersByTextbook(textbookId)
+    : await getChaptersByTextbook(0);
+  return (chapters || []).map((c) => ({ id: c.id, name: c.name }));
+}
+
 export {
   createChapter,
   deleteChapter,
   getChapterById,
+  getChapterOptions,
   getChaptersByTextbook,
   getChapterTree,
   updateChapter,

@@ -4,8 +4,9 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationReviewApi } from '#/api/education/review';
 
-import { z } from '#/adapter/form';
 import { $t } from '#/locales';
+import { getUserOptions } from '#/api/system/user';
+import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -20,14 +21,73 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getUserOptions,
+        labelField: 'nickname',
+        valueField: 'id',
+        placeholder: $t('education.review.selectStudent'),
+      },
+      fieldName: 'studentId',
+      label: $t('education.review.student'),
+      rules: 'required',
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getKnowledgeOptions,
+        labelField: 'name',
+        valueField: 'id',
+        placeholder: $t('education.review.selectKnowledge'),
+      },
+      fieldName: 'knowledgeId',
+      label: $t('education.review.knowledge'),
+      rules: 'required',
+    },
+    {
       component: 'Input',
       fieldName: 'knowledgeName',
       label: $t('education.review.knowledgeName'),
     },
     {
       component: 'InputNumber',
+      fieldName: 'reviewRound',
+      label: $t('education.review.reviewRound'),
+      defaultValue: 1,
+    },
+    {
+      component: 'DatePicker',
+      componentProps: {
+        type: 'date',
+        placeholder: $t('education.review.selectDate'),
+      },
+      fieldName: 'reviewDate',
+      label: $t('education.review.reviewDate'),
+      rules: 'required',
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: $t('education.review.statusPending'), value: 'PENDING' },
+          { label: $t('education.review.statusInReview'), value: 'IN_REVIEW' },
+          { label: $t('education.review.statusCompleted'), value: 'COMPLETED' },
+          { label: $t('education.review.statusFailed'), value: 'FAILED' },
+        ],
+        placeholder: $t('education.review.selectStatus'),
+      },
+      fieldName: 'status',
+      label: $t('education.review.status'),
+      defaultValue: 'PENDING',
+    },
+    {
+      component: 'InputNumber',
       fieldName: 'resultScore',
       label: $t('education.review.resultScore'),
+      componentProps: {
+        min: 0,
+        max: 100,
+      },
     },
   ];
 }

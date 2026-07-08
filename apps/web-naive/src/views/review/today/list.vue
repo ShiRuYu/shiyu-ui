@@ -8,15 +8,17 @@ import { Page } from '@vben/common-ui';
 import { NButton, NCard, NGi, NGrid, NProgress, NSpace, NTag } from 'naive-ui';
 
 import { completeReview, getTodayReviews } from '#/api/education/review';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const reviews = ref<EducationReviewApi.ReviewTask[]>([]);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadReviews() {
   loading.value = true;
   try {
-    reviews.value = await getTodayReviews(1);
+    reviews.value = await getTodayReviews(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load reviews:', error);
   } finally {
@@ -26,7 +28,7 @@ async function loadReviews() {
 
 async function handleComplete(review: EducationReviewApi.ReviewTask) {
   try {
-    await completeReview(review.id, { studentId: 1, resultScore: 80 });
+    await completeReview(review.id, { studentId: getCurrentStudentId(), resultScore: 80 });
     review.status = 'COMPLETED';
   } catch (error) {
     console.error(error);

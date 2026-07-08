@@ -5,27 +5,28 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { AgentAdminApi } from '#/api/agent/admin';
 
 import { z } from '#/adapter/form';
+import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
       component: 'Input',
-      componentProps: { placeholder: 'Agent 名称' },
+      componentProps: { placeholder: $t('agent.adminFormPlaceholderName') },
       fieldName: 'name',
-      label: '名称',
+      label: $t('agent.adminListSearch'),
     },
     {
       component: 'Select',
       componentProps: {
         clearable: true,
         options: [
-          { label: '正常', value: '1' },
-          { label: '停用', value: '0' },
+          { label: $t('agent.adminListStatusNormal'), value: '1' },
+          { label: $t('agent.adminListStatusDisabled'), value: '0' },
         ],
-        placeholder: '状态',
+        placeholder: $t('agent.adminFormPlaceholderStatus'),
       },
       fieldName: 'status',
-      label: '状态',
+      label: $t('agent.adminFormLabelStatus'),
     },
   ];
 }
@@ -35,40 +36,40 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'agentId',
-      label: 'Agent标识',
+      label: $t('agent.adminFormLabelAgentId'),
       rules: z
         .string()
-        .min(1, 'Agent标识不能为空')
+        .min(1, $t('agent.adminFormValidationAgentIdRequired'))
         .regex(
           /^[a-z][a-z0-9-]*$/,
-          '只能包含小写字母、数字和连字符，以字母开头',
+          $t('agent.adminFormValidationAgentIdPattern'),
         ),
     },
     {
       component: 'Input',
       fieldName: 'name',
-      label: 'Agent名称',
-      rules: z.string().min(1, 'Agent名称不能为空'),
+      label: $t('agent.adminFormLabelName'),
+      rules: z.string().min(1, $t('agent.adminFormValidationNameRequired')),
     },
     {
       component: 'Input',
       componentProps: { maxlength: 500, rows: 2, type: 'textarea' },
       fieldName: 'description',
-      label: '描述',
+      label: $t('agent.adminFormLabelDescription'),
     },
     {
       component: 'RadioGroup',
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: '启用', value: '1' },
-          { label: '停用', value: '0' },
+          { label: $t('agent.adminFormLabelEnabled'), value: '1' },
+          { label: $t('agent.adminFormLabelDisabled'), value: '0' },
         ],
         optionType: 'button',
       },
       defaultValue: '1',
       fieldName: 'status',
-      label: '状态',
+      label: $t('agent.adminFormLabelStatus'),
     },
   ];
 }
@@ -78,39 +79,39 @@ export function useColumns(
 ): VxeTableGridColumns<AgentAdminApi.AgentVO> {
   return [
     { field: 'id', title: 'ID', width: 80 },
-    { field: 'agentId', title: 'Agent标识', width: 160 },
-    { field: 'name', title: '名称', width: 160 },
-    { field: 'description', title: '描述', minWidth: 200 },
-    { field: 'currentVersion', title: '当前版本', width: 120 },
+    { field: 'agentId', title: $t('agent.adminFormLabelAgentId'), width: 160 },
+    { field: 'name', title: $t('agent.adminEditName'), width: 160 },
+    { field: 'description', title: $t('agent.description'), minWidth: 200 },
+    { field: 'currentVersion', title: $t('agent.version'), width: 120 },
     {
       cellRender: {
         name: 'CellTag',
         options: [
-          { color: 'success', label: '正常', value: '1' },
-          { color: 'error', label: '停用', value: '0' },
+          { color: 'success', label: $t('agent.adminListStatusNormal'), value: '1' },
+          { color: 'error', label: $t('agent.adminListStatusDisabled'), value: '0' },
         ],
       },
       field: 'status',
-      title: '状态',
+      title: $t('agent.adminEditStatus'),
       width: 100,
     },
-    { field: 'createTime', title: '创建时间', width: 160 },
+    { field: 'createTime', title: $t('agent.createdAt'), width: 160 },
     {
       align: 'right',
       cellRender: {
         attrs: {
           nameField: 'name',
-          nameTitle: 'Agent',
+          nameTitle: $t('agent.name'),
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete', { code: 'version', label: '版本' }],
+        options: ['edit', 'delete', { code: 'version', label: $t('agent.version') }],
       },
       field: 'operation',
       fixed: 'right',
       headerAlign: 'center',
       showOverflow: false,
-      title: '操作',
+      title: $t('common.operation'),
       width: 200,
     },
   ];

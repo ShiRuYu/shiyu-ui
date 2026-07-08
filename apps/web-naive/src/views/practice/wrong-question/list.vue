@@ -7,10 +7,12 @@ import { Page } from '@vben/common-ui';
 import { NButton, NDataTable, NTag } from 'naive-ui';
 
 import { getWrongQuestionsByStudent } from '#/api';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const wrongQuestions = ref<any[]>([]);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 const columns: any[] = [
   { title: '题目ID', key: 'questionId', width: 80 },
@@ -40,7 +42,7 @@ const columns: any[] = [
 async function loadWrongQuestions() {
   loading.value = true;
   try {
-    wrongQuestions.value = await getWrongQuestionsByStudent(1);
+    wrongQuestions.value = await getWrongQuestionsByStudent(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load wrong questions:', error);
   } finally {

@@ -9,6 +9,7 @@ import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 import { NCard, NSpin } from 'naive-ui';
 
 import { getTrend } from '#/api/education/analytics';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
@@ -19,11 +20,12 @@ const trendData = ref<{
 }>({ dates: [], studyRecords: [], masteredCount: [] });
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadTrend() {
   loading.value = true;
   try {
-    trendData.value = await getTrend(1);
+    trendData.value = await getTrend(getCurrentStudentId());
   } catch (error) {
     console.error('Failed to load trend:', error);
   } finally {

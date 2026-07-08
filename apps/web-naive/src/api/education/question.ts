@@ -72,6 +72,11 @@ async function deleteQuestion(id: number) {
   return requestClient.post('/edu/question/delete', null, { params: { id } });
 }
 
+async function getQuestionOptions() {
+  const result = await getAllQuestions(1, 1000);
+  return (result?.items || []).map((q) => ({ id: q.id, title: q.title }));
+}
+
 export {
   getAllQuestions,
   createQuestion,
@@ -80,5 +85,6 @@ export {
   getQuestionById,
   getQuestionBySubjectGrade,
   getQuestionByType,
+  getQuestionOptions,
   updateQuestion,
 };

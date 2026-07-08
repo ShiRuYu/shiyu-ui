@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { DataTableColumns } from 'naive-ui';
 
-import { onMounted, ref } from 'vue';
+import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -16,6 +16,7 @@ import {
 } from 'naive-ui';
 
 import { getQuestionBySubjectGrade } from '#/api';
+import { getSubjectOptions } from '#/api/education/subject';
 import { $t } from '#/locales';
 
 const router = useRouter();
@@ -24,14 +25,16 @@ const questions = ref<any[]>([]);
 
 const filterSubject = ref('MATH');
 const filterGrade = ref(7);
+const subjectOptions = ref<Array<{ label: string; value: string }>>([]);
 
-const subjectOptions = [
-  { label: '数学', value: 'MATH' },
-  { label: '物理', value: 'PHYSICS' },
-  { label: '英语', value: 'ENGLISH' },
-  { label: '语文', value: 'CHINESE' },
-  { label: '化学', value: 'CHEMISTRY' },
-];
+async function loadSubjectOptions() {
+  try {
+    const data = await getSubjectOptions();
+    subjectOptions.value = data.map((s: any) => ({ label: s.name, value: s.code }));
+  } catch (error) {
+    console.error('Failed to load subject options:', error);
+  }
+}
 
 const columns: DataTableColumns<any> = [
   { title: 'ID', key: 'id', width: 60 },
@@ -87,8 +90,6 @@ const columns: DataTableColumns<any> = [
   },
 ];
 
-import { h } from 'vue';
-
 async function loadQuestions() {
   loading.value = true;
   try {
@@ -108,6 +109,7 @@ function startPractice(row: any) {
 }
 
 onMounted(() => {
+  loadSubjectOptions();
   loadQuestions();
 });
 </script>

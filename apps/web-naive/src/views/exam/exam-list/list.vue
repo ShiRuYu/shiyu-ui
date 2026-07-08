@@ -7,20 +7,14 @@ import { Page } from '@vben/common-ui';
 import { NButton, NCard, NGi, NGrid, NSpace, NTag } from 'naive-ui';
 
 import { getExamBySubject } from '#/api';
+import { getDictByType } from '#/api/common/dict';
 import { $t } from '#/locales';
 
 const router = useRouter();
 const exams = ref<any[]>([]);
 const loading = ref(false);
 
-const typeMap: Record<string, string> = {
-  DAILY_QUIZ: '课堂小测',
-  UNIT_TEST: '单元测试',
-  MIDTERM: '期中考试',
-  FINAL: '期末考试',
-  MOCK: '模拟考试',
-  AI_GENERATED: 'AI组卷',
-};
+const typeMap = ref<Record<string, string>>({});
 
 const typeColor: Record<string, any> = {
   DAILY_QUIZ: 'info',
@@ -30,6 +24,18 @@ const typeColor: Record<string, any> = {
   MOCK: 'default',
   AI_GENERATED: 'primary',
 };
+
+async function loadTypeMap() {
+  try {
+    const data = await getDictByType('EXAM_TYPE');
+    typeMap.value = data.reduce((acc: Record<string, string>, d: any) => {
+      acc[d.dictValue] = d.dictLabel;
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error('Failed to load type map:', error);
+  }
+}
 
 async function loadExams() {
   loading.value = true;
@@ -46,7 +52,10 @@ function startExam(exam: any) {
   router.push({ path: `/exam/take/${exam.id}` });
 }
 
-onMounted(() => loadExams());
+onMounted(() => {
+  loadTypeMap();
+  loadExams();
+});
 </script>
 
 <template>

@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationTextbookApi } from '#/api/education/textbook';
 
 import { z } from '#/adapter/form';
+import { getSubjectOptions } from '#/api/education/subject';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -33,7 +34,14 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('education.textbook.name')])),
     },
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getSubjectOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'code',
+      },
       fieldName: 'subjectCode',
       label: $t('education.textbook.subjectCode'),
       rules: z

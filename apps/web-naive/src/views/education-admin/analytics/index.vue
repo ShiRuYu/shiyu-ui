@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { Page } from '@vben/common-ui';
-import { NCard, NSpace, NStatistic, NGrid, NGi } from 'naive-ui';
-import { getOverview, getWeakPoints } from '#/api/education/analytics';
+import { NCard, NStatistic, NGrid, NGi } from 'naive-ui';
+import { getOverview } from '#/api/education/analytics';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const overview = ref<any>({});
+const { getCurrentStudentId } = useCurrentStudentId();
 
 onMounted(async () => {
   try {
-    overview.value = await getOverview(1);
+    overview.value = await getOverview(getCurrentStudentId());
   } catch {
     // noop
   }

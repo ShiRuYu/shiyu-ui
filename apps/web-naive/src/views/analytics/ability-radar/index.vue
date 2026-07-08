@@ -9,17 +9,19 @@ import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 import { NCard, NSpin } from 'naive-ui';
 
 import { getAbilityRadar } from '#/api/education/analytics';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const radarData = ref<any>();
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadRadar() {
   loading.value = true;
   try {
-    radarData.value = await getAbilityRadar(1, 1);
+    radarData.value = await getAbilityRadar(getCurrentStudentId(), 1);
   } catch (error) {
     console.error('Failed to load radar:', error);
   } finally {

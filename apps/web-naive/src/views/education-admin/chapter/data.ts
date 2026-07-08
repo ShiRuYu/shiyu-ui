@@ -5,6 +5,8 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationChapterApi } from '#/api/education/chapter';
 
 import { z } from '#/adapter/form';
+import { getTextbookOptions } from '#/api/education/textbook';
+import { getChapterOptions } from '#/api/education/chapter';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -15,7 +17,14 @@ export function useGridFormSchema(): VbenFormSchema[] {
       label: $t('education.chapter.name'),
     },
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getTextbookOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+      },
       fieldName: 'textbookId',
       label: $t('education.chapter.textbookId'),
     },
@@ -33,7 +42,14 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('education.chapter.name')])),
     },
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getTextbookOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+      },
       fieldName: 'textbookId',
       label: $t('education.chapter.textbookId'),
       rules: z
@@ -44,7 +60,15 @@ export function useSchema(): VbenFormSchema[] {
         ),
     },
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getChapterOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        placeholder: $t('education.chapter.selectParent'),
+      },
       fieldName: 'parentId',
       label: $t('education.chapter.parentId'),
     },

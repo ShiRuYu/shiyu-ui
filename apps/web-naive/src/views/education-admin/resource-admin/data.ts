@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationResourceApi } from '#/api/education/resource';
 
 import { z } from '#/adapter/form';
+import { getSubjectOptions } from '#/api/education/subject';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -54,7 +55,14 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('education.resource.url'),
     },
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getSubjectOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'code',
+      },
       fieldName: 'subjectCode',
       label: $t('education.course.subjectCode'),
     },
@@ -62,7 +70,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'InputNumber',
       fieldName: 'difficulty',
-      label: '难度',
+      label: $t('education.resource.difficulty'),
     },
     {
       component: 'Input',

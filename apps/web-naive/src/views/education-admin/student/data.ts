@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationStudentApi } from '#/api/education/student';
 
 import { z } from '#/adapter/form';
+import { getUserOptions } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -25,9 +26,16 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useSchema(): VbenFormSchema[] {
   return [
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getUserOptions,
+        class: 'w-full',
+        labelField: 'nickName',
+        valueField: 'id',
+      },
       fieldName: 'userId',
-      label: '用户ID',
+      label: $t('education.student.userId'),
     },
     {
       component: 'Input',

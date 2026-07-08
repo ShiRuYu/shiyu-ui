@@ -118,12 +118,18 @@ async function changePassword(
   }, { params: { userId: id } });
 }
 
+async function getUserOptions() {
+  const result = await getUserList({ page: 1, pageSize: 1000 });
+  return (result?.items || []).map((u) => ({ id: u.id, nickName: u.nickName || u.username }));
+}
+
 export {
   changePassword,
   createUser,
   deleteUser,
   getRolesForUserForm,
   getUserList,
+  getUserOptions,
   resetUserPassword,
   updateUser,
 };

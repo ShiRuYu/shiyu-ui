@@ -3,19 +3,17 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { SystemWorkspaceApi } from '#/api/system/workspace';
+import type { SystemUserApi } from '#/api/system/user';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { NButton } from 'naive-ui';
 
-import { message } from '#/adapter/naive';
+import { dialog, message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  deleteWorkspace,
-  getWorkspaceListForGrid,
-} from '#/api/system/workspace';
+import { deleteUser, getUserList, resetUserPassword } from '#/api/system/user';
+import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -27,45 +25,49 @@ const [FormModal, formModalApi] = useVbenModal({
 });
 
 /**
- * 编辑工作空间
+ * 编辑用户
  * @param row
  */
-function onEdit(row: SystemWorkspaceApi.SystemWorkspace) {
+function onEdit(row: SystemUserApi.SystemUser) {
   formModalApi.setData(row).open();
 }
 
 /**
- * 添加下级工作空间
- * @param row
- */
-function onAppend(row: SystemWorkspaceApi.SystemWorkspace) {
-  formModalApi.setData({ pid: row.id }).open();
-}
-
-/**
- * 创建新工作空间
+ * 创建新用户
  */
 function onCreate() {
   formModalApi.setData(null).open();
 }
 
+const onDelete = useDeleteConfirm(deleteUser, {
+  nameField: 'username',
+  onSuccess: refreshGrid,
+});
+
 /**
- * 删除工作空间
+ * 重置密码
  * @param row
  */
-function onDelete(row: SystemWorkspaceApi.SystemWorkspace) {
-  const hideLoading = message.loading('正在删除...', {
-    duration: 0,
+function onResetPassword(row: SystemUserApi.SystemUser) {
+  dialog.warning({
+    title: $t('system.user.resetPassword'),
+    content: $t('system.user.confirmResetPassword', [row.username]),
+    positiveText: $t('common.confirm'),
+    negativeText: $t('common.cancel'),
+    onPositiveClick: async () => {
+      const hideLoading = message.loading($t('system.user.resettingPassword'), {
+        duration: 0,
+      });
+      try {
+        await resetUserPassword(row.id, '');
+        message.success($t('ui.actionMessage.operationSuccess'));
+        hideLoading.destroy();
+      } catch (error) {
+        hideLoading.destroy();
+        console.error(error);
+      }
+    },
   });
-  deleteWorkspace(row.id)
-    .then(() => {
-      message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
-      refreshGrid();
-      hideLoading.destroy();
-    })
-    .catch(() => {
-      hideLoading.destroy();
-    });
 }
 
 /**
@@ -74,18 +76,18 @@ function onDelete(row: SystemWorkspaceApi.SystemWorkspace) {
 function onActionClick({
   code,
   row,
-}: OnActionClickParams<SystemWorkspaceApi.SystemWorkspace>) {
+}: OnActionClickParams<SystemUserApi.SystemUser>) {
   switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
     case 'delete': {
       onDelete(row);
       break;
     }
     case 'edit': {
       onEdit(row);
+      break;
+    }
+    case 'resetPassword': {
+      onResetPassword(row);
       break;
     }
   }
@@ -95,6 +97,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
     submitOnChange: true,
+    collapsedRows: 1,
+    actionWrapperClass: 'flex justify-end',
   },
   gridEvents: {},
   gridOptions: {
@@ -102,18 +106,21 @@ const [Grid, gridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: false,
+      enabled: true,
     },
     proxyConfig: {
       ajax: {
-        query: async (_params, formValues) => {
-          // 过滤空值，避免空字符串传给后端
+        query: async ({ page }, formValues) => {
           const params = Object.fromEntries(
             Object.entries(formValues || {}).filter(
               ([, v]) => v !== '' && v !== null && v !== undefined,
             ),
           );
-          return await getWorkspaceListForGrid(params);
+          return await getUserList({
+            page: page.currentPage,
+            pageSize: page.pageSize,
+            ...params,
+          });
         },
       },
     },
@@ -123,11 +130,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       refresh: true,
       search: true,
       zoom: true,
-    },
-    treeConfig: {
-      parentField: 'pid',
-      rowField: 'id',
-      transform: false,
     },
   } as VxeTableGridOptions,
 });
@@ -142,11 +144,11 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('system.workspace.list')">
+    <Grid :table-title="$t('system.user.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.workspace.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
         </NButton>
       </template>
     </Grid>

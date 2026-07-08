@@ -36,7 +36,7 @@ function onCreate() {
 }
 
 function onDelete(row: DictApi.DictItem) {
-  const hideLoading = message.loading('正在删除...', { duration: 0 });
+  const hideLoading = message.loading($t('common.deleting'), { duration: 0 });
   deleteDict(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.dictLabel]));
@@ -50,13 +50,13 @@ function onDelete(row: DictApi.DictItem) {
 
 async function onBatchDelete() {
   if (selectedIds.value.length === 0) {
-    message.warning('请先选择要删除的字典项');
+    message.warning($t('system.dict.selectFirst'));
     return;
   }
-  const hideLoading = message.loading('正在批量删除...', { duration: 0 });
+  const hideLoading = message.loading($t('system.dict.batchDeleting'), { duration: 0 });
   try {
     await batchDeleteDict(selectedIds.value);
-    message.success(`批量删除成功，共 ${selectedIds.value.length} 项`);
+    message.success($t('system.dict.batchDeleteSuccess', [selectedIds.value.length]));
     selectedIds.value = [];
     refreshGrid();
   } catch {
@@ -138,10 +138,10 @@ function refreshGrid() {
         <NPopconfirm @positive-click="onBatchDelete">
           <template #trigger>
             <NButton type="error" :disabled="selectedIds.length === 0">
-              批量删除
+              {{ $t('system.dict.batchDelete') }}
             </NButton>
           </template>
-          确认删除选中的 {{ selectedIds.length }} 项？
+          {{ $t('system.dict.batchDeleteConfirm', [selectedIds.length]) }}
         </NPopconfirm>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />

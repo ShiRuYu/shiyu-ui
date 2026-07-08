@@ -52,4 +52,9 @@ async function deleteTimeline(id: number) {
   return requestClient.post<boolean>('/record/timeline/delete', null, { params: { id } });
 }
 
-export { createTimeline, deleteTimeline, getTimelinePage, updateTimeline };
+async function getTimelineOptions() {
+  const result = await getTimelinePage({ page: 1, pageSize: 1000 });
+  return (result?.items || []).map((e: any) => ({ id: e.id, title: e.title }));
+}
+
+export { createTimeline, deleteTimeline, getTimelineOptions, getTimelinePage, updateTimeline };

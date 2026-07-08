@@ -134,6 +134,7 @@
     "coverUrl": "封面图",
     "description": "描述",
     "viewCount": "浏览量",
+    "difficulty": "难度",
     "typeVideo": "视频",
     "typeDocument": "文档",
     "typeExercise": "练习",
@@ -148,6 +149,7 @@
     "gradeLevel": "学段",
     "studentNo": "学号",
     "school": "学校",
+    "userId": "关联用户",
     "studyDays": "学习天数",
     "masteredKnowledge": "已掌握知识点",
     "accuracy": "准确率"

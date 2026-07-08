@@ -30,7 +30,8 @@ const filterGrade = ref<null | number>(null);
 
 async function loadSubjects() {
   try {
-    subjects.value = await getSubjectList();
+    const result = await getSubjectList();
+    subjects.value = result?.items || result || [];
   } catch (error) {
     console.error('Failed to load subjects:', error);
   }
@@ -39,7 +40,8 @@ async function loadSubjects() {
 async function loadCourses() {
   loading.value = true;
   try {
-    let data = await getCourseList();
+    const result = await getCourseList();
+    let data = result?.items || result || [];
     if (filterSubject.value) {
       data = data.filter((c) => c.subjectCode === filterSubject.value);
     }

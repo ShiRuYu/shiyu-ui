@@ -41,7 +41,7 @@ function onDelete(row: any) {
       refreshGrid();
     })
     .catch((err: any) => {
-      message.error(err.message || '删除失败');
+      message.error(err.message || $t('ui.actionMessage.deleteFailed'));
     })
     .finally(() => h.destroy());
 }

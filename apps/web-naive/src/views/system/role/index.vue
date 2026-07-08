@@ -3,19 +3,19 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { SystemMenuApi } from '#/api/system/menu';
+import type { SystemRoleApi } from '#/api/system/role';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { IconifyIcon, Plus } from '@vben/icons';
+import { Plus } from '@vben/icons';
 
 import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuListForGrid } from '#/api/system/menu';
+import { deleteRole, getRoleList } from '#/api/system/role';
 import { $t } from '#/locales';
 
-import { useColumns } from './data';
+import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -24,37 +24,29 @@ const [FormModal, formModalApi] = useVbenModal({
 });
 
 /**
- * 编辑菜单
+ * 编辑角色
  * @param row
  */
-function onEdit(row: SystemMenuApi.SystemMenu) {
+function onEdit(row: SystemRoleApi.SystemRole) {
   formModalApi.setData(row).open();
 }
 
 /**
- * 创建新菜单
+ * 创建新角色
  */
 function onCreate() {
-  formModalApi.setData(null).open();
+  formModalApi.setData({}).open();
 }
 
 /**
- * 新增下级菜单
+ * 删除角色
  * @param row
  */
-function onAppend(row: SystemMenuApi.SystemMenu) {
-  formModalApi.setData({ pid: row.id }).open();
-}
-
-/**
- * 删除菜单
- * @param row
- */
-function onDelete(row: SystemMenuApi.SystemMenu) {
-  const hideLoading = message.loading('正在删除...', {
+function onDelete(row: SystemRoleApi.SystemRole) {
+  const hideLoading = message.loading($t('common.deleting'), {
     duration: 0,
   });
-  deleteMenu(row.id)
+  deleteRole(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
@@ -71,12 +63,8 @@ function onDelete(row: SystemMenuApi.SystemMenu) {
 function onActionClick({
   code,
   row,
-}: OnActionClickParams<SystemMenuApi.SystemMenu>) {
+}: OnActionClickParams<SystemRoleApi.SystemRole>) {
   switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
     case 'delete': {
       onDelete(row);
       break;
@@ -89,6 +77,10 @@ function onActionClick({
 }
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useGridFormSchema(),
+    submitOnChange: true,
+  },
   gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
@@ -99,8 +91,21 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          return await getMenuListForGrid();
+        query: async (params: any, formValues) => {
+          const query: Record<string, any> = Object.fromEntries(
+            Object.entries(formValues || {}).filter(
+              ([, v]) => v !== '' && v !== null && v !== undefined,
+            ),
+          );
+          if ((params as any)?.page) query.pageNo = (params as any).page;
+          if ((params as any)?.pageSize)
+            query.pageSize = (params as any).pageSize;
+          const data = await getRoleList(query);
+          if (data && typeof data === 'object' && 'items' in data) {
+            return { items: data.items, total: data.total };
+          }
+          const list = Array.isArray(data) ? data : [];
+          return { items: list, total: list.length };
         },
       },
     },
@@ -108,14 +113,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
       custom: true,
       export: false,
       refresh: true,
+      search: true,
       zoom: true,
-    },
-    treeConfig: {
-      lazy: false,
-      parentField: 'pid',
-      rowField: 'id',
-      transform: false,
-      expandAll: false,
     },
   } as VxeTableGridOptions,
 });
@@ -130,26 +129,12 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('system.menu.list')">
+    <Grid :table-title="$t('system.role.list')">
       <template #toolbar-tools>
         <NButton type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.menu.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('system.role.name')]) }}
         </NButton>
-      </template>
-      <template #icon="{ row }">
-        <div class="flex items-center justify-center">
-          <IconifyIcon
-            v-if="row.type === 'button'"
-            icon="carbon:security"
-            class="size-5"
-          />
-          <IconifyIcon
-            v-else-if="row.meta?.icon"
-            :icon="row.meta.icon"
-            class="size-5"
-          />
-        </div>
       </template>
     </Grid>
   </Page>

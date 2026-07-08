@@ -4,7 +4,13 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 
 import { z } from '#/adapter/form';
+import { getKnowledgeListApi } from '#/api/knowledge';
 import { $t } from '#/locales';
+
+async function getKnowledgeOptions() {
+  const result = await getKnowledgeListApi({ pageSize: 1000 });
+  return (result?.items || result || []).map((k: any) => ({ id: k.id, name: `[${k.code}] ${k.name}` }));
+}
 
 export interface Document {
   [key: string]: any;
@@ -37,11 +43,19 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('knowledge.documentTitle')])),
     },
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getKnowledgeOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        multiple: true,
+      },
       fieldName: 'knowledgeIds',
       label: $t('knowledge.name'),
       rules: z
-        .number()
+        .array(z.number())
         .min(1, $t('ui.formRules.required', [$t('knowledge.name')])),
     },
     {

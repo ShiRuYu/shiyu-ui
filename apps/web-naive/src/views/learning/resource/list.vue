@@ -9,6 +9,7 @@ import { Page } from '@vben/common-ui';
 import { NCard, NGi, NGrid, NSelect, NSpace, NTag } from 'naive-ui';
 
 import { getResourceList, getSubjectList } from '#/api';
+import { getDictByType } from '#/api/common/dict';
 import { $t } from '#/locales';
 
 const loading = ref(false);
@@ -16,17 +17,21 @@ const resources = ref<EducationResourceApi.Resource[]>([]);
 const subjects = ref<EducationSubjectApi.Subject[]>([]);
 const filterSubject = ref<null | string>(null);
 const filterType = ref<null | string>(null);
+const typeOptions = ref<Array<{ label: string; value: string }>>([]);
 
-const typeOptions = [
-  { label: '视频', value: 'VIDEO' },
-  { label: '文档', value: 'DOCUMENT' },
-  { label: '练习', value: 'EXERCISE' },
-  { label: '互动', value: 'INTERACTIVE' },
-];
+async function loadTypeOptions() {
+  try {
+    const data = await getDictByType('RESOURCE_TYPE');
+    typeOptions.value = data.map((d: any) => ({ label: d.dictLabel, value: d.dictValue }));
+  } catch (error) {
+    console.error('Failed to load type options:', error);
+  }
+}
 
 async function loadSubjects() {
   try {
-    subjects.value = await getSubjectList();
+    const result = await getSubjectList();
+    subjects.value = result?.items || result || [];
   } catch (error) {
     console.error('Failed to load subjects:', error);
   }
@@ -35,7 +40,8 @@ async function loadSubjects() {
 async function loadResources() {
   loading.value = true;
   try {
-    let data = await getResourceList();
+    const result = await getResourceList();
+    let data = result?.items || result || [];
     if (filterSubject.value) {
       data = data.filter((r) => r.subjectCode === filterSubject.value);
     }
@@ -66,6 +72,7 @@ function getTypeColor(type: string) {
 }
 
 onMounted(() => {
+  loadTypeOptions();
   loadSubjects();
   loadResources();
 });

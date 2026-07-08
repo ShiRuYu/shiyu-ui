@@ -5,6 +5,9 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationCourseApi } from '#/api/education/course';
 
 import { z } from '#/adapter/form';
+import { getSubjectOptions } from '#/api/education/subject';
+import { getTextbookOptions } from '#/api/education/textbook';
+import { getUserOptions } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -33,7 +36,14 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('education.course.name')])),
     },
     {
-      component: 'Input',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getSubjectOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'code',
+      },
       fieldName: 'subjectCode',
       label: $t('education.course.subjectCode'),
       rules: z
@@ -49,12 +59,26 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('education.course.grade'),
     },
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getTextbookOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+      },
       fieldName: 'textbookId',
       label: $t('education.course.textbookId'),
     },
     {
-      component: 'InputNumber',
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getUserOptions,
+        class: 'w-full',
+        labelField: 'nickName',
+        valueField: 'id',
+      },
       fieldName: 'teacherId',
       label: $t('education.course.teacherId'),
     },

@@ -7,10 +7,12 @@ import { Page } from '@vben/common-ui';
 import { NDataTable, NProgress, NTag } from 'naive-ui';
 
 import { getReviewsByStatus } from '#/api/education/review';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const loading = ref(false);
 const history = ref<any[]>([]);
+const { getCurrentStudentId } = useCurrentStudentId();
 
 const columns: any[] = [
   { title: 'ID', key: 'id', width: 80 },
@@ -65,7 +67,7 @@ const columns: any[] = [
 async function loadHistory() {
   loading.value = true;
   try {
-    history.value = await getReviewsByStatus(1, 'COMPLETED');
+    history.value = await getReviewsByStatus(getCurrentStudentId(), 'COMPLETED');
   } catch (error) {
     console.error(error);
   } finally {

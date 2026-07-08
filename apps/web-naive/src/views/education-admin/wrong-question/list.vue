@@ -13,6 +13,7 @@ import { NButton } from 'naive-ui';
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getWrongQuestionsByStudent, deleteWrongQuestion } from '#/api/education/wrong-question';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -22,6 +23,9 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
+
+const { getCurrentStudentId } = useCurrentStudentId();
+
 function onEdit(row: EducationWrongQuestionApi.WrongQuestion) {
   formModalApi.setData(row).open();
 }
@@ -60,7 +64,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getWrongQuestionsByStudent(1);
+          const result = await getWrongQuestionsByStudent(getCurrentStudentId());
           return { items: result, total: result.length };
         },
       },

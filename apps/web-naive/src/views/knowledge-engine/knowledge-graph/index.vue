@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import { NCard, NEmpty, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { getKnowledgeGraphApi, getKnowledgeListApi } from '#/api/knowledge';
+import { $t } from '#/locales';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
 const selectedId = ref<null | number>(null);
 const graphData = ref<null | { edges: any[]; nodes: any[] }>(null);
 const loading = ref(false);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
+let resizeObserver: ResizeObserver | null = null;
 
 async function loadOptions() {
-  const list = await getKnowledgeListApi();
-  knowledgeOptions.value = (list || []).map((k: any) => ({
+  const result = await getKnowledgeListApi({ pageSize: 9999 });
+  const list = result?.items || result || [];
+  knowledgeOptions.value = list.map((k: any) => ({
     label: `[${k.code}] ${k.name}`,
     value: k.id,
   }));
@@ -25,60 +28,53 @@ async function loadGraph() {
   if (!selectedId.value) return;
   loading.value = true;
   try {
-    // 后端返回 KnowledgeGraphResponse { node, parentNodes, childNodes, relatedNodes }
     const res: any = await getKnowledgeGraphApi(selectedId.value);
     if (!res) {
       graphData.value = null;
       return;
     }
 
-    // 转换为前端需要的 { nodes, edges } 格式
     const nodes: any[] = [];
     const edges: any[] = [];
     const addedIds = new Set<number>();
 
-    // 中心节点
     if (res.node) {
       nodes.push({ id: res.node.id, name: res.node.name, type: 'center' });
       addedIds.add(res.node.id);
     }
 
-    // 前置/父节点 -> 指向中心节点
     (res.parentNodes || []).forEach((n: any) => {
       if (!addedIds.has(n.id)) {
         nodes.push({ id: n.id, name: n.name, type: 'parent' });
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: n.name, target: res.node.name, label: '前置' });
+        edges.push({ source: n.name, target: res.node.name, label: $t('knowledge.relationPre') });
       }
     });
 
-    // 后续/子节点 -> 中心节点指向它们
     (res.childNodes || []).forEach((n: any) => {
       if (!addedIds.has(n.id)) {
         nodes.push({ id: n.id, name: n.name, type: 'child' });
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: res.node.name, target: n.name, label: '后续' });
+        edges.push({ source: res.node.name, target: n.name, label: $t('knowledge.relationNext') });
       }
     });
 
-    // 相关节点
     (res.relatedNodes || []).forEach((n: any) => {
       if (!addedIds.has(n.id)) {
         nodes.push({ id: n.id, name: n.name, type: 'related' });
         addedIds.add(n.id);
       }
       if (res.node) {
-        edges.push({ source: res.node.name, target: n.name, label: '相关' });
+        edges.push({ source: res.node.name, target: n.name, label: $t('knowledge.relationRelated') });
       }
     });
 
     graphData.value = { nodes, edges };
     await nextTick();
-    if (graphData.value.nodes?.length) renderGraph();
   } finally {
     loading.value = false;
   }
@@ -93,9 +89,10 @@ function renderGraph() {
   const { nodes, edges } = graphData.value;
   if (!nodes?.length) return;
 
-  // 响应式 canvas 尺寸
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return;
+
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
@@ -106,7 +103,6 @@ function renderGraph() {
   const centerY = h / 2;
   const radius = Math.min(w, h) * 0.3;
 
-  // 中心节点放中间，其他节点环绕
   const centerNode = nodes.find((n) => n.type === 'center');
   const otherNodes = nodes.filter((n) => n.type !== 'center');
 
@@ -122,10 +118,8 @@ function renderGraph() {
     };
   });
 
-  // 清空
   ctx.clearRect(0, 0, w, h);
 
-  // 画连线
   ctx.strokeStyle = '#aaa';
   ctx.lineWidth = 1;
   if (edges) {
@@ -138,7 +132,6 @@ function renderGraph() {
         ctx.lineTo(t.x, t.y);
         ctx.stroke();
 
-        // 小箭头
         const angle = Math.atan2(t.y - s.y, t.x - s.x);
         ctx.beginPath();
         ctx.moveTo(t.x, t.y);
@@ -148,7 +141,6 @@ function renderGraph() {
         ctx.fillStyle = '#aaa';
         ctx.fill();
 
-        // 连线标签
         if (e.label) {
           const mx = (s.x + t.x) / 2;
           const my = (s.y + t.y) / 2;
@@ -161,7 +153,6 @@ function renderGraph() {
     });
   }
 
-  // 画节点
   nodes.forEach((n: any) => {
     const p = positions[n.name];
     if (!p) return;
@@ -184,7 +175,34 @@ function renderGraph() {
   });
 }
 
-onMounted(loadOptions);
+function setupResizeObserver() {
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
+  resizeObserver = new ResizeObserver(() => {
+    if (graphData.value?.nodes?.length) {
+      renderGraph();
+    }
+  });
+}
+
+watch(graphData, async (newData) => {
+  if (newData?.nodes?.length) {
+    await nextTick();
+    if (canvasRef.value) {
+      resizeObserver?.observe(canvasRef.value);
+    }
+  }
+});
+
+onMounted(() => {
+  loadOptions();
+  setupResizeObserver();
+});
+
+onUnmounted(() => {
+  resizeObserver?.disconnect();
+});
 </script>
 
 <template>
@@ -208,7 +226,6 @@ onMounted(loadOptions);
           <canvas
             ref="canvasRef"
             class="graph-canvas"
-            style="width: 100%; height: 500px"
           ></canvas>
         </div>
         <NEmpty v-else-if="!loading" :description="$t('knowledge.viewGraph')" />
@@ -222,8 +239,11 @@ onMounted(loadOptions);
   display: flex;
   justify-content: center;
   padding: 16px;
+  height: 500px;
 }
 .graph-canvas {
+  width: 100%;
+  height: 100%;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }

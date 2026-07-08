@@ -12,7 +12,8 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deletePlan, getPlansByStudent, createPlan, updatePlan } from '#/api/education/plan';
+import { deletePlan, getPlansByStudent } from '#/api/education/plan';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -22,6 +23,9 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
+
+const { getCurrentStudentId } = useCurrentStudentId();
+
 function onEdit(row: EducationPlanApi.StudyPlan) {
   formModalApi.setData(row).open();
 }
@@ -60,8 +64,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page, pageSize }) => {
-          const result = await getPlansByStudent(1);
-          return { items: result.items, total: result.total };
+          const result = await getPlansByStudent(getCurrentStudentId());
+          const items = Array.isArray(result) ? result : (result?.items || []);
+          return { items, total: items.length };
         },
       },
     },

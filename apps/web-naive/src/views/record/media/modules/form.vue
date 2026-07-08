@@ -37,7 +37,7 @@ const [Modal, modalApi] = useVbenModal({
       const data = await formApi.getValues();
       try {
         await (formData.value?.id
-          ? updateMedia({ ...formData.value, ...data })
+          ? updateMedia(formData.value.id, data)
           : createMedia(data));
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();

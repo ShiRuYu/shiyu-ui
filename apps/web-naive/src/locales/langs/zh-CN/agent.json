@@ -193,5 +193,7 @@
   "adminFormValidationAgentIdRequired": "Agent标识不能为空",
   "adminFormValidationAgentIdPattern": "只能包含小写字母、数字和连字符，以字母开头",
   "adminFormValidationNameRequired": "Agent名称不能为空",
-  "adminEditStatus": "状态"
+  "adminEditStatus": "状态",
+  "adminFormPlaceholderName": "Agent 名称",
+  "adminFormPlaceholderStatus": "状态"
 }
