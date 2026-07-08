@@ -1,3 +1,5 @@
+import type { Recordable } from '@vben/types';
+
 import { requestClient } from '#/api/request';
 /** 创建知识点 */
 export function createKnowledgeApi(data: any) {
@@ -10,8 +12,11 @@ export function updateKnowledgeApi(id: number, data: any) {
 }
 
 /** 获取知识点列表（后端返回 PageData） */
-export async function getKnowledgeListApi(params?: any) {
-  return requestClient.get<any>('/knowledge/knowledge/list', { params });
+export async function getKnowledgeListApi(params?: Recordable<any>) {
+  const { page = 1, pageSize = 10, ...rest } = params || {};
+  return requestClient.get<any>('/knowledge/knowledge/list', {
+    params: { pageNum: page, pageSize, ...rest },
+  });
 }
 
 /** 获取知识图谱 */

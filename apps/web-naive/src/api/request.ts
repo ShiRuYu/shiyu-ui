@@ -69,6 +69,13 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
+
+      // 统一分页参数：框架使用 page/pageSize，后端使用 pageNum/pageSize
+      // 在请求发出前自动将 page → pageNum，避免每个 API 函数手动转换
+      if (config.params && 'page' in config.params && !('pageNum' in config.params)) {
+        config.params = { ...config.params, pageNum: config.params.page, page: undefined };
+      }
+
       return config;
     },
   });

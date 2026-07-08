@@ -1,3 +1,5 @@
+import type { Recordable } from '@vben/types';
+
 import type { PageResult } from '#/api/types';
 
 import { requestClient } from '#/api/request';
@@ -36,15 +38,11 @@ export namespace AgentAdminApi {
   }
 }
 
-async function getAgentPage(params: {
-  name?: string;
-  page: number;
-  pageSize: number;
-  status?: string;
-}) {
+async function getAgentPage(params?: Recordable<any>) {
+  const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
     '/agent/admin/list',
-    { params: { pageNum: params.page, pageSize: params.pageSize, name: params.name, status: params.status } },
+    { params: { pageNum: page, pageSize, ...rest } },
   );
 }
 

@@ -41,15 +41,11 @@ export namespace IntentDefApi {
   }
 }
 
-async function getIntentDefPage(params: {
-  agentId?: string;
-  category?: string;
-  code?: string;
-  name?: string;
-  page: number;
-  pageSize: number;
-}) {
-  return requestClient.get('/admin/intent/page', { params });
+async function getIntentDefPage(params?: Recordable<any>) {
+  const { page = 1, pageSize = 10, ...rest } = params || {};
+  return requestClient.get('/admin/intent/page', {
+    params: { pageNum: page, pageSize, ...rest },
+  });
 }
 
 async function createIntentDef(data: IntentDefApi.IntentDefRequest) {
