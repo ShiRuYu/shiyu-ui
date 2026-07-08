@@ -71,12 +71,18 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       config.headers['Accept-Language'] = preferences.app.locale;
 
       // 统一分页参数：框架使用 page/pageSize，后端使用 pageNum/pageSize
-      // 在请求发出前自动将 page → pageNum，避免每个 API 函数手动转换
-      if (config.params && 'page' in config.params && !('pageNum' in config.params)) {
-        const page = config.params.page;
-        // page 可能是数字（框架基础分页）或对象 vxe-table 传 { total, pageSize, currentPage }
-        const pageNum = typeof page === 'number' ? page : (page?.currentPage || 1);
-        config.params = { ...config.params, pageNum, page: undefined };
+      // 在请求发出前自动将 page → pageNum
+      if (config.params) {
+        // 情况1：page 存在但 pageNum 不存在 → 从 page 提取数值
+        if ('page' in config.params && !('pageNum' in config.params)) {
+          const page = config.params.page;
+          config.params.pageNum = typeof page === 'number' ? page : (page?.currentPage || 1);
+          delete config.params.page;
+        }
+        // 情况2：pageNum 存在但是对象（API 函数已显式设置 pageNum: page，但 page 是对象）
+        if ('pageNum' in config.params && typeof config.params.pageNum === 'object') {
+          config.params.pageNum = config.params.pageNum?.currentPage || 1;
+        }
       }
 
       return config;
