@@ -73,7 +73,10 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       // 统一分页参数：框架使用 page/pageSize，后端使用 pageNum/pageSize
       // 在请求发出前自动将 page → pageNum，避免每个 API 函数手动转换
       if (config.params && 'page' in config.params && !('pageNum' in config.params)) {
-        config.params = { ...config.params, pageNum: config.params.page, page: undefined };
+        const page = config.params.page;
+        // page 可能是数字（框架基础分页）或对象 vxe-table 传 { total, pageSize, currentPage }
+        const pageNum = typeof page === 'number' ? page : (page?.currentPage || 1);
+        config.params = { ...config.params, pageNum, page: undefined };
       }
 
       return config;
