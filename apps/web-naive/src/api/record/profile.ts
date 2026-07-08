@@ -28,7 +28,7 @@ async function getProfilePage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<ProfileApi.PageResult<ProfileApi.Profile>>(
     '/record/profile/list',
-    { params: { pageNo: page, pageSize, ...rest } },
+    { params: { pageNum: page, pageSize, ...rest } },
   );
 }
 

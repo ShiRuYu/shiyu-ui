@@ -29,7 +29,7 @@ async function getMediaPage(params?: Recordable<any>) {
   return requestClient.get<MediaApi.PageResult<MediaApi.Media>>(
     '/record/media/list',
     {
-      params: { pageNo: page, pageSize, ...rest },
+      params: { pageNum: page, pageSize, ...rest },
     },
   );
 }

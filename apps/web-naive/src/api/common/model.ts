@@ -25,7 +25,7 @@ export namespace ModelApi {
 
 async function getModelPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, platformId, ...rest } = params || {};
-  const query: Recordable<any> = { pageNo: page, pageSize, ...rest };
+  const query: Recordable<any> = { pageNum: page, pageSize, ...rest };
   if (platformId) {
     query.platformId = platformId;
   }

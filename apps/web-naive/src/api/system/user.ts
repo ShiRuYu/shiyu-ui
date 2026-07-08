@@ -25,7 +25,7 @@ export namespace SystemUserApi {
   export interface PageResult<T> {
     items: T[];
     total: number;
-    pageNo?: number;
+    pageNum?: number;
     pageSize?: number;
   }
 }
@@ -34,14 +34,13 @@ export namespace SystemUserApi {
  * 获取用户列表数据（分页）
  */
 async function getUserList(params: Recordable<any>) {
-  // 后端使用 pageNo 和 pageSize
   const { page, pageSize, ...restParams } = params;
   const data = await requestClient.get<
     | SystemUserApi.PageResult<SystemUserApi.SystemUser>
     | SystemUserApi.SystemUser[]
   >('/auth/user/list', {
     params: {
-      pageNo: page || 1,
+      pageNum: page || 1,
       pageSize: pageSize || 10,
       ...restParams,
     },

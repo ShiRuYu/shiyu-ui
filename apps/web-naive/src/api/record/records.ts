@@ -24,7 +24,7 @@ async function getRecordPage(params?: Recordable<any>) {
   return requestClient.get<RecordsApi.PageResult<RecordsApi.Record>>(
     '/record/record/list',
     {
-      params: { pageNo: page, pageSize, ...rest },
+      params: { pageNum: page, pageSize, ...rest },
     },
   );
 }

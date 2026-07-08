@@ -27,7 +27,7 @@ async function getTimelinePage(params: Recordable<any>) {
   const { page = 1, pageSize = 20, ...rest } = params || {};
   return requestClient.get<TimelineApi.PageResult<TimelineApi.TimelineEvent>>(
     '/record/timeline/list',
-    { params: { pageNo: page, pageSize, ...rest } },
+    { params: { pageNum: page, pageSize, ...rest } },
   );
 }
 
