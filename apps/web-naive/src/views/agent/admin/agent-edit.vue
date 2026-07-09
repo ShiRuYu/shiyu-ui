@@ -6,6 +6,7 @@ import { computed, h, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
+import { useTabs } from '@vben/hooks';
 
 import {
   NButton,
