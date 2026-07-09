@@ -13,7 +13,7 @@ import { NButton, NSpin, NTree } from 'naive-ui';
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { getMenuList } from '#/api/system/menu';
-import { createRole, updateRole } from '#/api/system/role';
+import { createRole, getRoleDetail, updateRole } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
@@ -22,6 +22,9 @@ const emit = defineEmits(['success']);
 const formData = ref<SystemRoleApi.SystemRole>();
 const menuTree = ref<any[]>([]);
 const loadingMenu = ref(false);
+const checkedMenuIds = ref<number[]>([]);
+const oldCheckedMenuIds = ref<number[]>([]);
+const hasCheckedLoaded = ref(false);
 
 const getTitle = computed(() => {
   return formData.value?.id
@@ -39,6 +42,21 @@ const [Form, formApi] = useVbenForm({
 function resetForm() {
   formApi.resetForm();
   formApi.setValues(formData.value || {});
+}
+
+async function loadRolePermissions(roleId: number) {
+  hasCheckedLoaded.value = false;
+  try {
+    const detail = await getRoleDetail(roleId);
+    if (detail?.permissions) {
+      checkedMenuIds.value = detail.permissions;
+      oldCheckedMenuIds.value = [...detail.permissions];
+      hasCheckedLoaded.value = true;
+      formApi.setValues({ permissions: detail.permissions });
+    }
+  } catch (e) {
+    console.error('Failed to load role permissions', e);
+  }
 }
 
 async function loadMenuTree() {
@@ -73,10 +91,11 @@ const [Modal, modalApi] = useVbenModal({
       const data = await formApi.getValues();
       try {
         const submitData = { ...data };
-        // 确保 status 是字符串类型
         if (submitData.status !== undefined) {
           submitData.status = String(submitData.status);
         }
+        // 提交菜单权限
+        submitData.permissions = checkedMenuIds.value;
         await (formData.value?.id
           ? updateRole(formData.value.id, submitData)
           : createRole(submitData));
@@ -105,6 +124,10 @@ const [Modal, modalApi] = useVbenModal({
       await nextTick();
       if (data?.id) {
         formApi.setValues(data);
+        loadRolePermissions(data.id);
+      } else {
+        checkedMenuIds.value = [];
+        oldCheckedMenuIds.value = [];
       }
     }
   },
@@ -119,7 +142,7 @@ const [Modal, modalApi] = useVbenModal({
           <NSpin :show="loadingMenu">
             <div class="w-full rounded" style="min-height: 60px">
               <NTree
-                :checked-keys="slotProps.modelValue || []"
+                :checked-keys="checkedMenuIds"
                 :data="menuTree"
                 :default-expand-all="true"
                 :render-label="renderLabel"
@@ -131,7 +154,7 @@ const [Modal, modalApi] = useVbenModal({
                 multiple
                 style="width: 100%; padding: 4px 0"
                 @update:checked-keys="
-                  (keys) => slotProps['onUpdate:modelValue']?.(keys)
+                  (keys) => { checkedMenuIds = keys; slotProps['onUpdate:modelValue']?.(keys); }
                 "
               />
             </div>

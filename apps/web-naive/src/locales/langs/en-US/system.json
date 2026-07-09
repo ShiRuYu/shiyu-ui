@@ -138,5 +138,12 @@
     "modelConfig": "Model Config (JSON)",
     "isDefault": "Default Model",
     "sort": "Sort"
+  },
+  "authCode": {
+    "title": "Auth Code",
+    "code": "Permission Code",
+    "name": "Permission Name",
+    "roleId": "Role ID",
+    "createTime": "Created At"
   }
 }

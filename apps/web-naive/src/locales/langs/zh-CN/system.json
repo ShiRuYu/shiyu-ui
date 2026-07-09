@@ -161,5 +161,12 @@
     "modelConfig": "模型参数 (JSON)",
     "isDefault": "默认模型",
     "sort": "排序"
+  },
+  "authCode": {
+    "title": "权限码管理",
+    "code": "权限编码",
+    "name": "权限名称",
+    "roleId": "角色ID",
+    "createTime": "创建时间"
   }
 }

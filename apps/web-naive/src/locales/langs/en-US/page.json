@@ -13,5 +13,8 @@
     "model": "Model Management",
     "chatConfig": "Chat Config",
     "intent": "Intent Management"
+  },
+  "system": {
+    "authCode": "Auth Code"
   }
 }

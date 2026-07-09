@@ -17,7 +17,8 @@
     "user": "用户管理",
     "role": "角色管理",
     "menu": "菜单管理",
-    "workspace": "工作空间管理"
+    "workspace": "工作空间管理",
+    "authCode": "权限码管理"
   },
   "learning": {
     "title": "学习中心",
