@@ -91,6 +91,9 @@ const loading = ref(false);
 const saving = ref(false);
 const nodeTypesMeta = ref<NodeTypeApi.NodeTypeMetaVO[]>([]);
 
+// Tab title
+const { setTabTitle } = useTabs();
+
 const formNodes = ref<AgentGraphApi.FormNode[]>([]);
 const formEdges = ref<AgentGraphApi.FormEdge[]>([]);
 
@@ -311,6 +314,7 @@ async function loadAgentDetail(id: number) {
     if (!detail) return;
     agentId.value = detail.agentId;
     agentName.value = detail.name;
+    setTabTitle(agentName.value);
     agentDescription.value = detail.description || '';
     agentStatus.value = detail.status || '1';
     await loadVersions();
