@@ -52,4 +52,14 @@ async function deleteRole(id: string) {
   return requestClient.post(`/auth/role/delete?id=${id}`);
 }
 
-export { createRole, deleteRole, getRoleList, updateRole };
+/**
+ * 获取角色详情
+ * @param id 角色 ID
+ */
+async function getRoleDetail(id: string) {
+  return requestClient.get<SystemRoleApi.SystemRole>('/auth/role/detail', {
+    params: { id },
+  });
+}
+
+export { createRole, deleteRole, getRoleDetail, getRoleList, updateRole };

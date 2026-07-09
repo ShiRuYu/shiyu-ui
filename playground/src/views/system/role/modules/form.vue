@@ -115,10 +115,10 @@ function getTypeTag(type?: string) {
   switch (type) {
     case 'button':
       return { color: 'blue', text: '按钮' };
-    case 'menu':
-      return { color: 'green', text: '页面' };
     case 'catalog':
       return { color: 'orange', text: '目录' };
+    case 'menu':
+      return { color: 'green', text: '页面' };
     default:
       return { color: 'default', text: type ?? '' };
   }
@@ -146,7 +146,9 @@ function getTypeTag(type?: string) {
                   v-if="value.meta?.icon && value.type !== 'button'"
                   :icon="value.meta.icon"
                 />
-                <span class="tree-node-label">{{ $t(value.meta?.title ?? '') }}</span>
+                <span class="tree-node-label">{{
+                  $t(value.meta?.title ?? '')
+                }}</span>
                 <Tag
                   v-if="value.type && value.type !== 'catalog'"
                   :color="getTypeTag(value.type).color"
