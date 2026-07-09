@@ -123,8 +123,8 @@ function statusTag(s: string) {
             {{ $t('agent.adminListSearch') }}
           </NButton>
           <div class="flex-1"></div>
-          <NButton type="primary" @click="onNewAgent">
-            <Plus class="size-5" />
+          <NButton type="primary" @click="onNewAgent" v-access:code="['agent:admin:create']">
+        <Plus class="size-5" />
             {{ $t('agent.adminListCreate') }}
           </NButton>
         </NSpace>
@@ -196,18 +196,18 @@ function statusTag(s: string) {
 
                 <template #footer>
                   <NSpace>
-                    <NButton size="tiny" @click="onView(agent)">
+                    <NButton size="tiny" v-access:code="['agent:admin:list']" @click="onView(agent)">
                       {{ $t('agent.adminListView') }}
                     </NButton>
-                    <NButton size="tiny" type="primary" @click="onEdit(agent)">
+                    <NButton size="tiny" type="primary" v-access:code="['agent:admin:edit']" @click="onEdit(agent)">
                       {{ $t('agent.adminListEdit') }}
                     </NButton>
-                    <NButton size="tiny" @click="openChat(agent)">
+                    <NButton size="tiny" v-access:code="['agent:admin:list']" @click="openChat(agent)">
                       {{ $t('agent.chat') }}
                     </NButton>
                     <NPopconfirm @positive-click="onDelete(agent)">
                       <template #trigger>
-                        <NButton size="tiny" type="error">
+                        <NButton size="tiny" type="error" v-access:code="['agent:admin:delete']">
                           {{ $t('agent.adminListDelete') }}
                         </NButton>
                       </template>

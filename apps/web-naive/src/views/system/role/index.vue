@@ -131,7 +131,7 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('system.role.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate">
+        <NButton type="primary" @click="onCreate" v-access:code="['system:role:create']">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.role.name')]) }}
         </NButton>

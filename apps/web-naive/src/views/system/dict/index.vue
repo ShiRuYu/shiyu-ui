@@ -147,7 +147,7 @@ function refreshGrid() {
           </template>
           {{ $t('system.dict.batchDeleteConfirm', [selectedIds.length]) }}
         </NPopconfirm>
-        <NButton type="primary" @click="onCreate">
+        <NButton type="primary" @click="onCreate" v-access:code="['system:dict:create']">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.dict.name')]) }}
         </NButton>
