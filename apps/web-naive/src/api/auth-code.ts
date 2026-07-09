@@ -1,5 +1,3 @@
-import type { Recordable } from '@vben/types';
-
 import { requestClient } from '#/api/request';
 
 export namespace AuthCodeApi {
@@ -19,12 +17,19 @@ async function getAuthCodeList() {
 }
 
 /** 创建权限码 */
-async function createAuthCode(data: { code: string; name: string; roleId: number }) {
+async function createAuthCode(data: {
+  code: string;
+  name: string;
+  roleId: number;
+}) {
   return requestClient.post('/auth/auth-code/create', data);
 }
 
 /** 更新权限码 */
-async function updateAuthCode(id: number, data: Partial<AuthCodeApi.AuthCodeItem>) {
+async function updateAuthCode(
+  id: number,
+  data: Partial<AuthCodeApi.AuthCodeItem>,
+) {
   return requestClient.post('/auth/auth-code/update', data, { params: { id } });
 }
 

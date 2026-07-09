@@ -17,10 +17,7 @@ export namespace SystemUserApi {
  * 获取用户列表数据
  */
 async function getUserList(params: Recordable<any>) {
-  return requestClient.get<Array<SystemUserApi.SystemUser>>(
-    '/system/user/list',
-    { params },
-  );
+  return requestClient.get('/auth/user/list', { params });
 }
 
 /**
@@ -28,7 +25,7 @@ async function getUserList(params: Recordable<any>) {
  * @param data 用户数据
  */
 async function createUser(data: Omit<SystemUserApi.SystemUser, 'id'>) {
-  return requestClient.post('/system/user', data);
+  return requestClient.post('/auth/user/create', data);
 }
 
 /**
@@ -41,7 +38,7 @@ async function updateUser(
   id: string,
   data: Omit<SystemUserApi.SystemUser, 'id'>,
 ) {
-  return requestClient.put(`/system/user/${id}`, data);
+  return requestClient.post(`/auth/user/update?userId=${id}`, data);
 }
 
 /**
@@ -49,7 +46,7 @@ async function updateUser(
  * @param id 用户 ID
  */
 async function deleteUser(id: string) {
-  return requestClient.delete(`/system/user/${id}`);
+  return requestClient.post(`/auth/user/delete?userId=${id}`);
 }
 
 export { createUser, deleteUser, getUserList, updateUser };

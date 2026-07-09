@@ -42,10 +42,17 @@ function onDelete(row: AuthCodeApi.AuthCodeItem) {
     .catch(() => hideLoading.destroy());
 }
 
-function onActionClick({ code, row }: OnActionClickParams<AuthCodeApi.AuthCodeItem>) {
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<AuthCodeApi.AuthCodeItem>) {
   switch (code) {
-    case 'delete': onDelete(row); break;
-    case 'edit': onEdit(row); break;
+    case 'delete':
+      onDelete(row);
+      break;
+    case 'edit':
+      onEdit(row);
+      break;
   }
 }
 
@@ -56,23 +63,31 @@ const [Grid, gridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     proxyConfig: {
-      ajax: { query: async () => {
-        const data = await getAuthCodeList();
-        return { items: data || [], total: (data || []).length };
-      }},
+      ajax: {
+        query: async () => {
+          const data = await getAuthCodeList();
+          return { items: data || [], total: (data || []).length };
+        },
+      },
     },
     toolbarConfig: { custom: true, export: false, refresh: true, zoom: true },
   } as VxeTableGridOptions,
 });
 
-function refreshGrid() { gridApi.query(); }
+function refreshGrid() {
+  gridApi.query();
+}
 </script>
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('system.authCode.title')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['system:auth-code:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['system:auth-code:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.authCode.title')]) }}
         </NButton>

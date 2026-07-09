@@ -41,7 +41,9 @@ const [Modal, modalApi] = useVbenModal({
         message.success(
           formData.value?.id
             ? $t('ui.actionMessage.editSuccess', [$t('system.authCode.title')])
-            : $t('ui.actionMessage.createSuccess', [$t('system.authCode.title')]),
+            : $t('ui.actionMessage.createSuccess', [
+                $t('system.authCode.title'),
+              ]),
         );
         modalApi.close();
         emit('success');

@@ -16,7 +16,7 @@ export namespace SystemWorkspaceApi {
  */
 async function getWorkspaceList() {
   return requestClient.get<Array<SystemWorkspaceApi.SystemWorkspace>>(
-    '/workspace/list',
+    '/auth/workspace/list',
   );
 }
 
@@ -27,7 +27,7 @@ async function getWorkspaceList() {
 async function createWorkspace(
   data: Omit<SystemWorkspaceApi.SystemWorkspace, 'children' | 'id'>,
 ) {
-  return requestClient.post('/workspace', data);
+  return requestClient.post('/auth/workspace/create', data);
 }
 
 /**
@@ -40,7 +40,7 @@ async function updateWorkspace(
   id: string,
   data: Omit<SystemWorkspaceApi.SystemWorkspace, 'children' | 'id'>,
 ) {
-  return requestClient.put(`/workspace/${id}`, data);
+  return requestClient.post(`/auth/workspace/update?id=${id}`, data);
 }
 
 /**
@@ -48,7 +48,7 @@ async function updateWorkspace(
  * @param id 工作空间 ID
  */
 async function deleteWorkspace(id: string) {
-  return requestClient.delete(`/workspace/${id}`);
+  return requestClient.post(`/auth/workspace/delete?id=${id}`);
 }
 
 export { createWorkspace, deleteWorkspace, getWorkspaceList, updateWorkspace };

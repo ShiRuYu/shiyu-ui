@@ -94,14 +94,14 @@ export namespace SystemMenuApi {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/auth/menu/list');
 }
 
 async function isMenuNameExists(
   name: string,
   id?: SystemMenuApi.SystemMenu['id'],
 ) {
-  return requestClient.get<boolean>('/menu/name-exists', {
+  return requestClient.get<boolean>('/auth/menu/name-exists', {
     params: { id, name },
   });
 }
@@ -110,7 +110,7 @@ async function isMenuPathExists(
   path: string,
   id?: SystemMenuApi.SystemMenu['id'],
 ) {
-  return requestClient.get<boolean>('/menu/path-exists', {
+  return requestClient.get<boolean>('/auth/menu/path-exists', {
     params: { id, path },
   });
 }
@@ -122,7 +122,7 @@ async function isMenuPathExists(
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu', data);
+  return requestClient.post('/auth/menu/create', data);
 }
 
 /**
@@ -135,7 +135,7 @@ async function updateMenu(
   id: string,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.put(`/menu/${id}`, data);
+  return requestClient.post(`/auth/menu/update?id=${id}`, data);
 }
 
 /**
@@ -143,7 +143,7 @@ async function updateMenu(
  * @param id 菜单 ID
  */
 async function deleteMenu(id: string) {
-  return requestClient.delete(`/menu/${id}`);
+  return requestClient.post(`/auth/menu/delete?id=${id}`);
 }
 
 export {

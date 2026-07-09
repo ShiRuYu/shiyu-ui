@@ -10,7 +10,7 @@ import { computed, nextTick, ref } from 'vue';
 import { Tree, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Spin } from 'antdv-next';
+import { Spin, Tag } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { getMenuList } from '#/api/system/menu';
@@ -31,9 +31,15 @@ const [Form, formApi] = useVbenForm({
 const permissions = ref<DataNode[]>([]);
 const loadingPermissions = ref(false);
 
+/** Tree 组件已勾选的菜单 ID 列表 */
+const checkedKeys = ref<(number | string)[]>([]);
+
 const id = ref();
 const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
+    // 将 Tree 的勾选状态同步到表单
+    formApi.setFieldValue('permissions', checkedKeys.value);
+
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values = await formApi.getValues();
@@ -52,6 +58,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const data = drawerApi.getData<SystemRoleApi.SystemRole>();
       formApi.resetForm();
+      checkedKeys.value = [];
 
       if (data) {
         formData.value = data;
@@ -67,6 +74,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
       await nextTick();
       if (data) {
         formApi.setValues(data);
+        // 从角色数据中提取已有权限，作为 Tree 的默认勾选项
+        if (data.permissions && data.permissions.length > 0) {
+          checkedKeys.value = data.permissions;
+        }
       }
     }
   },
@@ -88,34 +99,62 @@ const getDrawerTitle = computed(() => {
     : $t('common.create', $t('system.role.name'));
 });
 
+/** 获取树节点的自定义 CSS 类 */
 function getNodeClass(node: Recordable<any>) {
   const classes: string[] = [];
   if (node.value?.type === 'button') {
-    classes.push('inline-flex');
+    classes.push('tree-node-button');
   }
-
   return classes.join(' ');
+}
+
+/**
+ * 获取菜单类型对应的 Tag 颜色和标签文本
+ */
+function getTypeTag(type?: string) {
+  switch (type) {
+    case 'button':
+      return { color: 'blue', text: '按钮' };
+    case 'menu':
+      return { color: 'green', text: '页面' };
+    case 'catalog':
+      return { color: 'orange', text: '目录' };
+    default:
+      return { color: 'default', text: type ?? '' };
+  }
 }
 </script>
 <template>
   <Drawer :title="getDrawerTitle">
     <Form>
-      <template #permissions="slotProps">
+      <template #permissions>
         <Spin :spinning="loadingPermissions" :classes="{ root: 'w-full' }">
           <Tree
+            v-model:model-value="checkedKeys"
             :tree-data="permissions"
             multiple
             bordered
             :default-expanded-level="2"
             :get-node-class="getNodeClass"
-            v-bind="slotProps"
             value-field="id"
             label-field="meta.title"
             icon-field="meta.icon"
           >
             <template #node="{ value }">
-              <IconifyIcon v-if="value.meta.icon" :icon="value.meta.icon" />
-              {{ $t(value.meta.title) }}
+              <div class="tree-node-content">
+                <IconifyIcon
+                  v-if="value.meta?.icon && value.type !== 'button'"
+                  :icon="value.meta.icon"
+                />
+                <span class="tree-node-label">{{ $t(value.meta?.title ?? '') }}</span>
+                <Tag
+                  v-if="value.type && value.type !== 'catalog'"
+                  :color="getTypeTag(value.type).color"
+                  class="tree-node-tag"
+                >
+                  {{ getTypeTag(value.type).text }}
+                </Tag>
+              </div>
             </template>
           </Tree>
         </Spin>
@@ -124,6 +163,38 @@ function getNodeClass(node: Recordable<any>) {
   </Drawer>
 </template>
 <style lang="css" scoped>
+.tree-node-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.tree-node-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-node-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  line-height: 14px;
+  margin-inline-end: 0;
+  transform: scale(0.85);
+}
+
+:deep(.tree-node-button) {
+  .tree-node-content {
+    padding-left: 4px;
+  }
+
+  .tree-node-label {
+    font-size: 13px;
+    color: var(--color-text-2, #666);
+  }
+}
+
 :deep(.ant-tree-title) {
   .tree-actions {
     @apply ml-5 hidden;

@@ -154,7 +154,10 @@ const [Modal, modalApi] = useVbenModal({
                 multiple
                 style="width: 100%; padding: 4px 0"
                 @update:checked-keys="
-                  (keys) => { checkedMenuIds = keys; slotProps['onUpdate:modelValue']?.(keys); }
+                  (keys) => {
+                    checkedMenuIds = keys;
+                    slotProps['onUpdate:modelValue']?.(keys);
+                  }
                 "
               />
             </div>
