@@ -97,5 +97,14 @@
     "data": "数据",
     "ai": "AI助手",
     "admin": "管理"
+  },
+  "agent": {
+    "title": "智能体",
+    "admin": "Agent 管理",
+    "adminEdit": "Agent 编辑",
+    "platform": "平台管理",
+    "model": "模型管理",
+    "chatConfig": "对话调试",
+    "intent": "意图管理"
   }
 }

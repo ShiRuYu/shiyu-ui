@@ -4,5 +4,14 @@
     "courseDetail": "Course Detail",
     "knowledgeDetail": "Knowledge Detail",
     "planDetail": "Plan Detail"
+  },
+  "agent": {
+    "title": "Agent",
+    "admin": "Agent Management",
+    "adminEdit": "Agent Edit",
+    "platform": "Platform Management",
+    "model": "Model Management",
+    "chatConfig": "Chat Config",
+    "intent": "Intent Management"
   }
 }
