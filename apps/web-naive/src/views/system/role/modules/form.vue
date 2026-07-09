@@ -117,12 +117,12 @@ const [Modal, modalApi] = useVbenModal({
     if (isOpen) {
       const data = modalApi.getData<SystemRoleApi.SystemRole>();
       formApi.resetForm();
-      formData.value = data?.id ? data : undefined;
+      formData.value = data?.id !== undefined && data?.id !== null ? data : undefined;
       // 首次加载菜单树
       await loadMenuTree();
       // 等待 Vue 更新 DOM，确保表单字段已挂载
       await nextTick();
-      if (data?.id) {
+      if (data?.id !== undefined && data?.id !== null) {
         formApi.setValues(data);
         loadRolePermissions(data.id);
       } else {

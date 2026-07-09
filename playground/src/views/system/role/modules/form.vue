@@ -14,7 +14,7 @@ import { Spin, Tag } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { getMenuList } from '#/api/system/menu';
-import { createRole, updateRole } from '#/api/system/role';
+import { createRole, getRoleDetail, updateRole } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../data';
@@ -72,16 +72,27 @@ const [Drawer, drawerApi] = useVbenDrawer({
       }
       // Wait for Vue to flush DOM updates (form fields mounted)
       await nextTick();
-      if (data) {
+      if (data && data.id !== undefined && data.id !== null) {
+        // 先设置基本字段（name, status, remark）
         formApi.setValues(data);
-        // 从角色数据中提取已有权限，作为 Tree 的默认勾选项
-        if (data.permissions && data.permissions.length > 0) {
-          checkedKeys.value = data.permissions;
-        }
+        // 再调用详情接口获取完整权限数据
+        loadRolePermissions(data.id);
       }
     }
   },
 });
+
+/** 从后端加载角色详情（含完整 permissions） */
+async function loadRolePermissions(roleId: number | string) {
+  try {
+    const detail = await getRoleDetail(String(roleId));
+    if (detail?.permissions && detail.permissions.length > 0) {
+      checkedKeys.value = detail.permissions;
+    }
+  } catch (e) {
+    console.error('加载角色权限失败', e);
+  }
+}
 
 async function loadPermissions() {
   loadingPermissions.value = true;
