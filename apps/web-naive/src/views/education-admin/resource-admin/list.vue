@@ -83,7 +83,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('education.resource.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['edu:resource:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['edu:resource:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('education.resource.name')]) }}
         </NButton>

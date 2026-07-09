@@ -12,7 +12,11 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteExam, getExamBySubject, getExamList } from '#/api/education/exam';
+import {
+  deleteExam,
+  getExamBySubject,
+  getExamList,
+} from '#/api/education/exam';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -64,7 +68,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
           const result = subjectCode
             ? await getExamBySubject(subjectCode)
             : await getExamList(page, pageSize);
-          return { items: result.items || result, total: result.total || result.length };
+          return {
+            items: result.items || result,
+            total: result.total || result.length,
+          };
         },
       },
     },
@@ -86,7 +93,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('education.exam.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['edu:exam:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['edu:exam:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('education.exam.name')]) }}
         </NButton>

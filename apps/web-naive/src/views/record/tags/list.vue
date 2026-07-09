@@ -82,7 +82,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('record.tag.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['record:tags:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['record:tags:create']"
+        >
           <Plus class="size-5" />{{
             $t('ui.actionTitle.create', [$t('record.tag.name')])
           }}

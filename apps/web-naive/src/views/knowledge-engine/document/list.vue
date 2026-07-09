@@ -59,8 +59,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page, pageSize }) => {
-          const result = await searchDocumentsApi({ keyword: '', pageNum: page, pageSize });
-          return { items: result.items || result, total: result.total || result.length };
+          const result = await searchDocumentsApi({
+            keyword: '',
+            pageNum: page,
+            pageSize,
+          });
+          return {
+            items: result.items || result,
+            total: result.total || result.length,
+          };
         },
       },
     },
@@ -82,7 +89,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('knowledge.document')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['knowledge:document:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['knowledge:document:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('knowledge.documentTitle')]) }}
         </NButton>

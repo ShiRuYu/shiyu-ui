@@ -85,7 +85,9 @@ function refreshGrid() {
       <template #toolbar-tools>
         <NButton
           type="primary"
-          @click="onCreate" v-access:code="['edu:student:create']">
+          @click="onCreate"
+          v-access:code="['edu:student:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('education.student.name')]) }}
         </NButton>

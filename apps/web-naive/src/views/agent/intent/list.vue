@@ -99,7 +99,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('agent.intentListTitle')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['agent:intent:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['agent:intent:create']"
+        >
           <Plus class="size-5" />
           {{ $t('agent.intentListCreate') }}
         </NButton>

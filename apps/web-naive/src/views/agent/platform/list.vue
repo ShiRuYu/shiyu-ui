@@ -140,7 +140,11 @@ function refreshGrid() {
         <NButton type="info" class="mr-2" @click="onReload">
           {{ $t('system.platform.reload') }}
         </NButton>
-        <NButton type="primary" @click="onCreate" v-access:code="['agent:platform:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['agent:platform:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.platform.name')]) }}
         </NButton>

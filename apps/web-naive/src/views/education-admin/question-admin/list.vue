@@ -66,7 +66,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
         query: async ({ page, pageSize, formValues }) => {
           const subjectCode = formValues?.subjectCode || null;
           if (subjectCode) {
-            const result = await getQuestionBySubjectGrade(subjectCode, formValues?.grade || 0);
+            const result = await getQuestionBySubjectGrade(
+              subjectCode,
+              formValues?.grade || 0,
+            );
             return { items: result, total: result.length };
           }
           const result = await getAllQuestions(page, pageSize);
@@ -92,7 +95,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('education.question.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['edu:question:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['edu:question:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('education.question.name')]) }}
         </NButton>

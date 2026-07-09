@@ -41,7 +41,10 @@ function onDelete(row: TimelineApi.TimelineEvent) {
     });
 }
 
-function onActionClick({ code, row }: OnActionClickParams<TimelineApi.TimelineEvent>) {
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<TimelineApi.TimelineEvent>) {
   switch (code) {
     case 'delete': {
       onDelete(row);
@@ -99,7 +102,11 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('record.timeline.list')">
       <template #toolbar-tools>
-        <NButton type="primary" @click="onCreate" v-access:code="['record:timeline:create']">
+        <NButton
+          type="primary"
+          @click="onCreate"
+          v-access:code="['record:timeline:create']"
+        >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('record.timeline.title')]) }}
         </NButton>
