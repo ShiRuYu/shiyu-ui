@@ -44,14 +44,18 @@ export async function getDailyUsageApi(days = 7) {
  * 按周查询聚合用量
  */
 export async function getWeeklyUsageApi(weeks = 4) {
-  return requestClient.get<DailyUsage[]>('/usage/weekly', { params: { weeks } });
+  return requestClient.get<DailyUsage[]>('/usage/weekly', {
+    params: { weeks },
+  });
 }
 
 /**
  * 按月查询聚合用量
  */
 export async function getMonthlyUsageApi(months = 6) {
-  return requestClient.get<DailyUsage[]>('/usage/monthly', { params: { months } });
+  return requestClient.get<DailyUsage[]>('/usage/monthly', {
+    params: { months },
+  });
 }
 
 /**

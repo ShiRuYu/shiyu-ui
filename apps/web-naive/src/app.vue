@@ -32,9 +32,26 @@ const tokenTheme = computed(() =>
   preferences.theme.mode === 'dark' ? darkTheme : lightTheme,
 );
 
+const shiyuBrandColors = {
+  primaryColor: '#1677ff',
+  primaryColorHover: '#4096ff',
+  primaryColorPressed: '#0958d9',
+  primaryColorSuppl: '#1677ff',
+  infoColor: '#1677ff',
+  successColor: '#52c41a',
+  warningColor: '#faad14',
+  errorColor: '#ff4d4f',
+};
+
 const themeOverrides = computed((): GlobalThemeOverrides => {
   return {
-    common: commonTokens,
+    common: {
+      ...commonTokens,
+      ...shiyuBrandColors,
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif',
+      fontSize: '14px',
+      borderRadius: '6px',
+    },
   };
 });
 </script>

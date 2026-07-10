@@ -16,14 +16,13 @@ import {
   SvgDownloadIcon,
 } from '@vben/icons';
 
-import { $t } from '#/locales';
-
 import { getUsageOverviewApi } from '#/api/dashboard/usage';
+import { $t } from '#/locales';
 
 import AnalyticsTrends from './analytics-trends.vue';
 import AnalyticsVisitsData from './analytics-visits-data.vue';
-import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisitsSales from './analytics-visits-sales.vue';
+import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisits from './analytics-visits.vue';
 
 const overviewItems = ref<AnalysisOverviewItem[]>([
