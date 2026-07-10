@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 
 import { AuthenticationForgetPassword, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+
 import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'ForgetPassword' });

@@ -2,6 +2,8 @@
 import type { AnalysisOverviewItem } from '@vben/common-ui';
 import type { TabOption } from '@vben/types';
 
+import { onMounted, ref } from 'vue';
+
 import {
   AnalysisChartCard,
   AnalysisChartsTabs,
@@ -16,42 +18,86 @@ import {
 
 import { $t } from '#/locales';
 
+import { getUsageOverviewApi } from '#/api/dashboard/usage';
+
 import AnalyticsTrends from './analytics-trends.vue';
 import AnalyticsVisitsData from './analytics-visits-data.vue';
-import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisitsSource from './analytics-visits-source.vue';
+import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisits from './analytics-visits.vue';
 
-const overviewItems: AnalysisOverviewItem[] = [
+const overviewItems = ref<AnalysisOverviewItem[]>([
   {
     icon: SvgCardIcon,
     title: $t('dashboard.users'),
     totalTitle: $t('dashboard.totalUsers'),
-    totalValue: 120_000,
-    value: 2000,
+    totalValue: 0,
+    value: 0,
   },
   {
     icon: SvgCakeIcon,
     title: $t('dashboard.visits'),
-    totalTitle: $t('dashboard.totalVisits'),
-    totalValue: 500_000,
-    value: 20_000,
+    totalTitle: '总调用次数',
+    totalValue: 0,
+    value: 0,
   },
   {
     icon: SvgDownloadIcon,
-    title: $t('dashboard.downloads'),
-    totalTitle: $t('dashboard.totalDownloads'),
-    totalValue: 120_000,
-    value: 8000,
+    title: 'Token 用量',
+    totalTitle: '总 Token 数',
+    totalValue: 0,
+    value: 0,
   },
   {
     icon: SvgBellIcon,
-    title: $t('dashboard.usage'),
-    totalTitle: $t('dashboard.totalUsage'),
-    totalValue: 50_000,
-    value: 5000,
+    title: '平均延迟',
+    totalTitle: '总花费 ($)',
+    totalValue: 0,
+    value: 0,
   },
-];
+]);
+
+async function fetchData() {
+  try {
+    const overview = await getUsageOverviewApi();
+    if (overview) {
+      overviewItems.value = [
+        {
+          icon: SvgCardIcon,
+          title: '模型数',
+          totalTitle: '平台数',
+          totalValue: overview.model_count || 0,
+          value: overview.platform_count || 0,
+        },
+        {
+          icon: SvgCakeIcon,
+          title: '调用次数',
+          totalTitle: '总调用次数',
+          totalValue: overview.total_calls || 0,
+          value: overview.total_calls || 0,
+        },
+        {
+          icon: SvgDownloadIcon,
+          title: 'Token 用量',
+          totalTitle: '总 Token 数',
+          totalValue: overview.total_tokens || 0,
+          value: Math.round((overview.total_tokens || 0) / 1000),
+        },
+        {
+          icon: SvgBellIcon,
+          title: '平均延迟',
+          totalTitle: '总花费 ($)',
+          totalValue: Number((overview.total_cost || 0).toFixed(4)),
+          value: Math.round(overview.avg_latency_ms || 0),
+        },
+      ];
+    }
+  } catch (e) {
+    console.warn('获取用量概览失败，使用默认数据', e);
+  }
+}
+
+onMounted(fetchData);
 
 const chartTabs: TabOption[] = [
   {
