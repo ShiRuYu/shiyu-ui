@@ -6,6 +6,7 @@ import { computed, h, ref } from 'vue';
 
 import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'Register' });
 
@@ -84,9 +85,10 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(value: Recordable<any>) {
   loading.value = true;
   try {
-    // TODO: 对接后端注册接口 POST /api/auth/register
-    // const res = await requestClient.post('/api/auth/register', value);
-    console.warn('注册功能待对接后端接口', value);
+    const res = await requestClient.post('/auth/register', value);
+    if (res) {
+      window.$message?.success?.('注册成功');
+    }
   } finally {
     loading.value = false;
   }

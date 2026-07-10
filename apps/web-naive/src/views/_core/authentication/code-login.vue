@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'CodeLogin' });
 
@@ -57,8 +58,10 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleLogin(values: Recordable<any>) {
   loading.value = true;
   try {
-    // TODO: 对接后端短信验证码登录接口 POST /api/auth/code-login
-    console.warn('短信登录功能待对接后端接口', values);
+    const res = await requestClient.post('/auth/code-login', values);
+    if (res) {
+      window.$message?.success?.('登录成功');
+    }
   } finally {
     loading.value = false;
   }

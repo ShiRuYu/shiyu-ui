@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 
 import { AuthenticationForgetPassword, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'ForgetPassword' });
 
@@ -31,8 +32,10 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(value: Recordable<any>) {
   loading.value = true;
   try {
-    // TODO: 对接后端忘记密码接口 POST /api/auth/forget-password
-    console.warn('忘记密码功能待对接后端接口', value);
+    const res = await requestClient.post('/auth/forget-password', value);
+    if (res) {
+      window.$message?.success?.('密码重置成功，请使用新密码登录');
+    }
   } finally {
     loading.value = false;
   }
