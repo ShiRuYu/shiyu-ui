@@ -3,15 +3,20 @@ import { onMounted, ref } from 'vue';
 import { h } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { useAccessStore } from '@vben/stores';
 
-import { NButton, NDataTable, NTag } from 'naive-ui';
+import { NButton, NDataTable, NTabPane, NTabs, NTag } from 'naive-ui';
 
 import { getWrongQuestionsByStudent } from '#/api';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
+import AdminWrongQuestionList from '#/views/education-admin/wrong-question/list.vue';
 
+const accessStore = useAccessStore();
 const loading = ref(false);
 const wrongQuestions = ref<any[]>([]);
+const activeTab = ref('student');
+const adminPermission = accessStore.accessCodes.includes('edu:wrong-question');
 const { getCurrentStudentId } = useCurrentStudentId();
 
 const columns: any[] = [
@@ -58,13 +63,27 @@ onMounted(() => {
 </script>
 
 <template>
-  <Page :title="$t('page.practice.wrong')">
-    <NDataTable
-      :columns="columns"
-      :data="wrongQuestions"
-      :loading="loading"
-      striped
-      :row-key="(row: any) => row.id"
-    />
+  <Page>
+    <NTabs v-model:value="activeTab" type="line" animated>
+      <!-- 学生端：我的错题 -->
+      <NTabPane name="student" :tab="$t('page.practice.wrong')">
+        <NDataTable
+          :columns="columns"
+          :data="wrongQuestions"
+          :loading="loading"
+          striped
+          :row-key="(row: any) => row.id"
+        />
+      </NTabPane>
+
+      <!-- 管理端：错题管理 -->
+      <NTabPane
+        v-if="adminPermission"
+        name="admin"
+        :tab="$t('page.eduAdmin.wrongQuestion')"
+      >
+        <AdminWrongQuestionList />
+      </NTabPane>
+    </NTabs>
   </Page>
 </template>

@@ -5,6 +5,7 @@ import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
+import { useAccessStore } from '@vben/stores';
 
 import {
   NButton,
@@ -12,16 +13,22 @@ import {
   NInputNumber,
   NSelect,
   NSpace,
+  NTabPane,
+  NTabs,
   NTag,
 } from 'naive-ui';
 
 import { getQuestionBySubjectGrade } from '#/api';
 import { getSubjectOptions } from '#/api/education/subject';
 import { $t } from '#/locales';
+import AdminQuestionList from '#/views/education-admin/question-admin/list.vue';
 
+const accessStore = useAccessStore();
 const router = useRouter();
 const loading = ref(false);
 const questions = ref<any[]>([]);
+const activeTab = ref('student');
+const adminPermission = accessStore.accessCodes.includes('edu:question:list');
 
 const filterSubject = ref('MATH');
 const filterGrade = ref(7);
@@ -118,31 +125,44 @@ onMounted(() => {
 </script>
 
 <template>
-  <Page :title="$t('page.practice.question')">
-    <template #extra>
-      <NSpace>
-        <NSelect
-          v-model:value="filterSubject"
-          :options="subjectOptions"
-          style="width: 120px"
-          @update:value="loadQuestions"
+  <Page>
+    <NTabs v-model:value="activeTab" type="line" animated>
+      <!-- 学生端：题库练习 -->
+      <NTabPane name="student" :tab="$t('page.practice.question')">
+        <template #extra>
+          <NSpace>
+            <NSelect
+              v-model:value="filterSubject"
+              :options="subjectOptions"
+              style="width: 120px"
+              @update:value="loadQuestions"
+            />
+            <NInputNumber
+              v-model:value="filterGrade"
+              :min="1"
+              :max="12"
+              style="width: 100px"
+              @update:value="loadQuestions"
+            />
+          </NSpace>
+        </template>
+        <NDataTable
+          :columns="columns"
+          :data="questions"
+          :loading="loading"
+          striped
+          :row-key="(row: any) => row.id"
         />
-        <NInputNumber
-          v-model:value="filterGrade"
-          :min="1"
-          :max="12"
-          style="width: 100px"
-          @update:value="loadQuestions"
-        />
-      </NSpace>
-    </template>
+      </NTabPane>
 
-    <NDataTable
-      :columns="columns"
-      :data="questions"
-      :loading="loading"
-      striped
-      :row-key="(row: any) => row.id"
-    />
+      <!-- 管理端：题库管理 -->
+      <NTabPane
+        v-if="adminPermission"
+        name="admin"
+        :tab="$t('page.eduAdmin.question')"
+      >
+        <AdminQuestionList />
+      </NTabPane>
+    </NTabs>
   </Page>
 </template>

@@ -18,5 +18,20 @@
   "learningPath": "学习路径",
   "missingPrerequisites": "缺失前置知识",
   "mastered": "已掌握",
-  "notMastered": "未掌握"
+  "notMastered": "未掌握",
+  "chapterDirectory": "章节目录",
+  "knowledgePoints": "知识点",
+  "learningMaterials": "学习资料",
+  "markCompleted": "标记已学",
+  "alreadyCompleted": "已完成",
+  "selectChapterHint": "请从左侧选择一个章节开始学习",
+  "noDocuments": "暂无关联文档",
+  "expand": "展开目录",
+  "collapse": "收起目录",
+  "document": "文档",
+  "noContent": "暂无内容",
+  "progress": "学习进度",
+  "chapterUnits": "章"
+,  "close": "关闭",
+  "courseLearning": "\u8BFE\u7A0B\u5B66\u4E60"
 }

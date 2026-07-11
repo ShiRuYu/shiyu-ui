@@ -3,16 +3,30 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
+import { useAccessStore } from '@vben/stores';
 
-import { NButton, NCard, NGi, NGrid, NSpace, NTag } from 'naive-ui';
+import {
+  NButton,
+  NCard,
+  NGi,
+  NGrid,
+  NSpace,
+  NTabPane,
+  NTabs,
+  NTag,
+} from 'naive-ui';
 
 import { getExamBySubject } from '#/api';
 import { getDictByType } from '#/api/common/dict';
 import { $t } from '#/locales';
+import AdminExamList from '#/views/education-admin/exam-admin/list.vue';
 
+const accessStore = useAccessStore();
 const router = useRouter();
 const exams = ref<any[]>([]);
 const loading = ref(false);
+const activeTab = ref('student');
+const adminPermission = accessStore.accessCodes.includes('edu:exam:list');
 
 const typeMap = ref<Record<string, string>>({});
 
@@ -59,49 +73,63 @@ onMounted(() => {
 </script>
 
 <template>
-  <Page :title="$t('page.exam.list')">
-    <NGrid :cols="3" :x-gap="16" :y-gap="16">
-      <NGi v-for="exam in exams" :key="exam.id">
-        <NCard hoverable>
-          <template #header>
-            <span class="text-base font-medium">{{ exam.name }}</span>
-          </template>
-          <template #header-extra>
-            <NTag :type="typeColor[exam.type] || 'default'" size="small">
-              {{ typeMap[exam.type] || exam.type }}
-            </NTag>
-          </template>
+  <Page>
+    <NTabs v-model:value="activeTab" type="line" animated>
+      <!-- 学生端：在线考试 -->
+      <NTabPane name="student" :tab="$t('page.exam.list')">
+        <NGrid :cols="3" :x-gap="16" :y-gap="16">
+          <NGi v-for="exam in exams" :key="exam.id">
+            <NCard hoverable>
+              <template #header>
+                <span class="text-base font-medium">{{ exam.name }}</span>
+              </template>
+              <template #header-extra>
+                <NTag :type="typeColor[exam.type] || 'default'" size="small">
+                  {{ typeMap[exam.type] || exam.type }}
+                </NTag>
+              </template>
 
-          <NSpace vertical class="text-sm text-gray-500">
-            <span>{{ $t('education.course.subjectCode') }}:
-              {{ exam.subjectCode }}</span>
-            <span>{{ $t('education.course.grade') }}: {{ exam.grade }}</span>
-            <span>{{ $t('education.exam.durationMin') }}:
-              {{ exam.durationMin }}</span>
-            <span>{{ $t('education.exam.totalScore') }}:
-              {{ exam.totalScore }}</span>
-            <NTag
-              :type="exam.status === 1 ? 'success' : 'default'"
-              size="small"
-            >
-              {{ exam.status === 1 ? '进行中' : '已结束' }}
-            </NTag>
-          </NSpace>
+              <NSpace vertical class="text-sm text-gray-500">
+                <span>{{ $t('education.course.subjectCode') }}:
+                  {{ exam.subjectCode }}</span>
+                <span>{{ $t('education.course.grade') }}: {{ exam.grade }}</span>
+                <span>{{ $t('education.exam.durationMin') }}:
+                  {{ exam.durationMin }}</span>
+                <span>{{ $t('education.exam.totalScore') }}:
+                  {{ exam.totalScore }}</span>
+                <NTag
+                  :type="exam.status === 1 ? 'success' : 'default'"
+                  size="small"
+                >
+                  {{ exam.status === 1 ? '进行中' : '已结束' }}
+                </NTag>
+              </NSpace>
 
-          <template #footer>
-            <NButton type="primary" block @click="startExam(exam)">
-              开始考试
-            </NButton>
-          </template>
-        </NCard>
-      </NGi>
-    </NGrid>
+              <template #footer>
+                <NButton type="primary" block @click="startExam(exam)">
+                  开始考试
+                </NButton>
+              </template>
+            </NCard>
+          </NGi>
+        </NGrid>
 
-    <div
-      v-if="!loading && exams.length === 0"
-      class="py-20 text-center text-gray-400"
-    >
-      暂无考试
-    </div>
+        <div
+          v-if="!loading && exams.length === 0"
+          class="py-20 text-center text-gray-400"
+        >
+          暂无考试
+        </div>
+      </NTabPane>
+
+      <!-- 管理端：考试管理 -->
+      <NTabPane
+        v-if="adminPermission"
+        name="admin"
+        :tab="$t('page.eduAdmin.exam')"
+      >
+        <AdminExamList />
+      </NTabPane>
+    </NTabs>
   </Page>
 </template>

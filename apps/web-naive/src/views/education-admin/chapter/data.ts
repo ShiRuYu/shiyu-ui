@@ -1,15 +1,17 @@
-import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
-
-import type { VbenFormSchema } from '#/adapter/form';
-import type { OnActionClickFn } from '#/adapter/vxe-table';
-import type { EducationChapterApi } from '#/api/education/chapter';
 
 import { z } from '#/adapter/form';
 import { getChapterOptions } from '#/api/education/chapter';
 import { getTextbookOptions } from '#/api/education/textbook';
+import { getKnowledgeListApi } from '#/api/knowledge';
 import { $t } from '#/locales';
-
-export function useGridFormSchema(): VbenFormSchema[] {
+async function getKnowledgeOptions() {
+  var result = await getKnowledgeListApi({ pageSize: 1000 });
+  var items = result?.items || result || [];
+  return items.map((k) => {
+    return { id: k.id, name: '[' + k.code + '] ' + k.name };
+  });
+}
+export function useGridFormSchema() {
   return [
     {
       component: 'Input',
@@ -30,8 +32,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
     },
   ];
 }
-
-export function useSchema(): VbenFormSchema[] {
+export function useSchema() {
   return [
     {
       component: 'Input',
@@ -77,12 +78,23 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'chapterOrder',
       label: $t('education.chapter.chapterOrder'),
     },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getKnowledgeOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        multiple: true,
+        placeholder: 'Select knowledge points',
+      },
+      fieldName: 'knowledgeIds',
+      label: 'Knowledge Points',
+    },
   ];
 }
-
-export function useColumns(
-  onActionClick?: OnActionClickFn<EducationChapterApi.Chapter>,
-): VxeTableGridColumns<EducationChapterApi.Chapter> {
+export function useColumns(onActionClick) {
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'name', title: $t('education.chapter.name'), width: 200 },
@@ -97,6 +109,7 @@ export function useColumns(
       title: $t('education.chapter.chapterOrder'),
       width: 100,
     },
+    { field: 'knowledgeCount', title: 'Knowledge', width: 100 },
     {
       align: 'right',
       cellRender: {

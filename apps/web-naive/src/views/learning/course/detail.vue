@@ -17,8 +17,7 @@ import {
   NTree,
 } from 'naive-ui';
 
-import { message } from '#/adapter/naive';
-import { getChapterTree, getCourseById, startLearning } from '#/api';
+import { getChapterTree, getCourseById } from '#/api';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -51,14 +50,9 @@ async function loadChapters() {
   }
 }
 
-async function handleStartLearning() {
+function handleStartLearning() {
   if (!course.value) return;
-  try {
-    await startLearning(course.value.id, getCurrentStudentId());
-    message.success($t('ui.actionMessage.operationSuccess'));
-  } catch (error) {
-    console.error('Failed to start learning:', error);
-  }
+  router.push({ path: `/learning/course/${course.value.id}/learn` });
 }
 
 onMounted(() => {

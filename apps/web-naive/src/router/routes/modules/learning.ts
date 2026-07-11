@@ -32,6 +32,15 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'LearningCourseLearn',
+        path: '/learning/course/:courseId/learn',
+        component: () => import('#/views/learning/course/learn.vue'),
+        meta: {
+          hideInMenu: true,
+          title: $t('page.learning.courseDetail'),
+        },
+      },
+      {
         name: 'LearningKnowledge',
         path: '/learning/knowledge',
         component: () => import('#/views/learning/knowledge/list.vue'),
