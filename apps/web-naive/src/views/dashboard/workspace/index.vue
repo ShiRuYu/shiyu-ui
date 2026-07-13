@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-import type {
-  WorkbenchProjectItem,
-  WorkbenchQuickNavItem,
-  WorkbenchTodoItem,
-  WorkbenchTrendItem,
-} from '@vben/common-ui';
+import type { UsageOverview } from '#/api/dashboard/usage';
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import {
@@ -19,220 +14,109 @@ import {
 } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
 
-import { $t } from '#/locales';
+import { getModelUsageApi, getUsageOverviewApi } from '#/api/dashboard/usage';
 
 import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
 
 const userStore = useUserStore();
-
-// 这是一个示例数据，实际项目中需要根据实际情况进行调整
-// url 也可以是内部路由，在 navTo 方法中识别处理，进行内部跳转
-// 例如：url: /dashboard/workspace
-const projectItems: WorkbenchProjectItem[] = [
-  {
-    color: '',
-    content: '不要等待机会，而要创造机会。',
-    date: '2021-04-01',
-    group: '开源组',
-    icon: 'carbon:logo-github',
-    title: 'Github',
-    url: 'https://github.com',
-  },
-  {
-    color: '#3fb27f',
-    content: '现在的你决定将来的你。',
-    date: '2021-04-01',
-    group: '算法组',
-    icon: 'ion:logo-vue',
-    title: 'Vue',
-    url: 'https://vuejs.org',
-  },
-  {
-    color: '#e18525',
-    content: '没有什么才能比努力更重要。',
-    date: '2021-04-01',
-    group: '上班摸鱼',
-    icon: 'ion:logo-html5',
-    title: 'Html5',
-    url: 'https://developer.mozilla.org/zh-CN/docs/Web/HTML',
-  },
-  {
-    color: '#bf0c2c',
-    content: '热情和欲望可以突破一切难关。',
-    date: '2021-04-01',
-    group: 'UI',
-    icon: 'ion:logo-angular',
-    title: 'Angular',
-    url: 'https://angular.io',
-  },
-  {
-    color: '#00d8ff',
-    content: '健康的身体是实现目标的基石。',
-    date: '2021-04-01',
-    group: '技术牛',
-    icon: 'bx:bxl-react',
-    title: 'React',
-    url: 'https://reactjs.org',
-  },
-  {
-    color: '#EBD94E',
-    content: '路是走出来的，而不是空想出来的。',
-    date: '2021-04-01',
-    group: '架构组',
-    icon: 'ion:logo-javascript',
-    title: 'Js',
-    url: 'https://developer.mozilla.org/zh-CN/docs/Web/JavaScript',
-  },
-];
-
-// 同样，这里的 url 也可以使用以 http 开头的外部链接
-const quickNavItems: WorkbenchQuickNavItem[] = [
-  {
-    color: '#1fdaca',
-    icon: 'ion:home-outline',
-    title: $t('dashboard.home'),
-    url: '/',
-  },
-  {
-    color: '#bf0c2c',
-    icon: 'ion:grid-outline',
-    title: $t('dashboard.dashboard'),
-    url: '/dashboard',
-  },
-  {
-    color: '#e18525',
-    icon: 'ion:layers-outline',
-    title: $t('dashboard.components'),
-    url: '/demos/features/icons',
-  },
-  {
-    color: '#3fb27f',
-    icon: 'ion:settings-outline',
-    title: $t('dashboard.systemManagement'),
-    url: '/demos/features/login-expired', // 这里的 URL 是示例，实际项目中需要根据实际情况进行调整
-  },
-  {
-    color: '#4daf1bc9',
-    icon: 'ion:key-outline',
-    title: $t('dashboard.permissionManagement'),
-    url: '/demos/access/page-control',
-  },
-  {
-    color: '#00d8ff',
-    icon: 'ion:bar-chart-outline',
-    title: $t('dashboard.charts'),
-    url: '/analytics',
-  },
-];
-
-const todoItems = ref<WorkbenchTodoItem[]>([
-  {
-    completed: false,
-    content: `审查最近提交到Git仓库的前端代码，确保代码质量和规范。`,
-    date: '2024-07-30 11:00:00',
-    title: '审查前端代码提交',
-  },
-  {
-    completed: true,
-    content: `检查并优化系统性能，降低CPU使用率。`,
-    date: '2024-07-30 11:00:00',
-    title: '系统性能优化',
-  },
-  {
-    completed: false,
-    content: `进行系统安全检查，确保没有安全漏洞或未授权的访问。 `,
-    date: '2024-07-30 11:00:00',
-    title: '安全检查',
-  },
-  {
-    completed: false,
-    content: `更新项目中的所有npm依赖包，确保使用最新版本。`,
-    date: '2024-07-30 11:00:00',
-    title: '更新项目依赖',
-  },
-  {
-    completed: false,
-    content: `修复用户报告的页面UI显示问题，确保在不同浏览器中显示一致。 `,
-    date: '2024-07-30 11:00:00',
-    title: '修复UI显示问题',
-  },
-]);
-const trendItems: WorkbenchTrendItem[] = [
-  {
-    avatar: 'svg:avatar-1',
-    content: `在 <a>开源组</a> 创建了项目 <a>Vue</a>`,
-    date: '刚刚',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-2',
-    content: `关注了 <a>威廉</a> `,
-    date: '1个小时前',
-    title: '艾文',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1天前',
-    title: '克里斯',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写一个Vite插件</a> `,
-    date: '2天前',
-    title: 'Vben',
-  },
-  {
-    avatar: 'svg:avatar-1',
-    content: `回复了 <a>杰克</a> 的问题 <a>如何进行项目优化？</a>`,
-    date: '3天前',
-    title: '皮特',
-  },
-  {
-    avatar: 'svg:avatar-2',
-    content: `关闭了问题 <a>如何运行项目</a> `,
-    date: '1周前',
-    title: '杰克',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1周前',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `推送了代码到 <a>Github</a>`,
-    date: '2021-04-01 20:00',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写使用 Admin Vben</a> `,
-    date: '2021-03-01 20:00',
-    title: 'Vben',
-  },
-];
-
 const router = useRouter();
 
-// 这是一个示例方法，实际项目中需要根据实际情况进行调整
-// This is a sample method, adjust according to the actual project requirements
-function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
-  if (nav.url?.startsWith('http')) {
-    openWindow(nav.url);
-    return;
-  }
-  if (nav.url?.startsWith('/')) {
-    router.push(nav.url).catch((error) => {
-      console.error('Navigation failed:', error);
-    });
-  } else {
-    console.warn(`Unknown URL for navigation item: ${nav.title} -> ${nav.url}`);
+const overview = ref<null | UsageOverview>(null);
+const loading = ref(true);
+
+const quickNavItems = [
+  {
+    color: '#2563EB',
+    icon: 'carbon:development',
+    title: 'Agent 管理',
+    url: '/agent/admin/list',
+  },
+  {
+    color: '#059669',
+    icon: 'carbon:concept',
+    title: '知识库',
+    url: '/knowledge/list',
+  },
+  {
+    color: '#D97706',
+    icon: 'lucide:book',
+    title: '课程学习',
+    url: '/learning/course',
+  },
+  {
+    color: '#7C3AED',
+    icon: 'lucide:message-circle',
+    title: 'AI 对话',
+    url: '/ai-tutor/chat',
+  },
+  {
+    color: '#DC2626',
+    icon: 'lucide:bar-chart-3',
+    title: '数据看板',
+    url: '/analytics',
+  },
+  {
+    color: '#0891B2',
+    icon: 'carbon:notebook',
+    title: '日常记录',
+    url: '/record/profile',
+  },
+];
+
+const todoItems = ref([
+  {
+    completed: false,
+    content: '检查平台 Agent 运行状态，确认所有节点正常运作。',
+    title: '平台运行巡检',
+    date: new Date().toLocaleDateString('zh-CN'),
+  },
+  {
+    completed: false,
+    content: 'Review 近期 API 调用趋势，关注异常波动。',
+    title: 'API 用量监控',
+    date: new Date().toLocaleDateString('zh-CN'),
+  },
+  {
+    completed: false,
+    content: '检查知识库索引状态，确保搜索质量。',
+    title: '知识库索引维护',
+    date: new Date().toLocaleDateString('zh-CN'),
+  },
+]);
+
+const modelUsageItems = ref<
+  {
+    color: string;
+    content: string;
+    group: string;
+    icon: string;
+    title: string;
+    url: string;
+  }[]
+>([]);
+
+async function fetchData() {
+  loading.value = true;
+  try {
+    overview.value = await getUsageOverviewApi();
+    const modelUsage = await getModelUsageApi();
+    modelUsageItems.value = (modelUsage || []).slice(0, 6).map((m) => ({
+      title: m.model,
+      content: `调用 ${m.call_count} 次 · ${(m.total_tokens / 1000).toFixed(1)}K tokens`,
+      group: m.platform,
+      icon: 'carbon:ibm-watson-machine-learning',
+      color: '#2563EB',
+      url: '/agent/model',
+    }));
+  } catch {
+    // 静默失败，使用默认空状态
+  } finally {
+    loading.value = false;
   }
 }
+
+onMounted(fetchData);
 </script>
 
 <template>
@@ -240,40 +124,92 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
     <WorkbenchHeader
       :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
     >
-      <template #title>
-        {{
-          $t('dashboard.goodMorning', { name: userStore.userInfo?.realName })
-        }}
+      <template #title> AI 平台工作台 </template>
+      <template #description>
+        欢迎回来，{{ userStore.userInfo?.realName || '用户' }}
       </template>
-      <template #description> {{ $t('dashboard.weather') }} </template>
     </WorkbenchHeader>
+
+    <!-- 平台概览卡片 -->
+    <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-muted-foreground">平台数</p>
+          <span
+            class="h-8 w-8 rounded-md bg-blue-100 p-1.5 text-blue-600 dark:bg-blue-900 dark:text-blue-300"
+          >
+            <span class="i-carbon:bare-metal-server h-full w-full block"></span>
+          </span>
+        </div>
+        <p class="mt-2 text-2xl font-bold">
+          {{ overview?.platform_count ?? '-' }}
+        </p>
+      </div>
+      <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-muted-foreground">模型数</p>
+          <span
+            class="h-8 w-8 rounded-md bg-emerald-100 p-1.5 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300"
+          >
+            <span
+              class="i-carbon:ibm-watson-machine-learning h-full w-full block"
+            ></span>
+          </span>
+        </div>
+        <p class="mt-2 text-2xl font-bold">
+          {{ overview?.model_count ?? '-' }}
+        </p>
+      </div>
+      <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-muted-foreground">总调用次数</p>
+          <span
+            class="h-8 w-8 rounded-md bg-amber-100 p-1.5 text-amber-600 dark:bg-amber-900 dark:text-amber-300"
+          >
+            <span class="i-carbon:query-queue h-full w-full block"></span>
+          </span>
+        </div>
+        <p class="mt-2 text-2xl font-bold">
+          {{ (overview?.total_calls ?? 0).toLocaleString() }}
+        </p>
+      </div>
+      <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-muted-foreground">Token 用量</p>
+          <span
+            class="h-8 w-8 rounded-md bg-purple-100 p-1.5 text-purple-600 dark:bg-purple-900 dark:text-purple-300"
+          >
+            <span
+              class="i-carbon:data-quality-definition h-full w-full block"
+            ></span>
+          </span>
+        </div>
+        <p class="mt-2 text-2xl font-bold">
+          {{ ((overview?.total_tokens ?? 0) / 1000000).toFixed(1) }}M
+        </p>
+      </div>
+    </div>
 
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
+        <!-- 模型用量排行 -->
         <WorkbenchProject
-          :items="projectItems"
-          :title="$t('dashboard.projects')"
-          @click="navTo"
+          :items="modelUsageItems.length > 0 ? modelUsageItems : undefined"
+          :loading="loading"
+          title="模型调用排行"
+          @click="(item: any) => item.url && router.push(item.url)"
         />
-        <WorkbenchTrends
-          :items="trendItems"
-          class="mt-5"
-          :title="$t('dashboard.latestTrends')"
-        />
+        <WorkbenchTrends class="mt-5" title="系统动态" />
       </div>
       <div class="w-full lg:w-2/5">
         <WorkbenchQuickNav
           :items="quickNavItems"
           class="mt-5 lg:mt-0"
-          :title="$t('dashboard.quickNav')"
-          @click="navTo"
+          title="快捷导航"
+          @click="(item: any) => item.url && router.push(item.url)"
         />
-        <WorkbenchTodo
-          :items="todoItems"
-          class="mt-5"
-          :title="$t('dashboard.todos')"
-        />
-        <AnalysisChartCard class="mt-5" :title="$t('dashboard.visitSource')">
+        <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
+        <AnalysisChartCard class="mt-5" title="访问来源">
           <AnalyticsVisitsSource />
         </AnalysisChartCard>
       </div>

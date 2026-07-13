@@ -15,6 +15,8 @@
     "intent": "Intent Management"
   },
   "system": {
-    "authCode": "Auth Code"
+    "authCode": "Auth Code",
+    "dict": "Dictionary",
+    "tenant": "Tenant"
   }
 }
