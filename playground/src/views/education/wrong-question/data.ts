@@ -35,7 +35,9 @@ export function useFormSchema(): VbenFormSchema[] {
   ];
 }
 
-export function useColumns<T = WrongQuestionApi.WrongQuestion>(): VxeTableGridColumns {
+export function useColumns<
+  T = WrongQuestionApi.WrongQuestion,
+>(): VxeTableGridColumns {
   return [
     {
       field: 'questionTitle',

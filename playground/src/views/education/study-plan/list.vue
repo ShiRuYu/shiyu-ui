@@ -50,7 +50,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<StudyPlanApi.StudyPlan>,
 });
 
-function handleStudentChange(val: number | null) {
+function handleStudentChange(val: null | number) {
   if (val) {
     studentId.value = val;
     gridApi.reload();

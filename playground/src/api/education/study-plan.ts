@@ -1,35 +1,34 @@
-import type { Recordable } from '@vben/types';
 
 import { requestClient } from '#/api/request';
 
 export namespace StudyPlanApi {
   export interface StudyPlan {
     [key: string]: any;
+    completedItems?: number;
+    endDate: string;
     id: number;
-    studentId: number;
+    items?: DailyTask[];
     name: string;
     startDate: string;
-    endDate: string;
     status: string;
+    studentId: number;
     totalItems?: number;
-    completedItems?: number;
-    items?: DailyTask[];
   }
 
   export interface DailyTask {
     id: number;
     knowledgeId: number;
     knowledgeName: string;
+    orderNo: number;
     planDate: string;
     status: string;
-    orderNo: number;
   }
 
   export interface CreatePlan {
-    studentId: number;
+    endDate: string;
     name: string;
     startDate: string;
-    endDate: string;
+    studentId: number;
   }
 }
 

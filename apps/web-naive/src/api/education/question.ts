@@ -1,92 +1,41 @@
 import { requestClient } from '#/api/request';
 
-export namespace EducationQuestionApi {
-  export interface PageData<T> {
-    items: T[];
-    total: number;
-  }
-
-  export interface Question {
-    [key: string]: any;
-    id: number;
-    code: string;
-    type: string;
-    subjectCode: string;
-    grade: number;
-    difficulty: number;
-    abilityDimension: string;
-    title: string;
-    options: string;
-    answer: string;
-    analysis: string;
-    tags: string;
-    usedCount: number;
-  }
+/** 题目详情 */
+export function getQuestionDetailApi(id: number) {
+  return requestClient.get<any>(`/api/v1/question/${id}`);
 }
 
-async function getQuestionById(id: number) {
-  return requestClient.get<EducationQuestionApi.Question>(
-    '/edu/question/detail',
-    { params: { id } },
-  );
-}
-
-async function getAllQuestions(pageNum = 1, pageSize = 10) {
-  return requestClient.get<
-    EducationQuestionApi.PageData<EducationQuestionApi.Question>
-  >('/edu/question/list', {
-    params: { pageNum, pageSize },
-  });
-}
-async function getQuestionBySubjectGrade(subjectCode: string, grade: number) {
-  return requestClient.get<EducationQuestionApi.Question[]>(
-    '/edu/question/subject-grade',
-    { params: { subjectCode, grade } },
-  );
-}
-
-async function getQuestionByDifficulty(difficulty: number) {
-  return requestClient.get<EducationQuestionApi.Question[]>(
-    '/edu/question/difficulty',
-    { params: { difficulty } },
-  );
-}
-
-async function getQuestionByType(type: string) {
-  return requestClient.get<EducationQuestionApi.Question[]>(
-    '/edu/question/type',
-    { params: { type } },
-  );
-}
-
-async function createQuestion(data: Omit<EducationQuestionApi.Question, 'id'>) {
-  return requestClient.post('/edu/question/create', data);
-}
-
-async function updateQuestion(
-  id: number,
-  data: Partial<EducationQuestionApi.Question>,
+/** 根据学科和年级获取题目 */
+export function getQuestionBySubjectAndGradeApi(
+  subjectCode: string,
+  grade: number,
 ) {
-  return requestClient.post('/edu/question/update', data, { params: { id } });
+  return requestClient.get<any[]>(
+    `/api/v1/question/subject/${subjectCode}/grade/${grade}`,
+  );
 }
 
-async function deleteQuestion(id: number) {
-  return requestClient.post('/edu/question/delete', null, { params: { id } });
+/** 根据难度获取题目 */
+export function getQuestionByDifficultyApi(difficulty: number) {
+  return requestClient.get<any[]>(`/api/v1/question/difficulty/${difficulty}`);
 }
 
-async function getQuestionOptions() {
-  const result = await getAllQuestions(1, 1000);
-  return (result?.items || []).map((q) => ({ id: q.id, title: q.title }));
+/** 根据类型获取题目 */
+export function getQuestionByTypeApi(type: string) {
+  return requestClient.get<any[]>(`/api/v1/question/type/${type}`);
 }
 
-export {
-  createQuestion,
-  deleteQuestion,
-  getAllQuestions,
-  getQuestionByDifficulty,
-  getQuestionById,
-  getQuestionBySubjectGrade,
-  getQuestionByType,
-  getQuestionOptions,
-  updateQuestion,
-};
+/** 创建题目 */
+export function createQuestionApi(data: any) {
+  return requestClient.post('/api/v1/question', data);
+}
+
+/** 更新题目 */
+export function updateQuestionApi(id: number, data: any) {
+  return requestClient.put(`/api/v1/question/${id}`, data);
+}
+
+/** 删除题目 */
+export function deleteQuestionApi(id: number) {
+  return requestClient.delete(`/api/v1/question/${id}`);
+}

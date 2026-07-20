@@ -5,14 +5,14 @@ import { requestClient } from '#/api/request';
 export namespace WrongQuestionApi {
   export interface WrongQuestion {
     [key: string]: any;
-    id: number;
-    studentId: number;
-    questionId: number;
-    knowledgeId: number;
-    questionTitle: string;
-    studentAnswer: string;
     correctAnswer: string;
     correctTimes: number;
+    id: number;
+    knowledgeId: number;
+    questionId: number;
+    questionTitle: string;
+    studentAnswer: string;
+    studentId: number;
   }
 }
 

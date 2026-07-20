@@ -109,7 +109,7 @@ export namespace SystemMenuApi {
  */
 async function getMenuRoots() {
   return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/auth/menu/roots',
+    '/menu/roots',
   );
 }
 
@@ -119,7 +119,7 @@ async function getMenuRoots() {
  */
 async function getMenuChildren(parentId: number) {
   return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/auth/menu/children',
+    '/menu/children',
     { params: { parentId } },
   );
 }
@@ -128,7 +128,7 @@ async function getMenuChildren(parentId: number) {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/auth/menu/list');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
 }
 
 /**
@@ -137,7 +137,7 @@ async function getMenuList() {
 async function getMenuListForGrid() {
   const data =
     await requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-      '/auth/menu/list',
+      '/menu/list',
     );
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
@@ -150,7 +150,7 @@ async function getMenuListForGrid() {
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/auth/menu/create', data);
+  return requestClient.post('/menu/create', data);
 }
 
 /**
@@ -163,7 +163,7 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/auth/menu/update', data, { params: { id } });
+  return requestClient.post('/menu/update', data, { params: { id } });
 }
 
 /**
@@ -171,7 +171,7 @@ async function updateMenu(
  * @param id 菜单 ID
  */
 async function deleteMenu(id: number) {
-  return requestClient.post('/auth/menu/delete', null, { params: { id } });
+  return requestClient.post('/menu/delete', null, { params: { id } });
 }
 
 export {

@@ -5,8 +5,6 @@ import { computed, nextTick, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { message, Modal } from 'antdv-next';
-
 import { useVbenForm } from '#/adapter/form';
 import { createPlan, updatePlan } from '#/api';
 import { $t } from '#/locales';
@@ -29,10 +27,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (!valid) return;
     const values = await formApi.getValues();
     drawerApi.lock();
-    (id.value
-      ? updatePlan(id.value, values)
-      : createPlan(values)
-    )
+    (id.value ? updatePlan(id.value, values) : createPlan(values))
       .then(() => {
         emits('success');
         drawerApi.close();

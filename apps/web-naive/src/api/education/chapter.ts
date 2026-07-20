@@ -1,67 +1,33 @@
 import { requestClient } from '#/api/request';
 
-export namespace EducationChapterApi {
-  export interface Chapter {
-    [key: string]: any;
-    id: number;
-    textbookId: number;
-    parentId: null | number;
-    name: string;
-    chapterOrder: number;
-    children: Chapter[] | null;
-  }
+/** 章节详情 */
+export function getChapterDetailApi(id: number) {
+  return requestClient.get<any>(`/api/v1/chapter/${id}`);
 }
 
-async function getChapterById(id: number) {
-  return requestClient.get<EducationChapterApi.Chapter>('/edu/chapter/detail', {
-    params: { id },
-  });
+/** 获取教材所有章节（平铺） */
+export function getChapterByTextbookApi(textbookId: number) {
+  return requestClient.get<any[]>(`/api/v1/chapter/textbook/${textbookId}`);
 }
 
-async function getChaptersByTextbook(textbookId: number) {
-  return requestClient.get<EducationChapterApi.Chapter[]>(
-    '/edu/chapter/textbook',
-    { params: { textbookId } },
+/** 获取教材章节树 */
+export function getChapterTreeApi(textbookId: number) {
+  return requestClient.get<any[]>(
+    `/api/v1/chapter/textbook/${textbookId}/tree`,
   );
 }
 
-async function getChapterTree(textbookId: number) {
-  return requestClient.get<EducationChapterApi.Chapter[]>(
-    '/edu/chapter/textbook-tree',
-    { params: { textbookId } },
-  );
+/** 创建章节 */
+export function createChapterApi(data: any) {
+  return requestClient.post('/api/v1/chapter', data);
 }
 
-async function createChapter(
-  data: Omit<EducationChapterApi.Chapter, 'children' | 'id'>,
-) {
-  return requestClient.post('/edu/chapter/create', data);
+/** 更新章节 */
+export function updateChapterApi(id: number, data: any) {
+  return requestClient.put(`/api/v1/chapter/${id}`, data);
 }
 
-async function updateChapter(
-  id: number,
-  data: Partial<EducationChapterApi.Chapter>,
-) {
-  return requestClient.post('/edu/chapter/update', data, { params: { id } });
+/** 删除章节 */
+export function deleteChapterApi(id: number) {
+  return requestClient.delete(`/api/v1/chapter/${id}`);
 }
-
-async function deleteChapter(id: number) {
-  return requestClient.post('/edu/chapter/delete', null, { params: { id } });
-}
-
-async function getChapterOptions(textbookId?: number) {
-  const chapters = textbookId
-    ? await getChaptersByTextbook(textbookId)
-    : await getChaptersByTextbook(0);
-  return (chapters || []).map((c) => ({ id: c.id, name: c.name }));
-}
-
-export {
-  createChapter,
-  deleteChapter,
-  getChapterById,
-  getChapterOptions,
-  getChaptersByTextbook,
-  getChapterTree,
-  updateChapter,
-};

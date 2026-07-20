@@ -6,17 +6,17 @@ import { ref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Card, InputNumber, message, Radio } from 'antdv-next';
+import { Card, InputNumber, Radio } from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { completeReview, listByStatus, listTodayTasks } from '#/api';
+import { listByStatus, listTodayTasks } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns } from './data';
 import CompleteForm from './modules/form.vue';
 
 const studentId = ref(1);
-const filterMode = ref<'today' | 'all'>('today');
+const filterMode = ref<'all' | 'today'>('today');
 
 const [CompleteDrawer, completeDrawerApi] = useVbenDrawer({
   connectedComponent: CompleteForm,
@@ -52,7 +52,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<ReviewTaskApi.ReviewTask>,
 });
 
-function handleStudentChange(val: number | null) {
+function handleStudentChange(val: null | number) {
   if (val) {
     studentId.value = val;
     gridApi.reload();

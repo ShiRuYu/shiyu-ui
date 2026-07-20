@@ -56,7 +56,7 @@ async function loadData() {
   }
 }
 
-function handleStudentChange(val: number | null) {
+function handleStudentChange(val: null | number) {
   if (val) {
     studentId.value = val;
     loadData();
@@ -99,7 +99,9 @@ onMounted(loadData);
               <Statistic
                 :title="$t('education.analytics.streakDays')"
                 :value="overview.streakDays"
-                :value-style="{ color: overview.streakDays > 7 ? '#52c41a' : undefined }"
+                :value-style="{
+                  color: overview.streakDays > 7 ? '#52c41a' : undefined,
+                }"
                 suffix="天"
               />
             </Col>
@@ -126,17 +128,20 @@ onMounted(loadData);
       <Col :span="12">
         <Card :bordered="false" :title="$t('education.analytics.abilityRadar')">
           <Descriptions v-if="abilityRadar" :column="1" size="small">
-            <Descriptions.Item
-              v-for="(color, key) in abilityColors"
-              :key="key"
-            >
+            <Descriptions.Item v-for="(color, key) in abilityColors" :key="key">
               <template #label>
                 <Tag :color="color">{{ key }}</Tag>
               </template>
               {{ getAbilityPercent(key) }}
             </Descriptions.Item>
-            <Descriptions.Item :label="$t('education.analytics.overallMastery')">
-              <strong>{{ abilityRadar.overallMastery != null ? `${(abilityRadar.overallMastery * 100).toFixed(0)}%` : '-' }}</strong>
+            <Descriptions.Item
+              :label="$t('education.analytics.overallMastery')"
+            >
+              <strong>{{
+                abilityRadar.overallMastery != null
+                  ? `${(abilityRadar.overallMastery * 100).toFixed(0)}%`
+                  : '-'
+              }}</strong>
             </Descriptions.Item>
           </Descriptions>
         </Card>
@@ -149,8 +154,16 @@ onMounted(loadData);
             v-if="weakPoints.length > 0"
             :data-source="weakPoints"
             :columns="[
-              { title: $t('education.reviewTask.knowledgeName'), dataIndex: 'knowledgeName', key: 'knowledgeName' },
-              { title: $t('education.analytics.weakMastery'), dataIndex: 'mastery', key: 'mastery' },
+              {
+                title: $t('education.reviewTask.knowledgeName'),
+                dataIndex: 'knowledgeName',
+                key: 'knowledgeName',
+              },
+              {
+                title: $t('education.analytics.weakMastery'),
+                dataIndex: 'mastery',
+                key: 'mastery',
+              },
             ]"
             :pagination="false"
             size="small"
@@ -158,7 +171,7 @@ onMounted(loadData);
           >
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.dataIndex === 'mastery'">
-                <Tag :color="(record.mastery * 100) < 40 ? 'red' : 'orange'">
+                <Tag :color="record.mastery * 100 < 40 ? 'red' : 'orange'">
                   {{ (record.mastery * 100).toFixed(0) }}%
                 </Tag>
               </template>
@@ -175,10 +188,16 @@ onMounted(loadData);
         <Card :bordered="false" :title="$t('education.analytics.trend')">
           <Table
             v-if="trend && trend.dates.length > 0"
-            :data-source="trend.dates.map((d, i) => ({ date: d, count: trend.values[i] }))"
+            :data-source="
+              trend.dates.map((d, i) => ({ date: d, count: trend.values[i] }))
+            "
             :columns="[
               { title: '日期', dataIndex: 'date', key: 'date', width: 200 },
-              { title: $t('education.analytics.totalQuestions'), dataIndex: 'count', key: 'count' },
+              {
+                title: $t('education.analytics.totalQuestions'),
+                dataIndex: 'count',
+                key: 'count',
+              },
             ]"
             :pagination="false"
             size="small"

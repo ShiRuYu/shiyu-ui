@@ -38,7 +38,7 @@ async function getUserList(params: Recordable<any>) {
   const data = await requestClient.get<
     | SystemUserApi.PageResult<SystemUserApi.SystemUser>
     | SystemUserApi.SystemUser[]
-  >('/auth/user/list', {
+  >('/user/list', {
     params: {
       pageNum: page || 1,
       pageSize: pageSize || 10,
@@ -68,7 +68,7 @@ async function getRolesForUserForm() {
 async function createUser(
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/auth/user/create', data);
+  return requestClient.post('/user/create', data);
 }
 
 /**
@@ -81,7 +81,7 @@ async function updateUser(
   id: number,
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/auth/user/update', data, {
+  return requestClient.post('/user/update', data, {
     params: { userId: id },
   });
 }
@@ -91,7 +91,7 @@ async function updateUser(
  * @param id 用户 ID
  */
 async function deleteUser(id: number) {
-  return requestClient.post('/auth/user/delete', null, {
+  return requestClient.post('/user/delete', null, {
     params: { userId: id },
   });
 }
@@ -103,7 +103,7 @@ async function deleteUser(id: number) {
  */
 async function resetUserPassword(id: number, password: string) {
   return requestClient.post(
-    '/auth/user/password/reset',
+    '/user/password/reset',
     { password },
     { params: { userId: id } },
   );
@@ -121,7 +121,7 @@ async function changePassword(
   newPassword: string,
 ) {
   return requestClient.post(
-    '/auth/user/password/change',
+    '/user/password/change',
     {
       oldPassword,
       newPassword,

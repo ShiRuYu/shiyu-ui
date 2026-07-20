@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { NButton, NDataTable, NSpace, NCard, NSelect } from 'naive-ui';
-import { getChapterTreeApi, deleteChapterApi } from '#/api/education/chapter';
+
+import { NButton, NCard, NDataTable, NSelect, NSpace } from 'naive-ui';
+
+import { deleteChapterApi, getChapterTreeApi } from '#/api/education/chapter';
 import { getTextbookListApi } from '#/api/education/textbook';
-import { getTableColumns, flattenTree } from './data';
+
+import { flattenTree, getTableColumns } from './data';
 import FormModal from './modules/form.vue';
 
 const tableData = ref<any[]>([]);
 const loading = ref(false);
 const formModalRef = ref<any>(null);
-const selectedTextbookId = ref<number | null>(null);
+const selectedTextbookId = ref<null | number>(null);
 const textbookOptions = ref<Array<{ label: string; value: number }>>([]);
 
 const columns = getTableColumns(
@@ -23,8 +26,13 @@ const columns = getTableColumns(
 async function loadTextbookOptions() {
   try {
     const res = await getTextbookListApi();
-    textbookOptions.value = (res || []).map((t: any) => ({ label: t.name, value: t.id }));
-  } catch { /* ignore */ }
+    textbookOptions.value = (res || []).map((t: any) => ({
+      label: t.name,
+      value: t.id,
+    }));
+  } catch {
+    /* ignore */
+  }
 }
 
 async function fetchData() {
@@ -36,7 +44,9 @@ async function fetchData() {
   try {
     const res = await getChapterTreeApi(selectedTextbookId.value);
     tableData.value = flattenTree(res || []);
-  } finally { loading.value = false; }
+  } finally {
+    loading.value = false;
+  }
 }
 
 function onTextbookChange() {
@@ -54,10 +64,14 @@ onMounted(loadTextbookOptions);
           v-model:value="selectedTextbookId"
           :options="textbookOptions"
           placeholder="请先选择教材"
-          style="width:220px"
+          style="width: 220px"
           @update:value="onTextbookChange"
         />
-        <NButton type="primary" :disabled="!selectedTextbookId" @click="() => formModalRef?.open()">
+        <NButton
+          type="primary"
+          :disabled="!selectedTextbookId"
+          @click="() => formModalRef?.open()"
+        >
           新增章节
         </NButton>
       </NSpace>
@@ -70,7 +84,9 @@ onMounted(loadTextbookOptions);
       :single-line="false"
       size="small"
       striped
-      :row-props="(row: any) => ({ style: { paddingLeft: `${row._depth * 24}px` } })"
+      :row-props="
+        (row: any) => ({ style: { paddingLeft: `${row._depth * 24}px` } })
+      "
     >
       <template #default="{ row }">
         <template v-if="row._indent">

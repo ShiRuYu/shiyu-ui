@@ -27,10 +27,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (!valid) return;
     const values = await formApi.getValues();
     drawerApi.lock();
-    (id.value
-      ? updateResource(id.value, values)
-      : createResource(values)
-    )
+    (id.value ? updateResource(id.value, values) : createResource(values))
       .then(() => {
         emits('success');
         drawerApi.close();

@@ -3,7 +3,9 @@ import type { ReviewTaskApi } from '#/api';
 
 import { $t } from '#/locales';
 
-export function useColumns<T = ReviewTaskApi.ReviewTask>(): VxeTableGridColumns {
+export function useColumns<
+  T = ReviewTaskApi.ReviewTask,
+>(): VxeTableGridColumns {
   return [
     {
       field: 'knowledgeName',

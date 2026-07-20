@@ -92,11 +92,31 @@ function handleSuccess() {
           :value="typeFilter"
           @change="handleTypeChange"
         >
-          <Select.Option value="VIDEO">{{ $t('education.resource.video') }}</Select.Option>
-          <Select.Option value="DOCUMENT">{{ $t('education.resource.document') }}</Select.Option>
-          <Select.Option value="AUDIO">{{ $t('education.resource.audio') }}</Select.Option>
-          <Select.Option value="IMAGE">{{ $t('education.resource.image') }}</Select.Option>
-          <Select.Option value="OTHER">{{ $t('education.resource.other') }}</Select.Option>
+          <Select.Option value="VIDEO">
+{{
+            $t('education.resource.video')
+          }}
+</Select.Option>
+          <Select.Option value="DOCUMENT">
+{{
+            $t('education.resource.document')
+          }}
+</Select.Option>
+          <Select.Option value="AUDIO">
+{{
+            $t('education.resource.audio')
+          }}
+</Select.Option>
+          <Select.Option value="IMAGE">
+{{
+            $t('education.resource.image')
+          }}
+</Select.Option>
+          <Select.Option value="OTHER">
+{{
+            $t('education.resource.other')
+          }}
+</Select.Option>
         </Select>
         <Button v-access:add type="primary" @click="handleCreate">
           <Plus class="mr-1" />
@@ -106,7 +126,9 @@ function handleSuccess() {
       <Grid>
         <template #action="{ row }">
           <a class="mr-2" @click="handleEdit(row)">{{ $t('common.edit') }}</a>
-          <a class="mr-2" @click="handleDelete(row)">{{ $t('common.delete') }}</a>
+          <a class="mr-2" @click="handleDelete(row)">{{
+            $t('common.delete')
+          }}</a>
         </template>
       </Grid>
     </Card>

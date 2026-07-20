@@ -5,15 +5,15 @@ import { requestClient } from '#/api/request';
 export namespace ResourceApi {
   export interface Resource {
     [key: string]: any;
-    id: number;
-    name: string;
-    type: string;
-    url: string;
-    subjectCode: string;
-    grade: number;
-    difficulty: number;
     coverUrl?: string;
     description?: string;
+    difficulty: number;
+    grade: number;
+    id: number;
+    name: string;
+    subjectCode: string;
+    type: string;
+    url: string;
     viewCount: number;
   }
 }

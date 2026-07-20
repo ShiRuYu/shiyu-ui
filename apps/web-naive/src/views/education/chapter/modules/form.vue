@@ -1,18 +1,33 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NModal, NForm, NFormItem, NInput, NInputNumber, NSelect, NButton, NSpace } from 'naive-ui';
-import { createChapterApi, updateChapterApi, getChapterByTextbookApi } from '#/api/education/chapter';
 
+import {
+  NButton,
+  NForm,
+  NFormItem,
+  NInput,
+  NInputNumber,
+  NModal,
+  NSelect,
+  NSpace,
+} from 'naive-ui';
+
+import {
+  createChapterApi,
+  getChapterByTextbookApi,
+  updateChapterApi,
+} from '#/api/education/chapter';
+
+const emit = defineEmits(['success']);
 const visible = ref(false);
 const formData = ref<any>({
-  textbookId: null as number | null,
-  parentId: null as number | null,
+  textbookId: null as null | number,
+  parentId: null as null | number,
   name: '',
   chapterOrder: 0,
 });
 const isEdit = ref(false);
 const saving = ref(false);
-const emit = defineEmits(['success']);
 const parentOptions = ref<Array<{ label: string; value: number }>>([]);
 
 async function loadParentOptions(textbookId: number) {
@@ -27,12 +42,17 @@ async function loadParentOptions(textbookId: number) {
   }
 }
 
-function open(row?: any, textbookId?: number | null) {
+function open(row?: any, textbookId?: null | number) {
   isEdit.value = !!row;
   if (row) {
     formData.value = { ...row };
   } else {
-    formData.value = { textbookId: textbookId || null, parentId: null, name: '', chapterOrder: 0 };
+    formData.value = {
+      textbookId: textbookId || null,
+      parentId: null,
+      name: '',
+      chapterOrder: 0,
+    };
   }
   visible.value = true;
   if (formData.value.textbookId) {
@@ -63,22 +83,42 @@ defineExpose({ open });
 </script>
 
 <template>
-  <NModal v-model:show="visible" title="章节" :mask-closable="false" preset="card" style="width:600px">
+  <NModal
+    v-model:show="visible"
+    title="章节"
+    :mask-closable="false"
+    preset="card"
+    style="width: 600px"
+  >
     <NForm :model="formData" label-placement="left" label-width="80">
-      <NFormItem label="名称" path="name" :rule="{ required: true, message: '请输入名称' }">
+      <NFormItem
+        label="名称"
+        path="name"
+        :rule="{ required: true, message: '请输入名称' }"
+      >
         <NInput v-model:value="formData.name" placeholder="章节名称" />
       </NFormItem>
       <NFormItem label="父级章节">
-        <NSelect v-model:value="formData.parentId" :options="parentOptions" placeholder="请选择父级章节" />
+        <NSelect
+          v-model:value="formData.parentId"
+          :options="parentOptions"
+          placeholder="请选择父级章节"
+        />
       </NFormItem>
       <NFormItem label="排序">
-        <NInputNumber v-model:value="formData.chapterOrder" :min="0" style="width:100%" />
+        <NInputNumber
+          v-model:value="formData.chapterOrder"
+          :min="0"
+          style="width: 100%"
+        />
       </NFormItem>
     </NForm>
     <template #footer>
       <NSpace justify="end">
         <NButton @click="visible = false">取消</NButton>
-        <NButton type="primary" :loading="saving" @click="handleSubmit">保存</NButton>
+        <NButton type="primary" :loading="saving" @click="handleSubmit">
+保存
+</NButton>
       </NSpace>
     </template>
   </NModal>

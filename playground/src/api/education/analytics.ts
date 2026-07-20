@@ -2,20 +2,20 @@ import { requestClient } from '#/api/request';
 
 export namespace AnalyticsApi {
   export interface Overview {
-    totalStudyDays: number;
-    totalKnowledge: number;
-    masteredKnowledge: number;
-    totalQuestions: number;
     accuracy: number;
-    weeklyHours: number;
+    masteredKnowledge: number;
     streakDays: number;
+    totalKnowledge: number;
+    totalQuestions: number;
+    totalStudyDays: number;
+    weeklyHours: number;
   }
 
   export interface AbilityRadar {
-    studentId: number;
-    knowledgeId: number;
     abilities: Record<string, number>;
+    knowledgeId: number;
     overallMastery: number;
+    studentId: number;
   }
 
   export interface Trend {
@@ -31,19 +31,22 @@ export namespace AnalyticsApi {
 
   export interface StudyRecord {
     [key: string]: any;
-    id: number;
-    studentId: number;
-    knowledgeId: number;
-    type: string;
-    score: number;
     createdAt: string;
+    id: number;
+    knowledgeId: number;
+    score: number;
+    studentId: number;
+    type: string;
   }
 }
 
 async function getOverview(studentId: number) {
-  return requestClient.get<AnalyticsApi.Overview>('/api/v1/analytics/overview', {
-    params: { studentId },
-  });
+  return requestClient.get<AnalyticsApi.Overview>(
+    '/api/v1/analytics/overview',
+    {
+      params: { studentId },
+    },
+  );
 }
 
 async function getAbilityRadar(studentId: number, knowledgeId: number) {

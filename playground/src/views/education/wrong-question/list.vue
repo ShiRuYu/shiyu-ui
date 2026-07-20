@@ -52,7 +52,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<WrongQuestionApi.WrongQuestion>,
 });
 
-function handleStudentChange(val: number | null) {
+function handleStudentChange(val: null | number) {
   if (val) {
     studentId.value = val;
     gridApi.reload();
@@ -103,7 +103,9 @@ function handleSuccess() {
       <Grid>
         <template #action="{ row }">
           <a class="mr-2" @click="handleEdit(row)">{{ $t('common.edit') }}</a>
-          <a class="mr-2" @click="handleDelete(row)">{{ $t('common.delete') }}</a>
+          <a class="mr-2" @click="handleDelete(row)">{{
+            $t('common.delete')
+          }}</a>
         </template>
       </Grid>
     </Card>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { NButton, NDataTable, NSpace, NCard, NInput, NSelect } from 'naive-ui';
-import { getExamBySubjectApi, deleteExamApi } from '#/api/education/exam';
+
+import { NButton, NCard, NDataTable, NInput, NSelect, NSpace } from 'naive-ui';
+
+import { deleteExamApi, getExamBySubjectApi } from '#/api/education/exam';
 import { getSubjectListApi } from '#/api/education/subject';
+
 import { getTableColumns } from './data';
 import FormModal from './modules/form.vue';
 
@@ -32,7 +35,9 @@ async function fetchData() {
       const res = await getExamBySubjectApi('');
       tableData.value = res || [];
     }
-  } finally { loading.value = false; }
+  } finally {
+    loading.value = false;
+  }
 }
 
 function filteredData() {
@@ -47,8 +52,13 @@ function filteredData() {
 async function loadSubjectOptions() {
   try {
     const res = await getSubjectListApi();
-    subjectOptions.value = (res || []).map((s: any) => ({ label: s.name, value: s.code }));
-  } catch { /* ignore */ }
+    subjectOptions.value = (res || []).map((s: any) => ({
+      label: s.name,
+      value: s.code,
+    }));
+  } catch {
+    /* ignore */
+  }
 }
 
 onMounted(() => {
@@ -61,10 +71,34 @@ onMounted(() => {
   <NCard title="试卷管理" :bordered="false" class="h-full">
     <template #header-extra>
       <NSpace>
-        <NInput v-model:value="searchName" placeholder="搜索试卷..." clearable style="width:160px" />
-        <NSelect v-model:value="filterSubjectCode" :options="subjectOptions" placeholder="学科" clearable style="width:120px" @update:value="fetchData" />
-        <NButton @click="() => { searchName = ''; filterSubjectCode = ''; fetchData(); }">重置</NButton>
-        <NButton type="primary" @click="() => formModalRef?.open()">新增试卷</NButton>
+        <NInput
+          v-model:value="searchName"
+          placeholder="搜索试卷..."
+          clearable
+          style="width: 160px"
+        />
+        <NSelect
+          v-model:value="filterSubjectCode"
+          :options="subjectOptions"
+          placeholder="学科"
+          clearable
+          style="width: 120px"
+          @update:value="fetchData"
+        />
+        <NButton
+          @click="
+            () => {
+              searchName = '';
+              filterSubjectCode = '';
+              fetchData();
+            }
+          "
+          >
+重置
+</NButton>
+        <NButton type="primary" @click="() => formModalRef?.open()">
+新增试卷
+</NButton>
       </NSpace>
     </template>
     <NDataTable

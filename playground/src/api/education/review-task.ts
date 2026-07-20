@@ -6,13 +6,13 @@ export namespace ReviewTaskApi {
   export interface ReviewTask {
     [key: string]: any;
     id: number;
-    studentId: number;
     knowledgeId: number;
     knowledgeName: string;
-    reviewRound: number;
-    reviewDate: string;
-    status: string;
     previousMastery: number;
+    reviewDate: string;
+    reviewRound: number;
+    status: string;
+    studentId: number;
   }
 
   export interface CompleteRequest {
