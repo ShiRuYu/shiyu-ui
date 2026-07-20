@@ -85,35 +85,127 @@ export namespace AgentGraphApi {
   }
 }
 
+// ========== Graph 配置 (AgentVersionController: /agent/version/graph/...) ==========
+
+/** 获取 Graph 配置 */
 async function getGraphConfig(agentId: string, versionId: number) {
   return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    '/agent/graph/detail',
+    '/agent/version/graph/detail',
     { params: { agentId, versionId } },
   );
 }
 
+/** 更新 Graph 配置 */
 async function updateGraphConfig(
   agentId: string,
   versionId: number,
   data: AgentGraphApi.GraphConfigRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionDetailVO>(
-    '/agent/graph/update',
+    '/agent/version/graph/update',
     data,
     { params: { agentId, versionId } },
   );
 }
 
+/** 校验 Graph 配置 */
 async function validateGraphConfig(
   agentId: string,
   versionId: number,
   data: AgentGraphApi.GraphConfigRequest,
 ) {
   return requestClient.post<AgentGraphApi.GraphValidationVO>(
-    '/agent/graph/validate',
+    '/agent/version/graph/validate',
     data,
     { params: { agentId, versionId } },
   );
 }
 
-export { getGraphConfig, updateGraphConfig, validateGraphConfig };
+/** 添加节点 */
+async function addNode(
+  agentId: string,
+  versionId: number,
+  data: AgentGraphApi.NodeConfigRequest,
+) {
+  return requestClient.post('/agent/version/graph/node/create', data, {
+    params: { agentId, versionId },
+  });
+}
+
+/** 更新节点 */
+async function updateNode(
+  agentId: string,
+  versionId: number,
+  nodeId: string,
+  data: AgentGraphApi.NodeConfigRequest,
+) {
+  return requestClient.post('/agent/version/graph/node/update', data, {
+    params: { agentId, versionId, nodeId },
+  });
+}
+
+/** 删除节点 */
+async function deleteNode(agentId: string, versionId: number, nodeId: string) {
+  return requestClient.post('/agent/version/graph/node/delete', null, {
+    params: { agentId, versionId, nodeId },
+  });
+}
+
+/** 添加边 */
+async function addEdge(
+  agentId: string,
+  versionId: number,
+  data: AgentGraphApi.EdgeRequest,
+) {
+  return requestClient.post('/agent/version/graph/edge/create', data, {
+    params: { agentId, versionId },
+  });
+}
+
+/** 删除边 */
+async function deleteEdge(
+  agentId: string,
+  versionId: number,
+  sourceNodeId: string,
+  targetNodeId: string,
+) {
+  return requestClient.post('/agent/version/graph/edge/delete', null, {
+    params: { agentId, versionId, sourceNodeId, targetNodeId },
+  });
+}
+
+/** 获取画布配置 */
+async function getCanvasConfig(agentId: string, versionId: number) {
+  return requestClient.get<string>('/agent/version/graph/canvas', {
+    params: { agentId, versionId },
+  });
+}
+
+/** 更新画布配置 */
+async function updateCanvasConfig(
+  agentId: string,
+  versionId: number,
+  canvasConfig: string,
+) {
+  return requestClient.post(
+    '/agent/version/graph/canvas-update',
+    canvasConfig,
+    {
+      headers: { 'Content-Type': 'application/json' },
+      params: { agentId, versionId },
+    },
+  );
+}
+
+export {
+  addEdge,
+  addNode,
+  deleteEdge,
+  deleteNode,
+  getCanvasConfig,
+  getGraphConfig,
+  updateCanvasConfig,
+  updateGraphConfig,
+  updateNode,
+  validateGraphConfig,
+};

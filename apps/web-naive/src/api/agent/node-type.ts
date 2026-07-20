@@ -31,10 +31,21 @@ export namespace NodeTypeApi {
   }
 }
 
+// ========== 节点类型元数据 (AgentDefinitionController: /agent/definition/node-types) ==========
+
+/** 获取所有节点类型 */
 async function getNodeTypes() {
   return requestClient.get<NodeTypeApi.NodeTypeMetaVO[]>(
-    '/admin/agent/node-types',
+    '/agent/definition/node-types',
   );
 }
 
-export { getNodeTypes };
+/** 获取单个节点类型详情 */
+async function getNodeType(nodeType: string) {
+  return requestClient.get<NodeTypeApi.NodeTypeMetaVO>(
+    '/agent/definition/node-types/detail',
+    { params: { nodeType } },
+  );
+}
+
+export { getNodeType, getNodeTypes };
