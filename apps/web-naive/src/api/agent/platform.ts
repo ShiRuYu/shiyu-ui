@@ -50,7 +50,9 @@ async function deletePlatform(id: number) {
 }
 
 async function setDefaultPlatform(id: number) {
-  return requestClient.post('/admin/platform/set-default', null, { params: { id } });
+  return requestClient.post('/admin/platform/set-default', null, {
+    params: { id },
+  });
 }
 
 async function getPlatformOptions() {

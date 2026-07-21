@@ -21,10 +21,9 @@ export namespace EducationAdminExamApi {
 }
 
 async function getExamList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationAdminExamApi.PageResult<EducationAdminExamApi.Exam>>(
-    '/edu/exam/list',
-    { params: { pageNum, pageSize } },
-  );
+  return requestClient.get<
+    EducationAdminExamApi.PageResult<EducationAdminExamApi.Exam>
+  >('/edu/exam/list', { params: { pageNum, pageSize } });
 }
 
 async function getExamById(id: number) {
@@ -37,7 +36,10 @@ async function createExam(data: Omit<EducationAdminExamApi.Exam, 'id'>) {
   return requestClient.post('/edu/exam/create', data);
 }
 
-async function updateExam(id: number, data: Partial<EducationAdminExamApi.Exam>) {
+async function updateExam(
+  id: number,
+  data: Partial<EducationAdminExamApi.Exam>,
+) {
   return requestClient.post('/edu/exam/update', data, { params: { id } });
 }
 

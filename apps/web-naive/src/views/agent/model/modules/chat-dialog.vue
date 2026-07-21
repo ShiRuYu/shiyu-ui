@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { ModelApi } from '#/api/agent/model';
 import type { ChatApi } from '#/api/agent/chat';
+import type { ModelApi } from '#/api/agent/model';
 
 import { nextTick, ref } from 'vue';
 

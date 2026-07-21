@@ -1,4 +1,3 @@
-
 import { requestClient } from '#/api/request';
 
 export namespace StudyPlanApi {

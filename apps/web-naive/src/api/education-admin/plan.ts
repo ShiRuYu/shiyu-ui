@@ -30,24 +30,21 @@ async function getPlanById(id: number) {
 }
 
 async function getPlansByStudent(studentId: number) {
-  return requestClient.get<EducationPlanApi.StudyPlan[]>(
-    '/edu/plan/student',
-    { params: { studentId } },
-  );
+  return requestClient.get<EducationPlanApi.StudyPlan[]>('/edu/plan/student', {
+    params: { studentId },
+  });
 }
 
 async function getActivePlans(studentId: number) {
-  return requestClient.get<EducationPlanApi.StudyPlan[]>(
-    '/edu/plan/active',
-    { params: { studentId } },
-  );
+  return requestClient.get<EducationPlanApi.StudyPlan[]>('/edu/plan/active', {
+    params: { studentId },
+  });
 }
 
 async function getTodayTasks(studentId: number) {
-  return requestClient.get<EducationPlanApi.DailyTask[]>(
-    '/edu/plan/today',
-    { params: { studentId } },
-  );
+  return requestClient.get<EducationPlanApi.DailyTask[]>('/edu/plan/today', {
+    params: { studentId },
+  });
 }
 
 async function createPlan(data: Omit<EducationPlanApi.StudyPlan, 'id'>) {

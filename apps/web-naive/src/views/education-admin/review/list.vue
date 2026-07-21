@@ -12,7 +12,10 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { completeReview, getReviewsByStatus } from '#/api/education-admin/review';
+import {
+  completeReview,
+  getReviewsByStatus,
+} from '#/api/education-admin/review';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 

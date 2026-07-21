@@ -77,26 +77,10 @@ export async function getTextbookOptions() {
   }));
 }
 
-// ---- 兼容别名 ----
+// ---- 兼容别名（供旧代码使用 *Api 后缀） ----
 export const getTextbookListApi = getTextbookList;
 export const getTextbookDetailApi = getTextbookById;
 export const getTextbookBySubjectAndGradeApi = getTextbookBySubjectAndGrade;
 export const createTextbookApi = createTextbook;
 export const updateTextbookApi = updateTextbook;
 export const deleteTextbookApi = deleteTextbook;
-
-export {
-  createTextbook,
-  createTextbookApi,
-  deleteTextbook,
-  deleteTextbookApi,
-  getTextbookBySubjectAndGrade,
-  getTextbookBySubjectAndGradeApi,
-  getTextbookById,
-  getTextbookDetailApi,
-  getTextbookList,
-  getTextbookListApi,
-  getTextbookOptions,
-  updateTextbook,
-  updateTextbookApi,
-};

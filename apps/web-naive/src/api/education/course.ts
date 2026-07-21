@@ -22,7 +22,9 @@ export namespace EducationCourseApi {
 }
 
 async function getCourseList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationCourseApi.PageResult<EducationCourseApi.Course>>('/edu/course/list', {
+  return requestClient.get<
+    EducationCourseApi.PageResult<EducationCourseApi.Course>
+  >('/edu/course/list', {
     params: { pageNum, pageSize },
   });
 }
@@ -34,17 +36,15 @@ async function getCourseById(id: number) {
 }
 
 async function getCourseBySubject(subjectCode: string) {
-  return requestClient.get<EducationCourseApi.Course[]>(
-    '/edu/course/subject',
-    { params: { subjectCode } },
-  );
+  return requestClient.get<EducationCourseApi.Course[]>('/edu/course/subject', {
+    params: { subjectCode },
+  });
 }
 
 async function getCourseByGrade(grade: number) {
-  return requestClient.get<EducationCourseApi.Course[]>(
-    '/edu/course/grade',
-    { params: { grade } },
-  );
+  return requestClient.get<EducationCourseApi.Course[]>('/edu/course/grade', {
+    params: { grade },
+  });
 }
 
 async function createCourse(data: Omit<EducationCourseApi.Course, 'id'>) {

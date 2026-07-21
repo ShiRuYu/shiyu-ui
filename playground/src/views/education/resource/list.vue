@@ -93,30 +93,20 @@ function handleSuccess() {
           @change="handleTypeChange"
         >
           <Select.Option value="VIDEO">
-{{
-            $t('education.resource.video')
-          }}
-</Select.Option>
+            {{ $t('education.resource.video') }}
+          </Select.Option>
           <Select.Option value="DOCUMENT">
-{{
-            $t('education.resource.document')
-          }}
-</Select.Option>
+            {{ $t('education.resource.document') }}
+          </Select.Option>
           <Select.Option value="AUDIO">
-{{
-            $t('education.resource.audio')
-          }}
-</Select.Option>
+            {{ $t('education.resource.audio') }}
+          </Select.Option>
           <Select.Option value="IMAGE">
-{{
-            $t('education.resource.image')
-          }}
-</Select.Option>
+            {{ $t('education.resource.image') }}
+          </Select.Option>
           <Select.Option value="OTHER">
-{{
-            $t('education.resource.other')
-          }}
-</Select.Option>
+            {{ $t('education.resource.other') }}
+          </Select.Option>
         </Select>
         <Button v-access:add type="primary" @click="handleCreate">
           <Plus class="mr-1" />

@@ -1,10 +1,11 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+
 import type { VbenFormSchema } from '#/adapter/form';
 import type { IntentDefApi } from '#/api/agent/intent-def';
-import { z } from '#/adapter/form';
 
-import { getDictByType } from '#/api/system/dict';
+import { z } from '#/adapter/form';
 import { getAgentListAll } from '#/api/agent/admin';
+import { getDictByType } from '#/api/system/dict';
 
 // 分类代码 → 名称映射，用于表格列显示
 let categoryLabelMap: Record<string, string> = {};

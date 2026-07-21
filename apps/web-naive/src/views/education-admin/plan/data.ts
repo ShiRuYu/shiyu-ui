@@ -49,7 +49,11 @@ export function useColumns(
     { field: 'startDate', title: $t('education.plan.startDate'), width: 120 },
     { field: 'endDate', title: $t('education.plan.endDate'), width: 120 },
     { field: 'totalItems', title: $t('education.plan.totalItems'), width: 100 },
-    { field: 'completedItems', title: $t('education.plan.completedItems'), width: 100 },
+    {
+      field: 'completedItems',
+      title: $t('education.plan.completedItems'),
+      width: 100,
+    },
     {
       align: 'right',
       cellRender: {

@@ -98,22 +98,3 @@ export const getQuestionByTypeApi = getQuestionByType;
 export const createQuestionApi = createQuestion;
 export const updateQuestionApi = updateQuestion;
 export const deleteQuestionApi = deleteQuestion;
-
-export {
-  createQuestion,
-  createQuestionApi,
-  deleteQuestion,
-  deleteQuestionApi,
-  getAllQuestions,
-  getQuestionByDifficulty,
-  getQuestionByDifficultyApi,
-  getQuestionById,
-  getQuestionBySubjectGrade,
-  getQuestionBySubjectAndGradeApi,
-  getQuestionByType,
-  getQuestionByTypeApi,
-  getQuestionDetailApi,
-  getQuestionOptions,
-  updateQuestion,
-  updateQuestionApi,
-};

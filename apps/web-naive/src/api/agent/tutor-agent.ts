@@ -31,7 +31,9 @@ export namespace EducationAgentApi {
 }
 
 async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'teacher' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'teacher' },
+  });
 }
 
 async function teachStream(
@@ -65,27 +67,39 @@ async function teachStream(
 }
 
 async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'practice' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'practice' },
+  });
 }
 
 async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'exam' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'exam' },
+  });
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/agent/agent/list', { params: { agentId: 'review' } });
+  return requestClient.get('/agent/agent/list', {
+    params: { agentId: 'review' },
+  });
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'review' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'review' },
+  });
 }
 
 async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'planner' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'planner' },
+  });
 }
 
 async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post('/agent/agent/execute', data, { params: { agentId: 'report' } });
+  return requestClient.post('/agent/agent/execute', data, {
+    params: { agentId: 'report' },
+  });
 }
 
 export {

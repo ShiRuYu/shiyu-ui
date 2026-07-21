@@ -12,7 +12,10 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteResource, getResourceList } from '#/api/education-admin/resource';
+import {
+  deleteResource,
+  getResourceList,
+} from '#/api/education-admin/resource';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

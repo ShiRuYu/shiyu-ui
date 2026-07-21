@@ -6,7 +6,7 @@ export namespace EducationChapterApi {
     [key: string]: any;
     id: number;
     textbookId: number;
-    parentId: number | null;
+    parentId: null | number;
     name: string;
     chapterOrder: number;
     children: Chapter[] | null;
@@ -71,19 +71,3 @@ export const getChapterTreeApi = getChapterTree;
 export const createChapterApi = createChapter;
 export const updateChapterApi = updateChapter;
 export const deleteChapterApi = deleteChapter;
-
-export {
-  createChapter,
-  createChapterApi,
-  deleteChapter,
-  deleteChapterApi,
-  getChapterByTextbookApi,
-  getChapterById,
-  getChapterDetailApi,
-  getChapterOptions,
-  getChapterTree,
-  getChapterTreeApi,
-  getChaptersByTextbook,
-  updateChapter,
-  updateChapterApi,
-};

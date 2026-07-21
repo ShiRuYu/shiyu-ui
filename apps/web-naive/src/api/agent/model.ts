@@ -48,11 +48,20 @@ async function deleteModel(id: number) {
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.post('/agent/model/set-default', null, { params: { id } });
+  return requestClient.post('/agent/model/set-default', null, {
+    params: { id },
+  });
 }
 
 async function batchDeleteModel(ids: number[]) {
   return requestClient.post('/agent/model/batch-delete', ids);
 }
 
-export { batchDeleteModel, createModel, deleteModel, getModelPage, setDefaultModel, updateModel };
+export {
+  batchDeleteModel,
+  createModel,
+  deleteModel,
+  getModelPage,
+  setDefaultModel,
+  updateModel,
+};

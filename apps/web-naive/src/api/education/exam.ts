@@ -24,9 +24,12 @@ export namespace EducationExamApi {
 }
 
 async function getExamList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationExamApi.PageResult<EducationExamApi.Exam>>('/edu/exam/list', {
-    params: { pageNum, pageSize },
-  });
+  return requestClient.get<EducationExamApi.PageResult<EducationExamApi.Exam>>(
+    '/edu/exam/list',
+    {
+      params: { pageNum, pageSize },
+    },
+  );
 }
 
 async function getExamById(id: number) {
@@ -36,17 +39,15 @@ async function getExamById(id: number) {
 }
 
 async function getExamBySubject(subjectCode: string) {
-  return requestClient.get<EducationExamApi.Exam[]>(
-    '/edu/exam/subject',
-    { params: { subjectCode } },
-  );
+  return requestClient.get<EducationExamApi.Exam[]>('/edu/exam/subject', {
+    params: { subjectCode },
+  });
 }
 
 async function getExamByTeacher(teacherId: number) {
-  return requestClient.get<EducationExamApi.Exam[]>(
-    '/edu/exam/teacher',
-    { params: { teacherId } },
-  );
+  return requestClient.get<EducationExamApi.Exam[]>('/edu/exam/teacher', {
+    params: { teacherId },
+  });
 }
 
 async function createExam(data: Omit<EducationExamApi.Exam, 'id'>) {

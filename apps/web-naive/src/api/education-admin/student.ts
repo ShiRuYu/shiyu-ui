@@ -31,7 +31,9 @@ export namespace EducationStudentApi {
 }
 
 async function getStudentList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationStudentApi.PageResult<EducationStudentApi.Student>>('/edu/student/list', {
+  return requestClient.get<
+    EducationStudentApi.PageResult<EducationStudentApi.Student>
+  >('/edu/student/list', {
     params: { pageNum, pageSize },
   });
 }
@@ -43,7 +45,10 @@ async function getStudentById(id: number) {
 }
 
 async function createStudent(data: EducationStudentApi.StudentRequest) {
-  return requestClient.post<EducationStudentApi.Student>('/edu/student/create', data);
+  return requestClient.post<EducationStudentApi.Student>(
+    '/edu/student/create',
+    data,
+  );
 }
 
 async function updateStudent(

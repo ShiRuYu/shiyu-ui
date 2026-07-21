@@ -22,14 +22,17 @@ export namespace EducationResourceApi {
 }
 
 async function getResourceList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationResourceApi.PageResult<EducationResourceApi.Resource>>('/edu/resource/list', {
+  return requestClient.get<
+    EducationResourceApi.PageResult<EducationResourceApi.Resource>
+  >('/edu/resource/list', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getResourceById(id: number) {
   return requestClient.get<EducationResourceApi.Resource>(
-    '/edu/resource/detail', { params: { id } },
+    '/edu/resource/detail',
+    { params: { id } },
   );
 }
 
