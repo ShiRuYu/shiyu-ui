@@ -49,7 +49,10 @@ async function getIntentDefPage(params?: Recordable<any>) {
 }
 
 async function createIntentDef(data: IntentDefApi.IntentDefRequest) {
-  return requestClient.post<IntentDefApi.IntentDefVO>('/admin/intent/create', data);
+  return requestClient.post<IntentDefApi.IntentDefVO>(
+    '/admin/intent/create',
+    data,
+  );
 }
 
 async function updateIntentDef(
@@ -71,4 +74,10 @@ async function batchDeleteIntentDef(ids: number[]) {
   return requestClient.post('/admin/intent/batch-delete', ids);
 }
 
-export { batchDeleteIntentDef, createIntentDef, deleteIntentDef, getIntentDefPage, updateIntentDef };
+export {
+  batchDeleteIntentDef,
+  createIntentDef,
+  deleteIntentDef,
+  getIntentDefPage,
+  updateIntentDef,
+};

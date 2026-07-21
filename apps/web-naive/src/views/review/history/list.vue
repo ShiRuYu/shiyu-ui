@@ -69,7 +69,7 @@ async function loadHistory() {
   try {
     history.value = await getReviewsByStatus(
       getCurrentStudentId(),
-      2, /* COMPLETED */
+      2 /* COMPLETED */,
     );
   } catch (error) {
     console.error(error);

@@ -82,7 +82,9 @@ onMounted(() => loadReviews());
                 <span>
                   {{ $t('common.status') }}:
                   <NTag
-                    :type="review.status === 0 /* PENDING */ ? 'warning' : 'success'"
+                    :type="
+                      review.status === 0 /* PENDING */ ? 'warning' : 'success'
+                    "
                     size="small"
                   >
                     {{

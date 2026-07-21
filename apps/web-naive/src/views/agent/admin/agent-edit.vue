@@ -357,14 +357,12 @@ async function loadVersions() {
 }
 
 function statusLabel(s: number): string {
-  const map: Record<number, string> = { 0: 'DRAFT', 1: 'PUBLISHED', 2: 'ARCHIVED' };
-  return map[s] || String(s);
-  const map: Record<string, string> = {
-    DRAFT: $t('agent.versionListDraft'),
-    PUBLISHED: $t('agent.versionListPublishedText'),
-    ARCHIVED: $t('agent.versionListArchivedText'),
+  const labelMap: Record<number, string> = {
+    0: $t('agent.versionListDraft'),
+    1: $t('agent.versionListPublishedText'),
+    2: $t('agent.versionListArchivedText'),
   };
-  return map[s] || s;
+  return labelMap[s] || String(s);
 }
 
 // --------------- Version switch ---------------

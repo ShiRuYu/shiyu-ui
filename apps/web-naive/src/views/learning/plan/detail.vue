@@ -64,7 +64,9 @@ onMounted(() => {
             {{ plan.endDate }}
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.status')">
-            <NTag :type="plan.status === 0 /* ACTIVE */ ? 'success' : 'default'">
+            <NTag
+              :type="plan.status === 0 /* ACTIVE */ ? 'success' : 'default'"
+            >
               {{ plan.status }}
             </NTag>
           </NDescriptionsItem>
