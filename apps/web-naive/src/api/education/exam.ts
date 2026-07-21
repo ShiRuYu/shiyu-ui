@@ -54,7 +54,6 @@ async function updateExam(id: number, data: Partial<EducationExamApi.Exam>) {
   return requestClient.post('/edu/exam/update', data, { params: { id } });
 }
 
-
 async function deleteExam(id: number) {
   return requestClient.post('/edu/exam/delete', null, { params: { id } });
 }

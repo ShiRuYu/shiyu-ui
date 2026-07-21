@@ -45,7 +45,6 @@ async function createReview(data: Omit<EducationReviewApi.ReviewTask, 'id'>) {
   return requestClient.post('/edu/review/create', data);
 }
 
-
 async function completeReview(
   id: number,
   data: EducationReviewApi.CompleteReviewRequest,
