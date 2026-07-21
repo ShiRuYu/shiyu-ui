@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EducationReviewApi } from '#/api/education/review';
+import type { EducationReviewApi } from '#/api/education-admin/review';
 
 import { onMounted, ref } from 'vue';
 
@@ -18,7 +18,7 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { completeReview, getTodayReviews } from '#/api/education/review';
+import { completeReview, getTodayReviews } from '#/api/education-admin/review';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 import AdminReviewList from '#/views/education-admin/review/list.vue';

@@ -3,7 +3,7 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { IntentDefApi } from '#/api/agent/intent-def';
 import { z } from '#/adapter/form';
 
-import { getDictByType } from '#/api/common/dict';
+import { getDictByType } from '#/api/system/dict';
 import { getAgentListAll } from '#/api/agent/admin';
 
 // 分类代码 → 名称映射，用于表格列显示

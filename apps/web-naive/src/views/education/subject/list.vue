@@ -55,8 +55,8 @@ onMounted(fetchData);
           style="width: 200px"
         />
         <NButton type="primary" @click="() => formModalRef?.open()">
-新增学科
-</NButton>
+          新增学科
+        </NButton>
       </NSpace>
     </template>
     <NDataTable

@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { ModelApi } from '#/api/common/model';
+import type { ModelApi } from '#/api/agent/model';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteModel, getModelPage, setDefaultModel } from '#/api/common/model';
+import { deleteModel, getModelPage, setDefaultModel } from '#/api/agent/model';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

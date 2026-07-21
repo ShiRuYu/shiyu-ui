@@ -29,12 +29,9 @@ export namespace DictApi {
  */
 async function getDictPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>(
-    '/dict/list',
-    {
-      params: { pageNum: page, pageSize, ...rest },
-    },
-  );
+  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>('/dict/list', {
+    params: { pageNum: page, pageSize, ...rest },
+  });
 }
 
 /**

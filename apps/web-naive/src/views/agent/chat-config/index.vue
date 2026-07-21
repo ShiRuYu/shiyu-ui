@@ -15,7 +15,7 @@ import {
 } from 'naive-ui';
 
 import { chat, chatStream } from '#/api/agent/chat';
-import { getPlatformOptions } from '#/api/common/platform';
+import { getPlatformOptions } from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 const message = useMessage();

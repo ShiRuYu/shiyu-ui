@@ -17,7 +17,7 @@ import {
 } from 'naive-ui';
 
 import { getExamBySubject } from '#/api';
-import { getDictByType } from '#/api/common/dict';
+import { getDictByType } from '#/api/system/dict';
 import { $t } from '#/locales';
 import AdminExamList from '#/views/education-admin/exam-admin/list.vue';
 

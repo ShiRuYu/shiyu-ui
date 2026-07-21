@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { EducationWrongQuestionApi } from '#/api/education/wrong-question';
+import type { EducationWrongQuestionApi } from '#/api/education-admin/wrong-question';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -15,7 +15,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   deleteWrongQuestion,
   getWrongQuestionsByStudent,
-} from '#/api/education/wrong-question';
+} from '#/api/education-admin/wrong-question';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 

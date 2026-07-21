@@ -1,36 +1,102 @@
+import type { Recordable } from '@vben/types';
+
 import { requestClient } from '#/api/request';
 
-/** 教材列表 */
-export function getTextbookListApi(params?: Recordable) {
-  return requestClient.get<any[]>('/api/v1/textbook', { params });
+export namespace EducationTextbookApi {
+  /** 教材 */
+  export interface Textbook {
+    [key: string]: any;
+    id: number;
+    name: string;
+    subjectCode: string;
+    grade: number;
+    publisher?: string;
+    isbn?: string;
+  }
 }
 
-/** 教材详情 */
-export function getTextbookDetailApi(id: number) {
-  return requestClient.get<any>(`/api/v1/textbook/${id}`);
+/** 获取教材列表（分页） */
+export async function getTextbookList(
+  pageNum = 1,
+  pageSize = 10,
+  params?: Recordable,
+) {
+  return requestClient.get<{
+    items: EducationTextbookApi.Textbook[];
+    total: number;
+  }>('/edu/textbook/list', {
+    params: { pageNum, pageSize, ...params },
+  });
+}
+
+/** 获取教材详情 */
+export async function getTextbookById(id: number) {
+  return requestClient.get<EducationTextbookApi.Textbook>(
+    '/edu/textbook/detail',
+    { params: { id } },
+  );
 }
 
 /** 根据学科和年级获取教材 */
-export function getTextbookBySubjectAndGradeApi(
+export async function getTextbookBySubjectAndGrade(
   subjectCode: string,
   grade: number,
 ) {
-  return requestClient.get<any[]>(
-    `/api/v1/textbook/subject/${subjectCode}/grade/${grade}`,
+  return requestClient.get<EducationTextbookApi.Textbook[]>(
+    '/edu/textbook/subject-grade',
+    { params: { subjectCode, grade } },
   );
 }
 
 /** 创建教材 */
-export function createTextbookApi(data: any) {
-  return requestClient.post('/api/v1/textbook', data);
+export async function createTextbook(
+  data: Omit<EducationTextbookApi.Textbook, 'id'>,
+) {
+  return requestClient.post('/edu/textbook/create', data);
 }
 
 /** 更新教材 */
-export function updateTextbookApi(id: number, data: any) {
-  return requestClient.put(`/api/v1/textbook/${id}`, data);
+export async function updateTextbook(
+  id: number,
+  data: Partial<EducationTextbookApi.Textbook>,
+) {
+  return requestClient.post('/edu/textbook/update', data, { params: { id } });
 }
 
 /** 删除教材 */
-export function deleteTextbookApi(id: number) {
-  return requestClient.delete(`/api/v1/textbook/${id}`);
+export async function deleteTextbook(id: number) {
+  return requestClient.post('/edu/textbook/delete', null, { params: { id } });
 }
+
+/** 获取教材下拉选项 */
+export async function getTextbookOptions() {
+  const result = await getTextbookList(1, 1000);
+  return (result?.items || []).map((t: any) => ({
+    id: t.id,
+    name: t.name,
+  }));
+}
+
+// ---- 兼容别名 ----
+export const getTextbookListApi = getTextbookList;
+export const getTextbookDetailApi = getTextbookById;
+export const getTextbookBySubjectAndGradeApi = getTextbookBySubjectAndGrade;
+export const createTextbookApi = createTextbook;
+export const updateTextbookApi = updateTextbook;
+export const deleteTextbookApi = deleteTextbook;
+
+export {
+  createTextbook,
+  createTextbookApi,
+  deleteTextbook,
+  deleteTextbookApi,
+  getTextbookBySubjectAndGrade,
+  getTextbookBySubjectAndGradeApi,
+  getTextbookById,
+  getTextbookDetailApi,
+  getTextbookList,
+  getTextbookListApi,
+  getTextbookOptions,
+  updateTextbook,
+  updateTextbookApi,
+};

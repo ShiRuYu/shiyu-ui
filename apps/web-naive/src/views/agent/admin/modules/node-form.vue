@@ -6,7 +6,7 @@ import { computed, ref, watch } from 'vue';
 
 import { NCheckbox, NInput, NInputNumber, NSelect } from 'naive-ui';
 
-import { getDictByType } from '#/api/common/dict';
+import { getDictByType } from '#/api/system/dict';
 import { requestClient } from '#/api/request';
 
 const props = defineProps<{

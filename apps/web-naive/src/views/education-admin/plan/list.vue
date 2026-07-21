@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { EducationPlanApi } from '#/api/education/plan';
+import type { EducationPlanApi } from '#/api/education-admin/plan';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deletePlan, getPlansByStudent } from '#/api/education/plan';
+import { deletePlan, getPlansByStudent } from '#/api/education-admin/plan';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 

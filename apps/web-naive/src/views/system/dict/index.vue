@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { DictApi } from '#/api/common/dict';
+import type { DictApi } from '#/api/system/dict';
 
 import { ref } from 'vue';
 
@@ -14,7 +14,7 @@ import { NButton, NPopconfirm } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { batchDeleteDict, deleteDict, getDictPage } from '#/api/common/dict';
+import { batchDeleteDict, deleteDict, getDictPage } from '#/api/system/dict';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

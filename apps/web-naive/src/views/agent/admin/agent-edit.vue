@@ -50,7 +50,7 @@ import {
   getVersionList,
   publishVersion,
 } from '#/api/agent/version';
-import { getDictByType } from '#/api/common/dict';
+import { getDictByType } from '#/api/system/dict';
 import { $t } from '#/locales';
 
 import NodeForm from './modules/node-form.vue';

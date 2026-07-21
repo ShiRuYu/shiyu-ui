@@ -7,7 +7,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createPlan, updatePlan } from '#/api/education/plan';
+import { createPlan, updatePlan } from '#/api/education-admin/plan';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

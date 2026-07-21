@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { PlatformApi } from '#/api/common/platform';
+import type { PlatformApi } from '#/api/agent/platform';
 
 import { computed, nextTick, ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createPlatform, updatePlatform } from '#/api/common/platform';
+import { createPlatform, updatePlatform } from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

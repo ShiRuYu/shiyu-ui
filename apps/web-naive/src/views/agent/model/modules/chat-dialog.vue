@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ModelApi } from '#/api/common/model';
+import type { ModelApi } from '#/api/agent/model';
 import type { ChatApi } from '#/api/agent/chat';
 
 import { nextTick, ref } from 'vue';
@@ -18,7 +18,7 @@ import {
 } from 'naive-ui';
 
 import { chat, chatStream, getModelOptions } from '#/api/agent/chat';
-import { getPlatformOptions } from '#/api/common/platform';
+import { getPlatformOptions } from '#/api/agent/platform';
 
 const platformOptions = ref<Array<{ label: string; value: number }>>([]);
 const platformCodeMap = ref<Record<number, string>>({});

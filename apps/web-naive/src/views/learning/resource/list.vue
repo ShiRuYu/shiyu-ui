@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EducationResourceApi } from '#/api/education/resource';
+import type { EducationResourceApi } from '#/api/education-admin/resource';
 import type { EducationSubjectApi } from '#/api/education/subject';
 
 import { onMounted, ref } from 'vue';
@@ -9,7 +9,7 @@ import { Page } from '@vben/common-ui';
 import { NCard, NGi, NGrid, NSelect, NSpace, NTag } from 'naive-ui';
 
 import { getResourceList, getSubjectList } from '#/api';
-import { getDictByType } from '#/api/common/dict';
+import { getDictByType } from '#/api/system/dict';
 import { $t } from '#/locales';
 
 const loading = ref(false);

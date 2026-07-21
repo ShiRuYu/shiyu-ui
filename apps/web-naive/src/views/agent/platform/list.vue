@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { PlatformApi } from '#/api/common/platform';
+import type { PlatformApi } from '#/api/agent/platform';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -17,7 +17,7 @@ import {
   getPlatformPage,
   reloadPlatforms,
   setDefaultPlatform,
-} from '#/api/common/platform';
+} from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

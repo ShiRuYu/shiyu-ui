@@ -108,9 +108,7 @@ export namespace SystemMenuApi {
  * 获取根节点菜单（懒加载初始加载）
  */
 async function getMenuRoots() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/menu/roots',
-  );
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/roots');
 }
 
 /**
@@ -118,10 +116,9 @@ async function getMenuRoots() {
  * @param parentId 父菜单 ID
  */
 async function getMenuChildren(parentId: number) {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/menu/children',
-    { params: { parentId } },
-  );
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/children', {
+    params: { parentId },
+  });
 }
 
 /**
@@ -136,9 +133,7 @@ async function getMenuList() {
  */
 async function getMenuListForGrid() {
   const data =
-    await requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-      '/menu/list',
-    );
+    await requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }

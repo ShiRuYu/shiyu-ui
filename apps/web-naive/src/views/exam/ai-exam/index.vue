@@ -5,7 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
-import { generateExam } from '#/api/agent/education';
+import { generateExam } from '#/api/agent/tutor-agent';
 import { getSubjectOptions } from '#/api/education/subject';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';

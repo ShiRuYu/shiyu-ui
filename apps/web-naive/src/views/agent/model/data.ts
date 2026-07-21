@@ -2,10 +2,10 @@ import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
-import type { ModelApi } from '#/api/common/model';
+import type { ModelApi } from '#/api/agent/model';
 
 import { z } from '#/adapter/form';
-import { getPlatformOptions } from '#/api/common/platform';
+import { getPlatformOptions } from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {

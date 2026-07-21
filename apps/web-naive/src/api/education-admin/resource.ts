@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationResourceApi {
-  export interface PageData<T> {
+  export interface PageResult<T> {
     items: T[];
     total: number;
   }
@@ -22,7 +22,7 @@ export namespace EducationResourceApi {
 }
 
 async function getResourceList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationResourceApi.PageData<EducationResourceApi.Resource>>('/edu/resource/list', {
+  return requestClient.get<EducationResourceApi.PageResult<EducationResourceApi.Resource>>('/edu/resource/list', {
     params: { pageNum, pageSize },
   });
 }

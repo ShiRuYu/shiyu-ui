@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EducationPlanApi } from '#/api/education/plan';
+import type { EducationPlanApi } from '#/api/education-admin/plan';
 
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -25,7 +25,7 @@ import {
   deletePlan,
   getPlansByStudent,
   getTodayTasks,
-} from '#/api/education/plan';
+} from '#/api/education-admin/plan';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 

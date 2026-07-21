@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { AuthCodeApi } from '#/api/auth-code';
+import type { AuthCodeApi } from '#/api/system/auth-code';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -12,7 +12,7 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteAuthCode, getAuthCodeList } from '#/api/auth-code';
+import { deleteAuthCode, getAuthCodeList } from '#/api/system/auth-code';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

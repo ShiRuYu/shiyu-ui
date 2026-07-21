@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-import {
-  NButton,
-  NCard,
-  NDataTable,
-  NInput,
-  NSelect,
-  NSpace,
-} from 'naive-ui';
+import { NButton, NCard, NDataTable, NInput, NSelect, NSpace } from 'naive-ui';
 
 import {
   deleteQuestionApi,
@@ -166,12 +159,12 @@ onMounted(loadSubjectOptions);
               tableData = [];
             }
           "
-          >
-重置
-</NButton>
+        >
+          重置
+        </NButton>
         <NButton type="primary" @click="() => formModalRef?.open()">
-新增题目
-</NButton>
+          新增题目
+        </NButton>
       </NSpace>
     </template>
     <NDataTable

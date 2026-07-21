@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationCourseApi {
-  export interface PageData<T> {
+  export interface PageResult<T> {
     items: T[];
     total: number;
   }
@@ -22,7 +22,7 @@ export namespace EducationCourseApi {
 }
 
 async function getCourseList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationCourseApi.PageData<EducationCourseApi.Course>>('/edu/course/list', {
+  return requestClient.get<EducationCourseApi.PageResult<EducationCourseApi.Course>>('/edu/course/list', {
     params: { pageNum, pageSize },
   });
 }

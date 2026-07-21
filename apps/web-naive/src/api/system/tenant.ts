@@ -21,9 +21,7 @@ export namespace SystemTenantApi {
 
 async function getTenantList(_params?: Recordable<any>) {
   const data =
-    await requestClient.get<SystemTenantApi.SystemTenant[]>(
-      '/tenant/list',
-    );
+    await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
 }

@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 export namespace EducationStudentApi {
-  export interface PageData<T> {
+  export interface PageResult<T> {
     items: T[];
     total: number;
   }
@@ -31,7 +31,7 @@ export namespace EducationStudentApi {
 }
 
 async function getStudentList(pageNum = 1, pageSize = 10) {
-  return requestClient.get<EducationStudentApi.PageData<EducationStudentApi.Student>>('/edu/student/list', {
+  return requestClient.get<EducationStudentApi.PageResult<EducationStudentApi.Student>>('/edu/student/list', {
     params: { pageNum, pageSize },
   });
 }

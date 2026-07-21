@@ -93,12 +93,12 @@ onMounted(() => {
               fetchData();
             }
           "
-          >
-重置
-</NButton>
+        >
+          重置
+        </NButton>
         <NButton type="primary" @click="() => formModalRef?.open()">
-新增试卷
-</NButton>
+          新增试卷
+        </NButton>
       </NSpace>
     </template>
     <NDataTable

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ModelApi } from '#/api/common/model';
+import type { ModelApi } from '#/api/agent/model';
 
 import { computed, nextTick, ref } from 'vue';
 
@@ -9,8 +9,8 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createModel, updateModel } from '#/api/common/model';
-import { getPlatformOptions } from '#/api/common/platform';
+import { createModel, updateModel } from '#/api/agent/model';
+import { getPlatformOptions } from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

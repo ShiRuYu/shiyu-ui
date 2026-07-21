@@ -74,4 +74,11 @@ async function getRoleDetail(id: number) {
   });
 }
 
-export { createRole, deleteRole, getAllRoles, getRoleDetail, getRoleList, updateRole };
+export {
+  createRole,
+  deleteRole,
+  getAllRoles,
+  getRoleDetail,
+  getRoleList,
+  updateRole,
+};

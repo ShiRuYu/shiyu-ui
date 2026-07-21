@@ -1,4 +1,2 @@
-export * from './dict';
-export * from './model';
-export * from './platform';
-export * from './timezone';
+export * from "./timezone";
+

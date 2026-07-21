@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EducationWrongQuestionApi } from '#/api/education/wrong-question';
+import type { EducationWrongQuestionApi } from '#/api/education-admin/wrong-question';
 
 import { computed, ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createWrongQuestion, updateWrongQuestion } from '#/api/education/wrong-question';
+import { createWrongQuestion, updateWrongQuestion } from '#/api/education-admin/wrong-question';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

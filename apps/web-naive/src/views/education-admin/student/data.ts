@@ -2,7 +2,7 @@ import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
-import type { EducationStudentApi } from '#/api/education/student';
+import type { EducationStudentApi } from '#/api/education-admin/student';
 
 import { z } from '#/adapter/form';
 import { getUserOptions } from '#/api/system/user';

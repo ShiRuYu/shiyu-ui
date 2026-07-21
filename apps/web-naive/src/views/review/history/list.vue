@@ -6,7 +6,7 @@ import { Page } from '@vben/common-ui';
 
 import { NDataTable, NProgress, NTag } from 'naive-ui';
 
-import { getReviewsByStatus } from '#/api/education/review';
+import { getReviewsByStatus } from '#/api/education-admin/review';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 

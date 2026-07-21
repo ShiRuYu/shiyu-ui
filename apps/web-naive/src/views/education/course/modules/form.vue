@@ -178,8 +178,8 @@ defineExpose({ open });
       <NSpace justify="end">
         <NButton @click="visible = false">取消</NButton>
         <NButton type="primary" :loading="saving" @click="handleSubmit">
-保存
-</NButton>
+          保存
+        </NButton>
       </NSpace>
     </template>
   </NModal>

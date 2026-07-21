@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AuthCodeApi } from '#/api/auth-code';
+import type { AuthCodeApi } from '#/api/system/auth-code';
 
 import { computed, ref } from 'vue';
 
@@ -7,7 +7,7 @@ import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createAuthCode, updateAuthCode } from '#/api/auth-code';
+import { createAuthCode, updateAuthCode } from '#/api/system/auth-code';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

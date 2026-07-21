@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DictApi } from '#/api/common/dict';
+import type { DictApi } from '#/api/system/dict';
 
 import { computed, nextTick, ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createDict, updateDict } from '#/api/common/dict';
+import { createDict, updateDict } from '#/api/system/dict';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

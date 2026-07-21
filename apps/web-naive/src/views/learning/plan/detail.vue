@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EducationPlanApi } from '#/api/education/plan';
+import type { EducationPlanApi } from '#/api/education-admin/plan';
 
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 
-import {
-  NButton,
-  NCard,
-  NDataTable,
-  NInput,
-  NSelect,
-  NSpace,
-} from 'naive-ui';
+import { NButton, NCard, NDataTable, NInput, NSelect, NSpace } from 'naive-ui';
 
 import { getSubjectListApi } from '#/api/education/subject';
 import {
@@ -137,12 +130,12 @@ onMounted(() => {
               fetchData();
             }
           "
-          >
-重置
-</NButton>
+        >
+          重置
+        </NButton>
         <NButton type="primary" @click="() => formModalRef?.open()">
-新增教材
-</NButton>
+          新增教材
+        </NButton>
       </NSpace>
     </template>
     <NDataTable
