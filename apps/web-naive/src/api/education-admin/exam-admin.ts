@@ -47,20 +47,4 @@ async function deleteExam(id: number) {
   return requestClient.post('/edu/exam/delete', null, { params: { id } });
 }
 
-async function publishExam(id: number) {
-  return requestClient.post('/edu/exam/publish', null, { params: { id } });
-}
-
-async function unpublishExam(id: number) {
-  return requestClient.post('/edu/exam/unpublish', null, { params: { id } });
-}
-
-export {
-  createExam,
-  deleteExam,
-  getExamById,
-  getExamList,
-  publishExam,
-  unpublishExam,
-  updateExam,
-};
+export { createExam, deleteExam, getExamById, getExamList, updateExam };

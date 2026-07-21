@@ -30,10 +30,9 @@ export async function getChaptersByTextbook(textbookId: number) {
 
 /** 获取教材章节树 */
 export async function getChapterTree(textbookId: number) {
-  return requestClient.get<EducationChapterApi.Chapter[]>(
-    '/edu/chapter/textbook-tree',
-    { params: { textbookId } },
-  );
+  return requestClient.get<EducationChapterApi.Chapter[]>('/edu/chapter/tree', {
+    params: { textbookId },
+  });
 }
 
 /** 创建章节 */

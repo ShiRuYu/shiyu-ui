@@ -57,7 +57,7 @@ async function getUserList(params: Recordable<any>) {
  */
 async function getRolesForUserForm() {
   return requestClient.get<Array<{ code: string; id: number; name: string }>>(
-    '/auth/role/all',
+    '/role/all',
   );
 }
 

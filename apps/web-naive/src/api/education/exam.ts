@@ -17,10 +17,6 @@ export namespace EducationExamApi {
     totalScore: number;
     status: number;
   }
-  export interface SubmitAnswerRequest {
-    studentId: number;
-    answer: string;
-  }
 }
 
 async function getExamList(pageNum = 1, pageSize = 10) {
@@ -58,12 +54,6 @@ async function updateExam(id: number, data: Partial<EducationExamApi.Exam>) {
   return requestClient.post('/edu/exam/update', data, { params: { id } });
 }
 
-async function submitExam(
-  id: number,
-  data: EducationExamApi.SubmitAnswerRequest,
-) {
-  return requestClient.post('/edu/exam/submit', data, { params: { id } });
-}
 
 async function deleteExam(id: number) {
   return requestClient.post('/edu/exam/delete', null, { params: { id } });
@@ -76,6 +66,5 @@ export {
   getExamBySubject,
   getExamByTeacher,
   getExamList,
-  submitExam,
   updateExam,
 };

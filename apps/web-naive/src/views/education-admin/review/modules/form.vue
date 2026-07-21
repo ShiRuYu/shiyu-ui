@@ -9,7 +9,7 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createReview, updateReview } from '#/api/education-admin/review';
+import { createReview } from '#/api/education-admin/review';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
@@ -33,9 +33,7 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       const data = await formApi.getValues();
       try {
-        await (formData.value?.id
-          ? updateReview(formData.value.id, data)
-          : createReview(data));
+        await createReview(data);
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();
         emit('success');

@@ -45,12 +45,6 @@ async function createReview(data: Omit<EducationReviewApi.ReviewTask, 'id'>) {
   return requestClient.post('/edu/review/create', data);
 }
 
-async function updateReview(
-  id: number,
-  data: Partial<EducationReviewApi.ReviewTask>,
-) {
-  return requestClient.post('/edu/review/update', data, { params: { id } });
-}
 
 async function completeReview(
   id: number,
@@ -65,5 +59,4 @@ export {
   getReviewById,
   getReviewsByStatus,
   getTodayReviews,
-  updateReview,
 };

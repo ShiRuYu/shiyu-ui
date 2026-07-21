@@ -31,7 +31,7 @@ export namespace EducationAgentApi {
 }
 
 async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'teacher' },
   });
 }
@@ -44,7 +44,7 @@ async function teachStream(
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
   const response = await fetch(
-    `${baseURL}/agent/agent/execute-stream?agentId=${encodeURIComponent('teacher')}`,
+    `${baseURL}/agent/execution/execute-stream?agentId=${encodeURIComponent('teacher')}`,
     {
       body: JSON.stringify({ ...data, stream: true }),
       headers: {
@@ -67,37 +67,37 @@ async function teachStream(
 }
 
 async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'practice' },
   });
 }
 
 async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'exam' },
   });
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/agent/agent/list', {
+  return requestClient.get('/agent/definition/list', {
     params: { agentId: 'review' },
   });
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'review' },
   });
 }
 
 async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'planner' },
   });
 }
 
 async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post('/agent/agent/execute', data, {
+  return requestClient.post('/agent/execution/execute', data, {
     params: { agentId: 'report' },
   });
 }

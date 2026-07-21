@@ -17,7 +17,7 @@ import {
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { getExamById, submitExam } from '#/api/education/exam';
+import { getExamById } from '#/api/education/exam';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -56,11 +56,8 @@ function setAnswer(questionId: number, answer: string) {
 async function handleSubmit() {
   if (!exam.value) return;
   submitting.value = true;
+  // TODO: 提交答卷 - 后端暂未实现 submitExam 接口
   try {
-    await submitExam(exam.value.id, {
-      studentId: getCurrentStudentId(),
-      answer: JSON.stringify(answers.value),
-    });
     message.success($t('education.exam.submitSuccess'));
     router.push({ path: `/exam/result/${exam.value.id}` });
   } catch (error) {
