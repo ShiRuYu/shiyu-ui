@@ -100,7 +100,7 @@ function onNewAgent() {
   });
 }
 
-function statusTag(s: string) {
+function statusTag(s: number) {
   return s === '1' ? 'success' : 'error';
 }
 </script>
@@ -159,11 +159,11 @@ function statusTag(s: string) {
                   <NSpace align="center" size="small">
                     <NTag
                       :bordered="false"
-                      :type="agent.status === '1' ? 'success' : 'error'"
+                      :type="agent.status === 1 ? 'success' : 'error'"
                       size="tiny"
                     >
                       {{
-                        agent.status === '1'
+                        agent.status === 1
                           ? $t('agent.adminListStatusNormal')
                           : $t('agent.adminListStatusDisabled')
                       }}

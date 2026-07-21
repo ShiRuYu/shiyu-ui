@@ -72,14 +72,14 @@ const loadingOptions = ref(false);
 const agentId = ref('');
 const agentName = ref('');
 const agentDescription = ref('');
-const agentStatus = ref('1');
+const agentStatus = ref(1);
 const agentDetailId = ref(0);
 const loadingAgent = ref(false);
 
 // Version management
 const versions = ref<Array<{ label: string; value: number }>>([]);
 const versionMap = ref<
-  Record<number, { description: string; status: string; versionNumber: string }>
+  Record<number, { description: string; status: number; versionNumber: string }>
 >({});
 const selectedVersionId = ref<null | number>(null);
 const loadingVersions = ref(false);
@@ -155,8 +155,8 @@ const selectedVersionInfo = computed(() => {
 });
 
 const statusOptions = [
-  { label: $t('agent.adminEditEnabled'), value: '1' },
-  { label: $t('agent.adminEditDisabled'), value: '0' },
+  { label: $t('agent.adminEditEnabled'), value: 1 },
+  { label: $t('agent.adminEditDisabled'), value: 0 },
 ];
 
 const nodeOptions = computed(() =>
@@ -317,7 +317,7 @@ async function loadAgentDetail(id: number) {
     agentName.value = detail.name;
     setTabTitle(agentName.value);
     agentDescription.value = detail.description || '';
-    agentStatus.value = detail.status || '1';
+    agentStatus.value = detail.status ?? 1;
     await loadVersions();
   } catch (e) {
     console.error('Failed to load agent detail', e);
@@ -343,7 +343,7 @@ async function loadVersions() {
         value: v.id,
       };
     });
-    const published = list.find((v) => v.status === 'PUBLISHED');
+    const published = list.find((v) => v.status === 1 /* PUBLISHED */);
     if (published) {
       selectedVersionId.value = published.id;
     } else if (list.length > 0) {
@@ -356,7 +356,9 @@ async function loadVersions() {
   }
 }
 
-function statusLabel(s: string): string {
+function statusLabel(s: number): string {
+  const map: Record<number, string> = { 0: 'DRAFT', 1: 'PUBLISHED', 2: 'ARCHIVED' };
+  return map[s] || String(s);
   const map: Record<string, string> = {
     DRAFT: $t('agent.versionListDraft'),
     PUBLISHED: $t('agent.versionListPublishedText'),
@@ -701,7 +703,7 @@ async function handleCreateVersion() {
 async function handlePublish() {
   if (!agentId.value || !selectedVersionId.value) return;
   const info = selectedVersionInfo.value;
-  if (info && info.status === 'PUBLISHED') {
+  if (info && info.status === 1 /* PUBLISHED */) {
     message.warning($t('agent.adminEditVersionAlreadyPublished'));
     return;
   }
@@ -998,7 +1000,7 @@ function onBack() {
                     class="flex flex-wrap gap-2"
                   >
                     <NButton
-                      v-if="selectedVersionInfo?.status !== 'PUBLISHED'"
+                      v-if="selectedVersionInfo?.status !== 1 /* PUBLISHED */"
                       size="small"
                       type="primary"
                       @click="handlePublish"
@@ -1006,7 +1008,7 @@ function onBack() {
                       {{ $t('agent.adminEditPublish') }}
                     </NButton>
                     <NButton
-                      v-if="selectedVersionInfo?.status === 'PUBLISHED'"
+                      v-if="selectedVersionInfo?.status === 1 /* PUBLISHED */"
                       size="small"
                       type="success"
                       @click="handleActivate"
@@ -1014,7 +1016,7 @@ function onBack() {
                       {{ $t('agent.adminEditActivate') }}
                     </NButton>
                     <NButton
-                      v-if="selectedVersionInfo?.status === 'PUBLISHED'"
+                      v-if="selectedVersionInfo?.status === 1 /* PUBLISHED */"
                       size="small"
                       @click="handleArchive"
                     >

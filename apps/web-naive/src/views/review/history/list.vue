@@ -48,7 +48,7 @@ const columns: any[] = [
         { type: (color[row.status] || 'default') as any, size: 'small' },
         () =>
           $t(
-            `education.review.status${row.status === 'COMPLETED' ? 'Completed' : row.status === 'PENDING' ? 'Pending' : row.status}`,
+            `education.review.status${row.status === 2 /* COMPLETED */ ? 'Completed' : row.status === 0 /* PENDING */ ? 'Pending' : row.status}`,
           ),
       );
     },
@@ -69,7 +69,7 @@ async function loadHistory() {
   try {
     history.value = await getReviewsByStatus(
       getCurrentStudentId(),
-      'COMPLETED',
+      2, /* COMPLETED */
     );
   } catch (error) {
     console.error(error);

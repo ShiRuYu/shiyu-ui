@@ -17,7 +17,7 @@ export namespace IntentDefApi {
     parameterMapping: Record<string, string>;
     slotDefaults: Record<string, string>;
     enabled: boolean;
-    status: string;
+    status: number;
     createTime: string;
     updateTime: string;
   }

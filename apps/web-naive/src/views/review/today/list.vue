@@ -47,7 +47,7 @@ async function handleComplete(review: EducationReviewApi.ReviewTask) {
       studentId: getCurrentStudentId(),
       resultScore: 80,
     });
-    review.status = 'COMPLETED';
+    review.status = 2; /* COMPLETED */
   } catch (error) {
     console.error(error);
   }
@@ -82,12 +82,12 @@ onMounted(() => loadReviews());
                 <span>
                   {{ $t('common.status') }}:
                   <NTag
-                    :type="review.status === 'PENDING' ? 'warning' : 'success'"
+                    :type="review.status === 0 /* PENDING */ ? 'warning' : 'success'"
                     size="small"
                   >
                     {{
                       $t(
-                        `education.review.status${review.status === 'PENDING' ? 'Pending' : 'Completed'}`,
+                        `education.review.status${review.status === 0 /* PENDING */ ? 'Pending' : 'Completed'}`,
                       )
                     }}
                   </NTag>
@@ -102,7 +102,7 @@ onMounted(() => loadReviews());
 
               <template #footer>
                 <NButton
-                  v-if="review.status === 'PENDING'"
+                  v-if="review.status === 0 /* PENDING */"
                   type="primary"
                   block
                   @click="handleComplete(review)"

@@ -14,7 +14,7 @@ export namespace ModelApi {
     platformId: number;
     platformName?: string;
     sort?: number;
-    status: string;
+    status: number;
   }
 
   export interface PageResult<T> {

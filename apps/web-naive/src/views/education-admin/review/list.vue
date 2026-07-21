@@ -69,7 +69,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
         query: async () => {
           const result = await getReviewsByStatus(
             getCurrentStudentId(),
-            'PENDING',
+            0, /* PENDING */
           );
           return { items: result, total: result.length };
         },

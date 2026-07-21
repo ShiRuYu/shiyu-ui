@@ -98,7 +98,7 @@ export namespace SystemMenuApi {
     /** 是否显示 */
     show?: boolean;
     /** 菜单状态 */
-    status: string;
+    status: number;
     /** 菜单类型 */
     type: (typeof MenuTypes)[number];
   }

@@ -64,7 +64,7 @@ onMounted(() => {
             {{ plan.endDate }}
           </NDescriptionsItem>
           <NDescriptionsItem :label="$t('common.status')">
-            <NTag :type="plan.status === 'ACTIVE' ? 'success' : 'default'">
+            <NTag :type="plan.status === 0 /* ACTIVE */ ? 'success' : 'default'">
               {{ plan.status }}
             </NTag>
           </NDescriptionsItem>
@@ -94,14 +94,14 @@ onMounted(() => {
             v-for="item in plan.items"
             :key="item.id"
             :type="
-              item.status === 'COMPLETED'
+              item.status === 2 /* COMPLETED */
                 ? 'success'
-                : item.status === 'IN_PROGRESS'
+                : item.status === 1 /* IN_PROGRESS */
                   ? 'info'
                   : 'default'
             "
             :title="item.knowledgeName || `知识点 #${item.knowledgeId}`"
-            :content="`${item.planDate} - ${item.status}`"
+            :content="`${item.planDate} - ${item.statusDesc || item.status}`"
           />
         </NTimeline>
         <div v-else class="py-8 text-center text-gray-400">

@@ -6,7 +6,7 @@ export namespace AuthCodeApi {
     code: string;
     name: string;
     roleId: number;
-    status: string;
+    status: number;
     createTime: string;
   }
 }

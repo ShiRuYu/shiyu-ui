@@ -9,7 +9,8 @@ export namespace EducationReviewApi {
     knowledgeName: string;
     reviewRound: number;
     reviewDate: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     resultScore: number;
   }
   export interface CompleteReviewRequest {
@@ -34,7 +35,7 @@ async function getTodayReviews(studentId: number) {
   );
 }
 
-async function getReviewsByStatus(studentId: number, status: string) {
+async function getReviewsByStatus(studentId: number, status: number) {
   return requestClient.get<EducationReviewApi.ReviewTask[]>(
     '/edu/review/list',
     { params: { studentId, status } },

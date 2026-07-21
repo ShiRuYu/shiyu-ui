@@ -11,7 +11,7 @@ export namespace SystemWorkspaceApi {
     name: string;
     pid?: number;
     remark?: string;
-    status: string;
+    status: number;
   }
 }
 

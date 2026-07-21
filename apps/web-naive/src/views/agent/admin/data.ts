@@ -20,8 +20,8 @@ export function useGridFormSchema(): VbenFormSchema[] {
       componentProps: {
         clearable: true,
         options: [
-          { label: $t('agent.adminListStatusNormal'), value: '1' },
-          { label: $t('agent.adminListStatusDisabled'), value: '0' },
+          { label: $t('agent.adminListStatusNormal'), value: 1 },
+          { label: $t('agent.adminListStatusDisabled'), value: 0 },
         ],
         placeholder: $t('agent.adminFormPlaceholderStatus'),
       },
@@ -62,12 +62,12 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('agent.adminFormLabelEnabled'), value: '1' },
-          { label: $t('agent.adminFormLabelDisabled'), value: '0' },
+          { label: $t('agent.adminFormLabelEnabled'), value: 1 },
+          { label: $t('agent.adminFormLabelDisabled'), value: 0 },
         ],
         optionType: 'button',
       },
-      defaultValue: '1',
+      defaultValue: 1,
       fieldName: 'status',
       label: $t('agent.adminFormLabelStatus'),
     },
@@ -90,12 +90,12 @@ export function useColumns(
           {
             color: 'success',
             label: $t('agent.adminListStatusNormal'),
-            value: '1',
+            value: 1,
           },
           {
             color: 'error',
             label: $t('agent.adminListStatusDisabled'),
-            value: '0',
+            value: 0,
           },
         ],
       },

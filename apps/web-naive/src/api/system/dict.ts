@@ -15,7 +15,7 @@ export namespace DictApi {
     isDefault?: string;
     listClass?: string;
     remark?: string;
-    status: string;
+    status: number;
   }
 
   export interface PageResult<T> {

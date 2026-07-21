@@ -28,14 +28,12 @@ export function useSchema(): VbenFormSchema[] {
   ];
 }
 
-export function getStatusType(status: string) {
+export function getStatusType(status: number) {
   switch (status) {
-    case 'ACTIVE':
+    case 0:
       return 'success' as const;
-    case 'COMPLETED':
+    case 1:
       return 'info' as const;
-    case 'PAUSED':
-      return 'warning' as const;
     default:
       return 'default' as const;
   }

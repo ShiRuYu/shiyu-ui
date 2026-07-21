@@ -7,7 +7,8 @@ export namespace AgentAdminApi {
     name: string;
     description: string;
     currentVersion: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     createTime: string;
     updateTime: string;
   }
@@ -21,7 +22,8 @@ export namespace AgentAdminApi {
     agentId: string;
     versionNumber: string;
     description: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     createTime: string;
     updateTime: string;
   }
@@ -30,7 +32,7 @@ export namespace AgentAdminApi {
     agentId: string;
     name: string;
     description?: string;
-    status?: string;
+    status?: number;
   }
 }
 
@@ -41,7 +43,7 @@ async function getAgentPage(params: {
   name?: string;
   page: number;
   pageSize: number;
-  status?: string;
+  status?: number;
 }) {
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
     '/agent/definition/page',
@@ -91,7 +93,7 @@ async function deleteAgent(id: number) {
 }
 
 /** 切换 Agent 状态 */
-async function toggleAgentStatus(id: number, status: string) {
+async function toggleAgentStatus(id: number, status: number) {
   return requestClient.post('/agent/definition/status', null, {
     params: { id, status },
   });

@@ -121,7 +121,7 @@ onMounted(() => {
           <NTimelineItem
             v-for="task in todayTasks"
             :key="task.id"
-            :type="task.status === 'COMPLETED' ? 'success' : 'info'"
+            :type="task.status === 2 /* COMPLETED */ ? 'success' : 'info'"
             :title="task.knowledgeName"
             :content="task.planDate"
           />
@@ -140,7 +140,7 @@ onMounted(() => {
           </template>
           <template #header-extra>
             <NTag :type="getStatusType(plan.status)" size="small">
-              {{ plan.status }}
+              {{ plan.statusDesc || plan.status }}
             </NTag>
           </template>
 

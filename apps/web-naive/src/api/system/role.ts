@@ -11,7 +11,7 @@ export namespace SystemRoleApi {
     name: string;
     permissions?: number[];
     remark?: string;
-    status: string;
+    status: number;
   }
 }
 

@@ -13,7 +13,7 @@ export namespace SystemTenantApi {
     address?: string;
     domain?: string;
     intro?: string;
-    status: string;
+    status: number;
     createTime?: string;
     updateTime?: string;
   }

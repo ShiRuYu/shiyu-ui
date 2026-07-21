@@ -69,16 +69,16 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         options: [
-          { label: $t('education.review.statusPending'), value: 'PENDING' },
-          { label: $t('education.review.statusInReview'), value: 'IN_REVIEW' },
-          { label: $t('education.review.statusCompleted'), value: 'COMPLETED' },
-          { label: $t('education.review.statusFailed'), value: 'FAILED' },
+          { label: $t('education.review.statusPending'), value: 0 },
+          { label: $t('education.review.statusInReview'), value: 1 },
+          { label: $t('education.review.statusCompleted'), value: 2 },
+          { label: $t('education.review.statusFailed'), value: 3 },
         ],
         placeholder: $t('education.review.selectStatus'),
       },
       fieldName: 'status',
       label: $t('education.review.status'),
-      defaultValue: 'PENDING',
+      defaultValue: 0,
     },
     {
       component: 'InputNumber',

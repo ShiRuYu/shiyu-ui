@@ -6,7 +6,8 @@ export namespace AgentVersionApi {
     agentId: string;
     versionNumber: string;
     description: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     createTime: string;
     updateTime: string;
   }

@@ -69,12 +69,12 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.normal'), value: '1' },
-          { label: $t('common.disabled'), value: '0' },
+          { label: $t('common.normal'), value: 1 },
+          { label: $t('common.disabled'), value: 0 },
         ],
         optionType: 'button',
       },
-      defaultValue: '1',
+      defaultValue: 1,
       fieldName: 'status',
       label: $t('common.status'),
     },
@@ -123,8 +123,8 @@ export function useColumns(
       cellRender: {
         name: 'CellTag',
         options: [
-          { color: 'success', label: $t('common.normal'), value: '1' },
-          { color: 'error', label: $t('common.disabled'), value: '0' },
+          { color: 'success', label: $t('common.normal'), value: 1 },
+          { color: 'error', label: $t('common.disabled'), value: 0 },
         ],
       },
       field: 'status',

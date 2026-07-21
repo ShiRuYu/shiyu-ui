@@ -16,7 +16,7 @@ export namespace PlatformApi {
     maxTokens?: number;
     name: string;
     remark?: string;
-    status: string;
+    status: number;
     temperature?: number;
   }
 

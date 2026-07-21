@@ -8,7 +8,8 @@ export namespace EducationPlanApi {
     name: string;
     startDate: string;
     endDate: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     totalItems: number;
     completedItems: number;
     items: DailyTask[];
@@ -18,7 +19,8 @@ export namespace EducationPlanApi {
     knowledgeId: number;
     knowledgeName: string;
     planDate: string;
-    status: string;
+    status: number;
+    statusDesc?: string;
     orderNo: number;
   }
 }
