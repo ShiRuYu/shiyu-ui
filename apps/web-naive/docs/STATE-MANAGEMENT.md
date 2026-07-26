@@ -13,7 +13,7 @@ store/
 **auth store** 职责：
 - 登录/登出
 - 用户信息
-- 工作区切换
+- 租户切换与子租户数据范围
 - 租户切换
 - token 管理
 
@@ -92,7 +92,7 @@ export const useKnowledgeStore = defineStore("knowledge", () => {
 | `notification` | 通知中心 | `notifications[]`, `unreadCount` |
 | `task` | 后台任务 | `tasks[]`, `taskProgress` |
 | `model` | AI 模型配置 | `models[]`, `platforms[]`, `currentModel` |
-| `workspace` | 工作区状态 | `currentWorkspace`, `workspaces[]` |
+| `user` | 租户上下文 | `currentTenantId`, `filterTenantId`, `subTenants[]` |
 
 ## 三、状态管理原则
 

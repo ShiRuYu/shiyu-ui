@@ -151,7 +151,7 @@ system/
 ├── tenant/                 # 租户管理
 ├── upload/                 # 上传管理
 ├── user/                   # 用户管理
-└── workspace/              # 工作区管理
+└── tenant/                 # 租户与子租户范围
 ```
 
 每个子模块同样采用 `data.ts + list.vue + modules/form.vue` 结构。
@@ -192,7 +192,7 @@ record/
 | 模块 | 说明 |
 |------|------|
 | `dashboard/analytics/` | 数据分析仪表盘 |
-| `dashboard/workspace/` | 工作区仪表盘 |
+| `dashboard/overview/` | AI 平台概览 |
 | `ai-tutor/` | AI 家教：chat / planner / practice / report-gen / teacher |
 | `exam/` | 考试：ai-exam / exam-list |
 | `practice/` | 练习：question / wrong-question |

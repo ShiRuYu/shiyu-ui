@@ -6,7 +6,6 @@ import type { SystemUserApi } from '#/api/system/user';
 
 import { z } from '#/adapter/form';
 import { getRolesForUserForm } from '#/api/system/user';
-import { getWorkspaceList } from '#/api/system/workspace';
 import { $t } from '#/locales';
 
 /**
@@ -108,18 +107,6 @@ export function useSchema(): VbenFormSchema[] {
       defaultValue: '2',
       fieldName: 'sex',
       label: $t('system.user.sex'),
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        allowClear: true,
-        api: getWorkspaceList,
-        class: 'w-full',
-        labelField: 'name',
-        valueField: 'id',
-      },
-      fieldName: 'workspaceId',
-      label: $t('system.user.workspace'),
     },
     {
       component: 'ApiSelect',

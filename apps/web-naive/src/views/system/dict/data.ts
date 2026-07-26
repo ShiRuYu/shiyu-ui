@@ -73,7 +73,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       componentProps: { maxlength: 200, rows: 3, type: 'textarea' },
       fieldName: 'remark',
-      label: $t('system.workspace.remark'),
+      label: $t('system.dict.remark'),
     },
   ];
 }
@@ -100,7 +100,7 @@ export function useColumns(
       title: $t('common.status'),
       width: 100,
     },
-    { field: 'remark', title: $t('system.workspace.remark') },
+    { field: 'remark', title: $t('system.dict.remark') },
     {
       align: 'right',
       cellRender: {

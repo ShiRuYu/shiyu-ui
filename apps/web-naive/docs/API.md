@@ -132,7 +132,7 @@ export { getKnowledgePage, createKnowledge };
 | `tenant.ts` | 租户管理 |
 | `upload.ts` | 文件上传 |
 | `user.ts` | 用户管理 |
-| `workspace.ts` | 工作区管理 |
+| `tenant.ts` | 租户与子租户范围 |
 
 ### record/
 

@@ -68,12 +68,12 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: "Workspace",
-        path: "/workspace",
-        component: () => import("#/views/dashboard/workspace/index.vue"),
+        name: "Overview",
+        path: "/overview",
+        component: () => import("#/views/dashboard/overview/index.vue"),
         meta: {
-          icon: "carbon:workspace",
-          title: $t("page.dashboard.workspace"),
+          icon: "lucide:layout-dashboard",
+          title: $t("page.dashboard.overview"),
         },
       },
     ],

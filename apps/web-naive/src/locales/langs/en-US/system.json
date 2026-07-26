@@ -1,16 +1,5 @@
 {
   "title": "System Management",
-  "workspace": {
-    "list": "Workspace List",
-    "createTime": "Create Time",
-    "workspaceName": "Workspace Name",
-    "name": "Workspace",
-    "operation": "Operation",
-    "parentWorkspace": "Parent Workspace",
-    "remark": "Remark",
-    "status": "Status",
-    "title": "Workspace Management"
-  },
   "menu": {
     "list": "Menu List",
     "activeIcon": "Active Icon",
@@ -73,7 +62,6 @@
     "email": "Email",
     "phone": "Phone",
     "avatar": "Avatar",
-    "workspace": "Workspace",
     "role": "Role",
     "status": "Status",
     "remark": "Remark",

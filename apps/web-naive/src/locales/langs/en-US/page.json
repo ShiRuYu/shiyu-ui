@@ -1,5 +1,10 @@
 {
   "title": "Page Management",
+  "dashboard": {
+    "title": "Dashboard",
+    "analytics": "Analytics",
+    "overview": "Platform Overview"
+  },
   "learning": {
     "courseDetail": "Course Detail",
     "knowledgeDetail": "Knowledge Detail",

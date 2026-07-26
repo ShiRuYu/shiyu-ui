@@ -89,6 +89,7 @@ const modelUsageItems = ref<
   {
     color: string;
     content: string;
+    date: string;
     group: string;
     icon: string;
     title: string;
@@ -104,6 +105,7 @@ async function fetchData() {
     modelUsageItems.value = (modelUsage || []).slice(0, 6).map((m) => ({
       title: m.model,
       content: `调用 ${m.call_count} 次 · ${(m.total_tokens / 1000).toFixed(1)}K tokens`,
+      date: new Date().toISOString(),
       group: m.platform,
       icon: 'carbon:ibm-watson-machine-learning',
       color: '#2563EB',

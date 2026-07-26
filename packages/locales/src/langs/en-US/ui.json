@@ -167,12 +167,6 @@
       "switchFailed": "Tenant switch failed",
       "notSelected": "Not selected"
     },
-    "workspace": {
-      "label": "Workspace",
-      "switchSuccess": "Workspace switched successfully",
-      "switchFailed": "Workspace switch failed",
-      "notSelected": "Not selected"
-    },
     "roleSwitch": {
       "label": "Current Role",
       "switchSuccess": "Role switched successfully",

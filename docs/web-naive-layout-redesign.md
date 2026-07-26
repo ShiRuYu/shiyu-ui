@@ -32,7 +32,7 @@ shiyu-ai 后端模块
 | ❌ **日常记录无入口** | record 模块代码完整，但完全没有路由文件和菜单入口 |
 | ❌ **隐藏菜单泛滥** | 7 个路由模块全部 `hideInMenu: true`，通过卡片跳转，丢失侧边栏导航一致性 |
 | ❌ **菜单层级不反映架构** | 菜单结构是"教育中心→卡片→功能"，而非"平台底座 + 业务域" |
-| ❌ **虚假占位数据** | Workspace 使用 Github/Vue/React 等教育无关的示例内容 |
+| ❌ **虚假占位数据** | 平台概览使用 Github/Vue/React 等教育无关的示例内容 |
 
 ---
 
@@ -42,7 +42,7 @@ shiyu-ai 后端模块
 ┌─────────────────────────────────────────────────────────────┐
 │  📊 工作台                         ← 平台级入口           │
 │  ├─ 数据看板 → /analytics          (平台用量概览)          │
-│  └─ 工作台   → /workspace          (AI 平台首页)           │
+│  └─ 平台概览 → /overview            (AI 平台首页)           │
 ├─────────────────────────────────────────────────────────────┤
 │  ⚙️ 平台管理                         ← 平台底座核心       │
 │  ├─ Agent 管理 → /agent/admin/list  (Agent 编排)           │
@@ -108,7 +108,7 @@ shiyu-ai 后端模块
 │  ├─ 菜单管理   → /system/menu                              │
 │  ├─ 字典管理   → /system/dict                              │
 │  ├─ 租户管理   → /system/tenant                            │
-│  ├─ 工作台配置 → /system/workspace                         │
+│  ├─ 租户配置   → /system/tenant                            │
 │  ├─ 授权码     → /system/auth-code                          │
 │  └─ 关于       → /vben-admin/about                         │
 └─────────────────────────────────────────────────────────────┘
@@ -140,7 +140,7 @@ shiyu-ai 后端模块
 | 文件 | 操作 |
 | --- | --- |
 | `views/education-center/` | 清理 SubMenuCards.vue + 6 个 index.vue |
-| `views/dashboard/workspace/index.vue` | 重写为 AI 平台工作台 |
+| `views/dashboard/overview/index.vue` | AI 平台概览 |
 
 ### 4.3 国际化文件
 
@@ -156,7 +156,7 @@ shiyu-ai 后端模块
 
 | 侧边栏分组 | 后端模块 | 前端路由前缀 |
 | --- | --- | --- |
-| 工作台 | auth / usage | /analytics, /workspace |
+| 平台概览 | auth / usage | /analytics, /overview |
 | 平台管理 | agent | /agent/\* |
 | 知识引擎 | knowledge | /knowledge/\* |
 | 教育空间 | education | /learning/_, /practice/_, /exam/_, /review/_, /ai-tutor/_, /analytics-center/_, /edu/\* |
@@ -176,4 +176,4 @@ shiyu-ai 后端模块
 | **Phase 4** | 新建 record.ts 路由                   | 1 个路由文件 |
 | **Phase 5** | 移除 7 个模块的 hideInMenu            | 7 个路由文件 |
 | **Phase 6** | 清理 education-center 页面文件        | 7 个文件     |
-| **Phase 7** | 重写 workspace 为 AI 平台首页         | 1 个页面文件 |
+| **Phase 7** | 完成 AI 平台概览首页                  | 1 个页面文件 |

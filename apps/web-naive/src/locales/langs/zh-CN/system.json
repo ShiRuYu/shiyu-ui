@@ -1,17 +1,5 @@
 {
   "title": "系统管理",
-  "workspace": {
-    "list": "工作空间列表",
-    "createTime": "创建时间",
-    "workspaceName": "工作空间名称",
-    "name": "工作空间",
-    "operation": "操作",
-    "parentWorkspace": "上级工作空间",
-    "remark": "备注",
-    "status": "状态",
-    "title": "工作空间管理",
-    "appendChild": "新增下级"
-  },
   "menu": {
     "list": "菜单列表",
     "activeIcon": "激活图标",
@@ -83,7 +71,6 @@
     "email": "邮箱",
     "phone": "手机号",
     "avatar": "头像",
-    "workspace": "所属工作空间",
     "role": "角色",
     "sex": "性别",
     "sexMale": "男",

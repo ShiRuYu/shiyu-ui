@@ -62,8 +62,8 @@ const notifications = ref<NotificationItem[]>([
     date: '1天前',
     isRead: false,
     message: '描述信息描述信息描述信息',
-    title: '跳转Workspace示例',
-    link: '/workspace',
+    title: '查看平台概览',
+    link: '/overview',
   },
   {
     id: 6,
@@ -159,10 +159,6 @@ async function handleSwitchRole(roleId: number) {
 
 async function handleSwitchTenant(tenantId: number) {
   await authStore.switchTenant(tenantId);
-}
-
-async function handleSwitchWorkspace(workspaceId: number) {
-  await authStore.switchWorkspace(workspaceId);
 }
 
 async function handleLogout() {
@@ -268,14 +264,11 @@ watch(
         :tag-text="currentRoleName || undefined"
         :tenants="userStore.tenants"
         :current-tenant-id="userStore.currentTenantId"
-        :workspaces="userStore.workspaces"
-        :current-workspace-id="userStore.currentWorkspaceId"
         :roles="userRoleList"
         :current-role-id="currentRoleId"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"
         @switch-tenant="handleSwitchTenant"
-        @switch-workspace="handleSwitchWorkspace"
         @switch-role="handleSwitchRole"
       />
     </template>
