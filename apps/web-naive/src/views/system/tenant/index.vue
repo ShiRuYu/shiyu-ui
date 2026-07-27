@@ -62,21 +62,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: true,
+      enabled: false,
     },
     proxyConfig: {
       ajax: {
-        query: async ({ page }, formValues) => {
-          const params = Object.fromEntries(
-            Object.entries(formValues || {}).filter(
-              ([, v]) => v !== '' && v !== null && v !== undefined,
-            ),
-          );
-          return await getTenantList({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...params,
-          });
+        query: async () => {
+          return await getTenantList();
         },
       },
     },
@@ -86,6 +77,13 @@ const [Grid, gridApi] = useVbenVxeGrid({
       refresh: true,
       search: true,
       zoom: true,
+    },
+    treeConfig: {
+      lazy: false,
+      parentField: 'parentId',
+      rowField: 'id',
+      transform: true,
+      expandAll: false,
     },
   } as VxeTableGridOptions,
 });

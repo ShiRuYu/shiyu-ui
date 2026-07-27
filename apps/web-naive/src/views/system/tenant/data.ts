@@ -3,6 +3,7 @@ import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemTenantApi } from '#/api/system/tenant';
+import { getTenantTreeOptions } from '#/api/system/tenant';
 
 import { z } from '#/adapter/form';
 import { $t } from '#/locales';
@@ -39,6 +40,20 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useSchema(): VbenFormSchema[] {
   return [
+    {
+      component: 'ApiTreeSelect',
+      componentProps: {
+        allowClear: true,
+        api: getTenantTreeOptions,
+        class: 'w-full',
+        labelField: 'name',
+        valueField: 'id',
+        childrenField: 'children',
+        resultField: 'items',
+      },
+      fieldName: 'parentId',
+      label: $t('system.tenant.parentTenant'),
+    },
     {
       component: 'Input',
       fieldName: 'code',
@@ -102,14 +117,10 @@ export function useColumns(
 ): VxeTableGridColumns<SystemTenantApi.SystemTenant> {
   return [
     {
-      field: 'id',
-      title: 'ID',
-      width: 80,
-    },
-    {
       field: 'code',
       title: $t('system.tenant.tenantCode'),
       width: 120,
+      treeNode: true,
     },
     {
       field: 'name',
@@ -142,11 +153,6 @@ export function useColumns(
       field: 'status',
       title: $t('system.tenant.status'),
       width: 100,
-    },
-    {
-      field: 'createTime',
-      title: $t('system.tenant.createTime'),
-      width: 180,
     },
     {
       align: 'right',
