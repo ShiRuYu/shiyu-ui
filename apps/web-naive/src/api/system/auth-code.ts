@@ -5,9 +5,20 @@ export namespace AuthCodeApi {
     id: number;
     code: string;
     name: string;
-    roleId: number;
+    module: string;
+    resource: string;
+    action: string;
     status: number;
     createTime: string;
+  }
+
+  export interface AuthCodeOption {
+    id: number;
+    name: string;
+    code: string;
+    module: string;
+    resource: string;
+    action: string;
   }
 }
 
@@ -17,11 +28,7 @@ async function getAuthCodeList() {
 }
 
 /** 创建权限码 */
-async function createAuthCode(data: {
-  code: string;
-  name: string;
-  roleId: number;
-}) {
+async function createAuthCode(data: { code: string; name: string }) {
   return requestClient.post('/auth-code/create', data);
 }
 
@@ -38,4 +45,28 @@ async function deleteAuthCode(id: number) {
   return requestClient.post('/auth-code/delete', null, { params: { id } });
 }
 
-export { createAuthCode, deleteAuthCode, getAuthCodeList, updateAuthCode };
+async function getRoleAuthCodes(roleId: number) {
+  return requestClient.get<string[]>('/auth-code/roles/list', {
+    params: { roleId },
+  });
+}
+
+async function getAuthCodeOptions() {
+  return requestClient.get<AuthCodeApi.AuthCodeOption[]>('/auth-code/options');
+}
+
+async function replaceRoleAuthCodes(roleId: number, authCodes: string[]) {
+  return requestClient.post('/auth-code/roles/replace', authCodes, {
+    params: { roleId },
+  });
+}
+
+export {
+  createAuthCode,
+  deleteAuthCode,
+  getAuthCodeList,
+  getAuthCodeOptions,
+  getRoleAuthCodes,
+  replaceRoleAuthCodes,
+  updateAuthCode,
+};

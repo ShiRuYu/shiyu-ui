@@ -14,18 +14,10 @@ export namespace SystemMenuApi {
   /** 徽标类型集合 */
   export const BadgeTypes = ['dot', 'normal'] as const;
   /** 菜单类型集合 */
-  export const MenuTypes = [
-    'catalog',
-    'menu',
-    'embedded',
-    'link',
-    'button',
-  ] as const;
+  export const MenuTypes = ['catalog', 'menu', 'embedded', 'link'] as const;
   /** 系统菜单 */
   export interface SystemMenu {
     [key: string]: any;
-    /** 后端权限标识 */
-    authCode: string;
     /** 菜单编码 */
     code?: string;
     /** 子级 */

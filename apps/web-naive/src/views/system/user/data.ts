@@ -58,6 +58,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'nickName',
       label: $t('system.user.nickname'),
+      defaultValue: '',
       rules: z
         .string()
         .min(1, $t('ui.formRules.required', [$t('system.user.nickname')])),
@@ -71,6 +72,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'password',
       label: $t('system.user.password'),
+      defaultValue: '',
       dependencies: {
         if(values) {
           return !values.id;
@@ -86,12 +88,24 @@ export function useSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
+      fieldName: 'address',
+      label: $t('system.user.address'),
+      rules: z.string().max(255).optional(),
+    },
+    {
+      component: 'Input',
       fieldName: 'phone',
       label: $t('system.user.phone'),
       rules: z
         .string()
         .regex(/^1[3-9]\d{9}$/, $t('ui.formRules.phone'))
         .optional(),
+    },
+    {
+      component: 'Input',
+      fieldName: 'avatar',
+      label: $t('system.user.avatar'),
+      rules: z.string().max(500).optional(),
     },
     {
       component: 'RadioGroup',
@@ -105,7 +119,7 @@ export function useSchema(): VbenFormSchema[] {
         optionType: 'button',
       },
       defaultValue: '2',
-      fieldName: 'sex',
+      fieldName: 'gender',
       label: $t('system.user.sex'),
     },
     {
@@ -181,14 +195,32 @@ export function useColumns(
       width: 180,
     },
     {
+      field: 'avatar',
+      title: $t('system.user.avatar'),
+      minWidth: 220,
+      showOverflow: 'tooltip',
+    },
+    {
+      field: 'address',
+      title: $t('system.user.address'),
+      minWidth: 180,
+      showOverflow: 'tooltip',
+    },
+    {
       field: 'phone',
       title: $t('system.user.phone'),
       width: 120,
     },
     {
-      field: 'sex',
+      field: 'remark',
+      title: $t('system.user.remark'),
+      minWidth: 180,
+      showOverflow: 'tooltip',
+    },
+    {
+      field: 'gender',
       formatter: ({ row }) => {
-        switch (row.sex) {
+        switch (row.gender) {
           case '0': {
             return $t('system.user.sexMale');
           }

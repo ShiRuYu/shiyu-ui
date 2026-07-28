@@ -6,7 +6,7 @@ export namespace SystemTenantApi {
   export interface SystemTenant {
     [key: string]: any;
     id: number;
-    parentId?: number | null;
+    parentId?: null | number;
     code: string;
     name: string;
     contactName?: string;
@@ -46,7 +46,8 @@ async function deleteTenant(id: number) {
 
 /** 获取租户选项（构建为树形结构，供 ApiTreeSelect 使用） */
 async function getTenantTreeOptions() {
-  const data = await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
+  const data =
+    await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
   const list = Array.isArray(data) ? data : [];
 
   // 将平铺的 parentId 结构转换为 children 树结构
@@ -76,4 +77,10 @@ async function getTenantTreeOptions() {
   return { items: roots, total: roots.length };
 }
 
-export { createTenant, deleteTenant, getTenantList, getTenantTreeOptions, updateTenant };
+export {
+  createTenant,
+  deleteTenant,
+  getTenantList,
+  getTenantTreeOptions,
+  updateTenant,
+};

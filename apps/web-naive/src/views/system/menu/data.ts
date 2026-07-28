@@ -19,7 +19,6 @@ export function getMenuTypeOptions() {
       value: 'catalog',
     },
     { color: 'default', label: $t('system.menu.typeMenu'), value: 'menu' },
-    { color: 'error', label: $t('system.menu.typeButton'), value: 'button' },
     {
       color: 'success',
       label: $t('system.menu.typeEmbedded'),
@@ -37,7 +36,6 @@ const menuTypeOptions = [
   { label: $t('system.menu.typeMenu'), value: 'menu' },
   { label: $t('system.menu.typeEmbedded'), value: 'embedded' },
   { label: $t('system.menu.typeLink'), value: 'link' },
-  { label: $t('system.menu.typeButton'), value: 'button' },
 ];
 
 /**
@@ -88,12 +86,6 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'path',
       label: $t('system.menu.path'),
-      dependencies: {
-        if(values) {
-          return values.type !== 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'Input',
@@ -108,36 +100,13 @@ export function useSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'authCode',
-      label: $t('system.menu.authCode'),
-      dependencies: {
-        if(values) {
-          return values.type === 'button';
-        },
-        triggerFields: ['type'],
-      },
-    },
-    {
-      component: 'Input',
       fieldName: 'meta.title',
       label: $t('system.menu.menuTitle'),
-      dependencies: {
-        if(values) {
-          return values.type !== 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'IconPicker',
       fieldName: 'meta.icon',
       label: $t('system.menu.icon'),
-      dependencies: {
-        if(values) {
-          return values.type !== 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'Select',
@@ -170,12 +139,6 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'method',
       label: $t('system.menu.method'),
-      dependencies: {
-        if(values) {
-          return values.type === 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'Input',
@@ -193,12 +156,6 @@ export function useSchema(): VbenFormSchema[] {
       defaultValue: true,
       fieldName: 'show',
       label: $t('system.menu.show'),
-      dependencies: {
-        if(values) {
-          return values.type !== 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'InputNumber',
@@ -215,12 +172,6 @@ export function useSchema(): VbenFormSchema[] {
       defaultValue: false,
       fieldName: 'meta.hideInMenu',
       label: $t('system.menu.hideInMenu'),
-      dependencies: {
-        if(values) {
-          return values.type !== 'button';
-        },
-        triggerFields: ['type'],
-      },
     },
     {
       component: 'Switch',
@@ -278,11 +229,6 @@ export function useColumns(
       field: 'type',
       title: $t('system.menu.type'),
       width: 100,
-    },
-    {
-      field: 'authCode',
-      title: $t('system.menu.authCode'),
-      width: 180,
     },
     {
       field: 'path',

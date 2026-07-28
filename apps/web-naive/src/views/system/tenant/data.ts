@@ -3,9 +3,9 @@ import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemTenantApi } from '#/api/system/tenant';
-import { getTenantTreeOptions } from '#/api/system/tenant';
 
 import { z } from '#/adapter/form';
+import { getTenantTreeOptions } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {

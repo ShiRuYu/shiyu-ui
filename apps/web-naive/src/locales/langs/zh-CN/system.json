@@ -8,7 +8,6 @@
     "activePathMustExist": "该路径未能找到有效的菜单",
     "advancedSettings": "其它设置",
     "affixTab": "固定在标签",
-    "authCode": "权限标识",
     "badge": "徽章内容",
     "badgeVariants": "徽标样式",
     "badgeType": {
@@ -34,7 +33,6 @@
     "status": "状态",
     "title": "菜单管理",
     "type": "类型",
-    "typeButton": "按钮",
     "typeCatalog": "目录",
     "typeEmbedded": "内嵌",
     "typeLink": "外链",
@@ -60,7 +58,17 @@
     "operation": "操作",
     "permissions": "权限",
     "setPermissions": "分配菜单",
-    "menuAssignment": "分配菜单"
+    "menuAssignment": "分配菜单",
+    "assignMenu": "分配菜单",
+    "assignAuthCode": "分配权限码",
+    "authCodes": "权限码",
+    "authCodeSearchPlaceholder": "搜索权限名称、编码、模块或资源",
+    "authCodeName": "权限名称",
+    "authCodeModule": "模块",
+    "authCodeResource": "资源",
+    "authCodeAction": "操作",
+    "authCodeCode": "权限编码",
+    "authCodeSelected": "已选择 {0} / {1} 项"
   },
   "user": {
     "title": "用户管理",
@@ -71,6 +79,7 @@
     "email": "邮箱",
     "phone": "手机号",
     "avatar": "头像",
+    "address": "地址",
     "role": "角色",
     "sex": "性别",
     "sexMale": "男",
@@ -153,7 +162,12 @@
     "title": "权限码管理",
     "code": "权限编码",
     "name": "权限名称",
+    "module": "模块",
+    "resource": "资源",
+    "action": "操作",
     "roleId": "角色ID",
-    "createTime": "创建时间"
+    "createTime": "创建时间",
+    "operation": "操作",
+    "searchPlaceholder": "搜索权限名称、编码、模块或资源"
   }
 }

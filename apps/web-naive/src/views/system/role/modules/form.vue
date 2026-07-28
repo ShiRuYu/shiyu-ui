@@ -1,30 +1,21 @@
 <script lang="ts" setup>
-import type { TreeOption } from 'naive-ui';
-
 import type { SystemRoleApi } from '#/api/system/role';
 
-import { computed, h, nextTick, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
-import { IconifyIcon } from '@vben/icons';
 
-import { NButton, NSpin, NTree } from 'naive-ui';
+import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { getMenuList } from '#/api/system/menu';
-import { createRole, getRoleDetail, updateRole } from '#/api/system/role';
+import { createRole, updateRole } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
 const formData = ref<SystemRoleApi.SystemRole>();
-const menuTree = ref<any[]>([]);
-const loadingMenu = ref(false);
-const checkedMenuIds = ref<number[]>([]);
-const oldCheckedMenuIds = ref<number[]>([]);
-const hasCheckedLoaded = ref(false);
 
 const getTitle = computed(() => {
   return formData.value?.id
@@ -44,45 +35,6 @@ function resetForm() {
   formApi.setValues(formData.value || {});
 }
 
-async function loadRolePermissions(roleId: number) {
-  hasCheckedLoaded.value = false;
-  try {
-    const detail = await getRoleDetail(roleId);
-    if (detail?.permissions) {
-      checkedMenuIds.value = detail.permissions;
-      oldCheckedMenuIds.value = [...detail.permissions];
-      hasCheckedLoaded.value = true;
-      formApi.setValues({ permissions: detail.permissions });
-    }
-  } catch (e) {
-    console.error('Failed to load role permissions', e);
-  }
-}
-
-async function loadMenuTree() {
-  if (menuTree.value.length > 0) return;
-  loadingMenu.value = true;
-  try {
-    const data = await getMenuList();
-    menuTree.value = Array.isArray(data) ? data : [];
-  } finally {
-    loadingMenu.value = false;
-  }
-}
-
-/** 自定义渲染菜单标签：显示图标 + meta.title */
-function renderLabel({ option }: { option: TreeOption }) {
-  const icon = (option as any).meta?.icon;
-  const title = (option as any).meta?.title || option.label || option.key;
-  if (icon) {
-    return h('span', { class: 'flex items-center gap-1' }, [
-      h(IconifyIcon, { icon, class: 'size-4 shrink-0' }),
-      h('span', String(title)),
-    ]);
-  }
-  return h('span', String(title));
-}
-
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
@@ -94,8 +46,6 @@ const [Modal, modalApi] = useVbenModal({
         if (submitData.status !== undefined) {
           submitData.status = String(submitData.status);
         }
-        // 提交菜单权限
-        submitData.permissions = checkedMenuIds.value;
         await (formData.value?.id
           ? updateRole(formData.value.id, submitData)
           : createRole(submitData));
@@ -117,17 +67,13 @@ const [Modal, modalApi] = useVbenModal({
     if (isOpen) {
       const data = modalApi.getData<SystemRoleApi.SystemRole>();
       formApi.resetForm();
-      formData.value = data?.id !== undefined && data?.id !== null ? data : undefined;
-      // 首次加载菜单树
-      await loadMenuTree();
-      // 等待 Vue 更新 DOM，确保表单字段已挂载
-      await nextTick();
+      formData.value =
+        data?.id !== undefined && data?.id !== null ? data : undefined;
       if (data?.id !== undefined && data?.id !== null) {
-        formApi.setValues(data);
-        loadRolePermissions(data.id);
-      } else {
-        checkedMenuIds.value = [];
-        oldCheckedMenuIds.value = [];
+        formApi.setValues({
+          ...data,
+          status: data.status == null ? '1' : String(data.status),
+        });
       }
     }
   },
@@ -136,35 +82,7 @@ const [Modal, modalApi] = useVbenModal({
 
 <template>
   <Modal :title="getTitle" class="w-[640px]">
-    <Form class="mx-4">
-      <template #permissions="slotProps">
-        <div class="w-full">
-          <NSpin :show="loadingMenu">
-            <div class="w-full rounded" style="min-height: 60px">
-              <NTree
-                :checked-keys="checkedMenuIds"
-                :data="menuTree"
-                :default-expand-all="true"
-                :render-label="renderLabel"
-                block-line
-                cascade
-                checkable
-                check-strategy="child"
-                key-field="id"
-                multiple
-                style="width: 100%; padding: 4px 0"
-                @update:checked-keys="
-                  (keys) => {
-                    checkedMenuIds = keys;
-                    slotProps['onUpdate:modelValue']?.(keys);
-                  }
-                "
-              />
-            </div>
-          </NSpin>
-        </div>
-      </template>
-    </Form>
+    <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
         <NButton type="error" @click="resetForm">

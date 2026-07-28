@@ -16,10 +16,22 @@ import { deleteRole, getRoleList } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
+import AuthCodeAssignment from './modules/auth-code-assignment.vue';
 import Form from './modules/form.vue';
+import MenuAssignment from './modules/menu-assignment.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
+  destroyOnClose: true,
+});
+
+const [AuthCodeModal, authCodeModalApi] = useVbenModal({
+  connectedComponent: AuthCodeAssignment,
+  destroyOnClose: true,
+});
+
+const [MenuModal, menuModalApi] = useVbenModal({
+  connectedComponent: MenuAssignment,
   destroyOnClose: true,
 });
 
@@ -65,6 +77,14 @@ function onActionClick({
   row,
 }: OnActionClickParams<SystemRoleApi.SystemRole>) {
   switch (code) {
+    case 'assignAuthCode': {
+      authCodeModalApi.setData(row).open();
+      break;
+    }
+    case 'assignMenu': {
+      menuModalApi.setData(row).open();
+      break;
+    }
     case 'delete': {
       onDelete(row);
       break;
@@ -129,6 +149,8 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
+    <AuthCodeModal />
+    <MenuModal />
     <Grid :table-title="$t('system.role.list')">
       <template #toolbar-tools>
         <NButton

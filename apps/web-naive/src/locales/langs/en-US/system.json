@@ -8,7 +8,6 @@
     "activePathMustExist": "No valid menu found for this path",
     "advancedSettings": "Advanced Settings",
     "affixTab": "Affix Tab",
-    "authCode": "Auth Code",
     "badge": "Badge Content",
     "badgeVariants": "Badge Variants",
     "badgeType": {
@@ -34,7 +33,6 @@
     "status": "Status",
     "title": "Menu Management",
     "type": "Type",
-    "typeButton": "Button",
     "typeCatalog": "Catalog",
     "typeEmbedded": "Embedded",
     "typeLink": "Link",
@@ -51,7 +49,17 @@
     "createTime": "Create Time",
     "operation": "Operation",
     "permissions": "Permissions",
-    "setPermissions": "Set Permissions"
+    "setPermissions": "Set Permissions",
+    "assignMenu": "Assign Menus",
+    "assignAuthCode": "Assign Auth Codes",
+    "authCodes": "Auth Codes",
+    "authCodeSearchPlaceholder": "Search name, code, module or resource",
+    "authCodeName": "Permission Name",
+    "authCodeModule": "Module",
+    "authCodeResource": "Resource",
+    "authCodeAction": "Action",
+    "authCodeCode": "Permission Code",
+    "authCodeSelected": "{0} / {1} selected"
   },
   "user": {
     "title": "User Management",
@@ -62,6 +70,7 @@
     "email": "Email",
     "phone": "Phone",
     "avatar": "Avatar",
+    "address": "Address",
     "role": "Role",
     "status": "Status",
     "remark": "Remark",
@@ -131,7 +140,12 @@
     "title": "Auth Code",
     "code": "Permission Code",
     "name": "Permission Name",
+    "module": "Module",
+    "resource": "Resource",
+    "action": "Action",
     "roleId": "Role ID",
-    "createTime": "Created At"
+    "createTime": "Created At",
+    "operation": "Operation",
+    "searchPlaceholder": "Search name, code, module or resource"
   }
 }

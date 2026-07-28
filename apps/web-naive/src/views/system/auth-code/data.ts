@@ -14,6 +14,11 @@ export function useGridFormSchema(): VbenFormSchema[] {
       fieldName: 'code',
       label: $t('system.authCode.code'),
     },
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('system.authCode.name'),
+    },
   ];
 }
 
@@ -35,14 +40,6 @@ export function useSchema(): VbenFormSchema[] {
         .string()
         .min(1, $t('ui.formRules.required', [$t('system.authCode.name')])),
     },
-    {
-      component: 'InputNumber',
-      fieldName: 'roleId',
-      label: $t('system.authCode.roleId'),
-      rules: z
-        .number()
-        .min(1, $t('ui.formRules.required', [$t('system.authCode.roleId')])),
-    },
   ];
 }
 
@@ -53,7 +50,9 @@ export function useColumns(
     { field: 'id', title: 'ID', width: 80 },
     { field: 'code', title: $t('system.authCode.code'), width: 200 },
     { field: 'name', title: $t('system.authCode.name'), width: 200 },
-    { field: 'roleId', title: $t('system.authCode.roleId'), width: 100 },
+    { field: 'module', title: $t('system.authCode.module'), width: 110 },
+    { field: 'resource', title: $t('system.authCode.resource'), width: 130 },
+    { field: 'action', title: $t('system.authCode.action'), width: 110 },
     { field: 'status', title: $t('common.status'), width: 80 },
     {
       field: 'createTime',

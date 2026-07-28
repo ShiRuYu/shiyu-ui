@@ -45,9 +45,9 @@ const [Modal, modalApi] = useVbenModal({
         if (submitData.status !== undefined) {
           submitData.status = String(submitData.status);
         }
-        // 确保 sex 是字符串类型
-        if (submitData.sex !== undefined) {
-          submitData.sex = String(submitData.sex);
+        // 确保 gender 是字符串类型
+        if (submitData.gender !== undefined) {
+          submitData.gender = String(submitData.gender);
         }
         // 编辑时如果没有修改 password 则删除该字段
         if (submitData.id && !submitData.password) {
@@ -73,12 +73,23 @@ const [Modal, modalApi] = useVbenModal({
   onOpenChange(isOpen) {
     if (isOpen) {
       const data = modalApi.getData<SystemUserApi.SystemUser>();
+      formApi.resetForm();
       if (data) {
         formData.value = data;
-        formApi.setValues(data);
+        formApi.setValues({
+          ...data,
+          gender: data.gender == null ? '2' : String(data.gender),
+          nickName: data.nickName ?? '',
+          status: data.status == null ? '1' : String(data.status),
+        });
       } else {
         formData.value = undefined;
-        formApi.resetForm();
+        formApi.setValues({
+          nickName: '',
+          password: '',
+          gender: '2',
+          status: '1',
+        });
       }
     }
   },

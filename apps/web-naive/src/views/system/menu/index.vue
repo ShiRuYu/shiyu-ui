@@ -144,12 +144,7 @@ function refreshGrid() {
       <template #icon="{ row }">
         <div class="flex items-center justify-center">
           <IconifyIcon
-            v-if="row.type === 'button'"
-            icon="carbon:security"
-            class="size-5"
-          />
-          <IconifyIcon
-            v-else-if="row.meta?.icon"
+            v-if="row.meta?.icon"
             :icon="row.meta.icon"
             class="size-5"
           />

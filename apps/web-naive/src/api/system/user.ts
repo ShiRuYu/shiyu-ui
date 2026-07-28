@@ -5,6 +5,7 @@ import { requestClient } from '#/api/request';
 export namespace SystemUserApi {
   export interface SystemUser {
     [key: string]: any;
+    address?: string;
     avatar?: string;
     createTime?: string;
     email?: string;
@@ -15,7 +16,7 @@ export namespace SystemUserApi {
     postIds?: number[];
     remark?: string;
     roleIds?: number[];
-    sex?: string;
+    gender?: string;
     status: number;
     username: string;
   }

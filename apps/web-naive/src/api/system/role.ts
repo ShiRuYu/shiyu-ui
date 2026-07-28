@@ -57,6 +57,10 @@ async function updateRole(
   return requestClient.post('/role/update', data, { params: { id } });
 }
 
+async function replaceRoleMenus(id: number, menuIds: number[]) {
+  return requestClient.post('/role/menus/replace', menuIds, { params: { id } });
+}
+
 /**
  * 删除角色
  * @param id 角色 ID
@@ -80,5 +84,6 @@ export {
   getAllRoles,
   getRoleDetail,
   getRoleList,
+  replaceRoleMenus,
   updateRole,
 };

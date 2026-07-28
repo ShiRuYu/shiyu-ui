@@ -85,14 +85,6 @@ export function useSchema(): VbenFormSchema[] {
         .max(100, $t('ui.formRules.maxLength', [$t('system.role.remark'), 100]))
         .optional(),
     },
-    {
-      component: 'Input',
-      fieldName: 'permissions',
-      formItemClass: 'items-start',
-      label: $t('system.role.setPermissions'),
-      modelPropName: 'modelValue',
-      wrapperClass: '!block w-full',
-    },
   ];
 }
 
@@ -148,14 +140,25 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: [
+          {
+            code: 'assignMenu',
+            text: $t('system.role.assignMenu'),
+          },
+          {
+            code: 'assignAuthCode',
+            text: $t('system.role.assignAuthCode'),
+          },
+          'edit',
+          'delete',
+        ],
       },
       field: 'operation',
       fixed: 'right',
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.role.operation'),
-      width: 150,
+      width: 220,
     },
   ];
 }
