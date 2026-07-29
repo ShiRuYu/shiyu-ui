@@ -83,7 +83,7 @@ const [Modal, modalApi] = useVbenModal({
         block-line
         cascade
         checkable
-        check-strategy="child"
+        check-strategy="all"
         key-field="id"
         multiple
         style="max-height: 520px; overflow: auto; padding: 4px 0"
