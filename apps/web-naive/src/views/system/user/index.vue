@@ -18,9 +18,15 @@ import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
+import TenantAssignment from './modules/tenant-assignment.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
+  destroyOnClose: true,
+});
+
+const [TenantModal, tenantModalApi] = useVbenModal({
+  connectedComponent: TenantAssignment,
   destroyOnClose: true,
 });
 
@@ -78,6 +84,10 @@ function onActionClick({
   row,
 }: OnActionClickParams<SystemUserApi.SystemUser>) {
   switch (code) {
+    case 'assignTenant': {
+      tenantModalApi.setData(row).open();
+      break;
+    }
     case 'delete': {
       onDelete(row);
       break;
@@ -144,6 +154,7 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
+    <TenantModal @success="refreshGrid" />
     <Grid :table-title="$t('system.user.list')">
       <template #toolbar-tools>
         <NButton

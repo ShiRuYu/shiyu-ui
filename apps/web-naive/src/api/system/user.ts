@@ -3,6 +3,13 @@ import type { Recordable } from '@vben/types';
 import { requestClient } from '#/api/request';
 
 export namespace SystemUserApi {
+  export interface UserTenantAssignment {
+    tenantId: number;
+    tenantName?: string;
+    roleId: number;
+    roleName?: string;
+    roleCode?: string;
+  }
   export interface SystemUser {
     [key: string]: any;
     address?: string;
@@ -138,6 +145,22 @@ async function getUserOptions() {
   }));
 }
 
+async function getUserTenantAssignments(userId: number) {
+  return requestClient.get<SystemUserApi.UserTenantAssignment[]>(
+    '/user/tenant-assignments',
+    { params: { userId } },
+  );
+}
+
+async function replaceUserTenantAssignments(
+  userId: number,
+  assignments: Array<{ roleId: number; tenantId: number; }>,
+) {
+  return requestClient.post('/user/tenant-assignments/replace', assignments, {
+    params: { userId },
+  });
+}
+
 export {
   changePassword,
   createUser,
@@ -145,6 +168,8 @@ export {
   getRolesForUserForm,
   getUserList,
   getUserOptions,
+  getUserTenantAssignments,
+  replaceUserTenantAssignments,
   resetUserPassword,
   updateUser,
 };
