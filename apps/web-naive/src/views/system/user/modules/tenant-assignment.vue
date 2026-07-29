@@ -56,7 +56,7 @@ const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     if (!user.value?.id) return;
     const assignments = rows.value.filter(
-      (item): item is { roleId: number; tenantId: number; } =>
+      (item): item is { roleId: number; tenantId: number } =>
         item.tenantId != null && item.roleId != null,
     );
     if (assignments.length !== rows.value.length) {

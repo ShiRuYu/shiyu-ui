@@ -261,11 +261,11 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-          options: [
-            {
-              code: 'resetPassword',
-              text: $t('system.user.resetPassword'),
-            },
+        options: [
+          {
+            code: 'resetPassword',
+            text: $t('system.user.resetPassword'),
+          },
           {
             code: 'assignTenant',
             text: $t('system.user.assignTenant'),
