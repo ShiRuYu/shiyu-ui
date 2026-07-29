@@ -12,10 +12,10 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuListForGrid } from '#/api/system/menu';
+import { deleteMenu, getMenuPage } from '#/api/system/menu';
 import { $t } from '#/locales';
 
-import { useColumns } from './data';
+import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -89,18 +89,26 @@ function onActionClick({
 }
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions: {
+    schema: useGridFormSchema(),
+    submitOnChange: true,
+  },
   gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: false,
+      enabled: true,
     },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          return await getMenuListForGrid();
+        query: async ({ page }, formValues) => {
+          return await getMenuPage({
+            pageNum: page.currentPage,
+            pageSize: page.pageSize,
+            ...formValues,
+          });
         },
       },
     },
@@ -109,13 +117,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       export: false,
       refresh: true,
       zoom: true,
-    },
-    treeConfig: {
-      lazy: false,
-      parentField: 'pid',
-      rowField: 'id',
-      transform: false,
-      expandAll: false,
     },
   } as VxeTableGridOptions,
 });

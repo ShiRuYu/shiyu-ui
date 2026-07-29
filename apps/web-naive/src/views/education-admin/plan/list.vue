@@ -60,13 +60,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    pagerConfig: { enabled: true },
+    pagerConfig: { enabled: false },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize }) => {
+        query: async () => {
           const result = await getPlansByStudent(getCurrentStudentId());
-          const items = Array.isArray(result) ? result : result?.items || [];
-          return { items, total: items.length };
+          return { items: result, total: result.length };
         },
       },
     },

@@ -117,17 +117,59 @@ async function getMenuChildren(parentId: number) {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
+  const data = await requestClient.get<Array<Recordable<any>>>('/menu/list');
+  const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
+    ...item,
+    id: Number(item.id),
+    name: String(item.name ?? ''),
+    path: String(item.path ?? ''),
+    status: Number(item.status ?? 0),
+    type: String(item.type || 'MENU').toLowerCase() as SystemMenuApi.SystemMenu['type'],
+    meta: {
+      icon: item.icon,
+      keepAlive: item.keepAlive,
+      order: item.order,
+      title: item.name,
+    },
+    children: Array.isArray(item.children)
+      ? item.children.map(normalize)
+      : undefined,
+  });
+  return Array.isArray(data) ? data.map(normalize) : [];
 }
 
 /**
  * 获取菜单数据列表（包装为 vxe-table 格式）
  */
 async function getMenuListForGrid() {
-  const data =
-    await requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/list');
+  const data = await getMenuList();
   const list = Array.isArray(data) ? data : [];
   return { items: list, total: list.length };
+}
+
+async function getMenuPage(params?: Recordable<any>) {
+  const data = await requestClient.get<{
+    items: Recordable<any>[];
+    total: number;
+  }>('/menu/page', { params });
+  const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
+    ...item,
+    id: Number(item.id),
+    name: String(item.name ?? ''),
+    path: String(item.path ?? ''),
+    status: Number(item.status ?? 0),
+    type: String(item.type || 'MENU').toLowerCase() as SystemMenuApi.SystemMenu['type'],
+    meta: {
+      icon: item.icon,
+      keepAlive: item.keepAlive,
+      order: item.order,
+      title: item.name,
+    },
+  });
+  return {
+    items: (data.items ?? []).map(normalize),
+    total: data.total ?? 0,
+  };
 }
 
 /**
@@ -137,7 +179,7 @@ async function getMenuListForGrid() {
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu/create', data);
+  return requestClient.post('/menu/create', toMenuRequest(data));
 }
 
 /**
@@ -150,7 +192,20 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu/update', data, { params: { id } });
+  return requestClient.post('/menu/update', toMenuRequest(data), {
+    params: { id },
+  });
+}
+
+function toMenuRequest(data: Recordable<any>) {
+  return {
+    ...data,
+    icon: data.meta?.icon ?? data.icon,
+    keepAlive: data.meta?.keepAlive ?? data.keepAlive,
+    name: data.meta?.title || data.name,
+    type: String(data.type || 'MENU').toUpperCase(),
+    meta: undefined,
+  };
 }
 
 /**
@@ -167,6 +222,7 @@ export {
   getMenuChildren,
   getMenuList,
   getMenuListForGrid,
+  getMenuPage,
   getMenuRoots,
   updateMenu,
 };

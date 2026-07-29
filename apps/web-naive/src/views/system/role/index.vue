@@ -107,19 +107,18 @@ const [Grid, gridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: false,
+      enabled: true,
     },
     proxyConfig: {
       ajax: {
-        query: async (params: any, formValues) => {
+        query: async ({ page }, formValues) => {
           const query: Record<string, any> = Object.fromEntries(
             Object.entries(formValues || {}).filter(
               ([, v]) => v !== '' && v !== null && v !== undefined,
             ),
           );
-          if ((params as any)?.page) query.pageNo = (params as any).page;
-          if ((params as any)?.pageSize)
-            query.pageSize = (params as any).pageSize;
+          query.pageNum = page.currentPage;
+          query.pageSize = page.pageSize;
           const data = await getRoleList(query);
           if (data && typeof data === 'object' && 'items' in data) {
             return { items: data.items, total: data.total };

@@ -55,18 +55,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    pagerConfig: { enabled: true },
+    pagerConfig: { enabled: false },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize }) => {
-          const result = await searchDocumentsApi({
-            keyword: '',
-            pageNum: page,
-            pageSize,
-          });
+        query: async () => {
+          const result = await searchDocumentsApi({ keyword: '' });
           return {
-            items: result.items || result,
-            total: result.total || result.length,
+            items: result,
+            total: result.length,
           };
         },
       },

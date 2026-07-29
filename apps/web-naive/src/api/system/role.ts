@@ -12,6 +12,7 @@ export namespace SystemRoleApi {
     permissions?: number[];
     remark?: string;
     status: number;
+    tenantId?: number;
   }
 }
 
@@ -57,8 +58,14 @@ async function updateRole(
   return requestClient.post('/role/update', data, { params: { id } });
 }
 
-async function replaceRoleMenus(id: number, menuIds: number[]) {
-  return requestClient.post('/role/menus/replace', menuIds, { params: { id } });
+async function replaceRoleMenus(
+  id: number,
+  scopedTenantId: number,
+  menuIds: number[],
+) {
+  return requestClient.post('/role/menus/replace', menuIds, {
+    params: { id, scopedTenantId },
+  });
 }
 
 /**
@@ -72,9 +79,9 @@ async function deleteRole(id: number) {
 /**
  * 获取角色详情
  */
-async function getRoleDetail(id: number) {
+async function getRoleDetail(id: number, scopedTenantId: number) {
   return requestClient.get<SystemRoleApi.SystemRole>('/role/detail', {
-    params: { id },
+    params: { id, scopedTenantId },
   });
 }
 

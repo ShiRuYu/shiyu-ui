@@ -12,6 +12,7 @@ import {
   NCollapseItem,
   NEmpty,
   NInput,
+  NSelect,
   NSpin,
   NTag,
 } from 'naive-ui';
@@ -22,6 +23,7 @@ import {
   getRoleAuthCodes,
   replaceRoleAuthCodes,
 } from '#/api/system/auth-code';
+import { getTenantList } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
 interface ResourceGroup {
@@ -39,6 +41,8 @@ const options = shallowRef<AuthCodeApi.AuthCodeOption[]>([]);
 const selectedCodes = shallowRef<string[]>([]);
 const keyword = shallowRef('');
 const loading = shallowRef(false);
+const scopedTenantId = shallowRef<null | number>(null);
+const tenantOptions = shallowRef<Array<{ label: string; value: number }>>([]);
 
 const title = computed(() => {
   return `${$t('system.role.assignAuthCode')} - ${role.value?.name ?? ''}`;
@@ -110,12 +114,32 @@ function selectedIn(codes: string[]) {
   return codes.filter((code) => selectedCodes.value.includes(code)).length;
 }
 
+async function loadAssignedCodes() {
+  if (!role.value?.id || scopedTenantId.value == null) {
+    selectedCodes.value = [];
+    return;
+  }
+  loading.value = true;
+  try {
+    selectedCodes.value = await getRoleAuthCodes(
+      role.value.id,
+      scopedTenantId.value,
+    );
+  } finally {
+    loading.value = false;
+  }
+}
+
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
-    if (!role.value?.id) return;
+    if (!role.value?.id || scopedTenantId.value == null) return;
     modalApi.lock();
     try {
-      await replaceRoleAuthCodes(role.value.id, selectedCodes.value);
+      await replaceRoleAuthCodes(
+        role.value.id,
+        scopedTenantId.value,
+        selectedCodes.value,
+      );
       message.success($t('ui.actionMessage.operationSuccess'));
       modalApi.close();
     } catch (error) {
@@ -131,9 +155,18 @@ const [Modal, modalApi] = useVbenModal({
     keyword.value = '';
     loading.value = true;
     try {
+      const tenantResult = await getTenantList();
+      tenantOptions.value = tenantResult.items.map((item) => ({
+        label: item.name,
+        value: item.id,
+      }));
+      scopedTenantId.value =
+        data?.tenantId ?? tenantOptions.value[0]?.value ?? null;
       const [allOptions, assignedCodes] = await Promise.all([
         getAuthCodeOptions(),
-        data?.id ? getRoleAuthCodes(data.id) : Promise.resolve([]),
+        data?.id && scopedTenantId.value != null
+          ? getRoleAuthCodes(data.id, scopedTenantId.value)
+          : Promise.resolve([]),
       ]);
       options.value = Array.isArray(allOptions) ? allOptions : [];
       selectedCodes.value = Array.isArray(assignedCodes) ? assignedCodes : [];
@@ -148,6 +181,13 @@ const [Modal, modalApi] = useVbenModal({
   <Modal :title="title" class="w-[720px]">
     <div class="space-y-3">
       <div class="flex items-center gap-3">
+        <NSelect
+          v-model:value="scopedTenantId"
+          :options="tenantOptions"
+          @update:value="loadAssignedCodes"
+          class="w-56 shrink-0"
+          placeholder="选择授权生效租户"
+        />
         <NInput
           v-model:value="keyword"
           clearable

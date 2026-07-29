@@ -27,6 +27,13 @@ async function getTenantList(_params?: Recordable<any>) {
   return { items: list, total: list.length };
 }
 
+async function getTenantPage(params?: Recordable<any>) {
+  return requestClient.get<{
+    items: SystemTenantApi.SystemTenant[];
+    total: number;
+  }>('/tenant/page', { params });
+}
+
 async function createTenant(
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
@@ -81,6 +88,7 @@ export {
   createTenant,
   deleteTenant,
   getTenantList,
+  getTenantPage,
   getTenantTreeOptions,
   updateTenant,
 };

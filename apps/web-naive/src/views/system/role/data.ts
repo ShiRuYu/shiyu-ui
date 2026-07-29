@@ -1,4 +1,5 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+import { useAccessStore } from '@vben/stores';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
@@ -94,6 +95,8 @@ export function useSchema(): VbenFormSchema[] {
 export function useColumns(
   onActionClick?: OnActionClickFn<SystemRoleApi.SystemRole>,
 ): VxeTableGridColumns<SystemRoleApi.SystemRole> {
+  const accessStore = useAccessStore();
+  const can = (code: string) => accessStore.accessCodes.includes(code);
   return [
     {
       field: 'id',
@@ -143,14 +146,16 @@ export function useColumns(
         options: [
           {
             code: 'assignMenu',
+            show: () => can('system:role:assign'),
             text: $t('system.role.assignMenu'),
           },
           {
             code: 'assignAuthCode',
+            show: () => can('system:role:assign'),
             text: $t('system.role.assignAuthCode'),
           },
-          'edit',
-          'delete',
+          { code: 'edit', show: () => can('system:role:update') },
+          { code: 'delete', show: () => can('system:role:delete') },
         ],
       },
       field: 'operation',

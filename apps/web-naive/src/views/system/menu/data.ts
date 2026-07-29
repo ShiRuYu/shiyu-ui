@@ -1,4 +1,5 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+import { useAccessStore } from '@vben/stores';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
@@ -37,6 +38,30 @@ const menuTypeOptions = [
   { label: $t('system.menu.typeEmbedded'), value: 'embedded' },
   { label: $t('system.menu.typeLink'), value: 'link' },
 ];
+
+export function useGridFormSchema(): VbenFormSchema[] {
+  return [
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('system.menu.menuName'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'code',
+      label: $t('system.menu.code'),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: menuTypeOptions,
+      },
+      fieldName: 'type',
+      label: $t('system.menu.type'),
+    },
+  ];
+}
 
 /**
  * 获取编辑表单的字段配置
@@ -208,6 +233,8 @@ export function useSchema(): VbenFormSchema[] {
 export function useColumns(
   onActionClick?: OnActionClickFn<SystemMenuApi.SystemMenu>,
 ): VxeTableGridColumns<SystemMenuApi.SystemMenu> {
+  const accessStore = useAccessStore();
+  const can = (code: string) => accessStore.accessCodes.includes(code);
   return [
     {
       align: 'left',
@@ -279,10 +306,11 @@ export function useColumns(
         options: [
           {
             code: 'append',
+            show: () => can('system:menu:create'),
             text: $t('system.menu.appendChild'),
           },
-          'edit',
-          'delete',
+          { code: 'edit', show: () => can('system:menu:update') },
+          { code: 'delete', show: () => can('system:menu:delete') },
         ],
       },
       field: 'operation',

@@ -62,8 +62,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize, formValues }) => {
-          const params: any = { pageNum: page, pageSize };
+        query: async ({ page }, formValues) => {
+          const params: any = {
+            page: page.currentPage,
+            pageSize: page.pageSize,
+          };
           if (formValues?.keyword) params.keyword = formValues.keyword;
           if (formValues?.category) params.category = formValues.category;
           const result = await getKnowledgeListApi(params);

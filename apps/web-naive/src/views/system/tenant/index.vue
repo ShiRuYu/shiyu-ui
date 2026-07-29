@@ -11,7 +11,7 @@ import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteTenant, getTenantList } from '#/api/system/tenant';
+import { deleteTenant, getTenantPage } from '#/api/system/tenant';
 import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
 import { $t } from '#/locales';
 
@@ -62,12 +62,16 @@ const [Grid, gridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     pagerConfig: {
-      enabled: false,
+      enabled: true,
     },
     proxyConfig: {
       ajax: {
-        query: async () => {
-          return await getTenantList();
+        query: async ({ page }, formValues) => {
+          return await getTenantPage({
+            pageNum: page.currentPage,
+            pageSize: page.pageSize,
+            ...formValues,
+          });
         },
       },
     },
@@ -77,13 +81,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       refresh: true,
       search: true,
       zoom: true,
-    },
-    treeConfig: {
-      lazy: false,
-      parentField: 'parentId',
-      rowField: 'id',
-      transform: true,
-      expandAll: false,
     },
   } as VxeTableGridOptions,
 });

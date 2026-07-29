@@ -20,7 +20,7 @@ import { $t } from '#/locales';
 
 interface AssignmentRow {
   tenantId: null | number;
-  roleId: null | number;
+  roleIds: number[];
 }
 
 const emit = defineEmits<{ success: [] }>();
@@ -38,7 +38,7 @@ const roleOptions = computed(() =>
 );
 
 function addRow() {
-  rows.value.push({ tenantId: null, roleId: null });
+  rows.value.push({ tenantId: null, roleIds: [] });
 }
 
 function removeRow(index: number) {
@@ -55,14 +55,20 @@ function isTenantUsed(tenantId: null | number, index: number) {
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     if (!user.value?.id) return;
-    const assignments = rows.value.filter(
-      (item): item is { roleId: number; tenantId: number } =>
-        item.tenantId != null && item.roleId != null,
-    );
-    if (assignments.length !== rows.value.length) {
+    if (
+      rows.value.some(
+        (item) => item.tenantId == null || item.roleIds.length === 0,
+      )
+    ) {
       message.warning($t('system.user.tenantAssignmentIncomplete'));
       return;
     }
+    const assignments = rows.value.flatMap((item) =>
+      item.roleIds.map((roleId) => ({
+        roleId,
+        tenantId: item.tenantId as number,
+      })),
+    );
     modalApi.lock();
     try {
       await replaceUserTenantAssignments(user.value.id, assignments);
@@ -86,9 +92,16 @@ const [Modal, modalApi] = useVbenModal({
       ]);
       tenants.value = tenantResult.items;
       roles.value = Array.isArray(roleResult) ? roleResult : [];
-      rows.value = (assignmentResult ?? []).map((item) => ({
-        tenantId: item.tenantId,
-        roleId: item.roleId,
+      const grouped = new Map<number, number[]>();
+      for (const item of assignmentResult ?? []) {
+        grouped.set(item.tenantId, [
+          ...(grouped.get(item.tenantId) ?? []),
+          item.roleId,
+        ]);
+      }
+      rows.value = [...grouped.entries()].map(([tenantId, roleIds]) => ({
+        tenantId,
+        roleIds,
       }));
     } finally {
       loading.value = false;
@@ -121,10 +134,11 @@ const [Modal, modalApi] = useVbenModal({
             "
           />
           <NSelect
-            v-model:value="row.roleId"
+            v-model:value="row.roleIds"
             :options="roleOptions"
             :placeholder="$t('system.user.selectRole')"
             class="flex-1"
+            multiple
           />
           <NButton quaternary type="error" @click="removeRow(index)">
             {{ $t('system.user.removeTenant') }}

@@ -63,15 +63,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async ({ page, pageSize, formValues }) => {
+        query: async ({ page }, formValues) => {
           const subjectCode = formValues?.subjectCode;
           const result = subjectCode
             ? await getExamBySubject(subjectCode)
-            : await getExamList(page, pageSize);
-          return {
-            items: result.items || result,
-            total: result.total || result.length,
-          };
+            : await getExamList(page.currentPage, page.pageSize);
+          if (Array.isArray(result)) {
+            return { items: result, total: result.length };
+          }
+          return { items: result.items, total: result.total };
         },
       },
     },

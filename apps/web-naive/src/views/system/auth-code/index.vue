@@ -7,6 +7,7 @@ import { computed, h, shallowRef } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
+import { useAccessStore } from '@vben/stores';
 
 import {
   NButton,
@@ -15,12 +16,13 @@ import {
   NDataTable,
   NEmpty,
   NInput,
+  NPagination,
   NSpin,
   NTag,
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { deleteAuthCode, getAuthCodeList } from '#/api/system/auth-code';
+import { deleteAuthCode, getAuthCodePage } from '#/api/system/auth-code';
 import { $t } from '#/locales';
 
 import Form from './modules/form.vue';
@@ -38,6 +40,11 @@ interface ModuleGroup {
 const codes = shallowRef<AuthCodeApi.AuthCodeItem[]>([]);
 const keyword = shallowRef('');
 const loading = shallowRef(false);
+const pageNo = shallowRef(1);
+const pageSize = shallowRef(10);
+const total = shallowRef(0);
+const accessStore = useAccessStore();
+const can = (code: string) => accessStore.accessCodes.includes(code);
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -54,9 +61,14 @@ function onCreate() {
 
 function refreshGrid() {
   loading.value = true;
-  getAuthCodeList()
+  getAuthCodePage({
+    pageNum: pageNo.value,
+    pageSize: pageSize.value,
+    code: keyword.value.trim() || undefined,
+  })
     .then((data) => {
-      codes.value = Array.isArray(data) ? data : [];
+      codes.value = data.items ?? [];
+      total.value = data.total ?? 0;
     })
     .finally(() => {
       loading.value = false;
@@ -76,13 +88,7 @@ function onDelete(row: AuthCodeApi.AuthCodeItem) {
 }
 
 const filteredCodes = computed(() => {
-  const value = keyword.value.trim().toLowerCase();
-  if (!value) return codes.value;
-  return codes.value.filter((item) =>
-    [item.name, item.code, item.module, item.resource, item.action].some(
-      (field) => field.toLowerCase().includes(value),
-    ),
-  );
+  return codes.value;
 });
 
 const groups = computed<ModuleGroup[]>(() => {
@@ -116,16 +122,24 @@ function columns(): DataTableColumns<AuthCodeApi.AuthCodeItem> {
       width: 140,
       render: (row) =>
         h('div', { class: 'flex gap-2' }, [
+          ...(can('system:auth-code:update')
+            ? [
           h(
             NButton,
             { text: true, type: 'primary', onClick: () => onEdit(row) },
             { default: () => $t('common.edit') },
           ),
+              ]
+            : []),
+          ...(can('system:auth-code:delete')
+            ? [
           h(
             NButton,
             { text: true, type: 'error', onClick: () => onDelete(row) },
             { default: () => $t('common.delete') },
           ),
+              ]
+            : []),
         ]),
     },
   ];
@@ -144,6 +158,8 @@ refreshGrid();
           clearable
           class="max-w-md"
           :placeholder="$t('system.authCode.searchPlaceholder')"
+          @clear="pageNo = 1; refreshGrid()"
+          @keyup.enter="pageNo = 1; refreshGrid()"
         />
         <NButton
           type="primary"
@@ -214,6 +230,15 @@ refreshGrid();
           class="py-12"
         />
       </NSpin>
+      <NPagination
+        v-model:page="pageNo"
+        v-model:page-size="pageSize"
+        :item-count="total"
+        show-size-picker
+        :page-sizes="[10, 20, 50, 100]"
+        @update:page="refreshGrid"
+        @update:page-size="pageNo = 1; refreshGrid()"
+      />
     </div>
   </Page>
 </template>

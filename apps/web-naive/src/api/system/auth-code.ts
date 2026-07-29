@@ -27,6 +27,13 @@ async function getAuthCodeList() {
   return requestClient.get<AuthCodeApi.AuthCodeItem[]>('/auth-code/list');
 }
 
+async function getAuthCodePage(params?: Record<string, any>) {
+  return requestClient.get<{
+    items: AuthCodeApi.AuthCodeItem[];
+    total: number;
+  }>('/auth-code/page', { params });
+}
+
 /** 创建权限码 */
 async function createAuthCode(data: { code: string; name: string }) {
   return requestClient.post('/auth-code/create', data);
@@ -45,9 +52,9 @@ async function deleteAuthCode(id: number) {
   return requestClient.post('/auth-code/delete', null, { params: { id } });
 }
 
-async function getRoleAuthCodes(roleId: number) {
+async function getRoleAuthCodes(roleId: number, scopedTenantId: number) {
   return requestClient.get<string[]>('/auth-code/roles/list', {
-    params: { roleId },
+    params: { roleId, scopedTenantId },
   });
 }
 
@@ -55,9 +62,13 @@ async function getAuthCodeOptions() {
   return requestClient.get<AuthCodeApi.AuthCodeOption[]>('/auth-code/options');
 }
 
-async function replaceRoleAuthCodes(roleId: number, authCodes: string[]) {
+async function replaceRoleAuthCodes(
+  roleId: number,
+  scopedTenantId: number,
+  authCodes: string[],
+) {
   return requestClient.post('/auth-code/roles/replace', authCodes, {
-    params: { roleId },
+    params: { roleId, scopedTenantId },
   });
 }
 
@@ -65,6 +76,7 @@ export {
   createAuthCode,
   deleteAuthCode,
   getAuthCodeList,
+  getAuthCodePage,
   getAuthCodeOptions,
   getRoleAuthCodes,
   replaceRoleAuthCodes,

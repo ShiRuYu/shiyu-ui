@@ -65,7 +65,7 @@ async function switchRole() {
   if (!target) return;
   try {
     await switchCurrentRoleApi(target.id);
-    userStore.setUserInfo(await getUserInfoApi());
+    setTimeout(() => window.location.reload(), 100);
     message.success(`已切换到角色: ${target.name}`);
   } catch {
     message.error('角色切换失败');
@@ -77,6 +77,7 @@ async function switchTenant() {
   try {
     await authStore.switchTenant(selectedTenantId.value);
     selectedSubTenantId.value = userStore.filterTenantId;
+    setTimeout(() => window.location.reload(), 100);
     message.success('租户切换成功');
   } catch (error: any) {
     message.error(error?.message ?? '租户切换失败');

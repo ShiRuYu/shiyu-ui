@@ -1,4 +1,5 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
+import { useAccessStore } from '@vben/stores';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
@@ -46,6 +47,8 @@ export function useSchema(): VbenFormSchema[] {
 export function useColumns(
   onActionClick?: OnActionClickFn<AuthCodeApi.AuthCodeItem>,
 ): VxeTableGridColumns<AuthCodeApi.AuthCodeItem> {
+  const accessStore = useAccessStore();
+  const can = (code: string) => accessStore.accessCodes.includes(code);
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'code', title: $t('system.authCode.code'), width: 200 },
@@ -68,7 +71,10 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: [
+          { code: 'edit', show: () => can('system:auth-code:update') },
+          { code: 'delete', show: () => can('system:auth-code:delete') },
+        ],
       },
       field: 'operation',
       fixed: 'right',

@@ -151,7 +151,7 @@ const userRoleList = computed(() => {
 async function handleSwitchRole(roleId: number) {
   try {
     await switchCurrentRoleApi(roleId);
-    await authStore.fetchUserInfo();
+    window.location.reload();
   } catch {
     // error handled in api
   }
@@ -159,6 +159,7 @@ async function handleSwitchRole(roleId: number) {
 
 async function handleSwitchTenant(tenantId: number) {
   await authStore.switchTenant(tenantId);
+  window.location.reload();
 }
 
 async function handleLogout() {
