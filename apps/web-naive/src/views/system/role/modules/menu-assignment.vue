@@ -18,6 +18,7 @@ import { $t } from '#/locales';
 const role = ref<SystemRoleApi.SystemRole>();
 const menuTree = ref<any[]>([]);
 const checkedMenuIds = ref<number[]>([]);
+const checkedTreeKeys = ref<number[]>([]);
 const loading = ref(false);
 
 const title = computed(() => {
@@ -33,6 +34,44 @@ function renderLabel({ option }: { option: TreeOption }) {
         h('span', String(title)),
       ])
     : h('span', String(title));
+}
+
+function flattenMenus(menus: any[], parentId?: number) {
+  return menus.flatMap((menu) => {
+    const children = menu.children ?? [];
+    return [
+      {
+        id: Number(menu.id),
+        parentId,
+        hasChildren: children.length > 0,
+      },
+      ...flattenMenus(children, Number(menu.id)),
+    ];
+  });
+}
+
+function getCheckedMenuIds(treeKeys: number[]) {
+  const menuMap = new Map(
+    flattenMenus(menuTree.value).map((menu) => [menu.id, menu]),
+  );
+  const checkedIds = new Set<number>();
+
+  for (const id of treeKeys) {
+    let current = menuMap.get(id);
+    while (current) {
+      checkedIds.add(current.id);
+      current = current.parentId ? menuMap.get(current.parentId) : undefined;
+    }
+  }
+
+  return [...checkedIds];
+}
+
+function getCheckedTreeKeys(menuIds: number[]) {
+  const checked = new Set(menuIds);
+  return flattenMenus(menuTree.value)
+    .filter((menu) => !menu.hasChildren && checked.has(menu.id))
+    .map((menu) => menu.id);
 }
 
 const [Modal, modalApi] = useVbenModal({
@@ -62,8 +101,10 @@ const [Modal, modalApi] = useVbenModal({
       if (data?.id) {
         const detail = await getRoleDetail(data.id);
         checkedMenuIds.value = (detail.permissions ?? []).map(Number);
+        checkedTreeKeys.value = getCheckedTreeKeys(checkedMenuIds.value);
       } else {
         checkedMenuIds.value = [];
+        checkedTreeKeys.value = [];
       }
     } finally {
       loading.value = false;
@@ -76,20 +117,21 @@ const [Modal, modalApi] = useVbenModal({
   <Modal :title="title" class="w-[640px]">
     <NSpin :show="loading">
       <NTree
-        :checked-keys="checkedMenuIds"
+        :checked-keys="checkedTreeKeys"
         :data="menuTree"
         :default-expand-all="true"
         :render-label="renderLabel"
         block-line
         cascade
         checkable
-        check-strategy="all"
+        check-strategy="child"
         key-field="id"
         multiple
         style="max-height: 520px; overflow: auto; padding: 4px 0"
         @update:checked-keys="
           (keys) => {
-            checkedMenuIds = keys.map(Number);
+            checkedTreeKeys = keys.map(Number);
+            checkedMenuIds = getCheckedMenuIds(checkedTreeKeys);
           }
         "
       />
