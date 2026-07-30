@@ -12,6 +12,11 @@ export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
       component: 'Input',
+      fieldName: 'code',
+      label: $t('education.question.code'),
+    },
+    {
+      component: 'Input',
       fieldName: 'title',
       label: $t('education.question.questionTitle'),
     },
@@ -25,6 +30,11 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useSchema(): VbenFormSchema[] {
   return [
+    {
+      component: 'Input',
+      fieldName: 'code',
+      label: $t('education.question.code'),
+    },
     {
       component: 'Input',
       fieldName: 'title',

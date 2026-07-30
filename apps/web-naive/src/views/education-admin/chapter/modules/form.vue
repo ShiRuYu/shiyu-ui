@@ -7,7 +7,12 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createChapter, updateChapter } from '#/api/education/chapter';
+import {
+  createChapter,
+  getChapterKnowledgeIds,
+  replaceChapterKnowledgeIds,
+  updateChapter,
+} from '#/api/education/chapter';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
@@ -34,24 +39,11 @@ const [Modal, modalApi] = useVbenModal({
       try {
         if (formData.value?.id) {
           await updateChapter(formData.value.id, data);
-          if (kIds.length > 0) {
-            await fetch(
-              `/edu/chapter/knowledge/bind?chapterId=${formData.value.id}`,
-              {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(kIds),
-              },
-            );
-          }
+          await replaceChapterKnowledgeIds(formData.value.id, kIds);
         } else {
           const result = await createChapter(data);
-          if (kIds.length > 0 && result?.id) {
-            await fetch(`/edu/chapter/knowledge/bind?chapterId=${result.id}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(kIds),
-            });
+          if (result?.id) {
+            await replaceChapterKnowledgeIds(result.id, kIds);
           }
         }
         message.success($t('ui.actionMessage.operationSuccess'));
@@ -71,12 +63,9 @@ const [Modal, modalApi] = useVbenModal({
       formData.value = data?.id ? data : undefined;
       if (data?.id) {
         formApi.setValues(data);
-        fetch(`/edu/chapter/knowledge/list?chapterId=${data.id}`)
-          .then((r) => {
-            return r.json();
-          })
-          .then((res) => {
-            if (res?.data) formApi.setValues({ knowledgeIds: res.data });
+        getChapterKnowledgeIds(data.id)
+          .then((knowledgeIds) => {
+            formApi.setValues({ knowledgeIds });
           })
           .catch(() => {});
       }

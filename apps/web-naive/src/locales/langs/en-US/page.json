@@ -23,5 +23,22 @@
     "authCode": "Auth Code",
     "dict": "Dictionary",
     "tenant": "Tenant"
+  },
+  "file": {
+    "title": "File Management",
+    "fileName": "File Name",
+    "size": "Size",
+    "storageType": "Storage",
+    "uploadTime": "Uploaded At",
+    "actions": "Actions",
+    "currentStorage": "Current storage:",
+    "localStorage": "Local Storage",
+    "storageConfiguredByServer": "Switch to S3, MinIO, Alibaba OSS, or Tencent COS in the server configuration",
+    "uploadHint": "Click or drag files here to upload",
+    "uploadDescription": "Multiple files and all formats are supported; files are isolated by tenant",
+    "uploadSuccess": "File uploaded",
+    "deleteSuccess": "File deleted",
+    "deleteConfirm": "Delete this file?",
+    "download": "Download"
   }
 }

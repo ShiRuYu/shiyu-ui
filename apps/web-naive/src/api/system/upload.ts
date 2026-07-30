@@ -1,12 +1,56 @@
 import { requestClient } from '#/api/request';
 
+export interface StoredFile {
+  contentType: string;
+  key: string;
+  lastModified: string;
+  name: string;
+  size: number;
+  storageType: string;
+  url: string;
+}
+
+export interface FileStorageConfig {
+  currentType: string;
+  supportedTypes: string[];
+}
+
 interface UploadFileParams {
   file: File;
   onError?: (error: Error) => void;
   onProgress?: (progress: { percent: number }) => void;
-  onSuccess?: (data: any, file: File) => void;
+  onSuccess?: (data: StoredFile, file: File) => void;
 }
-export async function upload_file({
+
+export async function getFileStorageConfig() {
+  return requestClient.get<FileStorageConfig>('/system/file/config');
+}
+
+export async function getFileList() {
+  return requestClient.get<StoredFile[]>('/system/file/list');
+}
+
+export async function deleteFile(key: string) {
+  return requestClient.delete<boolean>('/system/file', {
+    params: { key },
+  });
+}
+
+export async function downloadFile(file: StoredFile) {
+  const blob = await requestClient.download<Blob>('/system/file/download', {
+    params: { key: file.key },
+  });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = file.name;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+export async function uploadFile({
   file,
   onError,
   onProgress,
@@ -14,12 +58,20 @@ export async function upload_file({
 }: UploadFileParams) {
   try {
     onProgress?.({ percent: 0 });
-
-    const data = await requestClient.upload('/system/file/upload', { file });
-
+    const data = await requestClient.upload<StoredFile>(
+      '/system/file/upload',
+      { file },
+    );
     onProgress?.({ percent: 100 });
     onSuccess?.(data, file);
+    return data;
   } catch (error) {
-    onError?.(error instanceof Error ? error : new Error(String(error)));
+    const normalized =
+      error instanceof Error ? error : new Error(String(error));
+    onError?.(normalized);
+    throw normalized;
   }
 }
+
+/** @deprecated Use uploadFile. */
+export const upload_file = uploadFile;

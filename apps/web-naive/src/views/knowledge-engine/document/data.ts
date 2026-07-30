@@ -62,6 +62,24 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('knowledge.name')])),
     },
     {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: 'ARTICLE', value: 'ARTICLE' },
+          { label: 'NOTE', value: 'NOTE' },
+          { label: 'REFERENCE', value: 'REFERENCE' },
+        ],
+      },
+      defaultValue: 'ARTICLE',
+      fieldName: 'docType',
+      label: $t('knowledge.fileType'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'source',
+      label: $t('knowledge.source'),
+    },
+    {
       component: 'Input',
       componentProps: { type: 'textarea', rows: 5 },
       fieldName: 'content',

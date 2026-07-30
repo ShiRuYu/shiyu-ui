@@ -46,6 +46,17 @@ async function createReview(data: Omit<EducationReviewApi.ReviewTask, 'id'>) {
   return requestClient.post('/edu/review/create', data);
 }
 
+async function updateReview(
+  id: number,
+  data: Partial<EducationReviewApi.ReviewTask>,
+) {
+  return requestClient.post('/edu/review/update', data, { params: { id } });
+}
+
+async function deleteReview(id: number) {
+  return requestClient.post('/edu/review/delete', null, { params: { id } });
+}
+
 async function completeReview(
   id: number,
   data: EducationReviewApi.CompleteReviewRequest,
@@ -56,7 +67,9 @@ async function completeReview(
 export {
   completeReview,
   createReview,
+  deleteReview,
   getReviewById,
   getReviewsByStatus,
   getTodayReviews,
+  updateReview,
 };

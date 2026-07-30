@@ -1,4 +1,8 @@
 {
+  "source": "来源",
+  "difficulty": "难度",
+  "category": "分类",
+  "tags": "标签",
   "title": "知识引擎",
   "list": "知识点管理",
   "graph": "知识图谱",

@@ -12,7 +12,9 @@ export interface KnowledgePoint {
   code: string;
   name: string;
   description: string;
-  estimatedTime: number;
+  difficulty?: number;
+  category?: string;
+  tags?: string;
 }
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -47,9 +49,27 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('knowledge.description'),
     },
     {
-      component: 'InputNumber',
-      fieldName: 'estimatedTime',
-      label: $t('knowledge.estimatedTime'),
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: '1', value: 1 },
+          { label: '2', value: 2 },
+          { label: '3', value: 3 },
+          { label: '4', value: 4 },
+        ],
+      },
+      fieldName: 'difficulty',
+      label: $t('knowledge.difficulty'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'category',
+      label: $t('knowledge.category'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'tags',
+      label: $t('knowledge.tags'),
     },
   ];
 }
@@ -67,9 +87,19 @@ export function useColumns(
       width: 250,
     },
     {
-      field: 'estimatedTime',
-      title: $t('knowledge.estimatedTime'),
+      field: 'difficulty',
+      title: $t('knowledge.difficulty'),
+      width: 90,
+    },
+    {
+      field: 'category',
+      title: $t('knowledge.category'),
       width: 120,
+    },
+    {
+      field: 'tags',
+      title: $t('knowledge.tags'),
+      width: 160,
     },
     {
       align: 'right',

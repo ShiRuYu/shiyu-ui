@@ -1,77 +1,198 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
+
+import type { FileStorageConfig, StoredFile } from '#/api/system/upload';
+
+import { h, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import {
+  NAlert,
+  NButton,
   NCard,
   NDataTable,
   NIcon,
+  NPopconfirm,
   NProgress,
+  NSpace,
+  NTag,
   NUpload,
   NUploadDragger,
 } from 'naive-ui';
 
-import { upload_file } from '#/api/system/upload';
+import { message } from '#/adapter/naive';
+import {
+  deleteFile,
+  downloadFile,
+  getFileList,
+  getFileStorageConfig,
+  uploadFile,
+} from '#/api/system/upload';
 import { $t } from '#/locales';
 
-const files = ref<any[]>([]);
+const files = ref<StoredFile[]>([]);
+const storageConfig = ref<FileStorageConfig>();
+const loading = ref(false);
 const uploading = ref(false);
 const uploadProgress = ref(0);
 
-function handleUpload({ file }: any) {
-  // NaiveUI 的 file 是 UploadFileInfo，需要取其 .file 属性才是原生 File
-  const rawFile: File | null = file?.file ?? file;
+const storageLabels: Record<string, string> = {
+  'aliyun-oss': 'Alibaba Cloud OSS',
+  'local': $t('page.file.localStorage'),
+  'minio': 'MinIO',
+  's3': 'Amazon S3',
+  'tencent-cos': 'Tencent Cloud COS',
+};
+
+async function loadData() {
+  loading.value = true;
+  try {
+    const [config, list] = await Promise.all([
+      getFileStorageConfig(),
+      getFileList(),
+    ]);
+    storageConfig.value = config;
+    files.value = Array.isArray(list) ? list : [];
+  } finally {
+    loading.value = false;
+  }
+}
+
+function handleUpload({ file }: { file: UploadFileInfo }) {
+  const rawFile = file.file;
   if (!rawFile) return false;
 
   uploading.value = true;
   uploadProgress.value = 0;
-  upload_file({
+  uploadFile({
     file: rawFile,
-    onProgress: (p) => {
-      uploadProgress.value = p.percent;
-    },
-    onSuccess: (data, f) => {
-      files.value.unshift({
-        name: f.name,
-        size: f.size,
-        time: new Date().toLocaleString(),
-        url: data?.url || '-',
-      });
+    onError: (error) => {
       uploading.value = false;
+      message.error(error.message);
     },
-    onError: () => {
+    onProgress: ({ percent }) => {
+      uploadProgress.value = percent;
+    },
+    onSuccess: (storedFile) => {
+      files.value.unshift(storedFile);
       uploading.value = false;
+      message.success($t('page.file.uploadSuccess'));
     },
-  });
+  }).catch(() => undefined);
   return false;
 }
 
-function formatSize(bytes: number) {
-  if (bytes < 1024) return `${bytes}B`;
-  if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}KB`;
-  return `${(bytes / 1_048_576).toFixed(1)}MB`;
+async function handleDelete(file: StoredFile) {
+  await deleteFile(file.key);
+  files.value = files.value.filter((item) => item.key !== file.key);
+  message.success($t('page.file.deleteSuccess'));
 }
 
-const columns = [
-  { title: '文件名', key: 'name' },
+async function handleDownload(file: StoredFile) {
+  await downloadFile(file);
+}
+
+function formatSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1_073_741_824) {
+    return `${(bytes / 1_048_576).toFixed(1)} MB`;
+  }
+  return `${(bytes / 1_073_741_824).toFixed(1)} GB`;
+}
+
+const columns: DataTableColumns<StoredFile> = [
+  { key: 'name', title: () => $t('page.file.fileName') },
   {
-    title: '大小',
     key: 'size',
+    render: (row) => formatSize(row.size),
+    title: () => $t('page.file.size'),
     width: 120,
-    render: (row: any) => formatSize(row.size),
   },
-  { title: '上传时间', key: 'time', width: 180 },
-  { title: 'URL', key: 'url', ellipsis: { tooltip: true } },
+  {
+    key: 'storageType',
+    render: (row) =>
+      h(
+        NTag,
+        {
+          size: 'small',
+          type: row.storageType === 'local' ? 'success' : 'info',
+        },
+        { default: () => storageLabels[row.storageType] ?? row.storageType },
+      ),
+    title: () => $t('page.file.storageType'),
+    width: 180,
+  },
+  {
+    key: 'lastModified',
+    render: (row) => new Date(row.lastModified).toLocaleString(),
+    title: () => $t('page.file.uploadTime'),
+    width: 190,
+  },
+  {
+    key: 'actions',
+    render: (row) =>
+      h(
+        NSpace,
+        {},
+        {
+          default: () => [
+            h(
+              NButton,
+              {
+                size: 'small',
+                type: 'primary',
+                onClick: () => handleDownload(row),
+              },
+              { default: () => $t('page.file.download') },
+            ),
+            h(
+              NPopconfirm,
+              { onPositiveClick: () => handleDelete(row) },
+              {
+                default: () => $t('page.file.deleteConfirm'),
+                trigger: () =>
+                  h(
+                    NButton,
+                    { size: 'small', type: 'error' },
+                    { default: () => $t('common.delete') },
+                  ),
+              },
+            ),
+          ],
+        },
+      ),
+    title: () => $t('page.file.actions'),
+    width: 180,
+  },
 ];
+
+onMounted(loadData);
 </script>
 
 <template>
   <Page :title="$t('page.file.title')">
     <NCard>
+      <NAlert class="mb-4" type="info">
+        <div class="flex flex-wrap items-center gap-2">
+          <span>{{ $t('page.file.currentStorage') }}</span>
+          <NTag type="success">
+            {{
+              storageLabels[storageConfig?.currentType ?? 'local'] ??
+              storageConfig?.currentType
+            }}
+          </NTag>
+          <span class="text-muted-foreground">
+            {{ $t('page.file.storageConfiguredByServer') }}
+          </span>
+        </div>
+      </NAlert>
+
       <NUpload
         :default-upload="false"
-        :multiple="false"
+        :disabled="uploading"
+        :multiple="true"
         @before-upload="handleUpload"
       >
         <NUploadDragger>
@@ -94,8 +215,10 @@ const columns = [
                 <line x1="9" y1="15" x2="15" y2="15" />
               </svg>
             </NIcon>
-            <p class="mt-2 text-base">点击或拖拽文件到此区域上传</p>
-            <p class="text-muted-foreground mt-1 text-sm">支持任意格式文件</p>
+            <p class="mt-2 text-base">{{ $t('page.file.uploadHint') }}</p>
+            <p class="text-muted-foreground mt-1 text-sm">
+              {{ $t('page.file.uploadDescription') }}
+            </p>
           </div>
         </NUploadDragger>
       </NUpload>
@@ -108,11 +231,19 @@ const columns = [
         class="mt-4"
       />
 
+      <div class="mt-4 flex justify-end">
+        <NButton :loading="loading" @click="loadData">
+          {{ $t('common.refresh') }}
+        </NButton>
+      </div>
+
       <NDataTable
-        class="mt-4"
+        class="mt-3"
         :columns="columns"
         :data="files"
+        :loading="loading"
         :pagination="{ pageSize: 10 }"
+        :row-key="(row: StoredFile) => row.key"
         striped
       />
     </NCard>

@@ -4,8 +4,8 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationReviewApi } from '#/api/education-admin/review';
 
+import { getStudentOptions } from '#/api/education-admin/student';
 import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
-import { getUserOptions } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -23,8 +23,8 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getUserOptions,
-        labelField: 'nickname',
+        api: getStudentOptions,
+        labelField: 'name',
         valueField: 'id',
         placeholder: $t('education.review.selectStudent'),
       },
@@ -126,7 +126,7 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit'],
+        options: ['complete', 'edit', 'delete'],
       },
       field: 'operation',
       fixed: 'right',

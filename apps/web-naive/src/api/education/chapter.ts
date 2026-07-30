@@ -55,6 +55,21 @@ export async function deleteChapter(id: number) {
   return requestClient.post('/edu/chapter/delete', null, { params: { id } });
 }
 
+export async function getChapterKnowledgeIds(chapterId: number) {
+  return requestClient.get<number[]>('/edu/chapter/knowledge/list', {
+    params: { chapterId },
+  });
+}
+
+export async function replaceChapterKnowledgeIds(
+  chapterId: number,
+  knowledgeIds: number[],
+) {
+  return requestClient.post('/edu/chapter/knowledge/bind', knowledgeIds, {
+    params: { chapterId },
+  });
+}
+
 /** 获取章节下拉选项 */
 export async function getChapterOptions(textbookId?: number) {
   const chapters = textbookId

@@ -14,6 +14,7 @@ import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   completeReview,
+  deleteReview,
   getReviewsByStatus,
 } from '#/api/education-admin/review';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
@@ -44,6 +45,15 @@ function onComplete(row: EducationReviewApi.ReviewTask) {
     })
     .finally(() => h.destroy());
 }
+function onDelete(row: EducationReviewApi.ReviewTask) {
+  const h = message.loading($t('common.deleting'), { duration: 0 });
+  deleteReview(row.id)
+    .then(() => {
+      message.success($t('ui.actionMessage.deleteSuccess'));
+      refreshGrid();
+    })
+    .finally(() => h.destroy());
+}
 function onActionClick({
   code,
   row,
@@ -51,6 +61,10 @@ function onActionClick({
   switch (code) {
     case 'complete': {
       onComplete(row);
+      break;
+    }
+    case 'delete': {
+      onDelete(row);
       break;
     }
     case 'edit': {

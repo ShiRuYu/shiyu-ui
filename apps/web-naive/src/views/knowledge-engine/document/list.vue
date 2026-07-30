@@ -90,7 +90,7 @@ function refreshGrid() {
         <NButton
           type="primary"
           @click="onCreate"
-          v-access:code="['knowledge:document:create']"
+          v-access:code="['knowledge:document:upload']"
         >
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('knowledge.documentTitle')]) }}

@@ -62,10 +62,19 @@ async function deleteStudent(id: number) {
   return requestClient.post('/edu/student/delete', null, { params: { id } });
 }
 
+async function getStudentOptions() {
+  const result = await getStudentList(1, 1000);
+  return result.items.map((student) => ({
+    id: student.id,
+    name: `[${student.studentNo}] ${student.name}`,
+  }));
+}
+
 export {
   createStudent,
   deleteStudent,
   getStudentById,
   getStudentList,
+  getStudentOptions,
   updateStudent,
 };

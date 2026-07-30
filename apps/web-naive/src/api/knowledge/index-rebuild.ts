@@ -6,7 +6,7 @@ export namespace KnowledgeIndexApi {
     status: string;
     progress: number;
     total: number;
-    completed: number;
+    indexed: number;
     error?: string;
     startTime: string;
     endTime: string;
@@ -14,7 +14,7 @@ export namespace KnowledgeIndexApi {
 }
 
 async function rebuildIndex() {
-  return requestClient.post<KnowledgeIndexApi.RebuildTask>(
+  return requestClient.post<string>(
     '/knowledge/knowledge/index/rebuild',
   );
 }

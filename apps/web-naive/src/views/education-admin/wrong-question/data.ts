@@ -4,9 +4,9 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationWrongQuestionApi } from '#/api/education-admin/wrong-question';
 
+import { getStudentOptions } from '#/api/education-admin/student';
 import { getQuestionOptions } from '#/api/education/question';
 import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
-import { getUserOptions } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -24,8 +24,8 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getUserOptions,
-        labelField: 'nickname',
+        api: getStudentOptions,
+        labelField: 'name',
         valueField: 'id',
         placeholder: $t('education.wrongQuestion.selectStudent'),
       },

@@ -47,8 +47,7 @@ async function handleRebuild() {
   taskStatus.value = 'PENDING';
   taskProgress.value = 0;
   try {
-    const res = await rebuildIndex();
-    const tid = res.taskId;
+    const tid = await rebuildIndex();
     rebuildTaskId.value = tid;
     taskStatus.value = 'PENDING';
     message.success('索引重建任务已提交');

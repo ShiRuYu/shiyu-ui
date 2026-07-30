@@ -43,11 +43,6 @@ const addForm = ref({
 
 const relationTypeOptions = computed(() => [
   { label: `${$t('knowledge.relationPre')} (PRE)`, value: 'PRE' },
-  { label: `${$t('knowledge.relationNext')} (NEXT)`, value: 'NEXT' },
-  { label: `${$t('knowledge.relationInclude')} (INCLUDE)`, value: 'INCLUDE' },
-  { label: `${$t('knowledge.relationRelated')} (RELATED)`, value: 'RELATED' },
-  { label: `${$t('knowledge.relationSimilar')} (SIMILAR)`, value: 'SIMILAR' },
-  { label: `${$t('knowledge.relationBelong')} (BELONG)`, value: 'BELONG' },
 ]);
 
 const targetKnowledgeOptions = computed(() => {
@@ -102,15 +97,11 @@ async function handleAddRelation() {
   }
 }
 
-async function handleDeleteRelation(
-  targetId: number,
-  type: string,
-  isPre: boolean,
-) {
+async function handleDeleteRelation(targetId: number, isPre: boolean) {
   if (!selectedKnowledgeId.value) return;
-  const sourceId = isPre ? targetId : selectedKnowledgeId.value;
-  const tarId = isPre ? selectedKnowledgeId.value : targetId;
-  await deleteKnowledgeRelationApi(sourceId, tarId, type);
+  const sourceId = isPre ? selectedKnowledgeId.value : targetId;
+  const relationTargetId = isPre ? targetId : selectedKnowledgeId.value;
+  await deleteKnowledgeRelationApi(sourceId, relationTargetId, 'PRE');
   message.success($t('knowledge.relationDeleted'));
   await loadRelations();
 }
@@ -134,7 +125,7 @@ const preColumns = computed(() => [
         NPopconfirm,
         {
           onPositiveClick: () =>
-            handleDeleteRelation(row.id, row.relationType || 'PRE', true),
+            handleDeleteRelation(row.id, true),
         },
         {
           default: () => $t('knowledge.confirmDelete'),
@@ -157,8 +148,7 @@ const subColumns = computed(() => [
     title: $t('knowledge.relationType'),
     key: 'relationType',
     width: 120,
-    render: (row: any) =>
-      h(NTag, { size: 'small' }, row.relationType || 'NEXT'),
+    render: () => h(NTag, { size: 'small' }, 'PRE'),
   },
   {
     title: $t('common.operation'),
@@ -169,7 +159,7 @@ const subColumns = computed(() => [
         NPopconfirm,
         {
           onPositiveClick: () =>
-            handleDeleteRelation(row.id, row.relationType || 'NEXT', false),
+            handleDeleteRelation(row.id, false),
         },
         {
           default: () => $t('knowledge.confirmDelete'),

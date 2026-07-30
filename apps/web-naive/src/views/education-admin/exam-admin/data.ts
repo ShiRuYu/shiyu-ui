@@ -6,6 +6,7 @@ import type { EducationExamApi } from '#/api/education/exam';
 
 import { z } from '#/adapter/form';
 import { getSubjectOptions } from '#/api/education/subject';
+import { getUserOptions } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -65,6 +66,18 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('education.course.grade'),
     },
     {
+      component: 'ApiSelect',
+      componentProps: {
+        allowClear: true,
+        api: getUserOptions,
+        class: 'w-full',
+        labelField: 'nickName',
+        valueField: 'id',
+      },
+      fieldName: 'teacherId',
+      label: $t('education.course.teacherId'),
+    },
+    {
       component: 'InputNumber',
       fieldName: 'durationMin',
       label: $t('education.exam.durationMin'),
@@ -90,6 +103,7 @@ export function useColumns(
       width: 100,
     },
     { field: 'grade', title: $t('education.course.grade'), width: 80 },
+    { field: 'teacherId', title: $t('education.course.teacherId'), width: 100 },
     {
       field: 'durationMin',
       title: $t('education.exam.durationMin'),
