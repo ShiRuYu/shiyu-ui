@@ -52,9 +52,9 @@ async function deleteAuthCode(id: number) {
   return requestClient.post('/auth-code/delete', null, { params: { id } });
 }
 
-async function getRoleAuthCodes(roleId: number, scopedTenantId: number) {
+async function getRoleAuthCodes(roleId: number, tenantId: number) {
   return requestClient.get<string[]>('/auth-code/roles/list', {
-    params: { roleId, scopedTenantId },
+    params: { roleId, tenantId },
   });
 }
 
@@ -64,11 +64,11 @@ async function getAuthCodeOptions() {
 
 async function replaceRoleAuthCodes(
   roleId: number,
-  scopedTenantId: number,
+  tenantId: number,
   authCodes: string[],
 ) {
   return requestClient.post('/auth-code/roles/replace', authCodes, {
-    params: { roleId, scopedTenantId },
+    params: { roleId, tenantId },
   });
 }
 

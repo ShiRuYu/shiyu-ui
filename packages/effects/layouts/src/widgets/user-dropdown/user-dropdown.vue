@@ -46,7 +46,7 @@ interface Props {
   text?: string;
   trigger?: 'both' | 'click' | 'hover';
   hoverDelay?: number;
-  tenants?: Array<{ id: number; name: string }>;
+  tenants?: Array<{ id: number; name: string; pathName?: string }>;
   currentTenantId?: null | number;
   roles?: Array<{ id: number; name: string }>;
   currentRoleId?: null | number;
@@ -224,6 +224,7 @@ if (props.enableShortcutKey) {
             >
               <span class="text-muted-foreground">租户：</span>
               <span class="flex-1">{{
+                tenants.find((tenant) => tenant.id === currentTenantId)?.pathName ??
                 tenants.find((tenant) => tenant.id === currentTenantId)?.name ??
                 '未选择'
               }}</span>
@@ -238,7 +239,7 @@ if (props.enableShortcutKey) {
               >
                 <Check v-if="tenant.id === currentTenantId" class="mr-2 size-4" />
                 <span v-else class="mr-2 inline-block size-4"></span>
-                {{ tenant.name }}
+                {{ tenant.pathName ?? tenant.name }}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>

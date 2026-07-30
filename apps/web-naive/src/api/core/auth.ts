@@ -1,15 +1,10 @@
 import { baseRequestClient, requestClient } from '#/api/request';
 
-export interface SubTenantContextInfo {
-  roleCode: string;
-  tenantId: number;
-  tenantName: string;
-}
-
 export interface TenantInfo {
   id: number;
   code?: string;
   name: string;
+  pathName?: string;
 }
 
 export namespace AuthApi {
@@ -20,9 +15,9 @@ export namespace AuthApi {
 
   export interface LoginResult {
     accessToken: string;
+    homeTenantId?: number;
     currentTenantId?: number;
-    filterTenantId?: number | null;
-    subTenants?: SubTenantContextInfo[];
+    switchMode?: string;
     tenantName?: string;
     tenants?: TenantInfo[];
   }
@@ -68,14 +63,6 @@ export async function switchTenantApi(tenantId: number) {
     tenants: TenantInfo[];
     userInfo: Record<string, any>;
   }>('/auth/switch-tenant', { tenantId });
-}
-
-export async function scopeSubTenantApi(subTenantId: number) {
-  return requestClient.post('/auth/scope-sub-tenant', { subTenantId });
-}
-
-export async function clearSubTenantScopeApi() {
-  return requestClient.post('/auth/clear-scope');
 }
 
 export async function getUserTenantsApi() {

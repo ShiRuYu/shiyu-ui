@@ -11,13 +11,11 @@ import { defineStore } from 'pinia';
 
 import { notification } from '#/adapter/naive';
 import {
-  clearSubTenantScopeApi,
   getAccessCodesApi,
   getUserInfoApi,
   getUserTenantsApi,
   loginApi,
   logoutApi,
-  scopeSubTenantApi,
   switchTenantApi,
 } from '#/api';
 
@@ -46,7 +44,9 @@ export const useAuthStore = defineStore('auth', () => {
             loginResult.tenantName ?? '',
           );
         }
-        userStore.setFilterTenantId(loginResult.filterTenantId ?? null);
+        if (loginResult.homeTenantId != null) {
+          userStore.setHomeTenant(loginResult.homeTenantId);
+        }
 
         const [fetchUserInfoResult, accessCodes] = await Promise.all([
           fetchUserInfo(),
@@ -120,40 +120,13 @@ export const useAuthStore = defineStore('auth', () => {
       const context = await switchTenantApi(tenantId);
       const tenant = userStore.tenants.find((item) => item.id === tenantId);
       userStore.setCurrentTenant(tenantId, tenant?.name ?? '');
-      userStore.setFilterTenantId(context?.userInfo?.filterTenantId ?? null);
       if (context?.userInfo) userStore.setUserInfo(context.userInfo as any);
+      const accessCodes = await getAccessCodesApi();
+      accessStore.setAccessCodes(accessCodes);
       await fetchUserInfo();
     } catch (error: any) {
       notification.error({
         content: error?.message ?? '租户切换失败',
-        duration: 3000,
-      });
-      throw error;
-    }
-  }
-
-  async function scopeSubTenant(subTenantId: number) {
-    try {
-      await scopeSubTenantApi(subTenantId);
-      userStore.setFilterTenantId(subTenantId);
-      await fetchUserInfo();
-    } catch (error: any) {
-      notification.error({
-        content: error?.message ?? '设置子租户范围失败',
-        duration: 3000,
-      });
-      throw error;
-    }
-  }
-
-  async function clearSubTenantScope() {
-    try {
-      await clearSubTenantScopeApi();
-      userStore.setFilterTenantId(null);
-      await fetchUserInfo();
-    } catch (error: any) {
-      notification.error({
-        content: error?.message ?? '清除子租户范围失败',
         duration: 3000,
       });
       throw error;
@@ -167,12 +140,10 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     $reset,
     authLogin,
-    clearSubTenantScope,
     fetchUserInfo,
     loginLoading,
     logout,
     refreshTenantInfo,
-    scopeSubTenant,
     switchTenant,
   };
 });

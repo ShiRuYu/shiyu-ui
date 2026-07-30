@@ -8,21 +8,21 @@ import { computed, h, ref } from 'vue';
 import { useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { NSelect, NSpin, NTree } from 'naive-ui';
+import { NSpin, NTree } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { getMenuList } from '#/api/system/menu';
 import { getRoleDetail, replaceRoleMenus } from '#/api/system/role';
-import { getTenantList } from '#/api/system/tenant';
 import { $t } from '#/locales';
+import { useUserStore } from '@vben/stores';
 
+const userStore = useUserStore();
 const role = ref<SystemRoleApi.SystemRole>();
 const menuTree = ref<any[]>([]);
 const checkedMenuIds = ref<number[]>([]);
 const checkedTreeKeys = ref<number[]>([]);
 const loading = ref(false);
-const scopedTenantId = ref<null | number>(null);
-const tenantOptions = ref<Array<{ label: string; value: number }>>([]);
+const tenantId = ref<null | number>(null);
 
 const title = computed(() => {
   return `${$t('system.role.assignMenu')} - ${role.value?.name ?? ''}`;
@@ -84,14 +84,14 @@ function getCheckedTreeKeys(menuIds: number[]) {
 }
 
 async function loadAssignedMenus() {
-  if (!role.value?.id || scopedTenantId.value == null) {
+  if (!role.value?.id || tenantId.value == null) {
     checkedMenuIds.value = [];
     checkedTreeKeys.value = [];
     return;
   }
   loading.value = true;
   try {
-    const detail = await getRoleDetail(role.value.id, scopedTenantId.value);
+    const detail = await getRoleDetail(role.value.id, tenantId.value);
     checkedMenuIds.value = (detail.permissions ?? []).map(Number);
     checkedTreeKeys.value = getCheckedTreeKeys(checkedMenuIds.value);
   } finally {
@@ -101,12 +101,12 @@ async function loadAssignedMenus() {
 
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
-    if (!role.value?.id || scopedTenantId.value == null) return;
+    if (!role.value?.id || tenantId.value == null) return;
     modalApi.lock();
     try {
       await replaceRoleMenus(
         role.value.id,
-        scopedTenantId.value,
+        tenantId.value,
         checkedMenuIds.value,
       );
       message.success($t('ui.actionMessage.operationSuccess'));
@@ -123,19 +123,12 @@ const [Modal, modalApi] = useVbenModal({
     role.value = data;
     loading.value = true;
     try {
-      const [menus, tenantResult] = await Promise.all([
-        menuTree.value.length === 0 ? getMenuList() : Promise.resolve(menuTree.value),
-        getTenantList(),
-      ]);
+      const menus =
+        menuTree.value.length === 0 ? await getMenuList() : menuTree.value;
       if (menuTree.value.length === 0) {
         menuTree.value = Array.isArray(menus) ? menus : [];
       }
-      tenantOptions.value = tenantResult.items.map((item) => ({
-        label: item.name,
-        value: item.id,
-      }));
-      scopedTenantId.value =
-        data?.tenantId ?? tenantOptions.value[0]?.value ?? null;
+      tenantId.value = userStore.currentTenantId;
       if (data?.id) {
         await loadAssignedMenus();
       } else {
@@ -152,13 +145,6 @@ const [Modal, modalApi] = useVbenModal({
 <template>
   <Modal :title="title" class="w-[640px]">
     <NSpin :show="loading">
-      <NSelect
-        v-model:value="scopedTenantId"
-        :options="tenantOptions"
-        class="mb-3"
-        @update:value="loadAssignedMenus"
-        placeholder="选择授权生效租户"
-      />
       <NTree
         :checked-keys="checkedTreeKeys"
         :data="menuTree"

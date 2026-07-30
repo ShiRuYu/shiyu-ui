@@ -60,11 +60,11 @@ async function updateRole(
 
 async function replaceRoleMenus(
   id: number,
-  scopedTenantId: number,
+  tenantId: number,
   menuIds: number[],
 ) {
   return requestClient.post('/role/menus/replace', menuIds, {
-    params: { id, scopedTenantId },
+    params: { id, tenantId },
   });
 }
 
@@ -79,9 +79,9 @@ async function deleteRole(id: number) {
 /**
  * 获取角色详情
  */
-async function getRoleDetail(id: number, scopedTenantId: number) {
+async function getRoleDetail(id: number, tenantId: number) {
   return requestClient.get<SystemRoleApi.SystemRole>('/role/detail', {
-    params: { id, scopedTenantId },
+    params: { id, tenantId },
   });
 }
 

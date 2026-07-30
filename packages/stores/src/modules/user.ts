@@ -8,25 +8,22 @@ interface BasicUserInfo {
   roles?: string[];
   userId: string;
   username: string;
+  homeTenantId?: number;
+  currentTenantId?: number;
+  switchMode?: string;
 }
 
 interface TenantInfo {
   code?: string;
   id: number;
   name: string;
-}
-
-interface SubTenantContextInfo {
-  roleCode: string;
-  tenantId: number;
-  tenantName: string;
+  pathName?: string;
 }
 
 interface AccessState {
+  homeTenantId: null | number;
   currentTenantId: null | number;
   currentTenantName: string;
-  filterTenantId: null | number;
-  subTenants: SubTenantContextInfo[];
   tenants: TenantInfo[];
   userInfo: BasicUserInfo | null;
   userRoles: string[];
@@ -45,12 +42,11 @@ export const useUserStore = defineStore('core-user', {
 
       const info = userInfo as any;
       if (Array.isArray(info.tenants)) this.setTenants(info.tenants);
-      if (Array.isArray(info.subTenants)) this.setSubTenants(info.subTenants);
       if (info.currentTenantId != null) {
         this.currentTenantId = info.currentTenantId;
       }
-      if (info.filterTenantId !== undefined) {
-        this.filterTenantId = info.filterTenantId;
+      if (info.homeTenantId != null) {
+        this.homeTenantId = info.homeTenantId;
       }
       if (info.currentTenantId != null && Array.isArray(info.tenants)) {
         const tenant = info.tenants.find(
@@ -69,21 +65,17 @@ export const useUserStore = defineStore('core-user', {
       this.currentTenantId = tenantId;
       this.currentTenantName = tenantName;
     },
-    setSubTenants(subTenants: SubTenantContextInfo[]) {
-      this.subTenants = subTenants;
-    },
-    setFilterTenantId(filterTenantId: null | number) {
-      this.filterTenantId = filterTenantId;
+    setHomeTenant(tenantId: null | number) {
+      this.homeTenantId = tenantId;
     },
   },
   state: (): AccessState => ({
     userInfo: null,
     userRoles: [],
     tenants: [],
-    subTenants: [],
+    homeTenantId: null,
     currentTenantId: null,
     currentTenantName: '',
-    filterTenantId: null,
   }),
 });
 

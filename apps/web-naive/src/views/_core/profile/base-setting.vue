@@ -27,7 +27,6 @@ const lastLoginInfo = ref<Record<string, any>>({});
 const userRoles = ref<RoleInfo[]>([]);
 const selectedRoleId = ref<null | number>(null);
 const selectedTenantId = ref<null | number>(null);
-const selectedSubTenantId = ref<null | number>(null);
 const timezoneOptions = ref<{ label: string; value: string }[]>([]);
 const selectedTimezone = ref('');
 
@@ -76,31 +75,10 @@ async function switchTenant() {
   if (selectedTenantId.value == null) return;
   try {
     await authStore.switchTenant(selectedTenantId.value);
-    selectedSubTenantId.value = userStore.filterTenantId;
     setTimeout(() => window.location.reload(), 100);
     message.success('租户切换成功');
   } catch (error: any) {
     message.error(error?.message ?? '租户切换失败');
-  }
-}
-
-async function scopeSubTenant() {
-  if (selectedSubTenantId.value == null) return;
-  try {
-    await authStore.scopeSubTenant(selectedSubTenantId.value);
-    message.success('子租户范围设置成功');
-  } catch (error: any) {
-    message.error(error?.message ?? '子租户范围设置失败');
-  }
-}
-
-async function clearSubTenantScope() {
-  try {
-    await authStore.clearSubTenantScope();
-    selectedSubTenantId.value = null;
-    message.success('子租户范围已清除');
-  } catch (error: any) {
-    message.error(error?.message ?? '清除子租户范围失败');
   }
 }
 
@@ -147,10 +125,8 @@ onMounted(async () => {
     }
 
     selectedTenantId.value = userStore.currentTenantId;
-    selectedSubTenantId.value = userStore.filterTenantId;
     await authStore.refreshTenantInfo();
     selectedTenantId.value = userStore.currentTenantId;
-    selectedSubTenantId.value = userStore.filterTenantId;
     await loadTimezone();
   } catch (error: any) {
     message.error(error?.message ?? '获取用户信息失败');
@@ -175,34 +151,11 @@ onMounted(async () => {
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
         <option v-for="tenant in userStore.tenants" :key="tenant.id" :value="tenant.id">
-          {{ tenant.name }}
+          {{ tenant.pathName ?? tenant.name }}
         </option>
       </select>
       <button class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground" @click="switchTenant">
         切换
-      </button>
-    </div>
-
-    <div v-if="userStore.subTenants.length > 0" class="flex items-center gap-2">
-      <span class="w-20 shrink-0 text-xs text-muted-foreground">子租户范围</span>
-      <select
-        v-model="selectedSubTenantId"
-        class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
-      >
-        <option :value="null">全部可见范围</option>
-        <option
-          v-for="tenant in userStore.subTenants"
-          :key="tenant.tenantId"
-          :value="tenant.tenantId"
-        >
-          {{ tenant.tenantName }}
-        </option>
-      </select>
-      <button
-        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground"
-        @click="selectedSubTenantId == null ? clearSubTenantScope() : scopeSubTenant()"
-      >
-        应用
       </button>
     </div>
 
