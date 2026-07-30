@@ -7,7 +7,7 @@
 ```vue
 <script lang="ts" setup>
 // ✅ 推荐
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 
 const count = ref(0);
 const double = computed(() => count.value * 2);
@@ -36,7 +36,7 @@ export namespace AgentApi {
 
 ```ts
 // ✅ 推荐：PascalCase 组件名
-import AgentEditForm from "./components/AgentEditForm.vue";
+import AgentEditForm from './components/AgentEditForm.vue';
 
 // ✅ 推荐：组件名与文件名一致
 ```
@@ -45,37 +45,37 @@ import AgentEditForm from "./components/AgentEditForm.vue";
 
 ```ts
 // 1. 类型导入
-import type { ApiType } from "#/api/module";
+import type { ApiType } from '#/api/module';
 
 // 2. 外部库
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 // 3. Vben 框架
-import { Page } from "@vben/common-ui";
+import { Page } from '@vben/common-ui';
 
 // 4. UI 组件库
-import { NButton, NDataTable } from "naive-ui";
+import { NButton, NDataTable } from 'naive-ui';
 
 // 5. 项目内部模块
-import { $t } from "#/locales";
-import { fetchApi } from "#/api/module";
+import { $t } from '#/locales';
+import { fetchApi } from '#/api/module';
 
 // 6. 本地组件
-import FormModal from "./modules/form.vue";
+import FormModal from './modules/form.vue';
 ```
 
 ## 二、文件命名规范
 
-| 文件类型 | 规范 | 示例 |
-|---------|------|------|
-| Vue 组件 | PascalCase | `AgentList.vue` |
-| TypeScript | kebab-case | `index-rebuild.ts` |
-| CSS/SCSS | kebab-case | `page-layout.scss` |
-| 数据/类型 | kebab-case | `data.ts` |
-| Store | kebab-case | `auth.ts` |
-| Composable | camelCase | `useCrudFormModal.ts` |
-| API 模块 | kebab-case | `document.ts` |
+| 文件类型   | 规范       | 示例                  |
+| ---------- | ---------- | --------------------- |
+| Vue 组件   | PascalCase | `AgentList.vue`       |
+| TypeScript | kebab-case | `index-rebuild.ts`    |
+| CSS/SCSS   | kebab-case | `page-layout.scss`    |
+| 数据/类型  | kebab-case | `data.ts`             |
+| Store      | kebab-case | `auth.ts`             |
+| Composable | camelCase  | `useCrudFormModal.ts` |
+| API 模块   | kebab-case | `document.ts`         |
 
 ## 三、目录结构规范
 
@@ -95,11 +95,11 @@ import FormModal from "./modules/form.vue";
 
 ### 文件大小规范
 
-| 文件 | 上限 | 建议 |
-|------|:----:|------|
-| Vue 组件 | 500 行 | 超过 300 行考虑拆分 |
+| 文件       |  上限  | 建议                |
+| ---------- | :----: | ------------------- |
+| Vue 组件   | 500 行 | 超过 300 行考虑拆分 |
 | TypeScript | 300 行 | 超过 200 行考虑拆分 |
-| CSS | 200 行 | 超过 150 行拆分 |
+| CSS        | 200 行 | 超过 150 行拆分     |
 
 ## 四、Git 提交规范
 
@@ -118,16 +118,16 @@ chore: update dependencies
 
 ### 类型说明
 
-| type | 说明 |
-|------|------|
-| feat | 新功能 |
-| fix | 修复 |
-| refactor | 重构 |
-| docs | 文档 |
-| style | 样式调整 |
-| chore | 工程化 |
-| perf | 性能优化 |
-| test | 测试 |
+| type     | 说明     |
+| -------- | -------- |
+| feat     | 新功能   |
+| fix      | 修复     |
+| refactor | 重构     |
+| docs     | 文档     |
+| style    | 样式调整 |
+| chore    | 工程化   |
+| perf     | 性能优化 |
+| test     | 测试     |
 
 ## 五、API 规范
 
@@ -173,11 +173,11 @@ interface ApiResult<T> {
 
 ```vue
 <script lang="ts" setup>
-import { $t } from "#/locales";
+import { $t } from '#/locales';
 </script>
 
 <template>
-  <NButton>{{ $t("agent.create") }}</NButton>
+  <NButton>{{ $t('agent.create') }}</NButton>
 </template>
 ```
 
@@ -219,10 +219,10 @@ async function handleSubmit() {
   try {
     saving.value = true;
     await createAgent(formData.value);
-    window.$message.success("创建成功");
-    emit("success");
+    window.$message.success('创建成功');
+    emit('success');
   } catch (error) {
-    window.$message.error((error as Error)?.message ?? "操作失败");
+    window.$message.error((error as Error)?.message ?? '操作失败');
   } finally {
     saving.value = false;
   }

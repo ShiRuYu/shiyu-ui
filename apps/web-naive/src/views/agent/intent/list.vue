@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import type { IntentDefApi } from '#/api/agent/intent-def';
 
-import { useVbenModal } from '@vben/common-ui';
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { NButton } from 'naive-ui';
@@ -44,12 +43,14 @@ async function onDelete(row: IntentDefApi.IntentDefVO) {
 
 function onActionClick({ code, row }: any) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 

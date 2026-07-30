@@ -19,7 +19,7 @@ export namespace EducationTextbookApi {
 export async function getTextbookList(
   pageNum = 1,
   pageSize = 10,
-  params?: Recordable,
+  params?: Recordable<any>,
 ) {
   return requestClient.get<{
     items: EducationTextbookApi.Textbook[];

@@ -11,32 +11,32 @@ import { createChapter, updateChapter } from '#/api/education/chapter';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
-var emit = defineEmits(['success']);
-var formData = ref();
-var getTitle = computed(() => {
+const emit = defineEmits(['success']);
+const formData = ref();
+const getTitle = computed(() => {
   return formData.value?.id
     ? $t('ui.actionTitle.edit', [$t('education.chapter.name')])
     : $t('ui.actionTitle.create', [$t('education.chapter.name')]);
 });
-var [Form, formApi] = useVbenForm({
+const [Form, formApi] = useVbenForm({
   layout: 'vertical',
   schema: useSchema(),
   showDefaultActions: false,
 });
-var [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
-    var r = await formApi.validate();
+    const r = await formApi.validate();
     if (r.valid) {
       modalApi.lock();
-      var data = await formApi.getValues();
-      var kIds = data.knowledgeIds || [];
+      const data = await formApi.getValues();
+      const kIds = data.knowledgeIds || [];
       delete data.knowledgeIds;
       try {
         if (formData.value?.id) {
           await updateChapter(formData.value.id, data);
           if (kIds.length > 0) {
             await fetch(
-              '/edu/chapter/knowledge/bind?chapterId=' + formData.value.id,
+              `/edu/chapter/knowledge/bind?chapterId=${formData.value.id}`,
               {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -45,9 +45,9 @@ var [Modal, modalApi] = useVbenModal({
             );
           }
         } else {
-          var result = await createChapter(data);
+          const result = await createChapter(data);
           if (kIds.length > 0 && result?.id) {
-            await fetch('/edu/chapter/knowledge/bind?chapterId=' + result.id, {
+            await fetch(`/edu/chapter/knowledge/bind?chapterId=${result.id}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(kIds),
@@ -66,12 +66,12 @@ var [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      var data = modalApi.getData();
+      const data = modalApi.getData();
       formApi.resetForm();
       formData.value = data?.id ? data : undefined;
       if (data?.id) {
         formApi.setValues(data);
-        fetch('/edu/chapter/knowledge/list?chapterId=' + data.id)
+        fetch(`/edu/chapter/knowledge/list?chapterId=${data.id}`)
           .then((r) => {
             return r.json();
           })
@@ -88,13 +88,11 @@ var [Modal, modalApi] = useVbenModal({
   <Modal :title="getTitle" class="w-[640px]">
     <Form class="mx-4" />
     <template #prepend-footer>
-<div class="flex-auto">
+      <div class="flex-auto">
         <NButton type="error" @click="formApi.resetForm()">
-{{
-          $t('common.reset')
-        }}
-</NButton>
+          {{ $t('common.reset') }}
+        </NButton>
       </div>
-</template>
+    </template>
   </Modal>
 </template>

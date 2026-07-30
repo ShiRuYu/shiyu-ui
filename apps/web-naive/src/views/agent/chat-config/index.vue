@@ -73,9 +73,9 @@ async function handleSend() {
         },
       );
     }
-  } catch (e: any) {
+  } catch (error: any) {
     result.value = $t('agent.chatConfigError', {
-      message: e.message || $t('agent.chatConfigUnknownError'),
+      message: error.message || $t('agent.chatConfigUnknownError'),
     });
   } finally {
     loading.value = false;

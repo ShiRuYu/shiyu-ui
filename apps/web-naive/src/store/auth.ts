@@ -38,13 +38,19 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setAccessToken(loginResult.accessToken);
 
         if (loginResult.tenants) userStore.setTenants(loginResult.tenants);
-        if (loginResult.currentTenantId != null) {
+        if (
+          loginResult.currentTenantId !== null &&
+          loginResult.currentTenantId !== undefined
+        ) {
           userStore.setCurrentTenant(
             loginResult.currentTenantId,
             loginResult.tenantName ?? '',
           );
         }
-        if (loginResult.homeTenantId != null) {
+        if (
+          loginResult.homeTenantId !== null &&
+          loginResult.homeTenantId !== undefined
+        ) {
           userStore.setHomeTenant(loginResult.homeTenantId);
         }
 

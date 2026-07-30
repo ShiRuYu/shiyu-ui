@@ -6,8 +6,8 @@ import { computed } from 'vue';
 import { ProfilePasswordSetting, z } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 
-import { getUserInfoApi } from '#/api';
 import { message } from '#/adapter/naive';
+import { getUserInfoApi } from '#/api';
 import { changePassword } from '#/api/system/user';
 
 const userStore = useUserStore();
@@ -58,15 +58,15 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(values: Record<string, any>) {
   try {
     const userInfo = userStore.userInfo ?? (await getUserInfoApi());
-    const userId = userInfo.userId;
-    if (userId == null) {
+    const userId = Number(userInfo.userId);
+    if (!Number.isInteger(userId) || userId <= 0) {
       message.error('获取用户信息失败');
       return;
     }
     await changePassword(userId, values.oldPassword, values.newPassword);
     message.success('密码修改成功');
-  } catch (e: any) {
-    message.error(e?.response?.message ?? e?.message ?? '密码修改失败');
+  } catch (error: any) {
+    message.error(error?.response?.message ?? error?.message ?? '密码修改失败');
   }
 }
 </script>

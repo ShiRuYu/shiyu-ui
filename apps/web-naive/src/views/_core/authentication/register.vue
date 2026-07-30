@@ -7,6 +7,7 @@ import { computed, h, ref } from 'vue';
 import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { message } from '#/adapter/naive';
 import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'Register' });
@@ -88,7 +89,7 @@ async function handleSubmit(value: Recordable<any>) {
   try {
     const res = await requestClient.post('/auth/register', value);
     if (res) {
-      window.$message?.success?.('注册成功');
+      message.success('注册成功');
     }
   } finally {
     loading.value = false;

@@ -11,7 +11,7 @@ import { $t } from '#/locales';
 const loading = ref(false);
 const result = ref<any>(null);
 const knowledgeId = ref<null | number>(null);
-const targetDate = ref<number>(Date.now() + 14 * 86400000);
+const targetDate = ref<number>(Date.now() + 14 * 86_400_000);
 
 const knowledgeOptions = [
   { label: '二次函数', value: 8 },

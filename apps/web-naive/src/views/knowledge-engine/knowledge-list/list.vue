@@ -38,19 +38,21 @@ function onDelete(row: any) {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
     })
-    .catch((err: any) => {
-      message.error(err.message || $t('ui.actionMessage.deleteFailed'));
+    .catch((error: any) => {
+      message.error(error.message || $t('ui.actionMessage.deleteFailed'));
     })
     .finally(() => h.destroy());
 }
 function onActionClick({ code, row }: OnActionClickParams<any>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 const [Grid, gridApi] = useVbenVxeGrid({

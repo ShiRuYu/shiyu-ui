@@ -13,6 +13,10 @@ interface BasicUserInfo {
    */
   avatar: string;
   /**
+   * 扩展信息
+   */
+  extInfo?: Record<string, any>;
+  /**
    * 用户昵称
    */
   realName: string;
@@ -28,10 +32,6 @@ interface BasicUserInfo {
    * 用户名
    */
   username: string;
-  /**
-   * 扩展信息
-   */
-  extInfo?: Record<string, any>;
 }
 
 type ClassType =

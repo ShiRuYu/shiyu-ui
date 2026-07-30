@@ -172,9 +172,13 @@ setupVbenVxeTable({
             if (typeof opt === 'string') {
               return presets[opt]
                 ? { code: opt, ...presets[opt], ...defaultProps }
-                : { code: opt, text: true, label: opt, ...defaultProps };
+                : { code: opt, label: opt, ...defaultProps };
             } else {
-              return { ...defaultProps, ...presets[opt.code], ...opt };
+              return {
+                ...defaultProps,
+                ...presets[opt.code],
+                ...opt,
+              };
             }
           })
           .map((opt: any) => {

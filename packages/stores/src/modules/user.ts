@@ -42,13 +42,17 @@ export const useUserStore = defineStore('core-user', {
 
       const info = userInfo as any;
       if (Array.isArray(info.tenants)) this.setTenants(info.tenants);
-      if (info.currentTenantId != null) {
+      if (info.currentTenantId !== null && info.currentTenantId !== undefined) {
         this.currentTenantId = info.currentTenantId;
       }
-      if (info.homeTenantId != null) {
+      if (info.homeTenantId !== null && info.homeTenantId !== undefined) {
         this.homeTenantId = info.homeTenantId;
       }
-      if (info.currentTenantId != null && Array.isArray(info.tenants)) {
+      if (
+        info.currentTenantId !== null &&
+        info.currentTenantId !== undefined &&
+        Array.isArray(info.tenants)
+      ) {
         const tenant = info.tenants.find(
           (item: TenantInfo) => item.id === info.currentTenantId,
         );

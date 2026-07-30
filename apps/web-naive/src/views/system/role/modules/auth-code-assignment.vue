@@ -113,22 +113,9 @@ function selectedIn(codes: string[]) {
   return codes.filter((code) => selectedCodes.value.includes(code)).length;
 }
 
-async function loadAssignedCodes() {
-  if (!role.value?.id || tenantId.value == null) {
-    selectedCodes.value = [];
-    return;
-  }
-  loading.value = true;
-  try {
-    selectedCodes.value = await getRoleAuthCodes(role.value.id, tenantId.value);
-  } finally {
-    loading.value = false;
-  }
-}
-
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
-    if (!role.value?.id || tenantId.value == null) return;
+    if (!role.value?.id || tenantId.value === null) return;
     modalApi.lock();
     try {
       await replaceRoleAuthCodes(
@@ -154,7 +141,7 @@ const [Modal, modalApi] = useVbenModal({
       tenantId.value = userStore.currentTenantId;
       const [allOptions, assignedCodes] = await Promise.all([
         getAuthCodeOptions(),
-        data?.id && tenantId.value != null
+        data?.id && tenantId.value !== null
           ? getRoleAuthCodes(data.id, tenantId.value)
           : Promise.resolve([]),
       ]);

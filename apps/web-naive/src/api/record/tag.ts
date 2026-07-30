@@ -26,7 +26,9 @@ async function createTag(data: Omit<TagApi.Tag, 'id'>) {
 }
 
 async function updateTag(data: TagApi.Tag) {
-  return requestClient.post('/record/tag/update', data, { params: { id: data.id } });
+  return requestClient.post('/record/tag/update', data, {
+    params: { id: data.id },
+  });
 }
 
 async function deleteTag(id: number) {

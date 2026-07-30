@@ -78,9 +78,15 @@ const [Modal, modalApi] = useVbenModal({
         formData.value = data;
         formApi.setValues({
           ...data,
-          gender: data.gender == null ? '2' : String(data.gender),
+          gender:
+            data.gender === null || data.gender === undefined
+              ? '2'
+              : String(data.gender),
           nickName: data.nickName ?? '',
-          status: data.status == null ? '1' : String(data.status),
+          status:
+            data.status === null || data.status === undefined
+              ? '1'
+              : String(data.status),
         });
       } else {
         formData.value = undefined;

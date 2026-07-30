@@ -12,13 +12,11 @@ let categoryLabelMap: Record<string, string> = {};
 
 export async function initCategoryLabelMap() {
   const data = await getDictByType('INTENT_CATEGORY');
-  categoryLabelMap = (data || []).reduce(
-    (map: Record<string, string>, item: any) => {
-      map[item.dictValue] = item.dictLabel;
-      return map;
-    },
-    {},
-  );
+  const labels: Record<string, string> = {};
+  for (const item of data || []) {
+    labels[item.dictValue] = item.dictLabel;
+  }
+  categoryLabelMap = labels;
 }
 
 async function getIntentCodeOptions() {
@@ -168,7 +166,7 @@ export function useColumns(
       field: 'description',
       title: '描述',
       minWidth: 200,
-      ellipsis: { tooltip: true },
+      showOverflow: 'tooltip',
     },
     {
       cellRender: {

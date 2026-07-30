@@ -32,10 +32,10 @@ closeModal();
 const { handleDelete } = useDeleteConfirm();
 
 // 使用
-handleDelete(
-  () => deleteRecord(id),
-  { title: "确认删除？", content: "删除后不可恢复" }
-);
+handleDelete(() => deleteRecord(id), {
+  title: '确认删除？',
+  content: '删除后不可恢复',
+});
 ```
 
 ## 二、建议新增的 Composable（按优先级排序）
@@ -43,7 +43,9 @@ handleDelete(
 ### 2.1 🔴 usePagination
 
 ```ts
-export function usePagination(fetchFn: (params: PageParams) => Promise<PageResult>) {
+export function usePagination(
+  fetchFn: (params: PageParams) => Promise<PageResult>,
+) {
   const page = ref(1);
   const pageSize = ref(20);
   const total = ref(0);
@@ -53,7 +55,11 @@ export function usePagination(fetchFn: (params: PageParams) => Promise<PageResul
   async function load(params?: Record<string, any>) {
     loading.value = true;
     try {
-      const res = await fetchFn({ page: page.value, pageSize: pageSize.value, ...params });
+      const res = await fetchFn({
+        page: page.value,
+        pageSize: pageSize.value,
+        ...params,
+      });
       data.value = res.records ?? res.items;
       total.value = res.total ?? res.totalCount;
     } finally {
@@ -61,10 +67,25 @@ export function usePagination(fetchFn: (params: PageParams) => Promise<PageResul
     }
   }
 
-  function onPageChange(p: number) { page.value = p; load(); }
-  function onPageSizeChange(s: number) { pageSize.value = s; load(); }
+  function onPageChange(p: number) {
+    page.value = p;
+    load();
+  }
+  function onPageSizeChange(s: number) {
+    pageSize.value = s;
+    load();
+  }
 
-  return { page, pageSize, total, loading, data, load, onPageChange, onPageSizeChange };
+  return {
+    page,
+    pageSize,
+    total,
+    loading,
+    data,
+    load,
+    onPageChange,
+    onPageSizeChange,
+  };
 }
 ```
 
@@ -98,18 +119,25 @@ export function useSSE(url: string) {
   const error = ref<Error | null>(null);
   let eventSource: EventSource | null = null;
 
-  function connect(options?: { onMessage?: (data: any) => void; onError?: (err: any) => void }) {
+  function connect(options?: {
+    onMessage?: (data: any) => void;
+    onError?: (err: any) => void;
+  }) {
     eventSource = new EventSource(url);
     isConnected.value = true;
 
-    eventSource.onmessage = (event) => options?.onMessage?.(JSON.parse(event.data));
+    eventSource.onmessage = (event) =>
+      options?.onMessage?.(JSON.parse(event.data));
     eventSource.onerror = (err) => {
       error.value = err;
       options?.onError?.(err);
     };
   }
 
-  function close() { eventSource?.close(); isConnected.value = false; }
+  function close() {
+    eventSource?.close();
+    isConnected.value = false;
+  }
 
   return { isConnected, error, connect, close };
 }
@@ -119,9 +147,9 @@ export function useSSE(url: string) {
 
 ```ts
 export function useStreamingText() {
-  const displayText = ref("");
+  const displayText = ref('');
   const isStreaming = ref(false);
-  const fullText = ref("");
+  const fullText = ref('');
   let abortController: AbortController | null = null;
 
   async function startStream(
@@ -129,8 +157,8 @@ export function useStreamingText() {
     options?: { onChunk?: (text: string) => void; onDone?: () => void },
   ) {
     isStreaming.value = true;
-    displayText.value = "";
-    fullText.value = "";
+    displayText.value = '';
+    fullText.value = '';
     abortController = new AbortController();
 
     const response = await fetchPromise;
@@ -150,7 +178,10 @@ export function useStreamingText() {
     options?.onDone?.();
   }
 
-  function cancel() { abortController?.abort(); isStreaming.value = false; }
+  function cancel() {
+    abortController?.abort();
+    isStreaming.value = false;
+  }
 
   return { displayText, fullText, isStreaming, startStream, cancel };
 }
@@ -188,9 +219,15 @@ export function useRequest<T>() {
 export function useAbortController() {
   let controller = new AbortController();
 
-  function getSignal() { return controller.signal; }
-  function abort(reason?: string) { controller.abort(reason); }
-  function reset() { controller = new AbortController(); }
+  function getSignal() {
+    return controller.signal;
+  }
+  function abort(reason?: string) {
+    controller.abort(reason);
+  }
+  function reset() {
+    controller = new AbortController();
+  }
 
   return { getSignal, abort, reset };
 }
@@ -205,9 +242,15 @@ export function useWebSocket(url: string) {
   let ws: WebSocket | null = null;
   let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
-  function connect() { /* 连接 + 自动重连逻辑 */ }
-  function send(data: any) { ws?.send(JSON.stringify(data)); }
-  function close() { /* 关闭连接 + 取消重连 */ }
+  function connect() {
+    /* 连接 + 自动重连逻辑 */
+  }
+  function send(data: any) {
+    ws?.send(JSON.stringify(data));
+  }
+  function close() {
+    /* 关闭连接 + 取消重连 */
+  }
 
   return { isConnected, lastMessage, connect, send, close };
 }

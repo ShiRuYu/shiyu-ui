@@ -75,7 +75,9 @@ onMounted(() => {
         <div v-if="plan" class="mt-4">
           <div class="mb-1 flex justify-between text-sm">
             <span>{{ $t('education.plan.completedItems') }}</span>
-            <span>{{ plan.completedItems || 0 }} / {{ plan.totalItems || 0 }}</span>
+            <span
+              >{{ plan.completedItems || 0 }} / {{ plan.totalItems || 0 }}</span
+            >
           </div>
           <NProgress
             type="line"

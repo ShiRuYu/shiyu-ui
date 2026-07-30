@@ -5,14 +5,7 @@ import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import {
-  NButton,
-  NInput,
-  NRadio,
-  NRadioGroup,
-  NSpace,
-  NSpin,
-} from 'naive-ui';
+import { NButton, NInput, NRadio, NRadioGroup, NSpace, NSpin } from 'naive-ui';
 
 import { executeAgent, executeAgentStream } from '#/api/agent/agent';
 import { $t } from '#/locales';
@@ -58,7 +51,10 @@ async function onSend() {
 </script>
 
 <template>
-  <Modal :title="`${$t('agent.chat')} - ${agentData?.name || ''}`" class="w-[800px]">
+  <Modal
+    :title="`${$t('agent.chat')} - ${agentData?.name || ''}`"
+    class="w-[800px]"
+  >
     <div class="mx-4">
       <NSpace vertical :size="16">
         <div class="flex items-center gap-3">
@@ -85,7 +81,9 @@ async function onSend() {
           v-if="response"
           class="bg-muted mt-4 max-h-[400px] overflow-auto rounded-md p-4"
         >
-          <pre class="whitespace-pre-wrap font-mono text-sm">{{ response }}</pre>
+          <pre class="whitespace-pre-wrap font-mono text-sm">{{
+            response
+          }}</pre>
         </div>
       </NSpace>
     </div>

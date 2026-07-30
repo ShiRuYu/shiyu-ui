@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import type { EducationChapterApi } from '#/api/education/chapter';
+import type { EducationCourseApi } from '#/api/education/course';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -27,17 +30,30 @@ import { $t } from '#/locales';
 const route = useRoute();
 const router = useRouter();
 const courseId = computed(() => Number(route.params.courseId));
-const course = ref();
-const allChapters = ref([]);
-const currentChapter = ref(null);
-const chapterDocuments = ref([]);
-const chapterKnowledges = ref([]);
-const completedChapterIds = ref(new Set());
+
+interface KnowledgeDocument {
+  content?: string;
+  docType: string;
+  id: number;
+  title: string;
+}
+
+interface KnowledgeSummary {
+  id: number;
+  name: string;
+}
+
+const course = ref<EducationCourseApi.Course>();
+const allChapters = ref<EducationChapterApi.Chapter[]>([]);
+const currentChapter = ref<EducationChapterApi.Chapter>();
+const chapterDocuments = ref<KnowledgeDocument[]>([]);
+const chapterKnowledges = ref<KnowledgeSummary[]>([]);
+const completedChapterIds = ref(new Set<number>());
 const loading = ref(false);
 const studentId = ref(0);
 const docLoading = ref(false);
 const showDocModal = ref(false);
-const currentDoc = ref(null);
+const currentDoc = ref<KnowledgeDocument>();
 const sideCollapsed = ref(false);
 const { getCurrentStudentId } = useCurrentStudentId();
 
@@ -49,11 +65,13 @@ const progressPercent = computed(() =>
     : 0,
 );
 
-function flattenChapterTree(nodes, result) {
-  if (result === undefined) result = [];
+function flattenChapterTree(
+  nodes: EducationChapterApi.Chapter[],
+  result: EducationChapterApi.Chapter[] = [],
+) {
   for (const node of nodes) {
     result.push(node);
-    if (node.children?.length > 0) flattenChapterTree(node.children, result);
+    if (node.children?.length) flattenChapterTree(node.children, result);
   }
   return result;
 }
@@ -72,55 +90,62 @@ async function loadCourse() {
       }
     }
     if (course.value?.textbookId) {
-      var tree = await getChapterTree(course.value.textbookId);
+      const tree = await getChapterTree(course.value.textbookId);
       allChapters.value = flattenChapterTree(tree);
-      if (allChapters.value.length > 0) selectChapter(allChapters.value[0]);
+      const firstChapter = allChapters.value[0];
+      if (firstChapter) selectChapter(firstChapter);
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   } finally {
     loading.value = false;
   }
 }
 
-async function selectChapter(chapter) {
+async function selectChapter(chapter: EducationChapterApi.Chapter) {
   currentChapter.value = chapter;
   docLoading.value = true;
   chapterDocuments.value = [];
   chapterKnowledges.value = [];
   try {
-    var res = await fetch(
-      '/edu/chapter/knowledge/list?chapterId=' + chapter.id,
+    const res = await fetch(
+      `/edu/chapter/knowledge/list?chapterId=${chapter.id}`,
     );
-    var json = await res.json();
-    var kIds = json?.data || [];
+    const json = (await res.json()) as { data?: number[] };
+    const kIds = json.data ?? [];
     if (kIds.length > 0) {
-      var dPromises = kIds.map((id) =>
-        fetch('/knowledge/knowledge/detail?id=' + id).then((r) => r.json()),
+      const dPromises = kIds.map((id: number) =>
+        fetch(`/knowledge/knowledge/detail?id=${id}`).then(
+          (r) => r.json() as Promise<{ data?: KnowledgeSummary }>,
+        ),
       );
-      var details = await Promise.all(dPromises);
-      chapterKnowledges.value = details.map((r) => r?.data).filter(Boolean);
-      var docPs = kIds.map((id) =>
-        getDocumentsByKnowledgeApi(id).then((d) => d || []),
+      const details = await Promise.all(dPromises);
+      chapterKnowledges.value = details
+        .map((r) => r.data)
+        .filter((item): item is KnowledgeSummary => item !== undefined);
+      const docPs = kIds.map((id: number) =>
+        getDocumentsByKnowledgeApi(id).then(
+          (documents) => (documents || []) as KnowledgeDocument[],
+        ),
       );
-      var docRs = await Promise.all(docPs);
-      var docMap = new Map();
-      for (var docs of docRs) {
-        for (var d of docs) {
+      const docRs = await Promise.all(docPs);
+      const docMap = new Map<number, KnowledgeDocument>();
+      for (const docs of docRs) {
+        for (const d of docs) {
           if (!docMap.has(d.id)) docMap.set(d.id, d);
         }
       }
-      chapterDocuments.value = Array.from(docMap.values());
+      chapterDocuments.value = [...docMap.values()];
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   } finally {
     docLoading.value = false;
   }
 }
 
-function getDocTypeIcon(type) {
-  var m = {
+function getDocTypeIcon(type: string) {
+  const icons: Record<string, string> = {
     ARTICLE: '📄',
     TEXTBOOK: '📖',
     LECTURE: '🎓',
@@ -128,37 +153,34 @@ function getDocTypeIcon(type) {
     VIDEO: '🎬',
     EXERCISE: '✏',
   };
-  return m[type] || '📄';
+  return icons[type] || '📄';
 }
 
-function openDocument(doc) {
+function openDocument(doc: KnowledgeDocument) {
   currentDoc.value = doc;
   showDocModal.value = true;
 }
 
-async function markChapterCompleted(chapter) {
+async function markChapterCompleted(chapter: EducationChapterApi.Chapter) {
   if (studentId.value && courseId.value) {
     try {
-      for (var kid of chapterKnowledges.value.map((k) => k.id)) {
+      for (const kid of chapterKnowledges.value.map((k) => k.id)) {
         await fetch(
-          '/edu/course/record-study?studentId=' +
-            studentId.value +
-            '&courseId=' +
-            courseId.value +
-            '&chapterId=' +
-            chapter.id +
-            '&knowledgeId=' +
-            kid,
+          `/edu/course/record-study?studentId=${studentId.value}&courseId=${
+            courseId.value
+          }&chapterId=${chapter.id}&knowledgeId=${kid}`,
           { method: 'POST' },
         );
       }
-    } catch (e) {}
+    } catch (error) {
+      console.error('Failed to record study progress:', error);
+    }
   }
   completedChapterIds.value.add(chapter.id);
-  message.success(chapter.name + ' ' + $t('learning.alreadyCompleted'));
+  message.success(`${chapter.name} ${$t('learning.alreadyCompleted')}`);
 }
 
-function isChapterCompleted(chapterId) {
+function isChapterCompleted(chapterId: number) {
   return completedChapterIds.value.has(chapterId);
 }
 
@@ -184,7 +206,9 @@ onMounted(() => {
       <div v-show="!sideCollapsed" class="w-72 flex-shrink-0 border-r bg-white">
         <div class="border-b p-3 font-medium text-sm">
           {{ $t('learning.chapterDirectory') }}
-          <span class="ml-2 text-xs text-gray-400">{{ completedCount }}/{{ totalChapters }}</span>
+          <span class="ml-2 text-xs text-gray-400"
+            >{{ completedCount }}/{{ totalChapters }}</span
+          >
         </div>
         <NScrollbar style="height: calc(100% - 44px)">
           <div class="p-2">
@@ -218,7 +242,8 @@ onMounted(() => {
                   :class="
                     isChapterCompleted(chapter.id) ? 'text-green-600' : ''
                   "
-                  >{{ chapter.name }}</span>
+                  >{{ chapter.name }}</span
+                >
               </div>
             </div>
           </div>
@@ -251,10 +276,10 @@ onMounted(() => {
                   :bordered="false"
                   type="info"
                   class="cursor-pointer"
-                  @click="router.push(`/learning/knowledge/${ kg.id}`)"
-                  >
-{{ kg.name }}
-</NTag>
+                  @click="router.push(`/learning/knowledge/${kg.id}`)"
+                >
+                  {{ kg.name }}
+                </NTag>
               </div>
               <div v-else class="text-sm text-gray-400">
                 {{ $t('common.noData') }}
@@ -346,12 +371,10 @@ onMounted(() => {
         </div>
       </div>
       <template #footer>
-<NButton @click="showDocModal = false">
-{{
-          $t('learning.close')
-        }}
-</NButton>
-</template>
+        <NButton @click="showDocModal = false">
+          {{ $t('learning.close') }}
+        </NButton>
+      </template>
     </NModal>
   </Page>
 </template>

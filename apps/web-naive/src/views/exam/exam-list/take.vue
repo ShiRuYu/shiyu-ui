@@ -18,7 +18,6 @@ import {
 
 import { message } from '#/adapter/naive';
 import { getExamById } from '#/api/education/exam';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const route = useRoute();
@@ -28,7 +27,6 @@ const questions = ref<any[]>([]);
 const answers = ref<Record<number, string>>({});
 const loading = ref(false);
 const submitting = ref(false);
-const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadExam() {
   const id = Number(route.params.id);

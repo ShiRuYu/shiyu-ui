@@ -7,6 +7,7 @@ export namespace KnowledgeIndexApi {
     progress: number;
     total: number;
     completed: number;
+    error?: string;
     startTime: string;
     endTime: string;
   }

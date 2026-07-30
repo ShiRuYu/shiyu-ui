@@ -12,16 +12,16 @@ async function chatStream(
 ): Promise<void> {
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
-  const baseURL = requestClient.getBaseUrl() ?? "";
+  const baseURL = requestClient.getBaseUrl() ?? '';
 
   const response = await fetch(`${baseURL}/chat/send-stream`, {
     body: JSON.stringify(data),
     headers: {
-      Accept: "text/event-stream",
+      Accept: 'text/event-stream',
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    method: "POST",
+    method: 'POST',
   });
 
   const reader = response.body!.getReader();
@@ -37,6 +37,7 @@ async function chatStream(
 ```
 
 **问题**：
+
 - ❌ 没有统一管理层，每个页面需要自己调
 - ❌ 没有 SSE 事件解析（直接输出原始 chunk）
 - ❌ 没有 AbortController / 取消机制
@@ -80,12 +81,18 @@ async function chatStream(
 
 ```ts
 // src/services/streaming-manager.ts
-type ConnectionType = "sse" | "websocket";
-type StreamStatus = "idle" | "connecting" | "streaming" | "completed" | "error" | "aborted";
+type ConnectionType = 'sse' | 'websocket';
+type StreamStatus =
+  | 'idle'
+  | 'connecting'
+  | 'streaming'
+  | 'completed'
+  | 'error'
+  | 'aborted';
 
 interface StreamOptions {
   url: string;
-  method?: "GET" | "POST";
+  method?: 'GET' | 'POST';
   body?: any;
   headers?: Record<string, string>;
   onMessage: (chunk: string) => void;
@@ -95,32 +102,34 @@ interface StreamOptions {
 }
 
 class StreamingManager {
-  private status: StreamStatus = "idle";
+  private status: StreamStatus = 'idle';
   private abortController: AbortController | null = null;
 
-  getStatus(): StreamStatus { return this.status; }
+  getStatus(): StreamStatus {
+    return this.status;
+  }
 
   async start(options: StreamOptions): Promise<void> {
     this.abortController = new AbortController();
     const signal = options.signal ?? this.abortController.signal;
-    this.status = "connecting";
+    this.status = 'connecting';
 
     try {
       const response = await fetch(options.url, {
-        method: options.method ?? "POST",
+        method: options.method ?? 'POST',
         body: options.body ? JSON.stringify(options.body) : undefined,
         headers: {
-          Accept: "text/event-stream",
-          "Content-Type": "application/json",
+          Accept: 'text/event-stream',
+          'Content-Type': 'application/json',
           ...options.headers,
         },
         signal,
       });
 
-      this.status = "streaming";
+      this.status = 'streaming';
       const reader = response.body!.getReader();
       const decoder = new TextDecoder();
-      let buffer = "";
+      let buffer = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -129,24 +138,24 @@ class StreamingManager {
         buffer += decoder.decode(value, { stream: true });
 
         // SSE 事件解析
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
 
         for (const line of lines) {
-          if (line.startsWith("data:")) {
+          if (line.startsWith('data:')) {
             const data = line.slice(5).trim();
             options.onMessage(data);
           }
         }
       }
 
-      this.status = "completed";
+      this.status = 'completed';
       options.onDone?.();
     } catch (err) {
-      if ((err as Error).name === "AbortError") {
-        this.status = "aborted";
+      if ((err as Error).name === 'AbortError') {
+        this.status = 'aborted';
       } else {
-        this.status = "error";
+        this.status = 'error';
         options.onError?.(err as Error);
       }
     }
@@ -154,11 +163,11 @@ class StreamingManager {
 
   abort() {
     this.abortController?.abort();
-    this.status = "aborted";
+    this.status = 'aborted';
   }
 
   reset() {
-    this.status = "idle";
+    this.status = 'idle';
     this.abortController = null;
   }
 }
@@ -172,12 +181,12 @@ export { StreamingManager, type StreamOptions, type StreamStatus };
 // src/composables/useStreaming.ts
 export function useStreaming() {
   const manager = new StreamingManager();
-  const status = ref<StreamStatus>("idle");
-  const text = ref("");
+  const status = ref<StreamStatus>('idle');
+  const text = ref('');
 
   async function connect(options: StreamOptions) {
-    text.value = "";
-    status.value = "connecting";
+    text.value = '';
+    status.value = 'connecting';
     await manager.start({
       ...options,
       onMessage: (chunk) => {
@@ -185,11 +194,11 @@ export function useStreaming() {
         options.onMessage?.(chunk);
       },
       onDone: () => {
-        status.value = "completed";
+        status.value = 'completed';
         options.onDone?.();
       },
       onError: (err) => {
-        status.value = "error";
+        status.value = 'error';
         options.onError?.(err);
       },
     });
@@ -197,7 +206,7 @@ export function useStreaming() {
 
   function abort() {
     manager.abort();
-    status.value = "aborted";
+    status.value = 'aborted';
   }
 
   onUnmounted(() => manager.abort());
@@ -210,27 +219,33 @@ export function useStreaming() {
 
 ```ts
 // store/chat.ts
-export const useChatStore = defineStore("chat", () => {
+export const useChatStore = defineStore('chat', () => {
   const messages = ref<ChatMessage[]>([]);
   const { status, text, connect, abort } = useStreaming();
 
   async function sendMessage(prompt: string) {
     // 添加用户消息
-    messages.value.push({ role: "user", content: prompt });
+    messages.value.push({ role: 'user', content: prompt });
 
     // 添加空的 AI 消息
-    const aiMessage: ChatMessage = { role: "assistant", content: "", id: Date.now() };
+    const aiMessage: ChatMessage = {
+      role: 'assistant',
+      content: '',
+      id: Date.now(),
+    };
     messages.value.push(aiMessage);
 
     // 流式连接
     await connect({
-      url: "/api/chat/send-stream",
+      url: '/api/chat/send-stream',
       body: { prompt },
       onMessage: (chunk) => {
         // 逐步更新最后一条消息
         aiMessage.content += chunk;
       },
-      onDone: () => { /* 完成处理 */ },
+      onDone: () => {
+        /* 完成处理 */
+      },
     });
   }
 
@@ -245,7 +260,7 @@ export const useChatStore = defineStore("chat", () => {
 const chatStore = useChatStore();
 
 // 发送消息
-chatStore.sendMessage("你好");
+chatStore.sendMessage('你好');
 
 // 取消流
 chatStore.abort();

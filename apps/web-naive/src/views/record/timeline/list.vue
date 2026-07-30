@@ -70,7 +70,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: true },
     proxyConfig: {
       ajax: {
-        query: async (params, formValues) => {
+        query: async (params: any, formValues: any) => {
           if (!formValues?.profileId) {
             return { items: [], total: 0 };
           }

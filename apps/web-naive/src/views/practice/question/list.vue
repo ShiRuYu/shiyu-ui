@@ -74,11 +74,10 @@ const columns: DataTableColumns<any> = [
     width: 60,
     render(row) {
       const color =
-        row.difficulty <= 1
-          ? 'success'
-          : row.difficulty <= 2
-            ? 'warning'
-            : 'error';
+        [
+          { maximum: 1, type: 'success' as const },
+          { maximum: 2, type: 'warning' as const },
+        ].find((item) => row.difficulty <= item.maximum)?.type ?? 'error';
       return h(NTag, { type: color, size: 'small' }, () =>
         String(row.difficulty),
       );
@@ -129,23 +128,21 @@ onMounted(() => {
     <NTabs v-model:value="activeTab" type="line" animated>
       <!-- 学生端：题库练习 -->
       <NTabPane name="student" :tab="$t('page.practice.question')">
-        <template #extra>
-          <NSpace>
-            <NSelect
-              v-model:value="filterSubject"
-              :options="subjectOptions"
-              style="width: 120px"
-              @update:value="loadQuestions"
-            />
-            <NInputNumber
-              v-model:value="filterGrade"
-              :min="1"
-              :max="12"
-              style="width: 100px"
-              @update:value="loadQuestions"
-            />
-          </NSpace>
-        </template>
+        <NSpace class="mb-4" justify="end">
+          <NSelect
+            v-model:value="filterSubject"
+            :options="subjectOptions"
+            style="width: 120px"
+            @update:value="loadQuestions"
+          />
+          <NInputNumber
+            v-model:value="filterGrade"
+            :min="1"
+            :max="12"
+            style="width: 100px"
+            @update:value="loadQuestions"
+          />
+        </NSpace>
         <NDataTable
           :columns="columns"
           :data="questions"

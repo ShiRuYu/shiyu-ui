@@ -48,9 +48,9 @@ function handleUpload({ file }: any) {
 }
 
 function formatSize(bytes: number) {
-  if (bytes < 1024) return bytes + 'B';
-  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + 'KB';
-  return (bytes / 1048576).toFixed(1) + 'MB';
+  if (bytes < 1024) return `${bytes}B`;
+  if (bytes < 1_048_576) return `${(bytes / 1024).toFixed(1)}KB`;
+  return `${(bytes / 1_048_576).toFixed(1)}MB`;
 }
 
 const columns = [
@@ -95,9 +95,7 @@ const columns = [
               </svg>
             </NIcon>
             <p class="mt-2 text-base">点击或拖拽文件到此区域上传</p>
-            <p class="text-muted-foreground mt-1 text-sm">
-              支持任意格式文件
-            </p>
+            <p class="text-muted-foreground mt-1 text-sm">支持任意格式文件</p>
           </div>
         </NUploadDragger>
       </NUpload>
@@ -105,7 +103,7 @@ const columns = [
       <NProgress
         v-if="uploading"
         :percentage="uploadProgress"
-        :indicator-placement="'inside'"
+        indicator-placement="inside"
         processing
         class="mt-4"
       />

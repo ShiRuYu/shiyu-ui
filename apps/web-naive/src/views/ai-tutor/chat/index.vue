@@ -21,7 +21,7 @@ async function sendMessage() {
   try {
     const res = await chat({ prompt: msg });
     messages.value.push({ role: 'assistant', content: JSON.stringify(res) });
-  } catch (error) {
+  } catch {
     messages.value.push({ role: 'assistant', content: '对话接口调用失败' });
   } finally {
     loading.value = false;

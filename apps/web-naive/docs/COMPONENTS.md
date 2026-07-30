@@ -7,25 +7,25 @@
 ```vue
 <script lang="ts" setup>
 // 1. 类型导入
-import type { ApiType } from "#/api/module";
+import type { ApiType } from '#/api/module';
 
 // 2. Vue 核心 API
-import { computed, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 // 3. Vben 组件/hooks
-import { Page } from "@vben/common-ui";
+import { Page } from '@vben/common-ui';
 
 // 4. UI 组件（Naive UI）
-import { NButton, NDataTable, NInput } from "naive-ui";
+import { NButton, NDataTable, NInput } from 'naive-ui';
 
 // 5. 项目内部
-import { $t } from "#/locales";
-import { fetchData } from "#/api/module";
-import { useDeleteConfirm } from "#/composables";
+import { $t } from '#/locales';
+import { fetchData } from '#/api/module';
+import { useDeleteConfirm } from '#/composables';
 
 // 6. 本地子组件
-import FormModal from "./modules/form.vue";
+import FormModal from './modules/form.vue';
 
 // --- 业务逻辑 ---
 
@@ -37,7 +37,9 @@ const data = ref([]);
 onMounted(() => loadData());
 
 // 方法
-async function loadData() { /* ... */ }
+async function loadData() {
+  /* ... */
+}
 </script>
 
 <template>
@@ -56,8 +58,8 @@ defineProps<{ visible: boolean; record?: RecordType }>();
 
 // Emits
 const emit = defineEmits<{
-  (e: "close"): void;
-  (e: "success"): void;
+  (e: 'close'): void;
+  (e: 'success'): void;
 }>();
 
 // 业务逻辑...
@@ -70,15 +72,15 @@ const emit = defineEmits<{
 
 ## 二、命名规范
 
-| 类型 | 规则 | 示例 |
-|------|------|------|
-| 组件文件 | PascalCase | `AgentEdit.vue` |
-| 目录 | kebab-case | `chat-config/` |
-| 组件名 | PascalCase | `<AgentList />` |
-| 事件 | kebab-case | `@update-success` |
-| Props | camelCase | `:search-name` |
-| 方法 | camelCase | `loadAgents()` |
-| 类型 | PascalCase | `AgentVO` |
+| 类型     | 规则       | 示例              |
+| -------- | ---------- | ----------------- |
+| 组件文件 | PascalCase | `AgentEdit.vue`   |
+| 目录     | kebab-case | `chat-config/`    |
+| 组件名   | PascalCase | `<AgentList />`   |
+| 事件     | kebab-case | `@update-success` |
+| Props    | camelCase  | `:search-name`    |
+| 方法     | camelCase  | `loadAgents()`    |
+| 类型     | PascalCase | `AgentVO`         |
 
 ## 三、页面通用模板
 
@@ -91,9 +93,16 @@ const data = ref([]);
 const pagination = reactive({ page: 1, pageSize: 20, total: 0 });
 const searchParams = ref({});
 
-async function loadData() { /* fetch + pagination */ }
-async function handleSearch() { pagination.page = 1; loadData(); }
-function handleDelete(id: number) { /* delete + refresh */ }
+async function loadData() {
+  /* fetch + pagination */
+}
+async function handleSearch() {
+  pagination.page = 1;
+  loadData();
+}
+function handleDelete(id: number) {
+  /* delete + refresh */
+}
 </script>
 
 <template>
@@ -129,18 +138,20 @@ function handleDelete(id: number) { /* delete + refresh */ }
 ```vue
 <script lang="ts" setup>
 const props = defineProps<{ visible: boolean; record?: any }>();
-const emit = defineEmits<{ (e: "close"): void; (e: "success"): void }>();
+const emit = defineEmits<{ (e: 'close'): void; (e: 'success'): void }>();
 
 const formRef = ref();
-const formData = ref({ ...props.record ?? {} });
+const formData = ref({ ...(props.record ?? {}) });
 const saving = ref(false);
 
 async function handleSubmit() {
   saving.value = true;
   try {
-    await (props.record ? updateApi(formData.value) : createApi(formData.value));
-    window.$message.success("操作成功");
-    emit("success");
+    await (props.record
+      ? updateApi(formData.value)
+      : createApi(formData.value));
+    window.$message.success('操作成功');
+    emit('success');
   } finally {
     saving.value = false;
   }
@@ -202,6 +213,7 @@ agent/admin/
 ```
 
 内置能力：
+
 - ✅ 分页管理
 - ✅ 搜索表单
 - ✅ 排序

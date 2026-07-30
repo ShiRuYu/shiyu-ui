@@ -31,11 +31,9 @@ const [Modal, modalApi] = useVbenModal({
       modalApi.lock();
       try {
         const data = await formApi.getValues();
-        if (formData.value?.id) {
-          await updateKnowledgeApi(formData.value.id, data);
-        } else {
-          await createKnowledgeApi(data);
-        }
+        await (formData.value?.id
+          ? updateKnowledgeApi(formData.value.id, data)
+          : createKnowledgeApi(data));
         message.success($t('ui.actionMessage.operationSuccess'));
         modalApi.close();
         emit('success');

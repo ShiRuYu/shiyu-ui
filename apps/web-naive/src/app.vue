@@ -48,7 +48,8 @@ const themeOverrides = computed((): GlobalThemeOverrides => {
     common: {
       ...commonTokens,
       ...shiyuBrandColors,
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif',
+      fontFamily:
+        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif',
       fontSize: '14px',
       borderRadius: '6px',
     },

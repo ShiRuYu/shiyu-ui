@@ -40,7 +40,6 @@
     "@vben/styles": "workspace:*",
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
-
     "@vueuse/core": "catalog:",
     "naive-ui": "catalog:",
     "pinia": "catalog:",

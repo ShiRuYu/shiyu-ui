@@ -61,7 +61,6 @@ export function useColumns(
       field: 'content',
       title: $t('record.records.content'),
       width: 300,
-      ellipsis: true,
       showOverflow: 'tooltip',
     },
     { field: 'mood', title: $t('record.records.mood'), width: 80 },

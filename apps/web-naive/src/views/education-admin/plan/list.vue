@@ -46,12 +46,14 @@ function onActionClick({
   row,
 }: OnActionClickParams<EducationPlanApi.StudyPlan>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 const [Grid, gridApi] = useVbenVxeGrid({

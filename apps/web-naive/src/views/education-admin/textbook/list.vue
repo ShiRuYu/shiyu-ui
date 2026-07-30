@@ -42,12 +42,14 @@ function onActionClick({
   row,
 }: OnActionClickParams<EducationTextbookApi.Textbook>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 const [Grid, gridApi] = useVbenVxeGrid({

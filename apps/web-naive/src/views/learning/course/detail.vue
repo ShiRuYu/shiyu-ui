@@ -18,7 +18,6 @@ import {
 } from 'naive-ui';
 
 import { getChapterTree, getCourseById } from '#/api';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 const route = useRoute();
@@ -26,7 +25,6 @@ const router = useRouter();
 const course = ref<EducationCourseApi.Course>();
 const chapters = ref<EducationChapterApi.Chapter[]>([]);
 const loading = ref(false);
-const { getCurrentStudentId } = useCurrentStudentId();
 
 async function loadCourse() {
   const id = Number(route.params.id);

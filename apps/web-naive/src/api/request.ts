@@ -76,11 +76,15 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
         // 情况1：page 存在但 pageNum 不存在 → 从 page 提取数值
         if ('page' in config.params && !('pageNum' in config.params)) {
           const page = config.params.page;
-          config.params.pageNum = typeof page === 'number' ? page : (page?.currentPage || 1);
+          config.params.pageNum =
+            typeof page === 'number' ? page : page?.currentPage || 1;
           delete config.params.page;
         }
         // 情况2：pageNum 存在但是对象（API 函数已显式设置 pageNum: page，但 page 是对象）
-        if ('pageNum' in config.params && typeof config.params.pageNum === 'object') {
+        if (
+          'pageNum' in config.params &&
+          typeof config.params.pageNum === 'object'
+        ) {
           config.params.pageNum = config.params.pageNum?.currentPage || 1;
         }
       }

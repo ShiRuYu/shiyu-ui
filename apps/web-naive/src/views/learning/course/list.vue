@@ -78,25 +78,23 @@ onMounted(() => {
     <NTabs v-model:value="activeTab" type="line" animated>
       <!-- 学生端：课程浏览 -->
       <NTabPane name="student" :tab="$t('page.learning.course')">
-        <template #extra>
-          <NSpace>
-            <NSelect
-              v-model:value="filterSubject"
-              :options="subjects.map((s) => ({ label: s.name, value: s.code }))"
-              :placeholder="$t('education.course.subjectCode')"
-              clearable
-              style="width: 150px"
-              @update:value="loadCourses"
-            />
-            <NInputNumber
-              v-model:value="filterGrade"
-              :placeholder="$t('education.course.grade')"
-              clearable
-              style="width: 120px"
-              @update:value="loadCourses"
-            />
-          </NSpace>
-        </template>
+        <NSpace class="mb-4" justify="end">
+          <NSelect
+            v-model:value="filterSubject"
+            :options="subjects.map((s) => ({ label: s.name, value: s.code }))"
+            :placeholder="$t('education.course.subjectCode')"
+            clearable
+            style="width: 150px"
+            @update:value="loadCourses"
+          />
+          <NInputNumber
+            v-model:value="filterGrade"
+            :placeholder="$t('education.course.grade')"
+            clearable
+            style="width: 120px"
+            @update:value="loadCourses"
+          />
+        </NSpace>
 
         <NGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
           <NGi v-for="course in courses" :key="course.id">
@@ -127,9 +125,13 @@ onMounted(() => {
               <div
                 class="flex items-center justify-between text-sm text-gray-500"
               >
-                <span>{{ $t('education.course.grade') }}: {{ course.grade }}</span>
-                <span>{{ $t('education.course.totalHours') }}:
-                  {{ course.totalHours }}</span>
+                <span
+                  >{{ $t('education.course.grade') }}: {{ course.grade }}</span
+                >
+                <span
+                  >{{ $t('education.course.totalHours') }}:
+                  {{ course.totalHours }}</span
+                >
               </div>
               <div
                 v-if="course.description"

@@ -4,31 +4,31 @@
 
 ## 📋 文档目录
 
-| 文档 | 说明 |
-|------|------|
-| [QUICK-START.md](./QUICK-START.md) | 快速开始 |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | 项目架构总览 |
-| [MODULES.md](./MODULES.md) | 业务模块详情 |
-| [API.md](./API.md) | API 层规范 |
-| [ROUTER.md](./ROUTER.md) | 路由系统 |
-| [STATE-MANAGEMENT.md](./STATE-MANAGEMENT.md) | 状态管理 |
-| [COMPOSABLES.md](./COMPOSABLES.md) | 组合式函数 |
-| [COMPONENTS.md](./COMPONENTS.md) | 组件开发指南 |
-| [STREAMING.md](./STREAMING.md) | AI Streaming 架构 |
-| [CODING-STANDARDS.md](./CODING-STANDARDS.md) | 编码规范 |
+| 文档                                         | 说明              |
+| -------------------------------------------- | ----------------- |
+| [QUICK-START.md](./QUICK-START.md)           | 快速开始          |
+| [ARCHITECTURE.md](./ARCHITECTURE.md)         | 项目架构总览      |
+| [MODULES.md](./MODULES.md)                   | 业务模块详情      |
+| [API.md](./API.md)                           | API 层规范        |
+| [ROUTER.md](./ROUTER.md)                     | 路由系统          |
+| [STATE-MANAGEMENT.md](./STATE-MANAGEMENT.md) | 状态管理          |
+| [COMPOSABLES.md](./COMPOSABLES.md)           | 组合式函数        |
+| [COMPONENTS.md](./COMPONENTS.md)             | 组件开发指南      |
+| [STREAMING.md](./STREAMING.md)               | AI Streaming 架构 |
+| [CODING-STANDARDS.md](./CODING-STANDARDS.md) | 编码规范          |
 
 ## 🏗️ 技术栈
 
-| 技术 | 用途 |
-|------|------|
-| Vue 3 + Composition API | 前端框架 |
-| TypeScript | 类型系统 |
-| Vite | 构建工具 |
-| Naive UI | UI 组件库 |
-| Pinia | 状态管理 |
-| Vue Router | 路由 |
-| Vben Admin v5.7 | 后台框架 |
-| Vxe Table | 表格组件 |
+| 技术                    | 用途      |
+| ----------------------- | --------- |
+| Vue 3 + Composition API | 前端框架  |
+| TypeScript              | 类型系统  |
+| Vite                    | 构建工具  |
+| Naive UI                | UI 组件库 |
+| Pinia                   | 状态管理  |
+| Vue Router              | 路由      |
+| Vben Admin v5.7         | 后台框架  |
+| Vxe Table               | 表格组件  |
 
 ## 🚀 快捷命令
 

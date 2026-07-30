@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { h } from 'vue';
+import { h, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { useAccessStore } from '@vben/stores';

@@ -49,12 +49,14 @@ function onActionClick({
   row,
 }: OnActionClickParams<EducationReviewApi.ReviewTask>) {
   switch (code) {
-    case 'complete':
+    case 'complete': {
       onComplete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 const [Grid, gridApi] = useVbenVxeGrid({

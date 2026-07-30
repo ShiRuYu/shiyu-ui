@@ -2,11 +2,15 @@
 import type { IntentDefApi } from '#/api/agent/intent-def';
 
 import { computed, nextTick, ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
+
 import { NButton } from 'naive-ui';
+
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { createIntentDef, updateIntentDef } from '#/api/agent/intent-def';
+
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
@@ -33,7 +37,7 @@ const [Modal, modalApi] = useVbenModal({
     const { valid } = await formApi.validate();
     if (valid) {
       modalApi.lock();
-      const data = await formApi.getValues();
+      const data = (await formApi.getValues()) as IntentDefApi.IntentDefRequest;
       try {
         await (formData.value?.id
           ? updateIntentDef(formData.value.id, data)

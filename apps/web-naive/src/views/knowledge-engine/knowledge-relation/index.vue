@@ -38,7 +38,7 @@ const showAddModal = ref(false);
 const addForm = ref({
   targetId: null as null | number,
   type: 'PRE',
-  weight: 1.0,
+  weight: 1,
 });
 
 const relationTypeOptions = computed(() => [
@@ -95,10 +95,10 @@ async function handleAddRelation() {
     });
     message.success($t('knowledge.relationAdded'));
     showAddModal.value = false;
-    addForm.value = { targetId: null, type: 'PRE', weight: 1.0 };
+    addForm.value = { targetId: null, type: 'PRE', weight: 1 };
     await loadRelations();
-  } catch (e: any) {
-    message.error(e.message || $t('knowledge.addFailed'));
+  } catch (error: any) {
+    message.error(error.message || $t('knowledge.addFailed'));
   }
 }
 
@@ -268,15 +268,11 @@ onMounted(() => {
         <template #footer>
           <NSpace justify="end">
             <NButton @click="showAddModal = false">
-{{
-              $t('common.cancel')
-            }}
-</NButton>
+              {{ $t('common.cancel') }}
+            </NButton>
             <NButton type="primary" @click="handleAddRelation">
-{{
-              $t('common.confirm')
-            }}
-</NButton>
+              {{ $t('common.confirm') }}
+            </NButton>
           </NSpace>
         </template>
       </NModal>

@@ -19,6 +19,7 @@ router/
 ### 核心路由 `core.ts`
 
 包含必须存在的路由：
+
 - **Root** (`/`) — 基础布局容器，重定向到首页
 - **Authentication** (`/auth`) — 认证布局，包含登录/注册/忘记密码
 - **FallbackNotFound** — 404 兜底
@@ -28,10 +29,13 @@ router/
 通过 `import.meta.glob` 自动扫描加载：
 
 ```ts
-const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts", { eager: true });
+const dynamicRouteFiles = import.meta.glob('./modules/**/*.ts', {
+  eager: true,
+});
 ```
 
 **当前仅有**：
+
 - `modules/dashboard.ts` — 仪表盘路由
 
 其他业务模块路由**尚未模块化**，需要逐步迁移。
@@ -44,36 +48,36 @@ const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts", { eager: true })
 
 ```ts
 // router/routes/modules/dashboard.ts
-import type { RouteRecordRaw } from "vue-router";
-import { $t } from "#/locales";
+import type { RouteRecordRaw } from 'vue-router';
+import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
   {
     meta: {
-      icon: "lucide:layout-dashboard",
+      icon: 'lucide:layout-dashboard',
       order: -1,
-      title: $t("page.dashboard.title"),
+      title: $t('page.dashboard.title'),
     },
-    name: "Dashboard",
-    path: "/dashboard",
+    name: 'Dashboard',
+    path: '/dashboard',
     children: [
       {
-        name: "Analytics",
-        path: "/analytics",
-        component: () => import("#/views/dashboard/analytics/index.vue"),
+        name: 'Analytics',
+        path: '/analytics',
+        component: () => import('#/views/dashboard/analytics/index.vue'),
         meta: {
           affixTab: true,
-          icon: "lucide:area-chart",
-          title: $t("page.dashboard.analytics"),
+          icon: 'lucide:area-chart',
+          title: $t('page.dashboard.analytics'),
         },
       },
       {
-        name: "Overview",
-        path: "/overview",
-        component: () => import("#/views/dashboard/overview/index.vue"),
+        name: 'Overview',
+        path: '/overview',
+        component: () => import('#/views/dashboard/overview/index.vue'),
         meta: {
-          icon: "lucide:layout-dashboard",
-          title: $t("page.dashboard.overview"),
+          icon: 'lucide:layout-dashboard',
+          title: $t('page.dashboard.overview'),
         },
       },
     ],
@@ -85,15 +89,15 @@ export default routes;
 
 ## 四、路由 Meta 规范
 
-| Meta 属性 | 类型 | 说明 |
-|-----------|------|------|
-| `title` | `string` | 页面标题（支持 $t 国际化） |
-| `icon` | `string` | 菜单图标（Iconify 格式） |
-| `order` | `number` | 菜单排序 |
-| `affixTab` | `boolean` | 是否固定标签页 |
-| `hideInMenu` | `boolean` | 是否在菜单隐藏 |
-| `hideInTab` | `boolean` | 是否在标签页隐藏 |
-| `hideInBreadcrumb` | `boolean` | 是否在面包屑隐藏 |
+| Meta 属性          | 类型      | 说明                       |
+| ------------------ | --------- | -------------------------- |
+| `title`            | `string`  | 页面标题（支持 $t 国际化） |
+| `icon`             | `string`  | 菜单图标（Iconify 格式）   |
+| `order`            | `number`  | 菜单排序                   |
+| `affixTab`         | `boolean` | 是否固定标签页             |
+| `hideInMenu`       | `boolean` | 是否在菜单隐藏             |
+| `hideInTab`        | `boolean` | 是否在标签页隐藏           |
+| `hideInBreadcrumb` | `boolean` | 是否在面包屑隐藏           |
 
 ## 五、路由守卫 `guard.ts`
 

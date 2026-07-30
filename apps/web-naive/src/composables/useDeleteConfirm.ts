@@ -30,8 +30,8 @@ export function useDeleteConfirm<T extends { [key: string]: any; id: number }>(
           ]),
       );
       onSuccess?.();
-    } catch (err: any) {
-      message.error(err?.message ?? $t('common.deleteFailed'));
+    } catch (error: any) {
+      message.error(error?.message ?? $t('common.deleteFailed'));
     } finally {
       h.destroy();
     }

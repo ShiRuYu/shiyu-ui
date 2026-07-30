@@ -11,6 +11,7 @@ store/
 ```
 
 **auth store** 职责：
+
 - 登录/登出
 - 用户信息
 - 租户切换与子租户数据范围
@@ -25,7 +26,7 @@ store/
 // agent-list.vue 示例
 const loading = ref(false);
 const agents = ref<AgentVO[]>([]);
-const searchName = ref("");
+const searchName = ref('');
 const total = ref(0);
 ```
 
@@ -37,7 +38,7 @@ const total = ref(0);
 
 ```ts
 // store/chat.ts
-export const useChatStore = defineStore("chat", () => {
+export const useChatStore = defineStore('chat', () => {
   const messages = ref<ChatMessage[]>([]);
   const isStreaming = ref(false);
   const currentTokenCount = ref(0);
@@ -52,7 +53,14 @@ export const useChatStore = defineStore("chat", () => {
     abortController.value?.abort();
   }
 
-  return { messages, isStreaming, currentTokenCount, toolCalls, sendMessage, cancelStream };
+  return {
+    messages,
+    isStreaming,
+    currentTokenCount,
+    toolCalls,
+    sendMessage,
+    cancelStream,
+  };
 });
 ```
 
@@ -60,12 +68,16 @@ export const useChatStore = defineStore("chat", () => {
 
 ```ts
 // store/agent.ts
-export const useAgentStore = defineStore("agent", () => {
+export const useAgentStore = defineStore('agent', () => {
   const currentAgent = ref<AgentVO | null>(null);
-  const executionStatus = ref<"idle" | "running" | "completed" | "error">("idle");
+  const executionStatus = ref<'idle' | 'running' | 'completed' | 'error'>(
+    'idle',
+  );
   const executionHistory = ref<Execution[]>([]);
 
-  async function execute(prompt: string) { /* ... */ }
+  async function execute(prompt: string) {
+    /* ... */
+  }
 
   return { currentAgent, executionStatus, executionHistory, execute };
 });
@@ -75,11 +87,11 @@ export const useAgentStore = defineStore("agent", () => {
 
 ```ts
 // store/knowledge.ts
-export const useKnowledgeStore = defineStore("knowledge", () => {
+export const useKnowledgeStore = defineStore('knowledge', () => {
   const knowledgeBases = ref<KnowledgeBase[]>([]);
   const currentKnowledge = ref<KnowledgeBase | null>(null);
   const searchResults = ref<SearchResult[]>([]);
-  const indexingStatus = ref<"idle" | "indexing" | "completed">("idle");
+  const indexingStatus = ref<'idle' | 'indexing' | 'completed'>('idle');
 
   return { knowledgeBases, currentKnowledge, searchResults, indexingStatus };
 });
@@ -88,7 +100,7 @@ export const useKnowledgeStore = defineStore("knowledge", () => {
 ### 2.4 其他推荐 Store
 
 | Store | 职责 | 状态示例 |
-|-------|------|---------|
+| --- | --- | --- |
 | `notification` | 通知中心 | `notifications[]`, `unreadCount` |
 | `task` | 后台任务 | `tasks[]`, `taskProgress` |
 | `model` | AI 模型配置 | `models[]`, `platforms[]`, `currentModel` |
@@ -110,19 +122,19 @@ export const useKnowledgeStore = defineStore("knowledge", () => {
 
 ### 判断依据
 
-| 状态类型 | 放在哪 | 示例 |
-|---------|--------|------|
-| 用户身份 | Global Store | auth store |
-| 跨页面共享数据 | Global Store | chat messages |
-| 页面独有 | Page `ref()` | 列表页的搜索条件 |
-| 组件内部 | Component `ref()` | 展开/折叠 |
-| 复用逻辑 | Composable | useTable 内的分页状态 |
+| 状态类型       | 放在哪            | 示例                  |
+| -------------- | ----------------- | --------------------- |
+| 用户身份       | Global Store      | auth store            |
+| 跨页面共享数据 | Global Store      | chat messages         |
+| 页面独有       | Page `ref()`      | 列表页的搜索条件      |
+| 组件内部       | Component `ref()` | 展开/折叠             |
+| 复用逻辑       | Composable        | useTable 内的分页状态 |
 
 ## 四、Store 使用示例
 
 ```ts
 // 页面中使用
-import { useAuthStore } from "#/store/auth";
+import { useAuthStore } from '#/store/auth';
 
 const authStore = useAuthStore();
 

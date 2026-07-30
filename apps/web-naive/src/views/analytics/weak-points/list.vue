@@ -3,8 +3,7 @@ import type { DataTableColumns } from 'naive-ui';
 
 import type { EducationAnalyticsApi } from '#/api/education/analytics';
 
-import { onMounted, ref } from 'vue';
-import { h } from 'vue';
+import { h, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -27,7 +26,10 @@ const columns: DataTableColumns<EducationAnalyticsApi.WeakPointResponse> = [
     width: 200,
     render(row) {
       const color =
-        row.mastery < 30 ? '#e88080' : row.mastery < 60 ? '#f0a020' : '#63e2b7';
+        [
+          { color: '#e88080', maximum: 30 },
+          { color: '#f0a020', maximum: 60 },
+        ].find((item) => row.mastery < item.maximum)?.color ?? '#63e2b7';
       return h(NProgress, {
         type: 'line',
         percentage: row.mastery,

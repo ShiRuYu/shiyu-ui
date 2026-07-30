@@ -84,7 +84,7 @@ function getCheckedTreeKeys(menuIds: number[]) {
 }
 
 async function loadAssignedMenus() {
-  if (!role.value?.id || tenantId.value == null) {
+  if (!role.value?.id || tenantId.value === null) {
     checkedMenuIds.value = [];
     checkedTreeKeys.value = [];
     return;
@@ -101,7 +101,7 @@ async function loadAssignedMenus() {
 
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
-    if (!role.value?.id || tenantId.value == null) return;
+    if (!role.value?.id || tenantId.value === null) return;
     modalApi.lock();
     try {
       await replaceRoleMenus(
@@ -156,7 +156,7 @@ const [Modal, modalApi] = useVbenModal({
         check-strategy="child"
         key-field="id"
         multiple
-        style="max-height: 520px; overflow: auto; padding: 4px 0"
+        style="max-height: 520px; padding: 4px 0; overflow: auto"
         @update:checked-keys="
           (keys) => {
             checkedTreeKeys = keys.map(Number);

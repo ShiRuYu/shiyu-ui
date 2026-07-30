@@ -319,8 +319,8 @@ async function loadAgentDetail(id: number) {
     agentDescription.value = detail.description || '';
     agentStatus.value = detail.status ?? 1;
     await loadVersions();
-  } catch (e) {
-    console.error('Failed to load agent detail', e);
+  } catch (error) {
+    console.error('Failed to load agent detail', error);
   } finally {
     loadingAgent.value = false;
   }
@@ -346,11 +346,12 @@ async function loadVersions() {
     const published = list.find((v) => v.status === 1 /* PUBLISHED */);
     if (published) {
       selectedVersionId.value = published.id;
-    } else if (list.length > 0) {
-      selectedVersionId.value = list[list.length - 1]!.id;
+    } else {
+      const lastVersion = list.at(-1);
+      if (lastVersion) selectedVersionId.value = lastVersion.id;
     }
-  } catch (e) {
-    console.error('Failed to load versions', e);
+  } catch (error) {
+    console.error('Failed to load versions', error);
   } finally {
     loadingVersions.value = false;
   }
@@ -525,8 +526,9 @@ function buildGraphConfig(): AgentGraphApi.GraphConfigRequest {
         ceMap[e.source].nodeMappings[e.conditionMapping] = e.target;
       }
     } else {
-      if (!eMap[e.source]) eMap[e.source] = [];
-      eMap[e.source]!.push(e.target);
+      const targets = eMap[e.source] ?? [];
+      targets.push(e.target);
+      eMap[e.source] = targets;
     }
   }
 
@@ -590,7 +592,7 @@ function openAddNode() {
 }
 
 function openEditNode(node: AgentGraphApi.FormNode) {
-  editingNode.value = { ...node, config: { ...(node.config || {}) } };
+  editingNode.value = { ...node, config: { ...node.config } };
   isNewNode.value = false;
   showNodeModal.value = true;
 }
@@ -600,7 +602,7 @@ function confirmNode() {
     formNodes.value.push({ ...editingNode.value });
   } else {
     const idx = formNodes.value.findIndex((n) => n.id === editingNode.value.id);
-    if (idx >= 0) formNodes.value[idx] = { ...editingNode.value };
+    if (idx !== -1) formNodes.value[idx] = { ...editingNode.value };
   }
   showNodeModal.value = false;
 }

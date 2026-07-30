@@ -55,7 +55,7 @@ async function handleUpdateProfile(values: Record<string, any>) {
 }
 
 async function switchRole() {
-  if (selectedRoleId.value == null) return;
+  if (selectedRoleId.value === null) return;
   const target = userRoles.value.find(
     (role: RoleInfo) => role.id === selectedRoleId.value,
   );
@@ -70,7 +70,7 @@ async function switchRole() {
 }
 
 async function switchTenant() {
-  if (selectedTenantId.value == null) return;
+  if (selectedTenantId.value === null) return;
   try {
     await authStore.switchTenant(selectedTenantId.value);
     setTimeout(() => window.location.reload(), 100);

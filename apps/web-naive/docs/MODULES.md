@@ -3,7 +3,7 @@
 ## 一、模块总览
 
 | 模块 | 路由前缀 | 文件数 | 说明 |
-|------|---------|:------:|------|
+| --- | --- | :-: | --- |
 | `agent` | `/agent` | 17 | Agent 管理（管理、模型、平台、意图） |
 | `ai-tutor` | `/ai-tutor` | 5 | AI 家教（聊天、规划、练习、报告） |
 | `analytics` | `/analytics` | 4 | 数据分析 |
@@ -57,6 +57,7 @@ agent/
 ```
 
 **接口文件** (`api/agent/`):
+
 - `admin.ts` — Agent CRUD
 - `agent.ts` — Agent 执行（同步/流式）
 - `chat.ts` — 聊天接口
@@ -93,12 +94,14 @@ knowledge-engine/
 ```
 
 **接口文件** (`api/knowledge/`):
+
 - `knowledge.ts` — 知识库
 - `document.ts` — 文档
 - `relation.ts` — 关系
 - `index-rebuild.ts` — 索引重建
 
 > ⚠️ **建议重构**：随着 Chunk、Embedding、Search、Workflow、Version 等功能加入，建议按子域拆分：
+>
 > ```
 > knowledge/
 > ├── document/
@@ -130,6 +133,7 @@ education-admin/
 ```
 
 **每个子模块统一结构**：
+
 ```
 xxx/
 ├── list.vue        → 列表页（NDataTable + 搜索 + CRUD）
@@ -190,7 +194,7 @@ record/
 ### 2.7 其他模块
 
 | 模块 | 说明 |
-|------|------|
+| --- | --- |
 | `dashboard/analytics/` | 数据分析仪表盘 |
 | `dashboard/overview/` | AI 平台概览 |
 | `ai-tutor/` | AI 家教：chat / planner / practice / report-gen / teacher |

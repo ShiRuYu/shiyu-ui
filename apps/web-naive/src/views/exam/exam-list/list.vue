@@ -42,10 +42,11 @@ const typeColor: Record<string, any> = {
 async function loadTypeMap() {
   try {
     const data = await getDictByType('EXAM_TYPE');
-    typeMap.value = data.reduce((acc: Record<string, string>, d: any) => {
-      acc[d.dictValue] = d.dictLabel;
-      return acc;
-    }, {});
+    const labels: Record<string, string> = {};
+    for (const item of data) {
+      labels[item.dictValue] = item.dictLabel;
+    }
+    typeMap.value = labels;
   } catch (error) {
     console.error('Failed to load type map:', error);
   }
@@ -90,13 +91,21 @@ onMounted(() => {
               </template>
 
               <NSpace vertical class="text-sm text-gray-500">
-                <span>{{ $t('education.course.subjectCode') }}:
-                  {{ exam.subjectCode }}</span>
-                <span>{{ $t('education.course.grade') }}: {{ exam.grade }}</span>
-                <span>{{ $t('education.exam.durationMin') }}:
-                  {{ exam.durationMin }}</span>
-                <span>{{ $t('education.exam.totalScore') }}:
-                  {{ exam.totalScore }}</span>
+                <span
+                  >{{ $t('education.course.subjectCode') }}:
+                  {{ exam.subjectCode }}</span
+                >
+                <span
+                  >{{ $t('education.course.grade') }}: {{ exam.grade }}</span
+                >
+                <span
+                  >{{ $t('education.exam.durationMin') }}:
+                  {{ exam.durationMin }}</span
+                >
+                <span
+                  >{{ $t('education.exam.totalScore') }}:
+                  {{ exam.totalScore }}</span
+                >
                 <NTag
                   :type="exam.status === 1 ? 'success' : 'default'"
                   size="small"

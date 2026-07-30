@@ -7,6 +7,7 @@ import { computed, ref } from 'vue';
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { message } from '#/adapter/naive';
 import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'CodeLogin' });
@@ -61,7 +62,7 @@ async function handleLogin(values: Recordable<any>) {
   try {
     const res = await requestClient.post('/auth/code-login', values);
     if (res) {
-      window.$message?.success?.('登录成功');
+      message.success('登录成功');
     }
   } finally {
     loading.value = false;

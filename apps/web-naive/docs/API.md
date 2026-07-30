@@ -23,19 +23,19 @@ src/api/
 使用 Vben Admin 封装的 `requestClient`：
 
 ```ts
-import { requestClient } from "#/api/request";
+import { requestClient } from '#/api/request';
 
 // GET 请求
-requestClient.get<T>("/url", { params })
+requestClient.get<T>('/url', { params });
 
 // POST 请求
-requestClient.post<T>("/url", data)
+requestClient.post<T>('/url', data);
 
 // PUT 请求
-requestClient.put<T>("/url", data)
+requestClient.put<T>('/url', data);
 
 // DELETE 请求
-requestClient.delete<T>("/url")
+requestClient.delete<T>('/url');
 ```
 
 ## 三、接口分类规范
@@ -77,7 +77,7 @@ export { getKnowledgePage, createKnowledge };
 ### agent/
 
 | 文件 | 主要接口 | 对应后端 |
-|------|---------|---------|
+| --- | --- | --- |
 | `admin.ts` | 创建/更新/删除/分页查询 Agent | AgentController |
 | `agent.ts` | Agent 详情、执行、流式执行 | ExecutionController |
 | `chat.ts` | 聊天发送、流式聊天、模型选项 | ChatController |
@@ -91,66 +91,66 @@ export { getKnowledgePage, createKnowledge };
 
 ### education/
 
-| 文件 | 主要接口 |
-|------|---------|
-| `analytics.ts` | 学习分析 |
-| `chapter.ts` | 章节 CRUD |
-| `course.ts` | 课程 CRUD |
-| `exam.ts` | 考试相关 |
-| `question.ts` | 题目 CRUD |
-| `subject.ts` | 科目 CRUD |
-| `textbook.ts` | 教材 CRUD |
+| 文件           | 主要接口  |
+| -------------- | --------- |
+| `analytics.ts` | 学习分析  |
+| `chapter.ts`   | 章节 CRUD |
+| `course.ts`    | 课程 CRUD |
+| `exam.ts`      | 考试相关  |
+| `question.ts`  | 题目 CRUD |
+| `subject.ts`   | 科目 CRUD |
+| `textbook.ts`  | 教材 CRUD |
 
 ### education-admin/
 
-| 文件 | 主要接口 |
-|------|---------|
-| `exam-admin.ts` | 考试管理 |
-| `plan.ts` | 学习计划管理 |
-| `resource.ts` | 资源管理 |
-| `review.ts` | 审核管理 |
-| `student.ts` | 学生管理 |
-| `wrong-question.ts` | 错题管理 |
+| 文件                | 主要接口     |
+| ------------------- | ------------ |
+| `exam-admin.ts`     | 考试管理     |
+| `plan.ts`           | 学习计划管理 |
+| `resource.ts`       | 资源管理     |
+| `review.ts`         | 审核管理     |
+| `student.ts`        | 学生管理     |
+| `wrong-question.ts` | 错题管理     |
 
 ### knowledge/
 
-| 文件 | 主要接口 |
-|------|---------|
-| `knowledge.ts` | 知识库 CRUD |
-| `document.ts` | 文档管理 |
-| `relation.ts` | 知识关系 |
-| `index-rebuild.ts` | 索引重建 |
+| 文件               | 主要接口    |
+| ------------------ | ----------- |
+| `knowledge.ts`     | 知识库 CRUD |
+| `document.ts`      | 文档管理    |
+| `relation.ts`      | 知识关系    |
+| `index-rebuild.ts` | 索引重建    |
 
 ### system/
 
-| 文件 | 主要接口 |
-|------|---------|
-| `auth-code.ts` | 授权码管理 |
-| `dict.ts` | 数据字典 |
-| `menu.ts` | 菜单管理 |
-| `role.ts` | 角色管理 |
-| `tenant.ts` | 租户管理 |
-| `upload.ts` | 文件上传 |
-| `user.ts` | 用户管理 |
-| `tenant.ts` | 租户与子租户范围 |
+| 文件           | 主要接口         |
+| -------------- | ---------------- |
+| `auth-code.ts` | 授权码管理       |
+| `dict.ts`      | 数据字典         |
+| `menu.ts`      | 菜单管理         |
+| `role.ts`      | 角色管理         |
+| `tenant.ts`    | 租户管理         |
+| `upload.ts`    | 文件上传         |
+| `user.ts`      | 用户管理         |
+| `tenant.ts`    | 租户与子租户范围 |
 
 ### record/
 
-| 文件 | 主要接口 |
-|------|---------|
-| `media.ts` | 媒体记录 |
-| `profile.ts` | 个人档案 |
-| `records.ts` | 成长记录 |
-| `tag.ts` | 标签管理 |
-| `timeline.ts` | 时间线 |
+| 文件          | 主要接口 |
+| ------------- | -------- |
+| `media.ts`    | 媒体记录 |
+| `profile.ts`  | 个人档案 |
+| `records.ts`  | 成长记录 |
+| `tag.ts`      | 标签管理 |
+| `timeline.ts` | 时间线   |
 
 ### core/
 
-| 文件 | 主要接口 |
-|------|---------|
+| 文件      | 主要接口           |
+| --------- | ------------------ |
 | `auth.ts` | 登录/登出/令牌刷新 |
-| `menu.ts` | 菜单获取 |
-| `user.ts` | 用户信息 |
+| `menu.ts` | 菜单获取           |
+| `user.ts` | 用户信息           |
 
 ## 五、流式接口规范
 
@@ -164,11 +164,11 @@ async function chatStream(
   const response = await fetch(`${baseURL}/chat/send-stream`, {
     body: JSON.stringify(data),
     headers: {
-      Accept: "text/event-stream",
+      Accept: 'text/event-stream',
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    method: "POST",
+    method: 'POST',
   });
 
   const reader = response.body!.getReader();
@@ -187,7 +187,7 @@ async function chatStream(
 ## 六、命名规范
 
 | 项 | 规范 | 示例 |
-|----|------|------|
+| --- | --- | --- |
 | 请求方法 | `get`/`create`/`update`/`delete` + 业务名 | `getAgentPage`, `createKnowledge` |
 | 类型命名空间 | 模块名 + `Api` | `AgentAdminApi`, `KnowledgeApi` |
 | 输入类型 | 业务名 + 动词 + `Req` | `AgentCreateReq` |

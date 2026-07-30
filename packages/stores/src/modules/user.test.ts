@@ -10,7 +10,11 @@ describe('useUserStore', () => {
 
   it('returns correct userInfo', () => {
     const store = useUserStore();
-    const userInfo: any = { name: 'Jane Doe', roles: [{ value: 'user' }] };
+    const userInfo: any = {
+      name: 'Jane Doe',
+      roles: ['user'],
+      userId: '1',
+    };
     store.setUserInfo(userInfo);
     expect(store.userInfo).toEqual(userInfo);
   });

@@ -33,7 +33,10 @@ const [Modal, modalApi] = useVbenModal({
     const { valid } = await formApi.validate();
     if (valid) {
       modalApi.lock();
-      const data = await formApi.getValues();
+      const data = (await formApi.getValues()) as {
+        code: string;
+        name: string;
+      };
       try {
         await (formData.value?.id
           ? updateAuthCode(formData.value.id, data)

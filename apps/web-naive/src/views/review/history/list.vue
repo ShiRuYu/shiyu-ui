@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { h } from 'vue';
+import { h, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -46,10 +45,15 @@ const columns: any[] = [
       return h(
         NTag,
         { type: (color[row.status] || 'default') as any, size: 'small' },
-        () =>
-          $t(
-            `education.review.status${row.status === 2 /* COMPLETED */ ? 'Completed' : row.status === 0 /* PENDING */ ? 'Pending' : row.status}`,
-          ),
+        () => {
+          const statusSuffix: Record<number, string> = {
+            0: 'Pending',
+            2: 'Completed',
+          };
+          return $t(
+            `education.review.status${statusSuffix[row.status] ?? row.status}`,
+          );
+        },
       );
     },
   },

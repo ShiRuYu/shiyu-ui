@@ -7,6 +7,7 @@ import { computed, ref } from 'vue';
 import { AuthenticationForgetPassword, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { message } from '#/adapter/naive';
 import { requestClient } from '#/api/request';
 
 defineOptions({ name: 'ForgetPassword' });
@@ -35,7 +36,7 @@ async function handleSubmit(value: Recordable<any>) {
   try {
     const res = await requestClient.post('/auth/forget-password', value);
     if (res) {
-      window.$message?.success?.('密码重置成功，请使用新密码登录');
+      message.success('密码重置成功，请使用新密码登录');
     }
   } finally {
     loading.value = false;

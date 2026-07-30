@@ -61,16 +61,21 @@ async function loadResources() {
 
 function getTypeColor(type: string) {
   switch (type) {
-    case 'DOCUMENT':
+    case 'DOCUMENT': {
       return 'success';
-    case 'EXERCISE':
+    }
+    case 'EXERCISE': {
       return 'warning';
-    case 'INTERACTIVE':
+    }
+    case 'INTERACTIVE': {
       return 'error';
-    case 'VIDEO':
+    }
+    case 'VIDEO': {
       return 'info';
-    default:
+    }
+    default: {
       return 'default';
+    }
   }
 }
 

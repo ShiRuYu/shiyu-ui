@@ -91,8 +91,8 @@ async function fetchData() {
         },
       ];
     }
-  } catch (e) {
-    console.warn('获取用量概览失败，使用默认数据', e);
+  } catch (error) {
+    console.warn('获取用量概览失败，使用默认数据', error);
   }
 }
 

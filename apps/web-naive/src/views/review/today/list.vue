@@ -77,8 +77,10 @@ onMounted(() => loadReviews());
               </template>
 
               <NSpace vertical class="text-sm text-gray-500">
-                <span>{{ $t('education.review.reviewDate') }}:
-                  {{ review.reviewDate }}</span>
+                <span
+                  >{{ $t('education.review.reviewDate') }}:
+                  {{ review.reviewDate }}</span
+                >
                 <span>
                   {{ $t('common.status') }}:
                   <NTag

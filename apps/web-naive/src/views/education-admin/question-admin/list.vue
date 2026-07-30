@@ -46,12 +46,14 @@ function onActionClick({
   row,
 }: OnActionClickParams<EducationQuestionApi.Question>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
+    }
   }
 }
 const [Grid, gridApi] = useVbenVxeGrid({
@@ -72,10 +74,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
             );
             return { items: result, total: result.length };
           }
-          const result = await getAllQuestions(
-            page.currentPage,
-            page.pageSize,
-          );
+          const result = await getAllQuestions(page.currentPage, page.pageSize);
           return { items: result.items, total: result.total };
         },
       },

@@ -1,4 +1,4 @@
-﻿import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 
 import {
   VBEN_ANT_PREVIEW_URL,

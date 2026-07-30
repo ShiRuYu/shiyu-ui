@@ -43,14 +43,18 @@ async function createProfile(data: Omit<ProfileApi.Profile, 'delFlag' | 'id'>) {
  * 更新档案
  */
 async function updateProfile(data: ProfileApi.Profile) {
-  return requestClient.post<boolean>('/record/profile/update', data, { params: { id: data.id } });
+  return requestClient.post<boolean>('/record/profile/update', data, {
+    params: { id: data.id },
+  });
 }
 
 /**
  * 删除档案
  */
 async function deleteProfile(id: number) {
-  return requestClient.post<boolean>('/record/profile/delete', null, { params: { id } });
+  return requestClient.post<boolean>('/record/profile/delete', null, {
+    params: { id },
+  });
 }
 
 /**

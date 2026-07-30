@@ -33,21 +33,16 @@ const [Modal, modalApi] = useVbenModal({
       // 格式化日期: DatePicker 返回时间戳，转换为 yyyy-MM-dd 字符串
       if (data.startDate && typeof data.startDate === 'number') {
         const d = new Date(data.startDate);
-        data.startDate =
-          d.getFullYear() +
-          '-' +
-          String(d.getMonth() + 1).padStart(2, '0') +
-          '-' +
-          String(d.getDate()).padStart(2, '0');
+        data.startDate = `${d.getFullYear()}-${String(
+          d.getMonth() + 1,
+        ).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       }
       if (data.endDate && typeof data.endDate === 'number') {
         const d = new Date(data.endDate);
-        data.endDate =
-          d.getFullYear() +
-          '-' +
-          String(d.getMonth() + 1).padStart(2, '0') +
-          '-' +
-          String(d.getDate()).padStart(2, '0');
+        data.endDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+          2,
+          '0',
+        )}-${String(d.getDate()).padStart(2, '0')}`;
       }
       try {
         await (formData.value?.id

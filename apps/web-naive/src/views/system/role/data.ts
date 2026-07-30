@@ -1,9 +1,10 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
-import { useAccessStore } from '@vben/stores';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemRoleApi } from '#/api/system/role';
+
+import { useAccessStore } from '@vben/stores';
 
 import { z } from '#/adapter/form';
 import { $t } from '#/locales';

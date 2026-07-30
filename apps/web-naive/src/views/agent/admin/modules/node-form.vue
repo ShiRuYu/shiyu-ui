@@ -44,7 +44,7 @@ const apiOptionsCache = ref<
 >({});
 
 function buildUrl(url: string): string {
-  return url.replace(/\{(\w+)\}/g, (_: string, key: string) => {
+  return url.replaceAll(/\{(\w+)\}/g, (_: string, key: string) => {
     return props.nodeData.config?.[key] ?? '';
   });
 }

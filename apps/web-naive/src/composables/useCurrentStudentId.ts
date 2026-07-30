@@ -13,13 +13,16 @@ export function useCurrentStudentId() {
     if (extInfo) {
       const parsed =
         typeof extInfo === 'string' ? JSON.parse(extInfo) : extInfo;
-      if (parsed?.studentId != null) {
+      if (parsed?.studentId !== null && parsed?.studentId !== undefined) {
         return parsed.studentId;
       }
     }
 
     // 尝试从 userInfo 的其他字段获取
-    if ((userStore.userInfo as any)?.studentId != null) {
+    if (
+      (userStore.userInfo as any)?.studentId !== null &&
+      (userStore.userInfo as any)?.studentId !== undefined
+    ) {
       return (userStore.userInfo as any).studentId;
     }
 

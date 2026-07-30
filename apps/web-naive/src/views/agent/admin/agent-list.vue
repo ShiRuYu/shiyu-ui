@@ -99,10 +99,6 @@ function onNewAgent() {
     query: { new: 'true' },
   });
 }
-
-function statusTag(s: number) {
-  return s === '1' ? 'success' : 'error';
-}
 </script>
 
 <template>
@@ -186,7 +182,8 @@ function statusTag(s: number) {
                   <div class="mb-1">
                     <span class="font-medium">{{
                       $t('agent.adminListVersionLabel')
-                    }}</span>{{ agent.currentVersion || '-' }}
+                    }}</span
+                    >{{ agent.currentVersion || '-' }}
                   </div>
                   <div v-if="agent.description" class="truncate text-xs">
                     <NTooltip :delay="300" style="max-width: 100%">

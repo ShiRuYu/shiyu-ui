@@ -1,3 +1,5 @@
+import type { OnActionClickFn } from '#/adapter/vxe-table';
+import type { EducationChapterApi } from '#/api/education/chapter';
 
 import { z } from '#/adapter/form';
 import { getChapterOptions } from '#/api/education/chapter';
@@ -5,10 +7,10 @@ import { getTextbookOptions } from '#/api/education/textbook';
 import { getKnowledgeListApi } from '#/api/knowledge';
 import { $t } from '#/locales';
 async function getKnowledgeOptions() {
-  var result = await getKnowledgeListApi({ pageSize: 1000 });
-  var items = result?.items || result || [];
-  return items.map((k) => {
-    return { id: k.id, name: '[' + k.code + '] ' + k.name };
+  const result = await getKnowledgeListApi({ pageSize: 1000 });
+  const items = result?.items || result || [];
+  return items.map((k: { code: string; id: number; name: string }) => {
+    return { id: k.id, name: `[${k.code}] ${k.name}` };
   });
 }
 export function useGridFormSchema() {
@@ -94,7 +96,9 @@ export function useSchema() {
     },
   ];
 }
-export function useColumns(onActionClick) {
+export function useColumns(
+  onActionClick: OnActionClickFn<EducationChapterApi.Chapter>,
+) {
   return [
     { field: 'id', title: 'ID', width: 80 },
     { field: 'name', title: $t('education.chapter.name'), width: 200 },

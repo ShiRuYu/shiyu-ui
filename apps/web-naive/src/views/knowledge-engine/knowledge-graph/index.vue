@@ -175,14 +175,12 @@ function renderGraph() {
     const p = positions[n.name];
     if (!p) return;
     const nodeRadius = n.type === 'center' ? 28 : 20;
-    const color =
-      n.type === 'center'
-        ? '#2080f0'
-        : n.type === 'parent'
-          ? '#18a058'
-          : n.type === 'child'
-            ? '#d03050'
-            : '#f0a020';
+    const colorMap: Record<string, string> = {
+      center: '#2080f0',
+      child: '#d03050',
+      parent: '#18a058',
+    };
+    const color = colorMap[n.type] ?? '#f0a020';
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, nodeRadius, 0, 2 * Math.PI);
@@ -195,7 +193,7 @@ function renderGraph() {
     ctx.font = '11px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(String(n.name || '').substring(0, 8), p.x, p.y);
+    ctx.fillText(String(n.name || '').slice(0, 8), p.x, p.y);
   });
 }
 
@@ -259,9 +257,10 @@ onUnmounted(() => {
 .graph-container {
   display: flex;
   justify-content: center;
-  padding: 16px;
   height: 500px;
+  padding: 16px;
 }
+
 .graph-canvas {
   width: 100%;
   height: 100%;

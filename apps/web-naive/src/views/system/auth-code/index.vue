@@ -124,20 +124,20 @@ function columns(): DataTableColumns<AuthCodeApi.AuthCodeItem> {
         h('div', { class: 'flex gap-2' }, [
           ...(can('system:auth-code:update')
             ? [
-          h(
-            NButton,
-            { text: true, type: 'primary', onClick: () => onEdit(row) },
-            { default: () => $t('common.edit') },
-          ),
+                h(
+                  NButton,
+                  { text: true, type: 'primary', onClick: () => onEdit(row) },
+                  { default: () => $t('common.edit') },
+                ),
               ]
             : []),
           ...(can('system:auth-code:delete')
             ? [
-          h(
-            NButton,
-            { text: true, type: 'error', onClick: () => onDelete(row) },
-            { default: () => $t('common.delete') },
-          ),
+                h(
+                  NButton,
+                  { text: true, type: 'error', onClick: () => onDelete(row) },
+                  { default: () => $t('common.delete') },
+                ),
               ]
             : []),
         ]),
@@ -158,8 +158,14 @@ refreshGrid();
           clearable
           class="max-w-md"
           :placeholder="$t('system.authCode.searchPlaceholder')"
-          @clear="pageNo = 1; refreshGrid()"
-          @keyup.enter="pageNo = 1; refreshGrid()"
+          @clear="
+            pageNo = 1;
+            refreshGrid();
+          "
+          @keyup.enter="
+            pageNo = 1;
+            refreshGrid();
+          "
         />
         <NButton
           type="primary"
@@ -237,7 +243,10 @@ refreshGrid();
         show-size-picker
         :page-sizes="[10, 20, 50, 100]"
         @update:page="refreshGrid"
-        @update:page-size="pageNo = 1; refreshGrid()"
+        @update:page-size="
+          pageNo = 1;
+          refreshGrid();
+        "
       />
     </div>
   </Page>

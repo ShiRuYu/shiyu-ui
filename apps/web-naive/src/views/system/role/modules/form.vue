@@ -72,7 +72,10 @@ const [Modal, modalApi] = useVbenModal({
       if (data?.id !== undefined && data?.id !== null) {
         formApi.setValues({
           ...data,
-          status: data.status == null ? '1' : String(data.status),
+          status:
+            data.status === null || data.status === undefined
+              ? '1'
+              : String(data.status),
         });
       }
     }

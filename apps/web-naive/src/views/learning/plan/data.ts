@@ -30,11 +30,14 @@ export function useSchema(): VbenFormSchema[] {
 
 export function getStatusType(status: number) {
   switch (status) {
-    case 0:
+    case 0: {
       return 'success' as const;
-    case 1:
+    }
+    case 1: {
       return 'info' as const;
-    default:
+    }
+    default: {
       return 'default' as const;
+    }
   }
 }
