@@ -1,9 +1,10 @@
 import type { VxeTableGridColumns } from '@vben/plugins/vxe-table';
-import { useAccessStore } from '@vben/stores';
 
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { SystemTenantApi } from '#/api/system/tenant';
+
+import { useAccessStore } from '@vben/stores';
 
 import { z } from '#/adapter/form';
 import { getTenantTreeOptions } from '#/api/system/tenant';
@@ -95,6 +96,64 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'intro',
       label: $t('system.tenant.intro'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        disabled: true,
+      },
+      defaultValue: 'tenant_super',
+      dependencies: {
+        if: (values) => !values.id,
+        triggerFields: ['id'],
+      },
+      fieldName: 'adminRoleCode',
+      label: $t('system.tenant.adminRoleCode'),
+    },
+    {
+      component: 'Input',
+      defaultValue: $t('system.tenant.defaultAdminRoleName'),
+      dependencies: {
+        if: (values) => !values.id,
+        triggerFields: ['id'],
+      },
+      fieldName: 'adminRoleName',
+      label: $t('system.tenant.adminRoleName'),
+      rules: z
+        .string()
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('system.tenant.adminRoleName')]),
+        ),
+    },
+    {
+      component: 'Input',
+      dependencies: {
+        if: (values) => !values.id,
+        triggerFields: ['id'],
+      },
+      fieldName: 'adminUsername',
+      label: $t('system.tenant.adminUsername'),
+      rules: z
+        .string()
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('system.tenant.adminUsername')]),
+        ),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        showPasswordOnClick: true,
+        type: 'password',
+      },
+      dependencies: {
+        if: (values) => !values.id,
+        triggerFields: ['id'],
+      },
+      fieldName: 'adminPassword',
+      label: $t('system.tenant.adminPassword'),
+      rules: z.string().min(6, $t('system.tenant.adminPasswordMinLength')),
     },
     {
       component: 'RadioGroup',

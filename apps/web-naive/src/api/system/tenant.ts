@@ -5,6 +5,7 @@ import { requestClient } from '#/api/request';
 export namespace SystemTenantApi {
   export interface SystemTenant {
     [key: string]: any;
+    children?: SystemTenant[];
     id: number;
     parentId?: null | number;
     code: string;
@@ -14,17 +15,69 @@ export namespace SystemTenantApi {
     address?: string;
     domain?: string;
     intro?: string;
-    status: number;
+    status: number | string;
+    adminPassword?: string;
+    adminRoleName?: string;
+    adminUsername?: string;
+    authCodeIds?: number[];
+    menuIds?: number[];
     createTime?: string;
     updateTime?: string;
   }
 }
 
-async function getTenantList(_params?: Recordable<any>) {
+function buildTenantTree(list: SystemTenantApi.SystemTenant[]) {
+  const nodes = new Map<number, SystemTenantApi.SystemTenant>();
+  const roots: SystemTenantApi.SystemTenant[] = [];
+
+  for (const item of list) {
+    nodes.set(item.id, { ...item, children: [] });
+  }
+  for (const node of nodes.values()) {
+    const parent =
+      node.parentId === null || node.parentId === undefined
+        ? undefined
+        : nodes.get(node.parentId);
+    if (parent) {
+      parent.children?.push(node);
+    } else {
+      roots.push(node);
+    }
+  }
+  return roots;
+}
+
+function filterTenantTree(
+  nodes: SystemTenantApi.SystemTenant[],
+  params?: Recordable<any>,
+): SystemTenantApi.SystemTenant[] {
+  const name = String(params?.name ?? '')
+    .trim()
+    .toLowerCase();
+  const code = String(params?.code ?? '')
+    .trim()
+    .toLowerCase();
+  const status = String(params?.status ?? '').trim();
+  if (!name && !code && !status) return nodes;
+
+  return nodes.flatMap((node) => {
+    const children = filterTenantTree(node.children ?? [], params);
+    const matches =
+      (!name || node.name.toLowerCase().includes(name)) &&
+      (!code || node.code.toLowerCase().includes(code)) &&
+      (!status || String(node.status) === status);
+    return matches || children.length > 0 ? [{ ...node, children }] : [];
+  });
+}
+
+async function getTenantList(params?: Recordable<any>) {
   const data =
     await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
   const list = Array.isArray(data) ? data : [];
-  return { items: list, total: list.length };
+  return {
+    items: filterTenantTree(buildTenantTree(list), params),
+    total: list.length,
+  };
 }
 
 async function getTenantPage(params?: Recordable<any>) {
@@ -53,35 +106,7 @@ async function deleteTenant(id: number) {
 
 /** 获取租户选项（构建为树形结构，供 ApiTreeSelect 使用） */
 async function getTenantTreeOptions() {
-  const data =
-    await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
-  const list = Array.isArray(data) ? data : [];
-
-  // 将平铺的 parentId 结构转换为 children 树结构
-  const childrenMap: Record<number, SystemTenantApi.SystemTenant[]> = {};
-  const roots: SystemTenantApi.SystemTenant[] = [];
-
-  for (const item of list) {
-    const pid = item.parentId;
-    if (pid == null) {
-      roots.push(item);
-    } else {
-      if (!childrenMap[pid]) childrenMap[pid] = [];
-      childrenMap[pid].push(item);
-    }
-  }
-
-  function attachChildren(node: SystemTenantApi.SystemTenant) {
-    const children = childrenMap[node.id];
-    if (children && children.length > 0) {
-      node.children = children;
-      children.forEach(attachChildren);
-    }
-  }
-
-  roots.forEach(attachChildren);
-
-  return { items: roots, total: roots.length };
+  return getTenantList();
 }
 
 export {

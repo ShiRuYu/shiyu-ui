@@ -124,7 +124,9 @@ async function getMenuList() {
     name: String(item.name ?? ''),
     path: String(item.path ?? ''),
     status: Number(item.status ?? 0),
-    type: String(item.type || 'MENU').toLowerCase() as SystemMenuApi.SystemMenu['type'],
+    type: String(
+      item.type || 'MENU',
+    ).toLowerCase() as SystemMenuApi.SystemMenu['type'],
     meta: {
       icon: item.icon,
       keepAlive: item.keepAlive,
@@ -132,19 +134,57 @@ async function getMenuList() {
       title: item.name,
     },
     children: Array.isArray(item.children)
-      ? item.children.map(normalize)
+      ? item.children.map((child) => normalize(child))
       : undefined,
   });
-  return Array.isArray(data) ? data.map(normalize) : [];
+  return Array.isArray(data) ? data.map((item) => normalize(item)) : [];
 }
 
 /**
  * 获取菜单数据列表（包装为 vxe-table 格式）
  */
-async function getMenuListForGrid() {
+function filterMenuTree(
+  nodes: SystemMenuApi.SystemMenu[],
+  params?: Recordable<any>,
+): SystemMenuApi.SystemMenu[] {
+  const name = String(params?.name ?? '')
+    .trim()
+    .toLowerCase();
+  const code = String(params?.code ?? '')
+    .trim()
+    .toLowerCase();
+  const type = String(params?.type ?? '')
+    .trim()
+    .toLowerCase();
+  if (!name && !code && !type) return nodes;
+
+  return nodes.flatMap((node) => {
+    const children = filterMenuTree(node.children ?? [], params);
+    const matches =
+      (!name || node.name.toLowerCase().includes(name)) &&
+      (!code ||
+        String(node.code ?? '')
+          .toLowerCase()
+          .includes(code)) &&
+      (!type || node.type === type);
+    return matches || children.length > 0 ? [{ ...node, children }] : [];
+  });
+}
+
+function countMenuTree(nodes: SystemMenuApi.SystemMenu[]): number {
+  return nodes.reduce(
+    (total, node) => total + 1 + countMenuTree(node.children ?? []),
+    0,
+  );
+}
+
+async function getMenuListForGrid(params?: Recordable<any>) {
   const data = await getMenuList();
   const list = Array.isArray(data) ? data : [];
-  return { items: list, total: list.length };
+  return {
+    items: filterMenuTree(list, params),
+    total: countMenuTree(list),
+  };
 }
 
 async function getMenuPage(params?: Recordable<any>) {
@@ -158,7 +198,9 @@ async function getMenuPage(params?: Recordable<any>) {
     name: String(item.name ?? ''),
     path: String(item.path ?? ''),
     status: Number(item.status ?? 0),
-    type: String(item.type || 'MENU').toLowerCase() as SystemMenuApi.SystemMenu['type'],
+    type: String(
+      item.type || 'MENU',
+    ).toLowerCase() as SystemMenuApi.SystemMenu['type'],
     meta: {
       icon: item.icon,
       keepAlive: item.keepAlive,
@@ -167,7 +209,7 @@ async function getMenuPage(params?: Recordable<any>) {
     },
   });
   return {
-    items: (data.items ?? []).map(normalize),
+    items: (data.items ?? []).map((item) => normalize(item)),
     total: data.total ?? 0,
   };
 }

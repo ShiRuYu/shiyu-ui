@@ -24,5 +24,7 @@
   "no": "否",
   "status": "状态",
   "showSearchPanel": "显示搜索面板",
-  "hideSearchPanel": "隐藏搜索面板"
+  "hideSearchPanel": "隐藏搜索面板",
+  "expandAll": "全部展开",
+  "collapseAll": "全部收起"
 }

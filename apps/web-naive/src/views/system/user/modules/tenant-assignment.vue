@@ -35,7 +35,7 @@ const tenantOptions = computed(() =>
   tenants.value.map((item) => ({ label: item.name, value: item.id })),
 );
 const roleOptions = (tenantId: null | number) =>
-  tenantId == null
+  tenantId === null
     ? []
     : (rolesByTenant.value[tenantId] ?? []).map((item) => ({
         label: item.name,
@@ -43,10 +43,10 @@ const roleOptions = (tenantId: null | number) =>
       }));
 
 const roleLoading = (tenantId: null | number) =>
-  tenantId != null && roleLoadingByTenant.value[tenantId] === true;
+  tenantId !== null && roleLoadingByTenant.value[tenantId] === true;
 
 async function loadRoles(tenantId: null | number) {
-  if (tenantId == null || rolesByTenant.value[tenantId]) return;
+  if (tenantId === null || rolesByTenant.value[tenantId]) return;
   roleLoadingByTenant.value[tenantId] = true;
   try {
     const result = await getAllRoles('1', tenantId);
@@ -67,7 +67,9 @@ function removeRow(index: number) {
 function isTenantUsed(tenantId: null | number, index: number) {
   return rows.value.some(
     (item, rowIndex) =>
-      rowIndex !== index && item.tenantId != null && item.tenantId === tenantId,
+      rowIndex !== index &&
+      item.tenantId !== null &&
+      item.tenantId === tenantId,
   );
 }
 
@@ -76,7 +78,7 @@ const [Modal, modalApi] = useVbenModal({
     if (!user.value?.id) return;
     if (
       rows.value.some(
-        (item) => item.tenantId == null || item.roleIds.length === 0,
+        (item) => item.tenantId === null || item.roleIds.length === 0,
       )
     ) {
       message.warning($t('system.user.tenantAssignmentIncomplete'));
@@ -133,6 +135,11 @@ const [Modal, modalApi] = useVbenModal({
 <template>
   <Modal
     :title="`${$t('system.user.assignTenant')} - ${user?.nickName || user?.username || ''}`"
+    :cancel-text="$t('common.cancel')"
+    :confirm-text="$t('common.confirm')"
+    :show-cancel-button="true"
+    :show-confirm-button="true"
+    :show-footer="true"
     class="w-[680px]"
   >
     <NSpin :show="loading">

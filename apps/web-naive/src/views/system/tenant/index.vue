@@ -11,7 +11,7 @@ import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteTenant, getTenantPage } from '#/api/system/tenant';
+import { deleteTenant, getTenantList } from '#/api/system/tenant';
 import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
 import { $t } from '#/locales';
 
@@ -61,20 +61,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    pagerConfig: {
-      enabled: true,
-    },
+    pagerConfig: { enabled: false },
     proxyConfig: {
       ajax: {
-        query: async ({ page }, formValues) => {
-          return await getTenantPage({
-            pageNum: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-          });
+        query: async (_params, formValues) => {
+          return await getTenantList(formValues);
         },
       },
     },
+    rowConfig: { keyField: 'id' },
     toolbarConfig: {
       custom: true,
       export: false,
@@ -82,11 +77,21 @@ const [Grid, gridApi] = useVbenVxeGrid({
       search: true,
       zoom: true,
     },
+    treeConfig: {
+      childrenField: 'children',
+      expandAll: false,
+      reserve: true,
+      rowField: 'id',
+    },
   } as VxeTableGridOptions,
 });
 
 function refreshGrid() {
   gridApi.query();
+}
+
+function setAllExpanded(expanded: boolean) {
+  gridApi.grid.setAllTreeExpand(expanded);
 }
 </script>
 <template>
@@ -94,6 +99,12 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('system.tenant.list')">
       <template #toolbar-tools>
+        <NButton @click="setAllExpanded(true)">
+          {{ $t('common.expandAll') }}
+        </NButton>
+        <NButton @click="setAllExpanded(false)">
+          {{ $t('common.collapseAll') }}
+        </NButton>
         <NButton
           type="primary"
           @click="onCreate"
