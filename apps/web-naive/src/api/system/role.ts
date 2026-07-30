@@ -29,9 +29,9 @@ async function getRoleList(params?: Recordable<any>) {
 /**
  * 获取所有角色（下拉选择用）
  */
-async function getAllRoles(status?: string) {
+async function getAllRoles(status?: string, tenantId?: number) {
   return requestClient.get<Array<SystemRoleApi.SystemRole>>('/role/all', {
-    params: { status },
+    params: { status, tenantId },
   });
 }
 

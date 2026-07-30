@@ -26,16 +26,35 @@ interface AssignmentRow {
 const emit = defineEmits<{ success: [] }>();
 const user = ref<SystemUserApi.SystemUser>();
 const tenants = ref<SystemTenantApi.SystemTenant[]>([]);
-const roles = ref<SystemRoleApi.SystemRole[]>([]);
+const rolesByTenant = ref<Record<number, SystemRoleApi.SystemRole[]>>({});
+const roleLoadingByTenant = ref<Record<number, boolean>>({});
 const rows = ref<AssignmentRow[]>([]);
 const loading = ref(false);
 
 const tenantOptions = computed(() =>
   tenants.value.map((item) => ({ label: item.name, value: item.id })),
 );
-const roleOptions = computed(() =>
-  roles.value.map((item) => ({ label: item.name, value: item.id })),
-);
+const roleOptions = (tenantId: null | number) =>
+  tenantId == null
+    ? []
+    : (rolesByTenant.value[tenantId] ?? []).map((item) => ({
+        label: item.name,
+        value: item.id,
+      }));
+
+const roleLoading = (tenantId: null | number) =>
+  tenantId != null && roleLoadingByTenant.value[tenantId] === true;
+
+async function loadRoles(tenantId: null | number) {
+  if (tenantId == null || rolesByTenant.value[tenantId]) return;
+  roleLoadingByTenant.value[tenantId] = true;
+  try {
+    const result = await getAllRoles('1', tenantId);
+    rolesByTenant.value[tenantId] = Array.isArray(result) ? result : [];
+  } finally {
+    roleLoadingByTenant.value[tenantId] = false;
+  }
+}
 
 function addRow() {
   rows.value.push({ tenantId: null, roleIds: [] });
@@ -85,24 +104,25 @@ const [Modal, modalApi] = useVbenModal({
     if (!user.value?.id) return;
     loading.value = true;
     try {
-      const [tenantResult, roleResult, assignmentResult] = await Promise.all([
+      const [tenantResult, assignmentResult] = await Promise.all([
         getTenantList(),
-        getAllRoles('1'),
         getUserTenantAssignments(user.value.id),
       ]);
       tenants.value = tenantResult.items;
-      roles.value = Array.isArray(roleResult) ? roleResult : [];
+      rolesByTenant.value = {};
       const grouped = new Map<number, number[]>();
       for (const item of assignmentResult ?? []) {
-        grouped.set(item.tenantId, [
-          ...(grouped.get(item.tenantId) ?? []),
-          item.roleId,
-        ]);
+        const roleIds = grouped.get(item.tenantId) ?? [];
+        if (!roleIds.includes(item.roleId)) roleIds.push(item.roleId);
+        grouped.set(item.tenantId, roleIds);
       }
       rows.value = [...grouped.entries()].map(([tenantId, roleIds]) => ({
         tenantId,
         roleIds,
       }));
+      await Promise.all(
+        [...grouped.keys()].map((tenantId) => loadRoles(tenantId)),
+      );
     } finally {
       loading.value = false;
     }
@@ -129,15 +149,22 @@ const [Modal, modalApi] = useVbenModal({
             class="flex-1"
             @update:value="
               (value) => {
-                if (isTenantUsed(value, index)) row.tenantId = null;
+                if (isTenantUsed(value, index)) {
+                  row.tenantId = null;
+                  row.roleIds = [];
+                  return;
+                }
+                row.roleIds = [];
+                loadRoles(value);
               }
             "
           />
           <NSelect
             v-model:value="row.roleIds"
-            :options="roleOptions"
+            :options="roleOptions(row.tenantId)"
             :placeholder="$t('system.user.selectRole')"
             class="flex-1"
+            :loading="roleLoading(row.tenantId)"
             multiple
           />
           <NButton quaternary type="error" @click="removeRow(index)">
