@@ -7,6 +7,7 @@ import { computed, h, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
+import { useUserStore } from '@vben/stores';
 
 import { NSpin, NTree } from 'naive-ui';
 
@@ -14,7 +15,6 @@ import { message } from '#/adapter/naive';
 import { getMenuList } from '#/api/system/menu';
 import { getRoleDetail, replaceRoleMenus } from '#/api/system/role';
 import { $t } from '#/locales';
-import { useUserStore } from '@vben/stores';
 
 const userStore = useUserStore();
 const role = ref<SystemRoleApi.SystemRole>();

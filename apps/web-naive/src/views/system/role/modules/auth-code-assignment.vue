@@ -5,6 +5,7 @@ import type { SystemRoleApi } from '#/api/system/role';
 import { computed, shallowRef } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import {
   NCheckbox,
@@ -23,7 +24,6 @@ import {
   replaceRoleAuthCodes,
 } from '#/api/system/auth-code';
 import { $t } from '#/locales';
-import { useUserStore } from '@vben/stores';
 
 interface ResourceGroup {
   resource: string;
@@ -120,10 +120,7 @@ async function loadAssignedCodes() {
   }
   loading.value = true;
   try {
-    selectedCodes.value = await getRoleAuthCodes(
-      role.value.id,
-      tenantId.value,
-    );
+    selectedCodes.value = await getRoleAuthCodes(role.value.id, tenantId.value);
   } finally {
     loading.value = false;
   }

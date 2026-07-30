@@ -3,14 +3,14 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 interface BasicUserInfo {
   [key: string]: any;
   avatar: string;
+  currentTenantId?: number;
   extInfo?: Record<string, any>;
+  homeTenantId?: number;
   realName: string;
   roles?: string[];
+  switchMode?: string;
   userId: string;
   username: string;
-  homeTenantId?: number;
-  currentTenantId?: number;
-  switchMode?: string;
 }
 
 interface TenantInfo {
@@ -21,9 +21,9 @@ interface TenantInfo {
 }
 
 interface AccessState {
-  homeTenantId: null | number;
   currentTenantId: null | number;
   currentTenantName: string;
+  homeTenantId: null | number;
   tenants: TenantInfo[];
   userInfo: BasicUserInfo | null;
   userRoles: string[];

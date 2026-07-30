@@ -202,7 +202,11 @@ if (props.enableShortcutKey) {
             >
               {{ text }}
               <slot name="tagText">
-                <Badge v-if="tagText" variant="secondary" class="ml-2 text-green-400">
+                <Badge
+                  v-if="tagText"
+                  variant="secondary"
+                  class="ml-2 text-green-400"
+                >
                   {{ tagText }}
                 </Badge>
               </slot>
@@ -224,7 +228,8 @@ if (props.enableShortcutKey) {
             >
               <span class="text-muted-foreground">租户：</span>
               <span class="flex-1">{{
-                tenants.find((tenant) => tenant.id === currentTenantId)?.pathName ??
+                tenants.find((tenant) => tenant.id === currentTenantId)
+                  ?.pathName ??
                 tenants.find((tenant) => tenant.id === currentTenantId)?.name ??
                 '未选择'
               }}</span>
@@ -237,7 +242,10 @@ if (props.enableShortcutKey) {
                 :class="{ 'text-green-400': tenant.id === currentTenantId }"
                 @click="emit('switchTenant', tenant.id)"
               >
-                <Check v-if="tenant.id === currentTenantId" class="mr-2 size-4" />
+                <Check
+                  v-if="tenant.id === currentTenantId"
+                  class="mr-2 size-4"
+                />
                 <span v-else class="mr-2 inline-block size-4"></span>
                 {{ tenant.pathName ?? tenant.name }}
               </DropdownMenuItem>

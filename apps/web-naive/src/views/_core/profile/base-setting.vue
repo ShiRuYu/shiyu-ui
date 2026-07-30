@@ -30,13 +30,11 @@ const selectedTenantId = ref<null | number>(null);
 const timezoneOptions = ref<{ label: string; value: string }[]>([]);
 const selectedTimezone = ref('');
 
-const formSchema = computed(
-  (): VbenFormSchema[] => [
-    { fieldName: 'nickName', component: 'Input', label: '昵称' },
-    { fieldName: 'username', component: 'Input', label: '用户名' },
-    { fieldName: 'email', component: 'Input', label: '邮箱' },
-  ],
-);
+const formSchema = computed((): VbenFormSchema[] => [
+  { fieldName: 'nickName', component: 'Input', label: '昵称' },
+  { fieldName: 'username', component: 'Input', label: '用户名' },
+  { fieldName: 'email', component: 'Input', label: '邮箱' },
+]);
 
 async function handleUpdateProfile(values: Record<string, any>) {
   try {
@@ -150,11 +148,18 @@ onMounted(async () => {
         v-model="selectedTenantId"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
-        <option v-for="tenant in userStore.tenants" :key="tenant.id" :value="tenant.id">
+        <option
+          v-for="tenant in userStore.tenants"
+          :key="tenant.id"
+          :value="tenant.id"
+        >
           {{ tenant.pathName ?? tenant.name }}
         </option>
       </select>
-      <button class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground" @click="switchTenant">
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground"
+        @click="switchTenant"
+      >
         切换
       </button>
     </div>
@@ -169,7 +174,10 @@ onMounted(async () => {
           {{ role.name }}
         </option>
       </select>
-      <button class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground" @click="switchRole">
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground"
+        @click="switchRole"
+      >
         切换
       </button>
     </div>
@@ -183,11 +191,18 @@ onMounted(async () => {
         v-model="selectedTimezone"
         class="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
       >
-        <option v-for="option in timezoneOptions" :key="option.value" :value="option.value">
+        <option
+          v-for="option in timezoneOptions"
+          :key="option.value"
+          :value="option.value"
+        >
           {{ option.label }}
         </option>
       </select>
-      <button class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground" @click="switchTimezone">
+      <button
+        class="rounded bg-primary px-4 py-2 text-sm text-primary-foreground"
+        @click="switchTimezone"
+      >
         保存
       </button>
     </div>
