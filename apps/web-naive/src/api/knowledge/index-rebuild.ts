@@ -14,9 +14,7 @@ export namespace KnowledgeIndexApi {
 }
 
 async function rebuildIndex() {
-  return requestClient.post<string>(
-    '/knowledge/knowledge/index/rebuild',
-  );
+  return requestClient.post<string>('/knowledge/knowledge/index/rebuild');
 }
 
 async function getRebuildTaskStatus(taskId: string) {

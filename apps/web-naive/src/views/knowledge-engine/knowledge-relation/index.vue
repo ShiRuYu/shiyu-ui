@@ -124,8 +124,7 @@ const preColumns = computed(() => [
       h(
         NPopconfirm,
         {
-          onPositiveClick: () =>
-            handleDeleteRelation(row.id, true),
+          onPositiveClick: () => handleDeleteRelation(row.id, true),
         },
         {
           default: () => $t('knowledge.confirmDelete'),
@@ -158,8 +157,7 @@ const subColumns = computed(() => [
       h(
         NPopconfirm,
         {
-          onPositiveClick: () =>
-            handleDeleteRelation(row.id, false),
+          onPositiveClick: () => handleDeleteRelation(row.id, false),
         },
         {
           default: () => $t('knowledge.confirmDelete'),

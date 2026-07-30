@@ -39,9 +39,9 @@ const uploadProgress = ref(0);
 
 const storageLabels: Record<string, string> = {
   'aliyun-oss': 'Alibaba Cloud OSS',
-  'local': $t('page.file.localStorage'),
-  'minio': 'MinIO',
-  's3': 'Amazon S3',
+  local: $t('page.file.localStorage'),
+  minio: 'MinIO',
+  s3: 'Amazon S3',
   'tencent-cos': 'Tencent Cloud COS',
 };
 
