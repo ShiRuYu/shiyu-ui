@@ -5,7 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationReviewApi } from '#/api/education-admin/review';
 
 import { getStudentOptions } from '#/api/education-admin/student';
-import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
+import { getKnowledgePointOptions } from '#/api/knowledge/point';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -35,7 +35,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getKnowledgeOptions,
+        api: getKnowledgePointOptions,
         labelField: 'name',
         valueField: 'id',
         placeholder: $t('education.review.selectKnowledge'),

@@ -10,7 +10,10 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NDataTable, NInput, NSelect, NSpace } from 'naive-ui';
 
-import { getSubjectList, searchKnowledgeApi } from '#/api';
+import { getSubjectList } from '#/api';
+import { getKnowledgePoints } from '#/api/knowledge/point';
+import { useKnowledgeStore } from '#/store';
+import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
 
 const router = useRouter();
@@ -21,6 +24,8 @@ const subjects = ref<EducationSubjectApi.Subject[]>([]);
 const keyword = ref('');
 const searchMode = ref('KEYWORD');
 const subjectCode = ref<null | string>(null);
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(knowledgeStore);
 
 const columns: DataTableColumns<any> = [
   { title: 'ID', key: 'id', width: 80 },
@@ -50,10 +55,16 @@ async function handleSearch() {
   if (!keyword.value) return;
   loading.value = true;
   try {
-    results.value = await searchKnowledgeApi({
-      query: keyword.value,
-      mode: searchMode.value,
+    if (!activeSpaceId.value) {
+      await knowledgeStore.loadSpaces();
+    }
+    if (!activeSpaceId.value) return;
+    const result = await getKnowledgePoints(activeSpaceId.value, {
+      keyword: keyword.value,
+      pageNum: 1,
+      pageSize: 100,
     });
+    results.value = result.items;
   } catch (error) {
     console.error('Failed to search knowledge:', error);
   } finally {
@@ -65,7 +76,8 @@ function goToKnowledge(row: any) {
   router.push({ path: `/learning/knowledge/${row.id}` });
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await knowledgeStore.loadSpaces();
   loadSubjects();
 });
 </script>

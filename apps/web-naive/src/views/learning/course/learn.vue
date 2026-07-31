@@ -23,7 +23,11 @@ import {
 import { message } from '#/adapter/naive';
 import { getChapterTree } from '#/api/education/chapter';
 import { getCourseById } from '#/api/education/course';
-import { getDocumentsByKnowledgeApi } from '#/api/knowledge/document';
+import { getKnowledgeDocument } from '#/api/knowledge/enterprise';
+import {
+  getKnowledgeDocumentsByPoint,
+} from '#/api/knowledge/document';
+import { getKnowledgePoint } from '#/api/knowledge/point';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -114,17 +118,13 @@ async function selectChapter(chapter: EducationChapterApi.Chapter) {
     const json = (await res.json()) as { data?: number[] };
     const kIds = json.data ?? [];
     if (kIds.length > 0) {
-      const dPromises = kIds.map((id: number) =>
-        fetch(`/knowledge/knowledge/detail?id=${id}`).then(
-          (r) => r.json() as Promise<{ data?: KnowledgeSummary }>,
-        ),
-      );
-      const details = await Promise.all(dPromises);
-      chapterKnowledges.value = details
-        .map((r) => r.data)
-        .filter((item): item is KnowledgeSummary => item !== undefined);
+      const details = await Promise.all(kIds.map((id) => getKnowledgePoint(id)));
+      chapterKnowledges.value = details.map((item) => ({
+        id: item.id,
+        name: item.name,
+      }));
       const docPs = kIds.map((id: number) =>
-        getDocumentsByKnowledgeApi(id).then(
+        getKnowledgeDocumentsByPoint(id).then(
           (documents) => (documents || []) as KnowledgeDocument[],
         ),
       );
@@ -156,7 +156,9 @@ function getDocTypeIcon(type: string) {
   return icons[type] || '📄';
 }
 
-function openDocument(doc: KnowledgeDocument) {
+async function openDocument(doc: KnowledgeDocument) {
+  const detail = await getKnowledgeDocument(doc.id);
+  Object.assign(doc, detail);
   currentDoc.value = doc;
   showDocModal.value = true;
 }

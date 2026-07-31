@@ -24,7 +24,15 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-export function useSchema(): VbenFormSchema[] {
+export function useSchema(
+  difficultyOptions: Array<{ label: string; value: number }> = [
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+  ],
+): VbenFormSchema[] {
   return [
     {
       component: 'Input',
@@ -51,14 +59,9 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'Select',
       componentProps: {
-        options: [
-          { label: '1', value: 1 },
-          { label: '2', value: 2 },
-          { label: '3', value: 3 },
-          { label: '4', value: 4 },
-        ],
+        options: difficultyOptions,
       },
-      fieldName: 'difficulty',
+      fieldName: 'difficultyLevel',
       label: $t('knowledge.difficulty'),
     },
     {
@@ -87,7 +90,7 @@ export function useColumns(
       width: 250,
     },
     {
-      field: 'difficulty',
+      field: 'difficultyLevel',
       title: $t('knowledge.difficulty'),
       width: 90,
     },

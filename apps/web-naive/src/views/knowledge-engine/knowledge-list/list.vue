@@ -13,13 +13,17 @@ import { NButton, NSpace } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteKnowledgeApi, getKnowledgeListApi } from '#/api/knowledge';
+import { deleteKnowledgePoint, getKnowledgePoints } from '#/api/knowledge/point';
+import { useKnowledgeStore } from '#/store';
+import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
 const router = useRouter();
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(knowledgeStore);
 
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
@@ -33,7 +37,7 @@ function onCreate() {
 }
 function onDelete(row: any) {
   const h = message.loading($t('common.deleting'), { duration: 0 });
-  deleteKnowledgeApi(row.id)
+  deleteKnowledgePoint(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.name]));
       refreshGrid();
@@ -71,10 +75,19 @@ const [Grid, gridApi] = useVbenVxeGrid({
           };
           if (formValues?.keyword) params.keyword = formValues.keyword;
           if (formValues?.category) params.category = formValues.category;
-          const result = await getKnowledgeListApi(params);
+          if (!activeSpaceId.value) {
+            await knowledgeStore.loadSpaces();
+          }
+          if (!activeSpaceId.value) return { items: [], total: 0 };
+          const result = await getKnowledgePoints(activeSpaceId.value, {
+            keyword: params.keyword,
+            category: params.category,
+            pageNum: params.page,
+            pageSize: params.pageSize,
+          });
           return {
-            items: result?.items || result,
-            total: result?.total || (result?.items || result)?.length || 0,
+            items: result.items,
+            total: result.total,
           };
         },
       },

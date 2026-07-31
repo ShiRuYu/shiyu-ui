@@ -42,21 +42,21 @@ requestClient.delete<T>('/url');
 
 ### 按模块分组（当前方式）
 
-每个模块一个文件，如 `api/knowledge/knowledge.ts`
+每个模块一个文件，如 `api/knowledge/point.ts`
 
 ```ts
-// api/knowledge/knowledge.ts
+// api/knowledge/point.ts
 export namespace KnowledgeApi {
   export interface KnowledgeVO { ... }
   export interface KnowledgeCreateReq { ... }
 }
 
 async function getKnowledgePage(params) {
-  return requestClient.get<KnowledgeApi.KnowledgeVO[]>("/knowledge/page", { params });
+  return requestClient.get<KnowledgeApi.KnowledgeVO[]>("/knowledge/v2/points", { params });
 }
 
 async function createKnowledge(data: KnowledgeApi.KnowledgeCreateReq) {
-  return requestClient.post("/knowledge/create", data);
+  return requestClient.post("/knowledge/v2/points", data);
 }
 
 export { getKnowledgePage, createKnowledge };
@@ -65,11 +65,11 @@ export { getKnowledgePage, createKnowledge };
 ### 按子域分组（推荐，适应未来规模）
 
 ```ts
-// api/knowledge/document.api.ts
-// api/knowledge/chunk.api.ts
-// api/knowledge/embedding.api.ts
-// api/knowledge/search.api.ts
-// api/knowledge/index.api.ts
+// api/knowledge/document.ts
+// api/knowledge/relation.ts
+// api/knowledge/search.ts
+// api/knowledge/enterprise.ts
+// api/knowledge/index.ts
 ```
 
 ## 四、各模块 API 文件清单

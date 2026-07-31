@@ -6,7 +6,7 @@ import type { EducationWrongQuestionApi } from '#/api/education-admin/wrong-ques
 
 import { getStudentOptions } from '#/api/education-admin/student';
 import { getQuestionOptions } from '#/api/education/question';
-import { getKnowledgeOptions } from '#/api/knowledge/knowledge';
+import { getKnowledgePointOptions } from '#/api/knowledge/point';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -48,7 +48,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'ApiSelect',
       componentProps: {
-        api: getKnowledgeOptions,
+        api: getKnowledgePointOptions,
         labelField: 'name',
         valueField: 'id',
         placeholder: $t('education.wrongQuestion.selectKnowledge'),

@@ -7,10 +7,9 @@ import type {
   HybridHit,
   IngestionJob,
   KnowledgeDocument,
-  KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 
-import { computed, h, onMounted, ref } from 'vue';
+import { computed, h, onMounted, reactive, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -26,6 +25,7 @@ import {
   NInputNumber,
   NModal,
   NProgress,
+  NPopconfirm,
   NSelect,
   NSpace,
   NStatistic,
@@ -36,6 +36,8 @@ import {
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
+import { useKnowledgeStore } from '#/store';
+import { storeToRefs } from 'pinia';
 import {
   cancelJob,
   checkEmbeddedBackup,
@@ -44,54 +46,101 @@ import {
   getDocuments,
   getEmbeddedRuntimeStatus,
   getJobs,
-  getSpaces,
   hybridSearch,
   rebuildSpaceIndex,
   retryJob,
   transitionDocument,
   uploadDocument,
 } from '#/api/knowledge/enterprise';
+import {
+  createKnowledgePoint,
+  deleteKnowledgePoint,
+  getKnowledgePoints,
+  updateKnowledgePoint,
+  type KnowledgePoint as KnowledgePointView,
+} from '#/api/knowledge/point';
 
-const spaces = ref<KnowledgeSpace[]>([]);
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId, spaceOptions, spaces } = storeToRefs(knowledgeStore);
 const documents = ref<KnowledgeDocument[]>([]);
+const points = ref<KnowledgePointView[]>([]);
 const jobs = ref<IngestionJob[]>([]);
 const hits = ref<HybridHit[]>([]);
-const activeSpaceId = ref<number>();
 const loading = ref(false);
+const pointLoading = ref(false);
 const spaceModal = ref(false);
+const pointModal = ref(false);
+const editingPointId = ref<number>();
 const query = ref('');
+const pointKeyword = ref('');
 const topK = ref(5);
 const runtimeStatus = ref<EmbeddedRuntimeStatus>();
 const latestBackup = ref<BackupResult>();
-const spaceForm = ref({ code: '', name: '', reviewMode: 'OPTIONAL' });
-
-const spaceOptions = computed(() =>
-  spaces.value.map((item) => ({ label: item.name, value: item.id })),
+const spaceForm = ref({
+  code: '',
+  difficultyScaleId: 1,
+  name: '',
+  reviewMode: 'OPTIONAL',
+});
+const pointForm = reactive({
+  category: '',
+  code: '',
+  description: '',
+  difficultyLevel: 1,
+  name: '',
+  tags: '',
+});
+const difficultyOptions = computed(
+  () =>
+    knowledgeStore.difficultyScale?.levels.map((level) => ({
+      label: `${level.level} · ${level.label}`,
+      value: level.level,
+    })) ?? [{ label: '1', value: 1 }],
 );
 const failedJobs = computed(
   () => jobs.value.filter((item) => item.status === 'FAILED').length,
 );
 
 async function loadSpaces() {
-  const result = await getSpaces({ pageNum: 1, pageSize: 100 });
-  spaces.value = result.items;
-  activeSpaceId.value ||= result.items[0]?.id;
+  await knowledgeStore.loadSpaces();
+}
+
+async function loadPoints() {
+  if (!activeSpaceId.value) return;
+  pointLoading.value = true;
+  try {
+    const result = await getKnowledgePoints(activeSpaceId.value, {
+      keyword: pointKeyword.value || undefined,
+      pageNum: 1,
+      pageSize: 20,
+    });
+    points.value = result.items;
+  } finally {
+    pointLoading.value = false;
+  }
 }
 
 async function loadWorkspace() {
   if (!activeSpaceId.value) return;
+  await knowledgeStore.loadDifficultyScale(activeSpaceId.value);
   loading.value = true;
   try {
-    const [documentPage, jobPage] = await Promise.all([
+    const [documentPage, jobPage, pointPage] = await Promise.all([
       getDocuments(activeSpaceId.value, { pageNum: 1, pageSize: 20 }),
       getJobs({
         pageNum: 1,
         pageSize: 20,
         spaceId: activeSpaceId.value,
       }),
+      getKnowledgePoints(activeSpaceId.value, {
+        pageNum: 1,
+        pageSize: 20,
+        keyword: pointKeyword.value || undefined,
+      }),
     ]);
     documents.value = documentPage.items;
     jobs.value = jobPage.items;
+    points.value = pointPage.items;
   } finally {
     loading.value = false;
   }
@@ -121,6 +170,47 @@ async function submitSpace() {
   message.success('知识空间已创建');
   spaceModal.value = false;
   await loadSpaces();
+}
+
+async function submitPoint() {
+  if (!activeSpaceId.value) return;
+  if (editingPointId.value) {
+    await updateKnowledgePoint(editingPointId.value, pointForm);
+    message.success('知识点已更新');
+  } else {
+    await createKnowledgePoint(activeSpaceId.value, pointForm);
+    message.success('知识点已创建');
+  }
+  pointModal.value = false;
+  editingPointId.value = undefined;
+  Object.assign(pointForm, {
+    category: '',
+    code: '',
+    description: '',
+    difficultyLevel: 1,
+    name: '',
+    tags: '',
+  });
+  await loadPoints();
+}
+
+function editPoint(point: KnowledgePointView) {
+  editingPointId.value = point.id;
+  Object.assign(pointForm, {
+    category: point.category ?? '',
+    code: point.code,
+    description: point.description ?? '',
+    difficultyLevel: point.difficultyLevel ?? 1,
+    name: point.name,
+    tags: point.tags ?? '',
+  });
+  pointModal.value = true;
+}
+
+async function removePoint(point: KnowledgePointView) {
+  await deleteKnowledgePoint(point.id);
+  message.success('知识点已删除');
+  await loadPoints();
 }
 
 async function upload({ file }: UploadCustomRequestOptions) {
@@ -210,6 +300,46 @@ const documentColumns = [
                   { default: () => '发布' },
                 )
               : null,
+          ],
+        },
+      ),
+  },
+];
+
+const pointColumns = [
+  { key: 'code', title: '编码', width: 140 },
+  { key: 'name', title: '知识点', minWidth: 180 },
+  { key: 'category', title: '分类', width: 120 },
+  { key: 'difficultyLevel', title: '难度', width: 80 },
+  { key: 'tags', title: '标签', minWidth: 180 },
+  {
+    key: 'actions',
+    title: '操作',
+    width: 150,
+    render: (row: KnowledgePointView) =>
+      h(
+        NSpace,
+        {},
+        {
+          default: () => [
+            h(
+              NButton,
+              { size: 'small', onClick: () => editPoint(row) },
+              { default: () => '编辑' },
+            ),
+            h(
+              NPopconfirm,
+              { onPositiveClick: () => removePoint(row) },
+              {
+                trigger: () =>
+                  h(
+                    NButton,
+                    { size: 'small', type: 'error' },
+                    { default: () => '删除' },
+                  ),
+                default: () => '确认删除该知识点？关联关系和文档关联也会清理。',
+              },
+            ),
           ],
         },
       ),
@@ -307,7 +437,12 @@ onMounted(async () => {
             v-model:value="activeSpaceId"
             :options="spaceOptions"
             style="width: 260px"
-            @update:value="loadWorkspace"
+            @update:value="
+              (value) => {
+                knowledgeStore.setActiveSpace(value);
+                loadWorkspace();
+              }
+            "
           />
           <NButton type="primary" @click="spaceModal = true">新建空间</NButton>
           <NButton @click="loadWorkspace">刷新</NButton>
@@ -325,6 +460,35 @@ onMounted(async () => {
       </NCard>
 
       <NTabs type="line" animated>
+        <NTabPane name="points" tab="知识点">
+          <NCard>
+            <NSpace align="center">
+              <NInput
+                v-model:value="pointKeyword"
+                clearable
+                placeholder="搜索编码或名称"
+                style="width: 280px"
+                @keyup.enter="loadPoints"
+              />
+              <NButton @click="loadPoints">搜索</NButton>
+              <NButton
+                type="primary"
+                @click="
+                  editingPointId = undefined;
+                  pointModal = true;
+                "
+              >
+                新建知识点
+              </NButton>
+            </NSpace>
+            <NDataTable
+              class="mt-4"
+              :columns="pointColumns"
+              :data="points"
+              :loading="pointLoading"
+            />
+          </NCard>
+        </NTabPane>
         <NTabPane name="documents" tab="文档中心">
           <NCard>
             <NUpload :custom-request="upload" :show-file-list="false" multiple>
@@ -431,9 +595,50 @@ onMounted(async () => {
             ]"
           />
         </NFormItem>
+        <NFormItem label="难度量表 ID">
+          <NInputNumber
+            v-model:value="spaceForm.difficultyScaleId"
+            :min="1"
+            placeholder="默认量表：1"
+          />
+        </NFormItem>
       </NForm>
       <template #footer>
         <NButton type="primary" @click="submitSpace">创建</NButton>
+      </template>
+    </NModal>
+
+    <NModal
+      v-model:show="pointModal"
+      preset="card"
+      :title="editingPointId ? '编辑知识点' : '新建知识点'"
+      style="width: 560px"
+    >
+      <NForm :model="pointForm">
+        <NFormItem label="编码">
+          <NInput v-model:value="pointForm.code" :disabled="!!editingPointId" />
+        </NFormItem>
+        <NFormItem label="名称">
+          <NInput v-model:value="pointForm.name" />
+        </NFormItem>
+        <NFormItem label="描述">
+          <NInput v-model:value="pointForm.description" type="textarea" />
+        </NFormItem>
+        <NFormItem label="难度等级">
+          <NSelect
+            v-model:value="pointForm.difficultyLevel"
+            :options="difficultyOptions"
+          />
+        </NFormItem>
+        <NFormItem label="分类">
+          <NInput v-model:value="pointForm.category" />
+        </NFormItem>
+        <NFormItem label="标签">
+          <NInput v-model:value="pointForm.tags" placeholder="JSON 数组或逗号分隔" />
+        </NFormItem>
+      </NForm>
+      <template #footer>
+        <NButton type="primary" @click="submitPoint">创建</NButton>
       </template>
     </NModal>
   </Page>

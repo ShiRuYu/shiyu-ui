@@ -23,6 +23,7 @@ export interface KnowledgeSpace {
   code: string;
   createTime: string;
   description?: string;
+  difficultyScaleId: number;
   embeddingProfile: string;
   id: number;
   name: string;
@@ -30,6 +31,21 @@ export interface KnowledgeSpace {
   reviewMode: 'DIRECT' | 'OPTIONAL' | 'REQUIRED';
   status: number;
   updateTime: string;
+}
+
+export interface KnowledgeDifficultyScaleLevel {
+  description?: string;
+  label: string;
+  level: number;
+}
+
+export interface KnowledgeDifficultyScale {
+  code: string;
+  description?: string;
+  id: number;
+  levelCount: number;
+  levels: KnowledgeDifficultyScaleLevel[];
+  name: string;
 }
 
 export interface KnowledgeDocument {
@@ -98,7 +114,7 @@ export function getSpaces(params: {
   pageNum: number;
   pageSize: number;
 }) {
-  return requestClient.get<PageData<KnowledgeSpace>>('/knowledge/v2/spaces', {
+  return requestClient.get<PageData<KnowledgeSpace>>('/knowledge/spaces', {
     params,
   });
 }
@@ -109,10 +125,17 @@ export function createSpace(data: {
   chunkSize?: number;
   code: string;
   description?: string;
+  difficultyScaleId?: number;
   name: string;
   reviewMode?: string;
 }) {
-  return requestClient.post<KnowledgeSpace>('/knowledge/v2/spaces', data);
+  return requestClient.post<KnowledgeSpace>('/knowledge/spaces', data);
+}
+
+export function getDifficultyScale(spaceId: number) {
+  return requestClient.get<KnowledgeDifficultyScale>(
+    `/knowledge/spaces/${spaceId}/difficulty-scale`,
+  );
 }
 
 export function getDocuments(
@@ -125,9 +148,13 @@ export function getDocuments(
   },
 ) {
   return requestClient.get<PageData<KnowledgeDocument>>(
-    `/knowledge/v2/spaces/${spaceId}/documents`,
+    `/knowledge/spaces/${spaceId}/documents`,
     { params },
   );
+}
+
+export function getKnowledgeDocument(id: number) {
+  return requestClient.get<KnowledgeDocument>(`/knowledge/documents/${id}`);
 }
 
 export function uploadDocument(spaceId: number, file: File) {
@@ -136,7 +163,7 @@ export function uploadDocument(spaceId: number, file: File) {
     duplicate: boolean;
     jobId?: number;
     versionId: number;
-  }>(`/knowledge/v2/spaces/${spaceId}/documents`, { file });
+  }>(`/knowledge/spaces/${spaceId}/documents`, { file });
 }
 
 export function transitionDocument(
@@ -144,12 +171,12 @@ export function transitionDocument(
   action: 'approve' | 'publish' | 'reject' | 'submit',
 ) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/v2/documents/${id}/${action}`,
+    `/knowledge/documents/${id}/${action}`,
   );
 }
 
-export function deleteDocumentV2(id: number) {
-  return requestClient.delete(`/knowledge/v2/documents/${id}`);
+export function deleteDocument(id: number) {
+  return requestClient.delete(`/knowledge/documents/${id}`);
 }
 
 export function getJobs(params: {
@@ -159,17 +186,17 @@ export function getJobs(params: {
   status?: JobStatus;
 }) {
   return requestClient.get<PageData<IngestionJob>>(
-    '/knowledge/v2/ingestion-jobs',
+    '/knowledge/ingestion-jobs',
     { params },
   );
 }
 
 export function retryJob(id: number) {
-  return requestClient.post(`/knowledge/v2/ingestion-jobs/${id}/retry`);
+  return requestClient.post(`/knowledge/ingestion-jobs/${id}/retry`);
 }
 
 export function cancelJob(id: number) {
-  return requestClient.post(`/knowledge/v2/ingestion-jobs/${id}/cancel`);
+  return requestClient.post(`/knowledge/ingestion-jobs/${id}/cancel`);
 }
 
 export function hybridSearch(data: {
@@ -182,23 +209,23 @@ export function hybridSearch(data: {
     hits: HybridHit[];
     mode: string;
     spaceId: number;
-  }>('/knowledge/v2/search', data);
+  }>('/knowledge/search', data);
 }
 
 export function rebuildSpaceIndex(spaceId: number) {
-  return requestClient.post<number>('/knowledge/v2/index-jobs/rebuild', {
+  return requestClient.post<number>('/knowledge/index-jobs/rebuild', {
     spaceId,
   });
 }
 
 export function getEmbeddedRuntimeStatus() {
   return requestClient.get<EmbeddedRuntimeStatus>(
-    '/knowledge/v2/system/status',
+    '/knowledge/system/status',
   );
 }
 
 export function createEmbeddedBackup() {
-  return requestClient.post<BackupResult>('/knowledge/v2/system/backup');
+  return requestClient.post<BackupResult>('/knowledge/system/backup');
 }
 
 export function checkEmbeddedBackup(fileName: string) {
@@ -206,7 +233,7 @@ export function checkEmbeddedBackup(fileName: string) {
     entries: number;
     errors: string[];
     valid: boolean;
-  }>('/knowledge/v2/system/restore-check', undefined, {
+  }>('/knowledge/system/restore-check', undefined, {
     params: { fileName },
   });
 }

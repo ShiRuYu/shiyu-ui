@@ -5,10 +5,14 @@ import { Page } from '@vben/common-ui';
 
 import { NCard, NEmpty, NSelect, NSpace, NSpin } from 'naive-ui';
 
-import { getKnowledgeGraphApi, getKnowledgeListApi } from '#/api/knowledge';
+import { getKnowledgePointGraph, getKnowledgePoints } from '#/api/knowledge/point';
+import { useKnowledgeStore } from '#/store';
+import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(knowledgeStore);
 const selectedId = ref<null | number>(null);
 const graphData = ref<null | { edges: any[]; nodes: any[] }>(null);
 const loading = ref(false);
@@ -16,9 +20,12 @@ const canvasRef = ref<HTMLCanvasElement | null>(null);
 let resizeObserver: null | ResizeObserver = null;
 
 async function loadOptions() {
-  const result = await getKnowledgeListApi({ pageSize: 9999 });
-  const list = result?.items || result || [];
-  knowledgeOptions.value = list.map((k: any) => ({
+  if (!activeSpaceId.value) return;
+  const result = await getKnowledgePoints(activeSpaceId.value, {
+    pageNum: 1,
+    pageSize: 1000,
+  });
+  knowledgeOptions.value = result.items.map((k) => ({
     label: `[${k.code}] ${k.name}`,
     value: k.id,
   }));
@@ -28,7 +35,7 @@ async function loadGraph() {
   if (!selectedId.value) return;
   loading.value = true;
   try {
-    const res: any = await getKnowledgeGraphApi(selectedId.value);
+    const res: any = await getKnowledgePointGraph(selectedId.value);
     if (!res) {
       graphData.value = null;
       return;
@@ -217,8 +224,9 @@ watch(graphData, async (newData) => {
   }
 });
 
-onMounted(() => {
-  loadOptions();
+onMounted(async () => {
+  await knowledgeStore.loadSpaces();
+  await loadOptions();
   setupResizeObserver();
 });
 

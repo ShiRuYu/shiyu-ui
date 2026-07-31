@@ -1,39 +1,31 @@
 import { requestClient } from '#/api/request';
 
-/** 文档列表（按知识点） */
-export function getDocumentsByKnowledgeApi(knowledgeId: number) {
-  return requestClient.get<any[]>('/knowledge/document/knowledge', {
-    params: { knowledgeId },
-  });
+export interface KnowledgeDocumentSummary {
+  docType: string;
+  id: number;
+  lifecycleStatus: string;
+  parseStatus: string;
+  spaceId: number;
+  title: string;
 }
 
-/** 文档详情 */
-export function getDocumentDetailApi(id: number) {
-  return requestClient.get<any>('/knowledge/document/detail', {
-    params: { id },
-  });
+export function getKnowledgeDocumentsByPoint(pointId: number) {
+  return requestClient.get<KnowledgeDocumentSummary[]>(
+    `/knowledge/points/${pointId}/documents`,
+  );
 }
 
-/** 文档搜索 */
-export function searchDocumentsApi(params: { keyword: string; topK?: number }) {
-  return requestClient.get<any[]>('/knowledge/document/list', { params });
+export function getKnowledgePointIdsByDocument(documentId: number) {
+  return requestClient.get<number[]>(
+    `/knowledge/documents/${documentId}/points`,
+  );
 }
 
-/** 创建文档 */
-export function createDocumentApi(data: any) {
-  return requestClient.post('/knowledge/document/create', data);
-}
-
-/** 更新文档 */
-export function updateDocumentApi(id: number, data: any) {
-  return requestClient.post('/knowledge/document/update', data, {
-    params: { id },
-  });
-}
-
-/** 删除文档 */
-export function deleteDocumentApi(id: number) {
-  return requestClient.post('/knowledge/document/delete', null, {
-    params: { id },
+export function replaceKnowledgePointDocuments(
+  pointId: number,
+  documentIds: number[],
+) {
+  return requestClient.put(`/knowledge/points/${pointId}/documents`, {
+    documentIds,
   });
 }

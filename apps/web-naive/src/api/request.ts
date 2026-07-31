@@ -69,6 +69,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
       config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
+      // Knowledge API 版本通过请求头控制，不通过 URL 暴露 /v2。
+      config.headers.version = '1';
 
       // 统一分页参数：框架使用 page/pageSize，后端使用 pageNum/pageSize
       // 在请求发出前自动将 page → pageNum

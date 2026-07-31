@@ -20,15 +20,18 @@ import {
 } from 'naive-ui';
 
 import {
-  addKnowledgeRelationApi,
-  deleteKnowledgeRelationApi,
-  getKnowledgeListApi,
-  getKnowledgePrerequisitesListApi,
-  getKnowledgeSubsequentListApi,
-} from '#/api/knowledge';
+  createKnowledgeRelation,
+  deleteKnowledgeRelation,
+  getKnowledgeRelations,
+} from '#/api/knowledge/relation';
+import { getKnowledgePoints } from '#/api/knowledge/point';
+import { useKnowledgeStore } from '#/store';
 import { $t } from '#/locales';
+import { storeToRefs } from 'pinia';
 
 const message = useMessage();
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(knowledgeStore);
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
 const selectedKnowledgeId = ref<null | number>(null);
 const prerequisites = ref<any[]>([]);
@@ -52,9 +55,12 @@ const targetKnowledgeOptions = computed(() => {
 });
 
 async function loadOptions() {
-  const result = await getKnowledgeListApi({ pageSize: 9999 });
-  const list = result?.items || result || [];
-  knowledgeOptions.value = list.map((k: any) => ({
+  if (!activeSpaceId.value) return;
+  const result = await getKnowledgePoints(activeSpaceId.value, {
+    pageNum: 1,
+    pageSize: 1000,
+  });
+  knowledgeOptions.value = result.items.map((k) => ({
     label: `[${k.code}] ${k.name}`,
     value: k.id,
   }));
@@ -64,16 +70,23 @@ async function loadRelations() {
   if (!selectedKnowledgeId.value) return;
   loading.value = true;
   try {
-    const [pre, sub] = await Promise.all([
-      getKnowledgePrerequisitesListApi(selectedKnowledgeId.value),
-      getKnowledgeSubsequentListApi(selectedKnowledgeId.value),
-    ]);
-    prerequisites.value = Array.isArray(pre)
-      ? pre
-      : (pre as any)?.items || (pre as any)?.data || [];
-    subsequent.value = Array.isArray(sub)
-      ? sub
-      : (sub as any)?.items || (sub as any)?.data || [];
+    const relations = await getKnowledgeRelations(selectedKnowledgeId.value);
+    prerequisites.value = relations
+      .filter(
+        (item) =>
+          item.relationType === 'PRE' &&
+          item.sourceId === selectedKnowledgeId.value,
+      )
+      .map((item) => item.target)
+      .filter(Boolean);
+    subsequent.value = relations
+      .filter(
+        (item) =>
+          item.relationType === 'PRE' &&
+          item.targetId === selectedKnowledgeId.value,
+      )
+      .map((item) => item.source)
+      .filter(Boolean);
   } finally {
     loading.value = false;
   }
@@ -82,7 +95,7 @@ async function loadRelations() {
 async function handleAddRelation() {
   if (!selectedKnowledgeId.value || !addForm.value.targetId) return;
   try {
-    await addKnowledgeRelationApi({
+    await createKnowledgeRelation({
       sourceId: selectedKnowledgeId.value,
       targetId: addForm.value.targetId,
       type: addForm.value.type,
@@ -101,7 +114,7 @@ async function handleDeleteRelation(targetId: number, isPre: boolean) {
   if (!selectedKnowledgeId.value) return;
   const sourceId = isPre ? selectedKnowledgeId.value : targetId;
   const relationTargetId = isPre ? targetId : selectedKnowledgeId.value;
-  await deleteKnowledgeRelationApi(sourceId, relationTargetId, 'PRE');
+  await deleteKnowledgeRelation(sourceId, relationTargetId, 'PRE');
   message.success($t('knowledge.relationDeleted'));
   await loadRelations();
 }
@@ -172,8 +185,9 @@ const subColumns = computed(() => [
   },
 ]);
 
-onMounted(() => {
-  loadOptions();
+onMounted(async () => {
+  await knowledgeStore.loadSpaces();
+  await loadOptions();
 });
 </script>
 

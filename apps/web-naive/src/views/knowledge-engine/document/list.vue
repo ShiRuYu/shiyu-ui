@@ -3,36 +3,30 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
+import type { UploadCustomRequestOptions } from 'naive-ui';
 
-import { Page, useVbenModal } from '@vben/common-ui';
+import { Page } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { NButton } from 'naive-ui';
+import { NButton, NUpload } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  deleteDocumentApi,
-  searchDocumentsApi,
-} from '#/api/knowledge/document';
+  deleteDocument,
+  getDocuments,
+  uploadDocument,
+} from '#/api/knowledge/enterprise';
+import { useKnowledgeStore } from '#/store';
+import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
-import Form from './modules/form.vue';
-
-const [FormModal, formModalApi] = useVbenModal({
-  connectedComponent: Form,
-  destroyOnClose: true,
-});
-function onEdit(row: any) {
-  formModalApi.setData(row).open();
-}
-function onCreate() {
-  formModalApi.setData({}).open();
-}
+const knowledgeStore = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(knowledgeStore);
 function onDelete(row: any) {
   const h = message.loading($t('common.deleting'), { duration: 0 });
-  deleteDocumentApi(row.id)
+  deleteDocument(row.id)
     .then(() => {
       message.success($t('ui.actionMessage.deleteSuccess', [row.title]));
       refreshGrid();
@@ -45,11 +39,13 @@ function onActionClick({ code, row }: OnActionClickParams<any>) {
       onDelete(row);
       break;
     }
-    case 'edit': {
-      onEdit(row);
-      break;
-    }
   }
+}
+async function onUpload({ file }: UploadCustomRequestOptions) {
+  if (!activeSpaceId.value || !file.file) return;
+  await uploadDocument(activeSpaceId.value, file.file);
+  message.success($t('ui.actionMessage.operationSuccess'));
+  refreshGrid();
 }
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: { schema: useGridFormSchema(), submitOnChange: true },
@@ -61,10 +57,19 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await searchDocumentsApi({ keyword: '' });
+          if (!knowledgeStore.spaces.length) {
+            await knowledgeStore.loadSpaces();
+          }
+          if (!activeSpaceId.value) {
+            return { items: [], total: 0 };
+          }
+          const result = await getDocuments(activeSpaceId.value, {
+            pageNum: 1,
+            pageSize: 100,
+          });
           return {
-            items: result,
-            total: result.length,
+            items: result.items,
+            total: result.total,
           };
         },
       },
@@ -84,17 +89,14 @@ function refreshGrid() {
 </script>
 <template>
   <Page auto-content-height>
-    <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('knowledge.document')">
       <template #toolbar-tools>
-        <NButton
-          type="primary"
-          @click="onCreate"
-          v-access:code="['knowledge:document:upload']"
-        >
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('knowledge.documentTitle')]) }}
-        </NButton>
+        <NUpload :custom-request="onUpload" :show-file-list="false">
+          <NButton type="primary" v-access:code="['knowledge:document:upload']">
+            <Plus class="size-5" />
+            上传文档
+          </NButton>
+        </NUpload>
       </template>
     </Grid>
   </Page>

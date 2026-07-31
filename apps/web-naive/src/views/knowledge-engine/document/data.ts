@@ -4,16 +4,9 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 
 import { z } from '#/adapter/form';
-import { getKnowledgeListApi } from '#/api/knowledge';
+import { getKnowledgePointOptions } from '#/api/knowledge/point';
 import { $t } from '#/locales';
 
-async function getKnowledgeOptions() {
-  const result = await getKnowledgeListApi({ pageSize: 1000 });
-  return (result?.items || result || []).map((k: any) => ({
-    id: k.id,
-    name: `[${k.code}] ${k.name}`,
-  }));
-}
 
 export interface Document {
   [key: string]: any;
@@ -49,7 +42,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         allowClear: true,
-        api: getKnowledgeOptions,
+        api: getKnowledgePointOptions,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',
@@ -105,7 +98,7 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: ['delete'],
       },
       field: 'operation',
       fixed: 'right',

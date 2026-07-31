@@ -18,11 +18,14 @@ import {
 } from 'naive-ui';
 
 import {
-  getKnowledgeDetailApi,
-  getKnowledgeGraphApi,
-  getKnowledgePathApi,
-} from '#/api/knowledge';
-import { getDocumentsByKnowledgeApi } from '#/api/knowledge/document';
+  getKnowledgeDocument,
+} from '#/api/knowledge/enterprise';
+import {
+  getKnowledgePoint,
+  getKnowledgePointGraph,
+  getKnowledgePointPath,
+} from '#/api/knowledge/point';
+import { getKnowledgeDocumentsByPoint } from '#/api/knowledge/document';
 import { $t } from '#/locales';
 
 const route = useRoute();
@@ -59,11 +62,21 @@ async function loadData() {
   if (!id) return;
   loading.value = true;
   try {
-    knowledge.value = await getKnowledgeDetailApi(id);
+    knowledge.value = await getKnowledgePoint(id);
     documents.value =
-      ((await getDocumentsByKnowledgeApi(id)) as KnowledgeDocument[]) || [];
-    graph.value = await getKnowledgeGraphApi(id);
-    path.value = await getKnowledgePathApi(id);
+      ((await getKnowledgeDocumentsByPoint(id)) as KnowledgeDocument[]) || [];
+    graph.value = await getKnowledgePointGraph(id);
+    const pathIds = await getKnowledgePointPath(id);
+    const pathPoints = await Promise.all(
+      pathIds.map((pointId) => getKnowledgePoint(pointId)),
+    );
+    path.value = {
+      path: pathPoints.map((item) => ({
+        id: item.id,
+        mastered: false,
+        name: item.name,
+      })),
+    };
   } catch (error) {
     console.error(error);
   } finally {
@@ -71,7 +84,9 @@ async function loadData() {
   }
 }
 
-function openDocument(d: KnowledgeDocument) {
+async function openDocument(d: KnowledgeDocument) {
+  const detail = await getKnowledgeDocument(d.id);
+  Object.assign(d, detail);
   currentDoc.value = d;
   showDocModal.value = true;
 }

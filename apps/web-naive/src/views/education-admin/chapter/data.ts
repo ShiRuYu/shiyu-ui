@@ -4,15 +4,8 @@ import type { EducationChapterApi } from '#/api/education/chapter';
 import { z } from '#/adapter/form';
 import { getChapterOptions } from '#/api/education/chapter';
 import { getTextbookOptions } from '#/api/education/textbook';
-import { getKnowledgeListApi } from '#/api/knowledge';
+import { getKnowledgePointOptions } from '#/api/knowledge/point';
 import { $t } from '#/locales';
-async function getKnowledgeOptions() {
-  const result = await getKnowledgeListApi({ pageSize: 1000 });
-  const items = result?.items || result || [];
-  return items.map((k: { code: string; id: number; name: string }) => {
-    return { id: k.id, name: `[${k.code}] ${k.name}` };
-  });
-}
 export function useGridFormSchema() {
   return [
     {
@@ -84,7 +77,7 @@ export function useSchema() {
       component: 'ApiSelect',
       componentProps: {
         allowClear: true,
-        api: getKnowledgeOptions,
+        api: getKnowledgePointOptions,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',
