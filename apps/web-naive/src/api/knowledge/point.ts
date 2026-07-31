@@ -27,9 +27,7 @@ export interface KnowledgePointPayload {
 }
 
 export function getKnowledgePoint(pointId: number) {
-  return requestClient.get<KnowledgePoint>(
-    `/knowledge/points/${pointId}`,
-  );
+  return requestClient.get<KnowledgePoint>(`/knowledge/points/${pointId}`);
 }
 
 export function getKnowledgePointGraph(pointId: number) {
@@ -37,9 +35,7 @@ export function getKnowledgePointGraph(pointId: number) {
 }
 
 export function getKnowledgePointPath(pointId: number) {
-  return requestClient.get<number[]>(
-    `/knowledge/points/${pointId}/path`,
-  );
+  return requestClient.get<number[]>(`/knowledge/points/${pointId}/path`);
 }
 
 export function getKnowledgePoints(
@@ -78,10 +74,7 @@ export function updateKnowledgePoint(
     tags?: string;
   },
 ) {
-  return requestClient.put<KnowledgePoint>(
-    `/knowledge/points/${id}`,
-    data,
-  );
+  return requestClient.put<KnowledgePoint>(`/knowledge/points/${id}`, data);
 }
 
 export function deleteKnowledgePoint(id: number) {

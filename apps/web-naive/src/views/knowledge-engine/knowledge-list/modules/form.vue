@@ -9,11 +9,11 @@ import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import {
   createKnowledgePoint,
-  updateKnowledgePoint,
   type KnowledgePointPayload,
+  updateKnowledgePoint,
 } from '#/api/knowledge/point';
-import { useKnowledgeStore } from '#/store';
 import { $t } from '#/locales';
+import { useKnowledgeStore } from '#/store';
 
 import { useSchema } from '../data';
 

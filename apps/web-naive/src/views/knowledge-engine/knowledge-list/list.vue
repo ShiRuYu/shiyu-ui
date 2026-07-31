@@ -10,13 +10,16 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { GitBranch, Network, Plus } from '@vben/icons';
 
 import { NButton, NSpace } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteKnowledgePoint, getKnowledgePoints } from '#/api/knowledge/point';
-import { useKnowledgeStore } from '#/store';
-import { storeToRefs } from 'pinia';
+import {
+  deleteKnowledgePoint,
+  getKnowledgePoints,
+} from '#/api/knowledge/point';
 import { $t } from '#/locales';
+import { useKnowledgeStore } from '#/store';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';

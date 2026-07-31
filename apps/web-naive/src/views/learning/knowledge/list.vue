@@ -9,12 +9,12 @@ import { useRouter } from 'vue-router';
 import { Page } from '@vben/common-ui';
 
 import { NButton, NDataTable, NInput, NSelect, NSpace } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import { getSubjectList } from '#/api';
 import { getKnowledgePoints } from '#/api/knowledge/point';
-import { useKnowledgeStore } from '#/store';
-import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
+import { useKnowledgeStore } from '#/store';
 
 const router = useRouter();
 const loading = ref(false);

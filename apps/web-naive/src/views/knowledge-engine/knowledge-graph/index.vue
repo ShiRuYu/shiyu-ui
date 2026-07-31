@@ -4,11 +4,14 @@ import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { Page } from '@vben/common-ui';
 
 import { NCard, NEmpty, NSelect, NSpace, NSpin } from 'naive-ui';
-
-import { getKnowledgePointGraph, getKnowledgePoints } from '#/api/knowledge/point';
-import { useKnowledgeStore } from '#/store';
 import { storeToRefs } from 'pinia';
+
+import {
+  getKnowledgePointGraph,
+  getKnowledgePoints,
+} from '#/api/knowledge/point';
 import { $t } from '#/locales';
+import { useKnowledgeStore } from '#/store';
 
 const knowledgeOptions = ref<{ label: string; value: number }[]>([]);
 const knowledgeStore = useKnowledgeStore();

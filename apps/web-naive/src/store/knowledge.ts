@@ -43,7 +43,10 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   }
 
   function setActiveSpace(spaceId?: number) {
-    if (spaceId === undefined || spaces.value.some((space) => space.id === spaceId)) {
+    if (
+      spaceId === undefined ||
+      spaces.value.some((space) => space.id === spaceId)
+    ) {
       activeSpaceId.value = spaceId;
     }
   }

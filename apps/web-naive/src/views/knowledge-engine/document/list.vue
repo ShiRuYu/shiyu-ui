@@ -1,14 +1,16 @@
 <script lang="ts" setup>
+import type { UploadCustomRequestOptions } from 'naive-ui';
+
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { UploadCustomRequestOptions } from 'naive-ui';
 
 import { Page } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { NButton, NUpload } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -17,9 +19,8 @@ import {
   getDocuments,
   uploadDocument,
 } from '#/api/knowledge/enterprise';
-import { useKnowledgeStore } from '#/store';
-import { storeToRefs } from 'pinia';
 import { $t } from '#/locales';
+import { useKnowledgeStore } from '#/store';
 
 import { useColumns, useGridFormSchema } from './data';
 const knowledgeStore = useKnowledgeStore();

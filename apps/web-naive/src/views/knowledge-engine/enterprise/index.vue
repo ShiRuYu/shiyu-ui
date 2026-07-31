@@ -24,8 +24,8 @@ import {
   NInput,
   NInputNumber,
   NModal,
-  NProgress,
   NPopconfirm,
+  NProgress,
   NSelect,
   NSpace,
   NStatistic,
@@ -34,10 +34,9 @@ import {
   NTag,
   NUpload,
 } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import { message } from '#/adapter/naive';
-import { useKnowledgeStore } from '#/store';
-import { storeToRefs } from 'pinia';
 import {
   cancelJob,
   checkEmbeddedBackup,
@@ -56,9 +55,10 @@ import {
   createKnowledgePoint,
   deleteKnowledgePoint,
   getKnowledgePoints,
-  updateKnowledgePoint,
   type KnowledgePoint as KnowledgePointView,
+  updateKnowledgePoint,
 } from '#/api/knowledge/point';
+import { useKnowledgeStore } from '#/store';
 
 const knowledgeStore = useKnowledgeStore();
 const { activeSpaceId, spaceOptions, spaces } = storeToRefs(knowledgeStore);
@@ -634,7 +634,10 @@ onMounted(async () => {
           <NInput v-model:value="pointForm.category" />
         </NFormItem>
         <NFormItem label="标签">
-          <NInput v-model:value="pointForm.tags" placeholder="JSON 数组或逗号分隔" />
+          <NInput
+            v-model:value="pointForm.tags"
+            placeholder="JSON 数组或逗号分隔"
+          />
         </NFormItem>
       </NForm>
       <template #footer>

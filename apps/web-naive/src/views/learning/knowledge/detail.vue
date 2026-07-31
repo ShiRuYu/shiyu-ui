@@ -17,15 +17,13 @@ import {
   NTag,
 } from 'naive-ui';
 
-import {
-  getKnowledgeDocument,
-} from '#/api/knowledge/enterprise';
+import { getKnowledgeDocumentsByPoint } from '#/api/knowledge/document';
+import { getKnowledgeDocument } from '#/api/knowledge/enterprise';
 import {
   getKnowledgePoint,
   getKnowledgePointGraph,
   getKnowledgePointPath,
 } from '#/api/knowledge/point';
-import { getKnowledgeDocumentsByPoint } from '#/api/knowledge/document';
 import { $t } from '#/locales';
 
 const route = useRoute();

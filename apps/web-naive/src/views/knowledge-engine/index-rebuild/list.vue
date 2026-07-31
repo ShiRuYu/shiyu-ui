@@ -14,14 +14,14 @@ import {
   NTag,
   useMessage,
 } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import {
   getJobs,
-  rebuildSpaceIndex,
   type IngestionJob,
+  rebuildSpaceIndex,
 } from '#/api/knowledge/enterprise';
 import { useKnowledgeStore } from '#/store';
-import { storeToRefs } from 'pinia';
 
 const message = useMessage();
 const knowledgeStore = useKnowledgeStore();

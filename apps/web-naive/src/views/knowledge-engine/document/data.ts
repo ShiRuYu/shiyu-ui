@@ -7,7 +7,6 @@ import { z } from '#/adapter/form';
 import { getKnowledgePointOptions } from '#/api/knowledge/point';
 import { $t } from '#/locales';
 
-
 export interface Document {
   [key: string]: any;
   id: number;

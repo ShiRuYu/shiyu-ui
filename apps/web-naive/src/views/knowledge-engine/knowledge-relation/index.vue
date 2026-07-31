@@ -18,16 +18,16 @@ import {
   NTag,
   useMessage,
 } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
+import { getKnowledgePoints } from '#/api/knowledge/point';
 import {
   createKnowledgeRelation,
   deleteKnowledgeRelation,
   getKnowledgeRelations,
 } from '#/api/knowledge/relation';
-import { getKnowledgePoints } from '#/api/knowledge/point';
-import { useKnowledgeStore } from '#/store';
 import { $t } from '#/locales';
-import { storeToRefs } from 'pinia';
+import { useKnowledgeStore } from '#/store';
 
 const message = useMessage();
 const knowledgeStore = useKnowledgeStore();

@@ -219,9 +219,7 @@ export function rebuildSpaceIndex(spaceId: number) {
 }
 
 export function getEmbeddedRuntimeStatus() {
-  return requestClient.get<EmbeddedRuntimeStatus>(
-    '/knowledge/system/status',
-  );
+  return requestClient.get<EmbeddedRuntimeStatus>('/knowledge/system/status');
 }
 
 export function createEmbeddedBackup() {
