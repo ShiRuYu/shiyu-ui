@@ -2,7 +2,7 @@
 import type { AnalysisOverviewItem } from '@vben/common-ui';
 import type { TabOption } from '@vben/types';
 
-import { onMounted, ref } from 'vue';
+import { markRaw, onMounted, ref } from 'vue';
 
 import {
   AnalysisChartCard,
@@ -25,30 +25,37 @@ import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisits from './analytics-visits.vue';
 
+const icons = {
+  bell: markRaw(SvgBellIcon),
+  cake: markRaw(SvgCakeIcon),
+  card: markRaw(SvgCardIcon),
+  download: markRaw(SvgDownloadIcon),
+};
+
 const overviewItems = ref<AnalysisOverviewItem[]>([
   {
-    icon: SvgCardIcon,
+    icon: icons.card,
     title: $t('dashboard.users'),
     totalTitle: $t('dashboard.totalUsers'),
     totalValue: 0,
     value: 0,
   },
   {
-    icon: SvgCakeIcon,
+    icon: icons.cake,
     title: $t('dashboard.visits'),
     totalTitle: '总调用次数',
     totalValue: 0,
     value: 0,
   },
   {
-    icon: SvgDownloadIcon,
+    icon: icons.download,
     title: 'Token 用量',
     totalTitle: '总 Token 数',
     totalValue: 0,
     value: 0,
   },
   {
-    icon: SvgBellIcon,
+    icon: icons.bell,
     title: '平均延迟',
     totalTitle: '总花费 ($)',
     totalValue: 0,
@@ -62,28 +69,28 @@ async function fetchData() {
     if (overview) {
       overviewItems.value = [
         {
-          icon: SvgCardIcon,
+          icon: icons.card,
           title: '模型数',
           totalTitle: '平台数',
           totalValue: overview.model_count || 0,
           value: overview.platform_count || 0,
         },
         {
-          icon: SvgCakeIcon,
+          icon: icons.cake,
           title: '调用次数',
           totalTitle: '总调用次数',
           totalValue: overview.total_calls || 0,
           value: overview.total_calls || 0,
         },
         {
-          icon: SvgDownloadIcon,
+          icon: icons.download,
           title: 'Token 用量',
           totalTitle: '总 Token 数',
           totalValue: overview.total_tokens || 0,
           value: Math.round((overview.total_tokens || 0) / 1000),
         },
         {
-          icon: SvgBellIcon,
+          icon: icons.bell,
           title: '平均延迟',
           totalTitle: '总花费 ($)',
           totalValue: Number((overview.total_cost || 0).toFixed(4)),
