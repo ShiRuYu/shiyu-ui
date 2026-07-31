@@ -167,10 +167,9 @@ const columns = [
   <Page
     title="文档中心"
     description="负责文档导入、解析、审核、发布、版本回滚和删除，不再把文档功能隐藏在工作台 Tab 中。"
-    >
-<NCard :bordered="false"
-      >
-<div class="flex flex-wrap justify-between gap-3">
+  >
+    <NCard :bordered="false">
+      <div class="flex flex-wrap justify-between gap-3">
         <div class="flex flex-wrap gap-3">
           <NSelect
             :value="activeSpaceId"
@@ -195,11 +194,9 @@ const columns = [
             "
           /><NButton @click="load">查询</NButton>
         </div>
-        <NUpload :custom-request="upload" :show-file-list="false"
-          >
-<NButton type="primary">导入文档</NButton>
-</NUpload
-        >
+        <NUpload :custom-request="upload" :show-file-list="false">
+          <NButton type="primary">导入文档</NButton>
+        </NUpload>
       </div>
       <NDataTable
         class="mt-5"
@@ -207,11 +204,11 @@ const columns = [
         :data="rows"
         :loading="loading"
         :pagination="{ pageSize: 10 }"
-        :bordered="false" />
+        :bordered="false"
+      />
 </NCard
-    ><NCard v-if="selected" title="版本历史" class="mt-4"
-      >
-<div class="space-y-2">
+    ><NCard v-if="selected" title="版本历史" class="mt-4">
+      <div class="space-y-2">
         <div
           v-for="version in versions"
           :key="version.id"
@@ -223,8 +220,6 @@ const columns = [
           ><NButton size="small" @click="rollback(version.id)">回滚</NButton>
         </div>
       </div>
-</NCard
-    >
-</Page
-  >
+    </NCard>
+  </Page>
 </template>

@@ -107,11 +107,10 @@ import { h } from 'vue';
   <Page
     title="索引与任务"
     description="观察解析、切分、向量化和索引重建的运行状态，确保知识库可检索。"
-    >
-<div class="space-y-4">
-      <NCard :bordered="false"
-        >
-<div class="flex flex-wrap items-center justify-between gap-4">
+  >
+    <div class="space-y-4">
+      <NCard :bordered="false">
+        <div class="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div class="text-lg font-semibold">
               {{ activeSpace?.name || '未选择知识空间' }}
@@ -126,33 +125,28 @@ import { h } from 'vue';
               :options="spaceOptions"
               class="w-56"
               @update:value="changeSpace"
-            /><NButton :loading="rebuilding" type="primary" @click="rebuild"
-              >
-重建当前空间索引
+            /><NButton :loading="rebuilding" type="primary" @click="rebuild">
+              重建当前空间索引
 </NButton
             ><NButton @click="load">刷新</NButton>
           </div>
         </div>
-</NCard
-      >
+      </NCard>
       <div class="grid gap-3 md:grid-cols-3">
-        <NCard size="small"
-          >
-<div class="text-sm text-slate-500">任务总数</div>
+        <NCard size="small">
+          <div class="text-sm text-slate-500">任务总数</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ jobs.length }}
           </div>
 </NCard
-        ><NCard size="small"
-          >
-<div class="text-sm text-slate-500">异常任务</div>
+        ><NCard size="small">
+          <div class="text-sm text-slate-500">异常任务</div>
           <div class="mt-2 text-2xl font-semibold text-red-500">
             {{ failed }}
           </div>
 </NCard
-        ><NCard size="small"
-          >
-<div class="text-sm text-slate-500">可用磁盘</div>
+        ><NCard size="small">
+          <div class="text-sm text-slate-500">可用磁盘</div>
           <div class="mt-2 text-2xl font-semibold">
             {{
               runtime
@@ -160,14 +154,11 @@ import { h } from 'vue';
                 : '-'
             }}
           </div>
-</NCard
-        >
+        </NCard>
       </div>
-      <NCard title="任务队列"
-        >
-<NAlert v-if="failed" type="warning" :bordered="false" class="mb-4"
-          >
-当前有
+      <NCard title="任务队列">
+        <NAlert v-if="failed" type="warning" :bordered="false" class="mb-4">
+          当前有
           {{ failed }} 个异常任务，建议先处理失败原因再重建索引。
 </NAlert
         ><NDataTable
@@ -176,9 +167,8 @@ import { h } from 'vue';
           :loading="loading"
           :pagination="{ pageSize: 10 }"
           :bordered="false"
-      />
-</NCard>
-</div
-  >
-</Page>
+        />
+      </NCard>
+    </div>
+  </Page>
 </template>

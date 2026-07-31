@@ -64,11 +64,10 @@ onMounted(async () => {
   <Page
     title="图谱洞察"
     description="从全局结构观察知识网络，定位核心节点、孤立节点和关系密集区域。"
-    >
-<div class="grid gap-4 xl:grid-cols-[300px_1fr]">
-      <NCard title="分析对象" :bordered="false"
-        >
-<div class="space-y-4">
+  >
+    <div class="grid gap-4 xl:grid-cols-[300px_1fr]">
+      <NCard title="分析对象" :bordered="false">
+        <div class="space-y-4">
           <NSelect
             :value="activeSpaceId"
             :options="spaceOptions"
@@ -90,11 +89,9 @@ onMounted(async () => {
           </div>
         </div>
 </NCard
-      ><NCard title="局部知识网络" :bordered="false"
-        >
-<NSpin :show="loading"
-          >
-<div
+      ><NCard title="局部知识网络" :bordered="false">
+        <NSpin :show="loading">
+          <div
             v-if="nodes.length"
             class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
           >
@@ -111,10 +108,8 @@ onMounted(async () => {
               <div class="flex items-center justify-between">
                 <b class="truncate">{{ node.name }}</b
                 ><NTag size="small" :type="index === 0 ? 'info' : 'default'">
-{{
-                  index === 0 ? '中心' : '节点'
-                }}
-</NTag>
+                  {{ index === 0 ? '中心' : '节点' }}
+                </NTag>
               </div>
               <div class="mt-2 text-xs text-slate-500">
                 节点 ID：{{ node.id }}
@@ -122,10 +117,8 @@ onMounted(async () => {
             </div>
           </div>
           <NEmpty v-else description="暂无图谱数据" class="py-16" />
-</NSpin
-      >
-</NCard>
-</div
-  >
-</Page>
+        </NSpin>
+      </NCard>
+    </div>
+  </Page>
 </template>

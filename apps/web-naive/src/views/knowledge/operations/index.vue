@@ -42,19 +42,15 @@ onMounted(async () => {
   <Page
     title="系统运维"
     description="管理嵌入式存储、备份校验和运行安全状态，明确哪些操作会影响整个知识平台。"
-    >
-<div class="grid gap-4 lg:grid-cols-2">
-      <NCard title="运行状态"
-        >
-<NAlert
+  >
+    <div class="grid gap-4 lg:grid-cols-2">
+      <NCard title="运行状态">
+        <NAlert
           :type="runtime?.singleWriter ? 'success' : 'warning'"
           :bordered="false"
-          >
-{{
-            runtime?.singleWriter ? '单写实例锁已启用' : '实例锁状态待确认'
-          }}
-</NAlert
         >
+          {{ runtime?.singleWriter ? '单写实例锁已启用' : '实例锁状态待确认' }}
+        </NAlert>
         <div v-if="runtime" class="mt-4 space-y-3 text-sm">
           <div class="flex justify-between">
             <span class="text-slate-500">数据目录</span
@@ -76,9 +72,8 @@ onMounted(async () => {
         </div>
         <NButton class="mt-5" @click="refresh">刷新状态</NButton>
 </NCard
-      ><NCard title="备份与恢复校验"
-        >
-<div class="text-sm leading-6 text-slate-500">
+      ><NCard title="备份与恢复校验">
+        <div class="text-sm leading-6 text-slate-500">
           完整备份包含数据库、上传文件、模型和索引目录。恢复前建议先在停机窗口执行校验。
         </div>
         <div class="mt-5 flex flex-wrap gap-3">
@@ -91,12 +86,10 @@ onMounted(async () => {
             >{{ (backup.size / 1024 / 1024).toFixed(2) }} MB</span
           >
         </div>
-</NCard
-      >
+      </NCard>
     </div>
-    <NCard class="mt-4" title="当前空间配置"
-      >
-<div class="grid gap-3 md:grid-cols-4 text-sm">
+    <NCard class="mt-4" title="当前空间配置">
+      <div class="grid gap-3 md:grid-cols-4 text-sm">
         <div>
           <div class="text-slate-500">空间</div>
           <b>{{ activeSpace?.name || '-' }}</b>
@@ -114,8 +107,6 @@ onMounted(async () => {
           <b>{{ activeSpace?.rerankProfile || '-' }}</b>
         </div>
       </div>
-</NCard
-    >
-</Page
-  >
+    </NCard>
+  </Page>
 </template>

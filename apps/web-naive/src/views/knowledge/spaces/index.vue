@@ -105,10 +105,9 @@ const columns = [
   <Page
     title="空间管理"
     description="空间是知识、文档、成员权限和索引版本的隔离边界。"
-    >
-<NCard :bordered="false"
-      >
-<div class="mb-4 flex flex-wrap justify-between gap-3">
+  >
+    <NCard :bordered="false">
+      <div class="mb-4 flex flex-wrap justify-between gap-3">
         <NInput
           v-model:value="keyword"
           class="w-72"
@@ -126,48 +125,42 @@ const columns = [
           )
         "
         :pagination="{ pageSize: 10 }"
-        :bordered="false" />
+        :bordered="false"
+      />
 </NCard
     ><NModal
       v-model:show="show"
       preset="card"
       :title="editing ? '编辑空间' : '新建空间'"
       style="width: 560px"
-      >
-<NForm :model="form"
-        >
-<NFormItem label="空间编码"
-          >
-<NInput v-model:value="form.code" :disabled="!!editing" />
+    >
+      <NForm :model="form">
+        <NFormItem label="空间编码">
+          <NInput v-model:value="form.code" :disabled="!!editing" />
 </NFormItem
-        ><NFormItem label="空间名称"
-          >
-<NInput v-model:value="form.name" />
+        ><NFormItem label="空间名称">
+          <NInput v-model:value="form.name" />
 </NFormItem
-        ><NFormItem label="描述"
-          >
-<NInput
+        ><NFormItem label="描述">
+          <NInput
             v-model:value="form.description"
-            type="textarea" />
+            type="textarea"
+          />
 </NFormItem
-        ><NFormItem label="审核策略"
-          >
-<NSelect
+        ><NFormItem label="审核策略">
+          <NSelect
             v-model:value="form.reviewMode"
             :options="[
               { label: '可选审核', value: 'OPTIONAL' },
               { label: '必须审核', value: 'REQUIRED' },
               { label: '直接发布', value: 'DIRECT' },
-            ]" />
-</NFormItem>
+            ]"
+          />
+        </NFormItem>
 </NForm
-      ><template #footer
-        >
-<NButton type="primary" @click="save">保存</NButton>
-</template
-      >
-</NModal
-    >
-</Page
-  >
+      ><template #footer>
+        <NButton type="primary" @click="save">保存</NButton>
+      </template>
+    </NModal>
+  </Page>
 </template>

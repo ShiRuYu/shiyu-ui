@@ -79,35 +79,30 @@ onMounted(async () => {
         </div>
       </NCard>
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <NCard size="small"
-          >
-<NStatistic label="知识点" :value="pointCount" />
+        <NCard size="small">
+          <NStatistic label="知识点" :value="pointCount" />
 </NCard
-        ><NCard size="small"
-          >
-<NStatistic label="近期文档" :value="documents.length" />
+        ><NCard size="small">
+          <NStatistic label="近期文档" :value="documents.length" />
 </NCard
-        ><NCard size="small"
-          >
-<NStatistic
+        ><NCard size="small">
+          <NStatistic
             label="处理中任务"
             :value="
               jobs.filter(
                 (item) =>
                   item.status === 'RUNNING' || item.status === 'PENDING',
               ).length
-            " />
+            "
+          />
 </NCard
-        ><NCard size="small"
-          >
-<NStatistic label="异常任务" :value="failedJobs"
-        />
-</NCard>
+        ><NCard size="small">
+          <NStatistic label="异常任务" :value="failedJobs" />
+        </NCard>
       </div>
       <div class="grid gap-4 lg:grid-cols-3">
-        <NCard title="工作流入口" class="lg:col-span-2"
-          >
-<div class="grid gap-3 md:grid-cols-3">
+        <NCard title="工作流入口" class="lg:col-span-2">
+          <div class="grid gap-3 md:grid-cols-3">
             <div
               v-for="item in [
                 { title: '补充知识资产', desc: '新增知识点或批量导入文档' },
@@ -123,9 +118,8 @@ onMounted(async () => {
             </div>
           </div>
 </NCard
-        ><NCard title="空间状态"
-          >
-<div class="space-y-3 text-sm">
+        ><NCard title="空间状态">
+          <div class="space-y-3 text-sm">
             <div class="flex justify-between">
               <span class="text-slate-500">索引版本</span
               ><b>{{ activeSpace?.activeIndexVersion ?? '-' }}</b>
@@ -137,18 +131,14 @@ onMounted(async () => {
             <div class="flex justify-between">
               <span class="text-slate-500">审核模式</span
               ><NTag size="small" type="info">
-{{
-                activeSpace?.reviewMode || '-'
-              }}
-</NTag>
+                {{ activeSpace?.reviewMode || '-' }}
+              </NTag>
             </div>
           </div>
-</NCard
-        >
+        </NCard>
       </div>
-      <NCard title="最近任务"
-        >
-<div v-if="!loading && jobs.length" class="space-y-3">
+      <NCard title="最近任务">
+        <div v-if="!loading && jobs.length" class="space-y-3">
           <div
             v-for="job in jobs.slice(0, 5)"
             :key="job.id"
@@ -166,17 +156,13 @@ onMounted(async () => {
                     ? 'success'
                     : 'warning'
               "
-              >
-{{ job.status }}
-</NTag
             >
+              {{ job.status }}
+            </NTag>
           </div>
         </div>
-        <div v-else class="py-8 text-center text-slate-400">
-          暂无任务
-        </div>
-</NCard
-      >
+        <div v-else class="py-8 text-center text-slate-400">暂无任务</div>
+      </NCard>
     </div>
   </Page>
 </template>

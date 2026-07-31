@@ -61,10 +61,9 @@ import { h } from 'vue';
   <Page
     title="知识资产"
     description="维护知识点本体与文档入口，关注覆盖范围、规范性和可复用性。"
-    >
-<NCard :bordered="false"
-      >
-<div class="flex flex-wrap items-center justify-between gap-3">
+  >
+    <NCard :bordered="false">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap gap-3">
           <NSelect
             :value="activeSpaceId"
@@ -104,8 +103,8 @@ import { h } from 'vue';
         :data="rows"
         :loading="loading"
         :pagination="{ pageSize: 10 }"
-        :bordered="false" />
-</NCard
-  >
-</Page>
+        :bordered="false"
+      />
+    </NCard>
+  </Page>
 </template>

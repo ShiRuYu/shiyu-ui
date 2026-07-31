@@ -126,10 +126,9 @@ import { h } from 'vue';
   <Page
     title="关系编排"
     description="管理知识点之间的前置、后续和关联关系，保证知识网络可解释、可导航。"
-    >
-<NCard :bordered="false"
-      >
-<div class="flex flex-wrap gap-3">
+  >
+    <NCard :bordered="false">
+      <div class="flex flex-wrap gap-3">
         <NSelect
           :value="activeSpaceId"
           :options="spaceOptions"
@@ -148,11 +147,9 @@ import { h } from 'vue';
           filterable
           class="w-72"
           placeholder="选择关联目标"
-        /><NButton type="primary" :disabled="!targetId" @click="addRelation"
-          >
-建立前置关系
-</NButton
-        >
+        /><NButton type="primary" :disabled="!targetId" @click="addRelation">
+          建立前置关系
+        </NButton>
       </div>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <div class="rounded-lg bg-indigo-50 p-4">
@@ -173,8 +170,8 @@ import { h } from 'vue';
         :columns="columns"
         :data="relations"
         :loading="loading"
-        :bordered="false" />
-</NCard
-  >
-</Page>
+        :bordered="false"
+      />
+    </NCard>
+  </Page>
 </template>
