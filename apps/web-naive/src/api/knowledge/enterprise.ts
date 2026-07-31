@@ -6,11 +6,7 @@ export interface PageData<T> {
 }
 
 export type SpaceRole = 'ADMIN' | 'EDITOR' | 'REVIEWER' | 'VIEWER';
-export type LifecycleStatus =
-  | 'ARCHIVED'
-  | 'DRAFT'
-  | 'PUBLISHED'
-  | 'REVIEWING';
+export type LifecycleStatus = 'ARCHIVED' | 'DRAFT' | 'PUBLISHED' | 'REVIEWING';
 export type JobStatus =
   | 'CANCELLED'
   | 'FAILED'
@@ -182,10 +178,11 @@ export function hybridSearch(data: {
   spaceId: number;
   topK?: number;
 }) {
-  return requestClient.post<{ hits: HybridHit[]; mode: string; spaceId: number }>(
-    '/knowledge/v2/search',
-    data,
-  );
+  return requestClient.post<{
+    hits: HybridHit[];
+    mode: string;
+    spaceId: number;
+  }>('/knowledge/v2/search', data);
 }
 
 export function rebuildSpaceIndex(spaceId: number) {
@@ -195,7 +192,9 @@ export function rebuildSpaceIndex(spaceId: number) {
 }
 
 export function getEmbeddedRuntimeStatus() {
-  return requestClient.get<EmbeddedRuntimeStatus>('/knowledge/v2/system/status');
+  return requestClient.get<EmbeddedRuntimeStatus>(
+    '/knowledge/v2/system/status',
+  );
 }
 
 export function createEmbeddedBackup() {

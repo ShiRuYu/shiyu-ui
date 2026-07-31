@@ -285,29 +285,20 @@ onMounted(async () => {
   >
     <NSpace vertical :size="16">
       <NGrid :cols="4" :x-gap="12">
-        <NGridItem
-          >
-<NCard><NStatistic label="知识空间" :value="spaces.length" /></NCard
-        >
-</NGridItem>
-        <NGridItem
-          >
-<NCard
-            >
-<NStatistic label="当前文档" :value="documents.length" />
-</NCard
-        >
-</NGridItem>
-        <NGridItem
-          >
-<NCard><NStatistic label="运行任务" :value="jobs.length" /></NCard
-        >
-</NGridItem>
-        <NGridItem
-          >
-<NCard><NStatistic label="失败任务" :value="failedJobs" /></NCard
-        >
-</NGridItem>
+        <NGridItem>
+          <NCard><NStatistic label="知识空间" :value="spaces.length" /></NCard>
+        </NGridItem>
+        <NGridItem>
+          <NCard>
+            <NStatistic label="当前文档" :value="documents.length" />
+          </NCard>
+        </NGridItem>
+        <NGridItem>
+          <NCard><NStatistic label="运行任务" :value="jobs.length" /></NCard>
+        </NGridItem>
+        <NGridItem>
+          <NCard><NStatistic label="失败任务" :value="failedJobs" /></NCard>
+        </NGridItem>
       </NGrid>
 
       <NCard>
@@ -337,11 +328,9 @@ onMounted(async () => {
         <NTabPane name="documents" tab="文档中心">
           <NCard>
             <NUpload :custom-request="upload" :show-file-list="false" multiple>
-              <NButton type="primary"
-                >
-上传 PDF / DOCX / Markdown / TXT / HTML
-</NButton
-              >
+              <NButton type="primary">
+                上传 PDF / DOCX / Markdown / TXT / HTML
+              </NButton>
             </NUpload>
             <NDataTable
               class="mt-4"
@@ -365,13 +354,9 @@ onMounted(async () => {
             </NSpace>
             <NSpace class="mt-4" vertical>
               <NCard v-for="hit in hits" :key="hit.chunkId" size="small">
-                <template #header
-                  >
-文档 #{{ hit.documentId }} / Chunk #{{
-                    hit.chunkId
-                  }}
-</template
-                >
+                <template #header>
+                  文档 #{{ hit.documentId }} / Chunk #{{ hit.chunkId }}
+                </template>
                 <div>{{ hit.highlight || hit.content }}</div>
                 <template #footer>
                   BM25 {{ hit.bm25Score.toFixed(4) }} · Vector
@@ -430,16 +415,12 @@ onMounted(async () => {
       style="width: 560px"
     >
       <NForm :model="spaceForm">
-        <NFormItem label="空间编码"
-          >
-<NInput v-model:value="spaceForm.code"
-        />
-</NFormItem>
-        <NFormItem label="空间名称"
-          >
-<NInput v-model:value="spaceForm.name"
-        />
-</NFormItem>
+        <NFormItem label="空间编码">
+          <NInput v-model:value="spaceForm.code" />
+        </NFormItem>
+        <NFormItem label="空间名称">
+          <NInput v-model:value="spaceForm.name" />
+        </NFormItem>
         <NFormItem label="发布策略">
           <NSelect
             v-model:value="spaceForm.reviewMode"
@@ -451,11 +432,9 @@ onMounted(async () => {
           />
         </NFormItem>
       </NForm>
-      <template #footer
-        >
-<NButton type="primary" @click="submitSpace">创建</NButton>
-</template
-      >
+      <template #footer>
+        <NButton type="primary" @click="submitSpace">创建</NButton>
+      </template>
     </NModal>
   </Page>
 </template>
