@@ -2,7 +2,7 @@
 import type { AgentGraphApi } from '#/api/agent/graph';
 import type { NodeTypeApi } from '#/api/agent/node-type';
 
-import { computed, h, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -13,7 +13,6 @@ import {
   NCheckbox,
   NCollapse,
   NCollapseItem,
-  NDataTable,
   NEmpty,
   NForm,
   NFormItem,
@@ -129,6 +128,7 @@ const showEdgeModal = ref(false);
 const edgeSource = ref('');
 const edgeTarget = ref('');
 const isNewEdge = ref(false);
+const editingEdgeId = ref('');
 
 // Conditional edge modal state
 const showCondEdgeModal = ref(false);
@@ -169,115 +169,6 @@ const nodeOptions = computed(() =>
     value: n.id,
   })),
 );
-
-const normalEdges = computed(() =>
-  formEdges.value.filter((e) => e.edgeType === 'normal'),
-);
-
-const conditionalEdges = computed(() =>
-  formEdges.value.filter((e) => e.edgeType === 'conditional'),
-);
-
-// --------------- Table columns ---------------
-
-const nodeColumns = computed(() => [
-  { title: $t('agent.adminEditTableColumnName'), key: 'nodeName', width: 130 },
-  { title: $t('agent.adminEditTableColumnType'), key: 'nodeType', width: 100 },
-  {
-    title: $t('agent.adminEditTableColumnStatus'),
-    key: 'enabled',
-    width: 70,
-    render: (row: AgentGraphApi.FormNode) =>
-      row.enabled
-        ? $t('agent.adminEditEnabled')
-        : $t('agent.adminEditDisabled'),
-  },
-  {
-    title: $t('agent.adminEditTableColumnDescription'),
-    key: 'description',
-    ellipsis: { tooltip: true },
-  },
-  {
-    title: $t('agent.adminEditTableColumnActions'),
-    key: 'actions',
-    width: 110,
-    fixed: 'right' as const,
-    render: (row: AgentGraphApi.FormNode) =>
-      h(NSpace, {}, [
-        h(
-          NButton,
-          { size: 'tiny', onClick: () => openEditNode(row) },
-          $t('agent.adminEditEditAction'),
-        ),
-        h(
-          NButton,
-          {
-            size: 'tiny',
-            type: 'error',
-            onClick: () => handleDeleteNode(row.id),
-          },
-          $t('agent.adminEditDeleteAction'),
-        ),
-      ]),
-  },
-]);
-
-const normalEdgeColumns = [
-  { title: $t('agent.adminEditTableColumnSource'), key: 'source', width: 130 },
-  { title: $t('agent.adminEditTableColumnTarget'), key: 'target', width: 130 },
-  {
-    title: $t('agent.adminEditTableColumnActions'),
-    key: 'actions',
-    width: 80,
-    render: (row: AgentGraphApi.FormEdge) =>
-      h(
-        NButton,
-        {
-          size: 'tiny',
-          type: 'error',
-          onClick: () => handleDeleteEdge(row.id),
-        },
-        $t('agent.adminEditDeleteAction'),
-      ),
-  },
-];
-
-const conditionalEdgeColumns = [
-  { title: $t('agent.adminEditTableColumnSource'), key: 'source', width: 120 },
-  { title: $t('agent.adminEditTableColumnTarget'), key: 'target', width: 120 },
-  {
-    title: $t('agent.adminEditTableColumnConditionType'),
-    key: 'conditionType',
-    width: 90,
-  },
-  {
-    title: $t('agent.adminEditTableColumnMappingValue'),
-    key: 'conditionMapping',
-    width: 90,
-  },
-  {
-    title: $t('agent.adminEditTableColumnDefaultTarget'),
-    key: 'isDefault',
-    width: 80,
-    render: (row: AgentGraphApi.FormEdge) =>
-      row.isDefault ? $t('agent.adminEditYes') : $t('agent.adminEditNo'),
-  },
-  {
-    title: $t('agent.adminEditTableColumnActions'),
-    key: 'actions',
-    width: 80,
-    render: (row: AgentGraphApi.FormEdge) =>
-      h(
-        NButton,
-        {
-          size: 'tiny',
-          type: 'error',
-          onClick: () => handleDeleteEdge(row.id),
-        },
-        $t('agent.adminEditDeleteAction'),
-      ),
-  },
-];
 
 // --------------- Lifecycle ---------------
 
@@ -635,12 +526,52 @@ function openAddNode() {
 }
 
 function handleCanvasNodeSelect(node: AgentGraphApi.FormNode) {
+  if (readonly.value) return;
   openEditNode(node);
 }
 
 function handleCanvasConnect(edge: AgentGraphApi.FormEdge) {
-  if (!formEdges.value.some((item) => item.id === edge.id))
-    formEdges.value.push(edge);
+  if (edge.source === edge.target) {
+    message.warning('节点不能连接到自身');
+    return;
+  }
+  if (formEdges.value.some((item) => item.id === edge.id)) {
+    message.warning('该连线已经存在');
+    return;
+  }
+  if (edge.edgeType === 'conditional') {
+    condEdgeSource.value = edge.source;
+    condEdgeTarget.value = edge.target;
+    condEdgeType.value = '';
+    condEdgeMapping.value = '';
+    condEdgeIsDefault.value = false;
+    editingEdgeId.value = '';
+    isNewCondEdge.value = true;
+    showCondEdgeModal.value = true;
+    loadCondEdgeIntentOptions();
+    return;
+  }
+  formEdges.value.push(edge);
+}
+
+function handleCanvasEdgeSelect(edge: AgentGraphApi.FormEdge) {
+  if (readonly.value) return;
+  editingEdgeId.value = edge.id;
+  if (edge.edgeType === 'conditional') {
+    condEdgeSource.value = edge.source;
+    condEdgeTarget.value = edge.target;
+    condEdgeType.value = edge.conditionType || '';
+    condEdgeMapping.value = edge.conditionMapping || '';
+    condEdgeIsDefault.value = edge.isDefault === true;
+    isNewCondEdge.value = false;
+    showCondEdgeModal.value = true;
+    loadCondEdgeIntentOptions();
+  } else {
+    edgeSource.value = edge.source;
+    edgeTarget.value = edge.target;
+    isNewEdge.value = false;
+    showEdgeModal.value = true;
+  }
 }
 
 function handleCanvasPositions(
@@ -665,6 +596,12 @@ function confirmNode() {
   showNodeModal.value = false;
 }
 
+function deleteEditingNode() {
+  if (isNewNode.value) return;
+  handleDeleteNode(editingNode.value.id);
+  showNodeModal.value = false;
+}
+
 function handleDeleteNode(id: string) {
   formNodes.value = formNodes.value.filter((n) => n.id !== id);
   // Also remove related edges
@@ -675,40 +612,38 @@ function handleDeleteNode(id: string) {
 
 // --------------- Normal Edge CRUD ---------------
 
-function openAddEdge() {
-  edgeSource.value = '';
-  edgeTarget.value = '';
-  isNewEdge.value = true;
-  showEdgeModal.value = true;
-}
-
 function confirmEdge() {
   if (!edgeSource.value || !edgeTarget.value) {
     message.warning($t('agent.adminEditSelectSourceAndTarget'));
     return;
   }
   const id = `${edgeSource.value}->${edgeTarget.value}`;
-  formEdges.value.push({
+  const edge = {
     id,
     source: edgeSource.value,
     target: edgeTarget.value,
     edgeType: 'normal',
-  });
+  } satisfies AgentGraphApi.FormEdge;
+  if (
+    formEdges.value.some(
+      (item) => item.id === id && item.id !== editingEdgeId.value,
+    )
+  ) {
+    message.warning('该普通连线已经存在');
+    return;
+  }
+  if (isNewEdge.value) {
+    formEdges.value.push(edge);
+  } else {
+    const index = formEdges.value.findIndex(
+      (item) => item.id === editingEdgeId.value,
+    );
+    if (index >= 0) formEdges.value.splice(index, 1, edge);
+  }
   showEdgeModal.value = false;
 }
 
 // --------------- Conditional Edge CRUD ---------------
-
-function openAddConditionalEdge() {
-  condEdgeSource.value = '';
-  condEdgeTarget.value = '';
-  condEdgeType.value = '';
-  condEdgeMapping.value = '';
-  condEdgeIsDefault.value = false;
-  isNewCondEdge.value = true;
-  showCondEdgeModal.value = true;
-  loadCondEdgeIntentOptions();
-}
 
 function confirmCondEdge() {
   if (!condEdgeSource.value || !condEdgeTarget.value) {
@@ -719,7 +654,7 @@ function confirmCondEdge() {
     ? 'cond_default'
     : `cond_${condEdgeMapping.value || 'unknown'}`;
   const id = `${condEdgeSource.value}->${condEdgeTarget.value}__${suffix}`;
-  formEdges.value.push({
+  const edge = {
     id,
     source: condEdgeSource.value,
     target: condEdgeTarget.value,
@@ -729,7 +664,22 @@ function confirmCondEdge() {
       ? undefined
       : condEdgeMapping.value,
     isDefault: condEdgeIsDefault.value,
-  });
+  } satisfies AgentGraphApi.FormEdge;
+  if (
+    isNewCondEdge.value &&
+    formEdges.value.some((item) => item.id === edge.id)
+  ) {
+    message.warning('该条件连线已经存在');
+    return;
+  }
+  if (isNewCondEdge.value) {
+    formEdges.value.push(edge);
+  } else {
+    const index = formEdges.value.findIndex(
+      (item) => item.id === editingEdgeId.value,
+    );
+    if (index >= 0) formEdges.value.splice(index, 1, edge);
+  }
   showCondEdgeModal.value = false;
 }
 
@@ -737,6 +687,12 @@ function confirmCondEdge() {
 
 function handleDeleteEdge(id: string) {
   formEdges.value = formEdges.value.filter((e) => e.id !== id);
+}
+
+function deleteEditingEdge() {
+  if (editingEdgeId.value) handleDeleteEdge(editingEdgeId.value);
+  showEdgeModal.value = false;
+  showCondEdgeModal.value = false;
 }
 
 // --------------- Version operations ---------------
@@ -1094,7 +1050,7 @@ function onBack() {
             </NCollapse>
           </div>
 
-          <!-- Right: Graph Form (replaces Vue Flow canvas) -->
+          <!-- Right: visual graph editor -->
           <div class="flex flex-1 flex-col overflow-hidden rounded border">
             <!-- Graph editor toolbar -->
             <NSpace align="center" class="border-b p-2">
@@ -1167,84 +1123,11 @@ function onBack() {
                     :edges="formEdges"
                     :positions="canvasPositions"
                     :readonly="readonly"
+                    @add-node="openAddNode"
                     @select-node="handleCanvasNodeSelect"
+                    @select-edge="handleCanvasEdgeSelect"
                     @connect="handleCanvasConnect"
                     @update-positions="handleCanvasPositions"
-                  />
-                </div>
-
-                <!-- Nodes Table -->
-                <div>
-                  <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{
-                      $t('agent.adminEditNodeList')
-                    }}</span>
-                    <NButton
-                      v-if="!readonly"
-                      size="small"
-                      type="primary"
-                      @click="openAddNode"
-                    >
-                      {{ $t('agent.adminEditAddNode') }}
-                    </NButton>
-                  </NSpace>
-                  <NDataTable
-                    :columns="nodeColumns"
-                    :data="formNodes"
-                    :max-height="280"
-                    :bordered="true"
-                    size="small"
-                    :empty-text="$t('agent.adminEditNoNodeHint')"
-                  />
-                </div>
-
-                <!-- Normal Edges Table -->
-                <div>
-                  <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{
-                      $t('agent.adminEditNormalEdges')
-                    }}</span>
-                    <NButton
-                      v-if="!readonly"
-                      size="small"
-                      type="primary"
-                      @click="openAddEdge"
-                    >
-                      {{ $t('agent.adminEditAddEdge') }}
-                    </NButton>
-                  </NSpace>
-                  <NDataTable
-                    :columns="normalEdgeColumns"
-                    :data="normalEdges"
-                    :max-height="200"
-                    :bordered="true"
-                    size="small"
-                    :empty-text="$t('agent.adminEditNoNormalEdge')"
-                  />
-                </div>
-
-                <!-- Conditional Edges Table -->
-                <div>
-                  <NSpace align="center" class="mb-2">
-                    <span class="text-sm font-bold">{{
-                      $t('agent.adminEditConditionalEdges')
-                    }}</span>
-                    <NButton
-                      v-if="!readonly"
-                      size="small"
-                      type="primary"
-                      @click="openAddConditionalEdge"
-                    >
-                      {{ $t('agent.adminEditAddCondEdge') }}
-                    </NButton>
-                  </NSpace>
-                  <NDataTable
-                    :columns="conditionalEdgeColumns"
-                    :data="conditionalEdges"
-                    :max-height="200"
-                    :bordered="true"
-                    size="small"
-                    :empty-text="$t('agent.adminEditNoCondEdge')"
                   />
                 </div>
               </div>
@@ -1271,6 +1154,13 @@ function onBack() {
       />
       <template #footer>
         <NSpace justify="end">
+          <NButton
+            v-if="!isNewNode && !readonly"
+            type="error"
+            @click="deleteEditingNode"
+          >
+            删除节点
+          </NButton>
           <NButton @click="showNodeModal = false">
             {{ $t('agent.adminEditCancel') }}
           </NButton>
@@ -1306,6 +1196,13 @@ function onBack() {
       </NForm>
       <template #footer>
         <NSpace justify="end">
+          <NButton
+            v-if="!isNewEdge && !readonly"
+            type="error"
+            @click="deleteEditingEdge"
+          >
+            删除连线
+          </NButton>
           <NButton @click="showEdgeModal = false">
             {{ $t('agent.adminEditCancel') }}
           </NButton>
@@ -1362,6 +1259,13 @@ function onBack() {
       </NForm>
       <template #footer>
         <NSpace justify="end">
+          <NButton
+            v-if="!isNewCondEdge && !readonly"
+            type="error"
+            @click="deleteEditingEdge"
+          >
+            删除连线
+          </NButton>
           <NButton @click="showCondEdgeModal = false">
             {{ $t('agent.adminEditCancel') }}
           </NButton>

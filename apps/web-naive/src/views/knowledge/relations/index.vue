@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { DataTableColumns } from 'naive-ui';
+import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { computed, h, onMounted, ref } from 'vue';
+import { computed, h, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
+import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
 import {
   NButton,
@@ -57,6 +59,8 @@ const currentTypeDescription = computed(
     relationTypeOptions.find((item) => item.value === relationType.value)
       ?.description,
 );
+const chartRef = ref<EchartsUIType>();
+const { renderEcharts } = useEcharts(chartRef);
 
 async function loadOptions(reset = false) {
   if (!activeSpaceId.value) {
@@ -92,6 +96,88 @@ async function loadRelations() {
   } finally {
     loading.value = false;
   }
+}
+
+async function renderRelationGraph() {
+  const center = options.value.find((item) => item.value === selectedId.value);
+  if (!center) return;
+  const nodeMap = new Map<number, { id: string; name: string; value: string }>();
+  nodeMap.set(center.value, {
+    id: String(center.value),
+    name: center.label,
+    value: '当前节点',
+  });
+  for (const relation of relations.value) {
+    const source = relation.source || {
+      id: relation.sourceId,
+      name: String(relation.sourceId),
+      code: '',
+    };
+    const target = relation.target || {
+      id: relation.targetId,
+      name: String(relation.targetId),
+      code: '',
+    };
+    nodeMap.set(source.id, {
+      id: String(source.id),
+      name: `${source.code ? `[${source.code}] ` : ''}${source.name}`,
+      value: source.id === center.value ? '当前节点' : '来源节点',
+    });
+    nodeMap.set(target.id, {
+      id: String(target.id),
+      name: `${target.code ? `[${target.code}] ` : ''}${target.name}`,
+      value: target.id === center.value ? '当前节点' : '目标节点',
+    });
+  }
+  const option: Parameters<typeof renderEcharts>[0] = {
+    tooltip: {
+      trigger: 'item',
+      formatter: (params: any) =>
+        params.dataType === 'edge'
+          ? `${params.data.source} → ${params.data.target}<br/>关系：${params.data.relationType}`
+          : params.data.name,
+    },
+    series: [
+      {
+        type: 'graph',
+        layout: 'force',
+        roam: true,
+        draggable: true,
+        data: [...nodeMap.values()].map((node) => ({
+          ...node,
+          symbolSize: node.id === String(center.value) ? 62 : 44,
+          itemStyle: {
+            color: node.id === String(center.value) ? '#2563eb' : '#64748b',
+          },
+        })),
+        links: relations.value.map((relation) => ({
+          source: String(relation.sourceId),
+          target: String(relation.targetId),
+          name: getStatusLabel(relation.relationType),
+          value: relation.weight ?? 1,
+          relationType: getStatusLabel(relation.relationType),
+          lineStyle: { curveness: 0.12 },
+        })),
+        edgeSymbol: ['none', 'arrow'],
+        edgeSymbolSize: 9,
+        edgeLabel: { show: true, formatter: '{b}', fontSize: 11 },
+        label: { show: true, position: 'bottom', formatter: '{b}' },
+        emphasis: { focus: 'adjacency' },
+        force: { repulsion: 220, edgeLength: [110, 180], gravity: 0.08 },
+        lineStyle: { color: '#94a3b8', opacity: 0.85, width: 1.8 },
+      },
+    ],
+  };
+  await nextTick();
+  const chart = await renderEcharts(option);
+  chart?.off('click');
+  chart?.on('click', (params) => {
+    if (params.dataType !== 'node') return;
+    const id = Number((params.data as { id?: string })?.id);
+    if (!id || id === selectedId.value) return;
+    selectedId.value = id;
+    loadRelations();
+  });
 }
 async function refresh(reset = false) {
   await loadOptions(reset);
@@ -182,6 +268,7 @@ onMounted(async () => {
   await store.loadSpaces();
   await refresh(true);
 });
+watch(relations, () => renderRelationGraph(), { deep: true });
 </script>
 
 <template>
@@ -225,6 +312,14 @@ onMounted(async () => {
       <div class="mt-2 text-xs text-muted-foreground">
         {{ currentTypeDescription }}
       </div>
+      <NCard class="mt-5" size="small" title="关系方向图" :bordered="false">
+        <div class="h-[380px] w-full rounded-lg border bg-muted/20 p-1">
+          <EchartsUI ref="chartRef" height="100%" />
+        </div>
+        <div class="mt-2 text-xs text-muted-foreground">
+          箭头表示关系方向；点击图中节点可切换编排中心。
+        </div>
+      </NCard>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <NCard size="small">
           <div class="text-sm text-muted-foreground">关系总数</div>

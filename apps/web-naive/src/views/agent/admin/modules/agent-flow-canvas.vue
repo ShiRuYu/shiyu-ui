@@ -9,6 +9,7 @@ import { Background } from '@vue-flow/background';
 import { Controls } from '@vue-flow/controls';
 import { addEdge, MarkerType, VueFlow } from '@vue-flow/core';
 import { MiniMap } from '@vue-flow/minimap';
+import { NButton, NSpace } from 'naive-ui';
 
 import '@vue-flow/core/dist/style.css';
 import '@vue-flow/core/dist/theme-default.css';
@@ -28,10 +29,12 @@ const emit = defineEmits<{
     positions: Record<string, { x: number; y: number }>,
   ): void;
   (e: 'connect', edge: AgentGraphApi.FormEdge): void;
+  (e: 'addNode'): void;
 }>();
 
 const flowNodes = ref<any[]>([]);
 const flowEdges = ref<any[]>([]);
+const connectionMode = ref<'conditional' | 'normal'>('normal');
 
 function syncGraph() {
   flowNodes.value = props.nodes.map((node, index) => ({
@@ -89,18 +92,47 @@ function handleConnect(connection: Connection) {
     id: `${connection.source}->${connection.target}`,
     source: connection.source,
     target: connection.target,
-    edgeType: 'normal',
+    edgeType: connectionMode.value,
   };
-  flowEdges.value = addEdge(
-    { ...connection, id: edge.id },
-    flowEdges.value,
-  ) as Edge[];
+  if (edge.edgeType === 'normal') {
+    flowEdges.value = addEdge(
+      { ...connection, id: edge.id, markerEnd: MarkerType.ArrowClosed },
+      flowEdges.value,
+    ) as Edge[];
+  }
   emit('connect', edge);
 }
 </script>
 
 <template>
-  <div class="agent-flow-canvas h-full min-h-[480px] w-full">
+  <div class="agent-flow-canvas relative h-full min-h-[480px] w-full">
+    <div
+      v-if="!readonly"
+      class="absolute left-3 top-3 z-10 rounded-lg border bg-white/95 p-2 shadow-sm"
+    >
+      <NSpace align="center" :size="6">
+        <NButton size="small" type="primary" @click.stop="emit('addNode')">
+          添加节点
+        </NButton>
+        <NButton
+          size="small"
+          :type="connectionMode === 'normal' ? 'info' : 'default'"
+          @click.stop="connectionMode = 'normal'"
+        >
+          普通连线
+        </NButton>
+        <NButton
+          size="small"
+          :type="connectionMode === 'conditional' ? 'warning' : 'default'"
+          @click.stop="connectionMode = 'conditional'"
+        >
+          条件连线
+        </NButton>
+      </NSpace>
+      <div class="mt-1 text-[11px] text-gray-500">
+        当前模式：{{ connectionMode === 'normal' ? '普通连线' : '条件连线' }}；点击节点或连线可编辑
+      </div>
+    </div>
     <VueFlow
       v-model:nodes="flowNodes"
       v-model:edges="flowEdges"

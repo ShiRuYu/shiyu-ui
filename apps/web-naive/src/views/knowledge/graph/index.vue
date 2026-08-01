@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -96,6 +96,10 @@ async function loadGraph() {
       selectedId.value,
     )) as PointGraph;
     selectedNode.value = graph.value.node;
+    if (graph.value.node) {
+      await nextTick();
+      await renderGraph(graph.value);
+    }
   } finally {
     loading.value = false;
   }
@@ -164,6 +168,8 @@ async function renderGraph(data: PointGraph) {
           },
         })),
         links,
+        edgeSymbol: ['none', 'arrow'],
+        edgeSymbolSize: 8,
         label: { show: true, position: 'bottom', formatter: '{b}' },
         emphasis: { focus: 'adjacency' },
         force: { repulsion: 260, edgeLength: [90, 180], gravity: 0.08 },
@@ -172,6 +178,9 @@ async function renderGraph(data: PointGraph) {
     ],
   };
   await nextTick();
+  for (let attempt = 0; attempt < 3 && !chartRef.value; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 40));
+  }
   const chart = await renderEcharts(option);
   chart?.off('click');
   chart?.on('click', (params) => {
@@ -191,7 +200,6 @@ onMounted(async () => {
   await store.loadSpaces();
   await refresh(true);
 });
-watch(graph, (value) => value && renderGraph(value));
 </script>
 
 <template>
