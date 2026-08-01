@@ -130,7 +130,9 @@ function handleConnect(connection: Connection) {
         </NButton>
       </NSpace>
       <div class="mt-1 text-[11px] text-gray-500">
-        当前模式：{{ connectionMode === 'normal' ? '普通连线' : '条件连线' }}；点击节点或连线可编辑
+        当前模式：{{
+          connectionMode === 'normal' ? '普通连线' : '条件连线'
+        }}；点击节点或连线可编辑
       </div>
     </div>
     <VueFlow

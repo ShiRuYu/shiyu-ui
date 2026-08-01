@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DataTableColumns } from 'naive-ui';
+
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import { computed, h, nextTick, onMounted, ref, watch } from 'vue';
@@ -101,7 +102,10 @@ async function loadRelations() {
 async function renderRelationGraph() {
   const center = options.value.find((item) => item.value === selectedId.value);
   if (!center) return;
-  const nodeMap = new Map<number, { id: string; name: string; value: string }>();
+  const nodeMap = new Map<
+    number,
+    { id: string; name: string; value: string }
+  >();
   nodeMap.set(center.value, {
     id: String(center.value),
     name: center.label,
