@@ -275,9 +275,9 @@ onMounted(async () => {
           @action="router.push('/knowledge/documents')"
         />
         <template #footer>
-          <NButton text type="primary" @click="router.push('/knowledge/index')"
-            >查看全部任务</NButton
-          >
+          <NButton text type="primary" @click="router.push('/knowledge/index')">
+            查看全部任务
+          </NButton>
         </template>
       </NCard>
     </div>

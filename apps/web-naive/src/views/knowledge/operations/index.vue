@@ -9,15 +9,16 @@ import {
   NAlert,
   NButton,
   NCard,
+  NDataTable,
   NDescriptions,
   NDescriptionsItem,
-  NDataTable,
   NProgress,
   NTag,
   useMessage,
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import {
   type BackupResult,
   checkEmbeddedBackup,
@@ -27,7 +28,6 @@ import {
   getKnowledgeAudits,
   type KnowledgeAuditLog,
 } from '#/api/knowledge/enterprise';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeSpaceHeader from '../components/knowledge-space-header.vue';
@@ -164,22 +164,18 @@ onMounted(async () => {
           label-placement="left"
           :column="1"
         >
-          <NDescriptionsItem label="数据目录"
-            ><span class="break-all">{{
-              runtime.dataRoot
-            }}</span></NDescriptionsItem
-          >
-          <NDescriptionsItem label="数据库"
-            ><span class="break-all">{{
-              runtime.database
-            }}</span></NDescriptionsItem
-          >
-          <NDescriptionsItem label="磁盘总量">{{
-            formatBytes(runtime.totalBytes)
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="可用空间">{{
-            formatBytes(runtime.usableBytes)
-          }}</NDescriptionsItem>
+          <NDescriptionsItem label="数据目录">
+            <span class="break-all">{{ runtime.dataRoot }}</span>
+          </NDescriptionsItem>
+          <NDescriptionsItem label="数据库">
+            <span class="break-all">{{ runtime.database }}</span>
+          </NDescriptionsItem>
+          <NDescriptionsItem label="磁盘总量">
+            {{ formatBytes(runtime.totalBytes) }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="可用空间">
+            {{ formatBytes(runtime.usableBytes) }}
+          </NDescriptionsItem>
         </NDescriptions>
         <div v-if="runtime" class="mt-4">
           <div class="mb-2 flex justify-between text-sm">
@@ -196,9 +192,9 @@ onMounted(async () => {
             "
           />
         </div>
-        <NButton class="mt-5" :loading="refreshing" @click="refresh"
-          >刷新系统状态</NButton
-        >
+        <NButton class="mt-5" :loading="refreshing" @click="refresh">
+          刷新系统状态
+        </NButton>
       </NCard>
 
       <NCard title="备份与恢复校验" :bordered="false">
@@ -206,12 +202,12 @@ onMounted(async () => {
           完整备份包含数据库、上传文件、模型和索引目录。恢复前应在停机窗口中先执行完整性校验。
         </div>
         <div class="mt-5 flex flex-wrap gap-3">
-          <NButton type="primary" :loading="backingUp" @click="requestBackup"
-            >立即创建备份</NButton
-          >
-          <NButton :disabled="!backup" :loading="verifying" @click="verify"
-            >校验本次备份</NButton
-          >
+          <NButton type="primary" :loading="backingUp" @click="requestBackup">
+            立即创建备份
+          </NButton>
+          <NButton :disabled="!backup" :loading="verifying" @click="verify">
+            校验本次备份
+          </NButton>
         </div>
         <div v-if="backup" class="mt-5 rounded-lg border p-4 text-sm">
           <div class="flex flex-wrap items-center gap-2">
@@ -231,9 +227,9 @@ onMounted(async () => {
           :type="verifyResult.valid ? 'success' : 'error'"
           :title="verifyResult.valid ? '备份校验通过' : '备份校验失败'"
         >
-          <template v-if="verifyResult.valid"
-            >共检查 {{ verifyResult.entries }} 条记录。</template
-          >
+          <template v-if="verifyResult.valid">
+            共检查 {{ verifyResult.entries }} 条记录。
+          </template>
           <ul v-else class="list-disc pl-5">
             <li v-for="error in verifyResult.errors" :key="error">
               {{ error }}
@@ -288,9 +284,9 @@ onMounted(async () => {
           <div class="mt-1 font-medium">{{ activeSpace.chunkOverlap }}</div>
         </div>
       </div>
-      <NAlert v-else type="info" :bordered="false"
-        >选择知识空间后可查看空间级配置。系统备份操作始终影响整个知识平台。</NAlert
-      >
+      <NAlert v-else type="info" :bordered="false">
+        选择知识空间后可查看空间级配置。系统备份操作始终影响整个知识平台。
+      </NAlert>
     </NCard>
     <NCard class="mt-4" title="操作审计" :bordered="false">
       <NDataTable

@@ -124,9 +124,9 @@ async function renderGraph(data: PointGraph) {
       all.findIndex((item) => item.id === node.id) === index,
   );
   const links: Array<{
+    lineStyle?: { curveness: number };
     source: string;
     target: string;
-    lineStyle?: { curveness: number };
   }> = [];
   const addLink = (source: number, target: number) => {
     if (
@@ -175,7 +175,7 @@ async function renderGraph(data: PointGraph) {
   const chart = await renderEcharts(option);
   chart?.off('click');
   chart?.on('click', (params) => {
-    const data = params.data as { id?: string } | null | undefined;
+    const data = params.data as null | undefined | { id?: string };
     const node = nodes.find((item) => String(item.id) === data?.id);
     if (node) selectedNode.value = node;
   });
@@ -223,8 +223,9 @@ watch(graph, (value) => value && renderGraph(value));
             :loading="pathLoading"
             :disabled="!selectedId || !pathTargetId"
             @click="queryPath"
-            >查询最短路径</NButton
           >
+            查询最短路径
+          </NButton>
           <div
             v-if="pathIds.length"
             class="mt-3 rounded-lg bg-primary/5 p-3 text-xs leading-6"
@@ -340,8 +341,9 @@ watch(graph, (value) => value && renderGraph(value));
                 query: { pointId: selectedNode.id },
               })
             "
-            >编辑该节点关系</NButton
           >
+            编辑该节点关系
+          </NButton>
         </template>
         <KnowledgeEmptyState v-else description="点击节点查看详情" />
       </NCard>

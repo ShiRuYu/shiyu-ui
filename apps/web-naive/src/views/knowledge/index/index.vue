@@ -29,6 +29,7 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import {
   cancelJob,
   type EmbeddedRuntimeStatus,
@@ -39,7 +40,6 @@ import {
   rebuildSpaceIndex,
   retryJob,
 } from '#/api/knowledge/enterprise';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
@@ -241,20 +241,20 @@ onBeforeUnmount(() => timer && clearInterval(timer));
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="load" />
     <div class="grid gap-3 md:grid-cols-3">
-      <NCard size="small"
-        ><div class="text-sm text-muted-foreground">任务总数</div>
-        <div class="mt-2 text-2xl font-semibold">{{ total }}</div></NCard
-      >
-      <NCard size="small"
-        ><div class="text-sm text-muted-foreground">处理中</div>
-        <div class="mt-2 text-2xl font-semibold">{{ running }}</div></NCard
-      >
-      <NCard size="small"
-        ><div class="text-sm text-muted-foreground">异常任务</div>
+      <NCard size="small">
+        <div class="text-sm text-muted-foreground">任务总数</div>
+        <div class="mt-2 text-2xl font-semibold">{{ total }}</div>
+      </NCard>
+      <NCard size="small">
+        <div class="text-sm text-muted-foreground">处理中</div>
+        <div class="mt-2 text-2xl font-semibold">{{ running }}</div>
+      </NCard>
+      <NCard size="small">
+        <div class="text-sm text-muted-foreground">异常任务</div>
         <div class="mt-2 text-2xl font-semibold text-error">
           {{ failed }}
-        </div></NCard
-      >
+        </div>
+      </NCard>
     </div>
     <NCard class="mt-4" title="任务队列" :bordered="false">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -282,14 +282,15 @@ onBeforeUnmount(() => timer && clearInterval(timer));
           :loading="rebuilding"
           :disabled="!activeSpaceId"
           @click="rebuild"
-          >重建当前空间索引</NButton
         >
+          重建当前空间索引
+        </NButton>
       </div>
-      <NAlert v-if="failed" type="warning" :bordered="false" class="mb-4"
-        >当前有
+      <NAlert v-if="failed" type="warning" :bordered="false" class="mb-4">
+        当前有
         {{ failed }}
-        个异常任务。建议先查看错误详情并重试，再决定是否重建索引。</NAlert
-      >
+        个异常任务。建议先查看错误详情并重试，再决定是否重建索引。
+      </NAlert>
       <NDataTable
         v-if="jobs.length || loading"
         remote
@@ -328,42 +329,46 @@ onBeforeUnmount(() => timer && clearInterval(timer));
           label-placement="left"
           :column="1"
         >
-          <NDescriptionsItem label="状态"
-            ><KnowledgeStatusTag :value="detail.status"
-          /></NDescriptionsItem>
-          <NDescriptionsItem label="任务类型">{{
-            detail.jobType
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="处理阶段">{{
-            getStageLabel(detail.stage)
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="处理进度"
-            >{{ detail.progress }}%</NDescriptionsItem
-          >
-          <NDescriptionsItem label="尝试次数"
-            >{{ detail.attempts }}/{{ detail.maxAttempts }}</NDescriptionsItem
-          >
-          <NDescriptionsItem label="文档 ID">{{
-            detail.documentId || '-'
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="创建时间">{{
-            new Date(detail.createTime).toLocaleString()
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="开始时间">{{
-            detail.startedTime
-              ? new Date(detail.startedTime).toLocaleString()
-              : '-'
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="完成时间">{{
-            detail.finishedTime
-              ? new Date(detail.finishedTime).toLocaleString()
-              : '-'
-          }}</NDescriptionsItem>
-          <NDescriptionsItem label="错误信息"
-            ><span class="whitespace-pre-wrap text-error">{{
+          <NDescriptionsItem label="状态">
+            <KnowledgeStatusTag :value="detail.status" />
+          </NDescriptionsItem>
+          <NDescriptionsItem label="任务类型">
+            {{ detail.jobType }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="处理阶段">
+            {{ getStageLabel(detail.stage) }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="处理进度">
+            {{ detail.progress }}%
+          </NDescriptionsItem>
+          <NDescriptionsItem label="尝试次数">
+            {{ detail.attempts }}/{{ detail.maxAttempts }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="文档 ID">
+            {{ detail.documentId || '-' }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="创建时间">
+            {{ new Date(detail.createTime).toLocaleString() }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="开始时间">
+            {{
+              detail.startedTime
+                ? new Date(detail.startedTime).toLocaleString()
+                : '-'
+            }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="完成时间">
+            {{
+              detail.finishedTime
+                ? new Date(detail.finishedTime).toLocaleString()
+                : '-'
+            }}
+          </NDescriptionsItem>
+          <NDescriptionsItem label="错误信息">
+            <span class="whitespace-pre-wrap text-error">{{
               detail.errorMessage || '-'
-            }}</span></NDescriptionsItem
-          >
+            }}</span>
+          </NDescriptionsItem>
         </NDescriptions>
       </NDrawerContent>
     </NDrawer>

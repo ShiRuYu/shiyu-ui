@@ -21,12 +21,12 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import {
   createSpace,
   getSpaces,
   type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
-import { dialog } from '#/adapter/naive';
 import {
   deleteSpace,
   getSpaceMembers,
@@ -456,9 +456,9 @@ onMounted(async () => {
                   { label: '查看者', value: 'VIEWER' },
                 ]"
               />
-              <NButton type="error" @click="members.splice(index, 1)"
-                >移除</NButton
-              >
+              <NButton type="error" @click="members.splice(index, 1)">
+                移除
+              </NButton>
             </div>
             <NButton
               dashed
@@ -470,8 +470,9 @@ onMounted(async () => {
                   spaceRole: 'VIEWER',
                 })
               "
-              >添加成员</NButton
             >
+              添加成员
+            </NButton>
           </div>
         </NTabPane>
       </NTabs>

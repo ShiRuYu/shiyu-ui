@@ -24,13 +24,14 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import {
+  type DocumentVersion,
   getDocumentVersions,
+  getKnowledgePointIdsByDocument,
   previewDocument,
   replaceKnowledgeDocumentPoints,
-  getKnowledgePointIdsByDocument,
   rollbackDocument,
-  type DocumentVersion,
 } from '#/api/knowledge/document';
 import {
   deleteDocument,
@@ -41,7 +42,6 @@ import {
   uploadDocument,
 } from '#/api/knowledge/enterprise';
 import { getKnowledgePoint, getKnowledgePoints } from '#/api/knowledge/point';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
@@ -393,12 +393,12 @@ onMounted(async () => {
           <NButton @click="search">查询</NButton>
         </div>
         <div class="flex gap-2">
-          <NButton @click="router.push('/knowledge/index')"
-            >查看处理任务</NButton
-          >
-          <NButton :disabled="!activeSpaceId" @click="urlImportVisible = true"
-            >导入网页 URL</NButton
-          >
+          <NButton @click="router.push('/knowledge/index')">
+            查看处理任务
+          </NButton>
+          <NButton :disabled="!activeSpaceId" @click="urlImportVisible = true">
+            导入网页 URL
+          </NButton>
           <NUpload
             ref="uploadRef"
             :custom-request="upload"
@@ -409,8 +409,9 @@ onMounted(async () => {
               type="primary"
               :loading="uploading"
               :disabled="!activeSpaceId"
-              >选择文件导入</NButton
             >
+              选择文件导入
+            </NButton>
           </NUpload>
         </div>
       </div>
@@ -471,9 +472,13 @@ onMounted(async () => {
       <template #footer>
         <div class="flex justify-end gap-2">
           <NButton @click="urlImportVisible = false">取消</NButton>
-          <NButton type="primary" :loading="urlImporting" @click="importFromUrl"
-            >开始导入</NButton
+          <NButton
+            type="primary"
+            :loading="urlImporting"
+            @click="importFromUrl"
           >
+            开始导入
+          </NButton>
         </div>
       </template>
     </NModal>
@@ -508,9 +513,9 @@ onMounted(async () => {
                   <span class="text-muted-foreground">校验值：</span
                   ><span class="break-all">{{ selected.checksum }}</span>
                 </div>
-                <NButton class="mt-2" @click="preview(selected)"
-                  >预览文档</NButton
-                >
+                <NButton class="mt-2" @click="preview(selected)">
+                  预览文档
+                </NButton>
               </div>
             </NTabPane>
             <NTabPane name="versions" tab="版本历史">
@@ -527,9 +532,9 @@ onMounted(async () => {
                       ><KnowledgeStatusTag :value="version.parseStatus" />
                     </div>
                   </div>
-                  <NButton size="small" @click="rollback(version.id)"
-                    >回滚到此版本</NButton
-                  >
+                  <NButton size="small" @click="rollback(version.id)">
+                    回滚到此版本
+                  </NButton>
                 </div>
               </div>
               <KnowledgeEmptyState v-else description="暂无版本记录" />

@@ -13,21 +13,21 @@ import {
   NFormItem,
   NInput,
   NModal,
-  NStatistic,
   NSpace,
+  NStatistic,
   useMessage,
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import {
   createKnowledgeEvaluation,
   deleteKnowledgeEvaluation,
   getKnowledgeEvaluations,
-  runKnowledgeEvaluation,
   type KnowledgeEvaluationCase,
   type KnowledgeEvaluationRunResult,
+  runKnowledgeEvaluation,
 } from '#/api/knowledge/evaluation';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
@@ -165,11 +165,16 @@ onMounted(async () => {
             :loading="running"
             :disabled="!activeSpaceId || !rows.length"
             @click="runEvaluation"
-            >运行评测</NButton
           >
-          <NButton type="primary" :disabled="!activeSpaceId" @click="openCreate"
-            >新建评测用例</NButton
+            运行评测
+          </NButton>
+          <NButton
+            type="primary"
+            :disabled="!activeSpaceId"
+            @click="openCreate"
           >
+            新建评测用例
+          </NButton>
         </NSpace>
       </div>
       <NDataTable
@@ -231,27 +236,29 @@ onMounted(async () => {
       style="width: min(680px, 94vw)"
     >
       <NForm ref="formRef" :model="form" :rules="rules" label-placement="top">
-        <NFormItem label="评测问题" path="question"
-          ><NInput v-model:value="form.question" type="textarea" :rows="3"
-        /></NFormItem>
-        <NFormItem label="期望引用文档 ID"
-          ><NInput
+        <NFormItem label="评测问题" path="question">
+          <NInput v-model:value="form.question" type="textarea" :rows="3" />
+        </NFormItem>
+        <NFormItem label="期望引用文档 ID">
+          <NInput
             v-model:value="form.expectedDocIds"
             placeholder="多个文档 ID 用逗号分隔"
-        /></NFormItem>
-        <NFormItem label="期望答案"
-          ><NInput
+          />
+        </NFormItem>
+        <NFormItem label="期望答案">
+          <NInput
             v-model:value="form.expectedAnswer"
             type="textarea"
             :rows="5"
-        /></NFormItem>
+          />
+        </NFormItem>
       </NForm>
       <template #footer>
         <div class="flex justify-end gap-2">
           <NButton @click="show = false">取消</NButton
-          ><NButton type="primary" :loading="saving" @click="save"
-            >保存</NButton
-          >
+          ><NButton type="primary" :loading="saving" @click="save">
+            保存
+          </NButton>
         </div>
       </template>
     </NModal>

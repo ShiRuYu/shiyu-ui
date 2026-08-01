@@ -202,9 +202,9 @@ onMounted(() => store.loadSpaces());
                   </div>
                 </div>
               </div>
-              <NTag type="success" round
-                >综合分 {{ hit.rrfScore.toFixed(3) }}</NTag
-              >
+              <NTag type="success" round>
+                综合分 {{ hit.rrfScore.toFixed(3) }}
+              </NTag>
             </div>
             <div
               class="mt-4 text-sm leading-7"

@@ -21,6 +21,12 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
+import {
+  getKnowledgeDocumentsByPoint,
+  replaceKnowledgePointDocuments,
+} from '#/api/knowledge/document';
+import { getDocuments, getKnowledgeDocument } from '#/api/knowledge/enterprise';
 import {
   createKnowledgePoint,
   deleteKnowledgePoint,
@@ -28,12 +34,6 @@ import {
   type KnowledgePoint,
   updateKnowledgePoint,
 } from '#/api/knowledge/point';
-import {
-  getKnowledgeDocumentsByPoint,
-  replaceKnowledgePointDocuments,
-} from '#/api/knowledge/document';
-import { getDocuments, getKnowledgeDocument } from '#/api/knowledge/enterprise';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
@@ -329,27 +329,27 @@ onMounted(async () => {
           />
           <NButton @click="search">查询</NButton>
         </div>
-        <NButton type="primary" :disabled="!activeSpaceId" @click="open()"
-          >新增知识点</NButton
-        >
+        <NButton type="primary" :disabled="!activeSpaceId" @click="open()">
+          新增知识点
+        </NButton>
       </div>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">资产总量</div>
-          <div class="mt-2 text-2xl font-semibold">{{ total }}</div></NCard
-        >
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">当前页已分类</div>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">资产总量</div>
+          <div class="mt-2 text-2xl font-semibold">{{ total }}</div>
+        </NCard>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">当前页已分类</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ rows.filter((item) => item.category).length }}
-          </div></NCard
-        >
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">当前页待补描述</div>
+          </div>
+        </NCard>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">当前页待补描述</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ rows.filter((item) => !item.description).length }}
-          </div></NCard
-        >
+          </div>
+        </NCard>
       </div>
       <NDataTable
         v-if="rows.length || loading"
@@ -399,31 +399,37 @@ onMounted(async () => {
             >
               <NInput v-model:value="form.code" :readonly="Boolean(editing)" />
             </NFormItem>
-            <NFormItem label="名称" path="name"
-              ><NInput v-model:value="form.name"
-            /></NFormItem>
+            <NFormItem label="名称" path="name">
+              <NInput v-model:value="form.name" />
+            </NFormItem>
           </div>
-          <NFormItem label="分类"
-            ><NInput
+          <NFormItem label="分类">
+            <NInput
               v-model:value="form.category"
               placeholder="例如 产品、流程、技术"
-          /></NFormItem>
-          <NFormItem label="难度"
-            ><NSelect
+            />
+          </NFormItem>
+          <NFormItem label="难度">
+            <NSelect
               v-model:value="form.difficultyLevel"
               clearable
               :options="difficultyOptions"
-          /></NFormItem>
-          <NFormItem label="标签"
-            ><NInput v-model:value="form.tags" placeholder="多个标签用逗号分隔"
-          /></NFormItem>
-          <NFormItem label="描述"
-            ><NInput
+            />
+          </NFormItem>
+          <NFormItem label="标签">
+            <NInput
+              v-model:value="form.tags"
+              placeholder="多个标签用逗号分隔"
+            />
+          </NFormItem>
+          <NFormItem label="描述">
+            <NInput
               v-model:value="form.description"
               type="textarea"
               :rows="6"
               placeholder="说明知识点定义、边界和使用场景"
-          /></NFormItem>
+            />
+          </NFormItem>
         </NForm>
         <div v-if="editing" class="mt-6 border-t pt-5">
           <div class="mb-2 font-medium">关联文档</div>
@@ -465,9 +471,9 @@ onMounted(async () => {
         <template #footer>
           <div class="flex justify-end gap-2">
             <NButton @click="showDrawer = false">取消</NButton
-            ><NButton type="primary" :loading="saving" @click="save"
-              >保存</NButton
-            >
+            ><NButton type="primary" :loading="saving" @click="save">
+              保存
+            </NButton>
           </div>
         </template>
       </NDrawerContent>

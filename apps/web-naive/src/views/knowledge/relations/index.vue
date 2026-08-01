@@ -17,6 +17,7 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { dialog } from '#/adapter/naive';
 import { getKnowledgePoints } from '#/api/knowledge/point';
 import {
   createKnowledgeRelation,
@@ -24,7 +25,6 @@ import {
   getKnowledgeRelations,
   type KnowledgeRelation,
 } from '#/api/knowledge/relation';
-import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
@@ -218,31 +218,32 @@ onMounted(async () => {
           :loading="saving"
           :disabled="!selectedId || !targetId"
           @click="addRelation"
-          >建立关系</NButton
         >
+          建立关系
+        </NButton>
       </div>
       <div class="mt-2 text-xs text-muted-foreground">
         {{ currentTypeDescription }}
       </div>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">关系总数</div>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">关系总数</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ relations.length }}
-          </div></NCard
-        >
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">当前节点发出</div>
+          </div>
+        </NCard>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">当前节点发出</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ outgoing.length }}
-          </div></NCard
-        >
-        <NCard size="small"
-          ><div class="text-sm text-muted-foreground">当前节点接收</div>
+          </div>
+        </NCard>
+        <NCard size="small">
+          <div class="text-sm text-muted-foreground">当前节点接收</div>
           <div class="mt-2 text-2xl font-semibold">
             {{ incoming.length }}
-          </div></NCard
-        >
+          </div>
+        </NCard>
       </div>
       <NDataTable
         v-if="relations.length || loading"
