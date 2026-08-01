@@ -291,7 +291,7 @@ const columns: DataTableColumns<KnowledgePoint> = [
             size: 'small',
             onClick: () =>
               router.push({
-                path: '/knowledge/relations',
+                path: '/knowledge/graph',
                 query: { pointId: row.id },
               }),
           },

@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import type { EchartsUIType } from '@vben/plugins/echarts';
-
-import { computed, nextTick, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
-import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
 
-import { NButton, NCard, NSelect, NSpin, NTag } from 'naive-ui';
+import {
+  NButton,
+  NCard,
+  NForm,
+  NFormItem,
+  NInputNumber,
+  NModal,
+  NSelect,
+  NSpace,
+  NSpin,
+  NTag,
+  useMessage,
+} from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
 import {
@@ -16,9 +25,18 @@ import {
   getKnowledgePoints,
   type KnowledgePoint,
 } from '#/api/knowledge/point';
+import {
+  createKnowledgeRelation,
+  deleteKnowledgeRelation,
+  getKnowledgeRelations,
+  type KnowledgeRelation,
+} from '#/api/knowledge/relation';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
+import KnowledgeGraphCanvas, {
+  type KnowledgeGraphEdge,
+} from '../components/knowledge-graph-canvas.vue';
 import KnowledgeSpaceHeader from '../components/knowledge-space-header.vue';
 
 interface PointGraph {
@@ -29,6 +47,8 @@ interface PointGraph {
 }
 
 const router = useRouter();
+const route = useRoute();
+const message = useMessage();
 const store = useKnowledgeStore();
 const { activeSpaceId } = storeToRefs(store);
 const options = ref<{ label: string; value: number }[]>([]);
@@ -39,8 +59,73 @@ const pathLoading = ref(false);
 const selectedNode = ref<KnowledgePoint>();
 const graph = ref<PointGraph>();
 const loading = ref(false);
-const chartRef = ref<EchartsUIType>();
-const { renderEcharts } = useEcharts(chartRef);
+const relations = ref<KnowledgeRelation[]>([]);
+const flowNodes = computed(() => {
+  if (!graph.value?.node) return [];
+  return [
+    graph.value.node,
+    ...(graph.value.parentNodes || []),
+    ...(graph.value.childNodes || []),
+    ...(graph.value.relatedNodes || []),
+  ].filter(
+    (node, index, all) =>
+      all.findIndex((item) => item.id === node.id) === index,
+  );
+});
+const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
+  const nodeIds = new Set(flowNodes.value.map((node) => node.id));
+  const direct = relations.value
+    .filter(
+      (relation) =>
+        nodeIds.has(relation.sourceId) && nodeIds.has(relation.targetId),
+    )
+    .map((relation) => ({
+      id: `${relation.sourceId}->${relation.targetId}:${relation.relationType}`,
+      relationType: relation.relationType,
+      source: relation.sourceId,
+      target: relation.targetId,
+      weight: relation.weight,
+    }));
+  if (direct.length) return direct;
+  const fallback: KnowledgeGraphEdge[] = [];
+  graph.value?.parentNodes?.forEach((node) =>
+    fallback.push({
+      id: `${node.id}->${graph.value!.node!.id}:PRE`,
+      relationType: 'PRE',
+      source: node.id,
+      target: graph.value!.node!.id,
+    }),
+  );
+  graph.value?.childNodes?.forEach((node) =>
+    fallback.push({
+      id: `${graph.value!.node!.id}->${node.id}:PRE`,
+      relationType: 'PRE',
+      source: graph.value!.node!.id,
+      target: node.id,
+    }),
+  );
+  graph.value?.relatedNodes?.forEach((node) =>
+    fallback.push({
+      id: `${graph.value!.node!.id}->${node.id}:RELATED`,
+      relationType: 'RELATED',
+      source: graph.value!.node!.id,
+      target: node.id,
+    }),
+  );
+  return fallback;
+});
+const relationModalVisible = ref(false);
+const relationEditing = ref(false);
+const relationSourceId = ref<number>();
+const relationTargetId = ref<number>();
+const relationType = ref('PRE');
+const relationOriginalType = ref('PRE');
+const relationWeight = ref(1);
+const relationSaving = ref(false);
+const relationTypeOptions = [
+  { label: '前置关系', value: 'PRE' },
+  { label: '相关关系', value: 'RELATED' },
+];
 const groups = computed(() => [
   {
     items: graph.value?.parentNodes || [],
@@ -77,7 +162,10 @@ async function loadOptions(reset = false) {
     value: item.id,
   }));
   if (reset || !options.value.some((item) => item.value === selectedId.value)) {
-    selectedId.value = options.value[0]?.value;
+    const queryId = Number(route.query.pointId);
+    selectedId.value = options.value.some((item) => item.value === queryId)
+      ? queryId
+      : options.value[0]?.value;
   }
   if (!options.value.some((item) => item.value === pathTargetId.value)) {
     pathTargetId.value = options.value.find(
@@ -92,14 +180,13 @@ async function loadGraph() {
   }
   loading.value = true;
   try {
-    graph.value = (await getKnowledgePointGraph(
-      selectedId.value,
-    )) as PointGraph;
+    const [graphResult, relationResult] = await Promise.all([
+      getKnowledgePointGraph(selectedId.value),
+      getKnowledgeRelations(selectedId.value),
+    ]);
+    graph.value = graphResult as PointGraph;
+    relations.value = relationResult || [];
     selectedNode.value = graph.value.node;
-    if (graph.value.node) {
-      await nextTick();
-      await renderGraph(graph.value);
-    }
   } finally {
     loading.value = false;
   }
@@ -116,85 +203,91 @@ async function queryPath() {
     pathLoading.value = false;
   }
 }
-async function renderGraph(data: PointGraph) {
-  if (!data.node) return;
-  const nodes = [
-    data.node,
-    ...(data.parentNodes || []),
-    ...(data.childNodes || []),
-    ...(data.relatedNodes || []),
-  ].filter(
-    (node, index, all) =>
-      all.findIndex((item) => item.id === node.id) === index,
-  );
-  const links: Array<{
-    lineStyle?: { curveness: number };
-    source: string;
-    target: string;
-  }> = [];
-  const addLink = (source: number, target: number) => {
-    if (
-      !links.some(
-        (link) =>
-          link.source === String(source) && link.target === String(target),
-      )
-    ) {
-      links.push({
-        source: String(source),
-        target: String(target),
-        lineStyle: { curveness: 0.15 },
-      });
-    }
-  };
-  (data.parentNodes || []).forEach((node) => addLink(node.id, data.node!.id));
-  (data.childNodes || []).forEach((node) => addLink(data.node!.id, node.id));
-  (data.relatedNodes || []).forEach((node) => addLink(data.node!.id, node.id));
-  const option: Parameters<typeof renderEcharts>[0] = {
-    tooltip: { trigger: 'item' },
-    animationDuration: 600,
-    series: [
-      {
-        type: 'graph',
-        layout: 'force',
-        roam: true,
-        draggable: true,
-        data: nodes.map((node) => ({
-          id: String(node.id),
-          name: node.name,
-          value: node.code,
-          symbolSize: node.id === data.node!.id ? 58 : 38,
-          itemStyle: {
-            color: node.id === data.node!.id ? '#2563eb' : '#64748b',
-          },
-        })),
-        links,
-        edgeSymbol: ['none', 'arrow'],
-        edgeSymbolSize: 8,
-        label: { show: true, position: 'bottom', formatter: '{b}' },
-        emphasis: { focus: 'adjacency' },
-        force: { repulsion: 260, edgeLength: [90, 180], gravity: 0.08 },
-        lineStyle: { color: '#94a3b8', opacity: 0.8, width: 1.5 },
-      },
-    ],
-  };
-  await nextTick();
-  for (let attempt = 0; attempt < 3 && !chartRef.value; attempt++) {
-    await new Promise((resolve) => setTimeout(resolve, 40));
-  }
-  const chart = await renderEcharts(option);
-  chart?.off('click');
-  chart?.on('click', (params) => {
-    const data = params.data as null | undefined | { id?: string };
-    const node = nodes.find((item) => String(item.id) === data?.id);
-    if (node) selectedNode.value = node;
-  });
-}
 async function refresh(reset = false) {
   await loadOptions(reset);
   await loadGraph();
 }
 function chooseNode(node: KnowledgePoint) {
   selectedNode.value = node;
+}
+
+function handleGraphNodeSelect(nodeId: number) {
+  const node = flowNodes.value.find((item) => item.id === nodeId);
+  if (node) selectedNode.value = node;
+}
+
+function openCreateRelation(value: { sourceId: number; targetId: number }) {
+  const { sourceId, targetId } = value;
+  if (sourceId === targetId) return;
+  relationEditing.value = false;
+  relationSourceId.value = sourceId;
+  relationTargetId.value = targetId;
+  relationType.value = 'PRE';
+  relationOriginalType.value = 'PRE';
+  relationWeight.value = 1;
+  relationModalVisible.value = true;
+}
+
+function openEditRelation(edge: KnowledgeGraphEdge) {
+  const relation = relations.value.find(
+    (item) =>
+      item.sourceId === edge.source &&
+      item.targetId === edge.target &&
+      item.relationType === edge.relationType,
+  );
+  if (!relation) {
+    message.info('该方向关系来自图谱推导，请通过真实关系连线编辑');
+    return;
+  }
+  relationEditing.value = true;
+  relationSourceId.value = relation.sourceId;
+  relationTargetId.value = relation.targetId;
+  relationType.value = relation.relationType;
+  relationOriginalType.value = relation.relationType;
+  relationWeight.value = relation.weight ?? 1;
+  relationModalVisible.value = true;
+}
+
+async function saveRelation() {
+  if (!relationSourceId.value || !relationTargetId.value) return;
+  relationSaving.value = true;
+  try {
+    if (relationEditing.value) {
+      await deleteKnowledgeRelation(
+        relationSourceId.value,
+        relationTargetId.value,
+        relationOriginalType.value,
+      );
+    }
+    await createKnowledgeRelation({
+      sourceId: relationSourceId.value,
+      targetId: relationTargetId.value,
+      type: relationType.value,
+      weight: relationWeight.value,
+    });
+    message.success('关系已保存');
+    relationModalVisible.value = false;
+    await loadGraph();
+  } finally {
+    relationSaving.value = false;
+  }
+}
+
+async function removeRelation() {
+  if (!relationSourceId.value || !relationTargetId.value) return;
+  relationSaving.value = true;
+  try {
+    await deleteKnowledgeRelation(
+      relationSourceId.value,
+      relationTargetId.value,
+      relationOriginalType.value,
+    );
+    message.success('关系已删除');
+    relationModalVisible.value = false;
+    await loadGraph();
+  } finally {
+    relationSaving.value = false;
+  }
 }
 onMounted(async () => {
   await store.loadSpaces();
@@ -246,7 +339,7 @@ onMounted(async () => {
           </div>
         </div>
         <div class="mt-4 rounded-lg bg-muted p-4 text-sm text-muted-foreground">
-          点击网络中的节点可查看详情，也可以直接进入关系编排维护结构。
+          在图中拖拽节点之间的连线即可编排关系；点击连线可以修改或删除关系。
         </div>
         <div class="mt-4 flex flex-wrap gap-2">
           <NTag type="primary">中心</NTag><NTag type="success">前置</NTag
@@ -257,8 +350,17 @@ onMounted(async () => {
       <NCard title="局部知识网络" :bordered="false">
         <NSpin :show="loading">
           <div v-if="graph?.node" class="space-y-6">
-            <div class="h-[520px] w-full rounded-xl border bg-muted/20 p-2">
-              <EchartsUI ref="chartRef" height="100%" />
+            <div
+              class="h-[560px] w-full overflow-hidden rounded-xl border bg-muted/20"
+            >
+              <KnowledgeGraphCanvas
+                :edges="flowEdges"
+                :nodes="flowNodes"
+                :selected-id="selectedId"
+                @connect="openCreateRelation"
+                @select-edge="openEditRelation"
+                @select-node="handleGraphNodeSelect"
+              />
             </div>
             <div class="flex justify-center">
               <button
@@ -308,7 +410,7 @@ onMounted(async () => {
             v-else
             description="当前空间暂无可展示的图谱数据"
             action-text="维护知识关系"
-            @action="router.push('/knowledge/relations')"
+            @action="router.push('/knowledge/graph')"
           />
         </NSpin>
       </NCard>
@@ -344,17 +446,58 @@ onMounted(async () => {
             type="primary"
             block
             @click="
-              router.push({
-                path: '/knowledge/relations',
-                query: { pointId: selectedNode.id },
-              })
+              selectedId = selectedNode.id;
+              loadGraph();
             "
           >
-            编辑该节点关系
+            刷新该节点关系
           </NButton>
         </template>
         <KnowledgeEmptyState v-else description="点击节点查看详情" />
       </NCard>
     </div>
   </Page>
+
+  <NModal
+    v-model:show="relationModalVisible"
+    preset="card"
+    title="图上关系编排"
+    class="w-[420px]"
+  >
+    <NForm label-placement="top">
+      <NFormItem label="关系来源">
+        <NSelect :value="relationSourceId" :options="options" disabled />
+      </NFormItem>
+      <NFormItem label="关系目标">
+        <NSelect :value="relationTargetId" :options="options" disabled />
+      </NFormItem>
+      <NFormItem label="关系类型">
+        <NSelect v-model:value="relationType" :options="relationTypeOptions" />
+      </NFormItem>
+      <NFormItem label="权重">
+        <NInputNumber
+          v-model:value="relationWeight"
+          :max="10"
+          :min="0"
+          :step="0.1"
+        />
+      </NFormItem>
+    </NForm>
+    <template #footer>
+      <NSpace justify="end">
+        <NButton
+          v-if="relationEditing"
+          type="error"
+          :loading="relationSaving"
+          @click="removeRelation"
+        >
+          删除关系
+        </NButton>
+        <NButton @click="relationModalVisible = false">取消</NButton>
+        <NButton type="primary" :loading="relationSaving" @click="saveRelation">
+          保存关系
+        </NButton>
+      </NSpace>
+    </template>
+  </NModal>
 </template>

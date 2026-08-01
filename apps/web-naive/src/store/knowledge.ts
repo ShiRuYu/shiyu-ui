@@ -57,6 +57,9 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
         if (activeSpaceId.value) {
           localStorage.setItem(ACTIVE_SPACE_KEY, String(activeSpaceId.value));
         }
+        // The difficulty scale is optional metadata. A space without a valid
+        // scale must not prevent the rest of the knowledge workspace (points,
+        // documents and graph) from loading.
         await loadDifficultyScale();
       } finally {
         loading.value = false;
@@ -98,7 +101,17 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       difficultyScale.value = undefined;
       return;
     }
-    difficultyScale.value = await getDifficultyScale(spaceId);
+    try {
+      difficultyScale.value = await getDifficultyScale(spaceId);
+    } catch (error) {
+      difficultyScale.value = undefined;
+      // Keep space switching and graph loading usable when an older or newly
+      // created space has no difficulty-scale seed data yet.
+      console.warn(
+        `Unable to load difficulty scale for space ${spaceId}`,
+        error,
+      );
+    }
   }
 
   function $reset() {

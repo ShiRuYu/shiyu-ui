@@ -205,7 +205,7 @@ onMounted(async () => {
                 {
                   title: '整理知识关系',
                   desc: '维护节点方向与关系类型',
-                  path: '/knowledge/relations',
+                  path: '/knowledge/graph',
                 },
                 {
                   title: '验证检索效果',
