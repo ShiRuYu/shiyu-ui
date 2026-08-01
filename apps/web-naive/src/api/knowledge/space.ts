@@ -4,17 +4,22 @@ import { requestClient } from '#/api/request';
 
 export interface SpacePayload {
   accessMode?: string;
+  bindingMode?: string;
   chunkOverlap?: number;
   chunkSize?: number;
+  chunkStrategy?: string;
   code: string;
   description?: string;
   difficultyScaleId?: number;
+  embeddingProfile?: string;
   name: string;
+  rerankProfile?: string;
   reviewMode?: string;
 }
 export interface SpaceMember {
-  role: 'ADMIN' | 'EDITOR' | 'REVIEWER' | 'VIEWER';
-  userId: number;
+  principalType: 'ROLE' | 'USER';
+  principalId: number;
+  spaceRole: 'ADMIN' | 'EDITOR' | 'REVIEWER' | 'VIEWER';
 }
 export function getSpace(id: number) {
   return requestClient.get<KnowledgeSpace>(`/knowledge/spaces/${id}`);

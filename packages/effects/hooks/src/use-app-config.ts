@@ -11,9 +11,12 @@ export function useAppConfig(
   isProduction: boolean,
 ): ApplicationConfig {
   // 生产环境下，直接使用 window._VBEN_ADMIN_PRO_APP_CONF_ 全局变量
-  const config = isProduction
-    ? window._VBEN_ADMIN_PRO_APP_CONF_
-    : (env as VbenAdminProAppConfigRaw);
+  // 开发环境直接读取 Vite 环境变量；生产配置尚未注入时回退到
+  // 构建期变量，避免应用在配置脚本加载失败时白屏。
+  const config =
+    (isProduction ? window._VBEN_ADMIN_PRO_APP_CONF_ : undefined) ??
+    (env as VbenAdminProAppConfigRaw) ??
+    {};
 
   const {
     VITE_GLOB_API_URL,

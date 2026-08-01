@@ -52,11 +52,11 @@ export namespace KnowledgeApi {
 }
 
 async function getKnowledgePage(params) {
-  return requestClient.get<KnowledgeApi.KnowledgeVO[]>("/knowledge/v2/points", { params });
+  return requestClient.get<KnowledgeApi.KnowledgeVO[]>(`/knowledge/spaces/${params.spaceId}/points`, { params });
 }
 
 async function createKnowledge(data: KnowledgeApi.KnowledgeCreateReq) {
-  return requestClient.post("/knowledge/v2/points", data);
+  return requestClient.post(`/knowledge/spaces/${data.spaceId}/points`, data);
 }
 
 export { getKnowledgePage, createKnowledge };

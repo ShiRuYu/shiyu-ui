@@ -10,7 +10,7 @@
 | `dashboard` | `/dashboard` | 7 | 仪表盘 |
 | `education-admin` | `/education-admin` | 34 | 教育管理后台 |
 | `exam` | `/exam` | 4 | 考试模块 |
-| `knowledge-engine` | `/knowledge-engine` | 9 | 知识引擎 |
+| `knowledge` | `/knowledge` | 9 | 企业知识平台 |
 | `learning` | `/learning` | 10 | 学习模块 |
 | `practice` | `/practice` | 2 | 练习模块 |
 | `record` | `/record` | 15 | 成长记录 |
@@ -71,46 +71,30 @@ agent/
 
 ---
 
-### 2.2 知识引擎模块 `views/knowledge-engine/`
+### 2.2 企业知识平台模块 `views/knowledge/`
 
 ```
-knowledge-engine/
-├── document/                 # 文档管理
-│   ├── list.vue
-│   ├── data.ts
-│   └── modules/
-│       └── form.vue
-├── index-rebuild/           # 索引重建
-│   └── list.vue
-├── knowledge-graph/         # 知识图谱
-│   └── index.vue
-├── knowledge-list/          # 知识库列表
-│   ├── list.vue
-│   ├── data.ts
-│   └── modules/
-│       └── form.vue
-└── knowledge-relation/      # 知识关系
-    └── index.vue
+knowledge/
+├── workbench/                # 运营工作台
+├── spaces/                   # 知识空间
+├── assets/                   # 知识点资产
+├── documents/                # 文档中心
+├── graph/                    # 图谱工作室
+├── relations/                # 知识关系
+├── search/                   # 检索实验室
+├── evaluations/              # 评测中心
+├── index/                    # 任务与索引
+└── operations/               # 运维中心
 ```
 
 **接口文件** (`api/knowledge/`):
 
-- `knowledge.ts` — 知识库
-- `document.ts` — 文档
-- `relation.ts` — 关系
-- `index-rebuild.ts` — 索引重建
-
-> ⚠️ **建议重构**：随着 Chunk、Embedding、Search、Workflow、Version 等功能加入，建议按子域拆分：
->
-> ```
-> knowledge/
-> ├── document/
-> ├── chunk/
-> ├── index/
-> ├── search/
-> ├── workflow/
-> └── version/
-> ```
+- `enterprise.ts` — 空间、文档、任务、索引和运维接口
+- `space.ts` — 空间详情和成员授权
+- `point.ts` — 知识点资产
+- `document.ts` — 文档版本、预览和知识点关联
+- `relation.ts` — 知识点图谱关系
+- `search.ts` — 检索实验室
 
 ---
 

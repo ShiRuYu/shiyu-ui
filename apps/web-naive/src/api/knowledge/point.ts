@@ -38,6 +38,12 @@ export function getKnowledgePointPath(pointId: number) {
   return requestClient.get<number[]>(`/knowledge/points/${pointId}/path`);
 }
 
+export function findKnowledgePointPath(fromId: number, toId: number) {
+  return requestClient.get<number[]>('/knowledge/points/path', {
+    params: { fromId, toId },
+  });
+}
+
 export function getKnowledgePoints(
   spaceId: number,
   params: {
@@ -67,7 +73,6 @@ export function updateKnowledgePoint(
   id: number,
   data: {
     category?: string;
-    code?: string;
     description?: string;
     difficultyLevel?: number;
     name?: string;

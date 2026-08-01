@@ -33,12 +33,24 @@ export function getKnowledgePointIdsByDocument(documentId: number) {
     `/knowledge/documents/${documentId}/points`,
   );
 }
+export function replaceKnowledgeDocumentPoints(
+  documentId: number,
+  pointIds: number[],
+  relationType = 'RELATED',
+) {
+  return requestClient.put(`/knowledge/documents/${documentId}/points`, {
+    pointIds,
+    relationType,
+  });
+}
 export function replaceKnowledgePointDocuments(
   pointId: number,
   documentIds: number[],
+  relationType = 'RELATED',
 ) {
   return requestClient.put(`/knowledge/points/${pointId}/documents`, {
     documentIds,
+    relationType,
   });
 }
 export function getDocumentVersions(id: number) {

@@ -109,7 +109,7 @@ src/
     ├── education-admin/       # 教育管理
     ├── exam/                  # 考试
     ├── file/                  # 文件管理
-    ├── knowledge-engine/      # 知识引擎
+    ├── knowledge/             # 企业知识平台
     ├── learning/              # 学习
     ├── practice/              # 练习
     ├── record/                # 成长记录

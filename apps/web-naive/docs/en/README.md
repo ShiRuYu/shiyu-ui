@@ -31,21 +31,21 @@ apps/web-naive/src/
 
 ## Module Overview
 
-| Module           | Prefix              | Files | Description      |
-| ---------------- | ------------------- | :---: | ---------------- |
-| agent            | `/agent`            |  17   | Agent Management |
-| ai-tutor         | `/ai-tutor`         |   5   | AI Tutoring      |
-| analytics        | `/analytics`        |   4   | Analytics        |
-| dashboard        | `/dashboard`        |   7   | Dashboard        |
-| education-admin  | `/education-admin`  |  34   | Education Admin  |
-| exam             | `/exam`             |   4   | Exams            |
-| knowledge-engine | `/knowledge-engine` |   9   | Knowledge Engine |
-| learning         | `/learning`         |  10   | Learning         |
-| practice         | `/practice`         |   2   | Practice         |
-| record           | `/record`           |  15   | Growth Records   |
-| review           | `/review`           |   2   | Review           |
-| system           | `/system`           |  21   | System Admin     |
-| \_core           | `/`                 |  14   | Core Pages       |
+| Module          | Prefix             | Files | Description                   |
+| --------------- | ------------------ | :---: | ----------------------------- |
+| agent           | `/agent`           |  17   | Agent Management              |
+| ai-tutor        | `/ai-tutor`        |   5   | AI Tutoring                   |
+| analytics       | `/analytics`       |   4   | Analytics                     |
+| dashboard       | `/dashboard`       |   7   | Dashboard                     |
+| education-admin | `/education-admin` |  34   | Education Admin               |
+| exam            | `/exam`            |   4   | Exams                         |
+| knowledge       | `/knowledge`       |   9   | Enterprise Knowledge Platform |
+| learning        | `/learning`        |  10   | Learning                      |
+| practice        | `/practice`        |   2   | Practice                      |
+| record          | `/record`          |  15   | Growth Records                |
+| review          | `/review`          |   2   | Review                        |
+| system          | `/system`          |  21   | System Admin                  |
+| \_core          | `/`                |  14   | Core Pages                    |
 
 ## Quick Commands
 

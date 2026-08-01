@@ -79,6 +79,11 @@ function getTypeColor(type: string) {
   }
 }
 
+function openResource(resource: EducationResourceApi.Resource) {
+  if (!resource.url) return;
+  window.open(resource.url, '_blank', 'noopener,noreferrer');
+}
+
 onMounted(() => {
   loadTypeOptions();
   loadSubjects();
@@ -111,7 +116,14 @@ onMounted(() => {
 
     <NGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
       <NGi v-for="resource in resources" :key="resource.id">
-        <NCard hoverable>
+        <NCard
+          class="cursor-pointer"
+          hoverable
+          role="link"
+          tabindex="0"
+          @click="openResource(resource)"
+          @keyup.enter="openResource(resource)"
+        >
           <template #cover>
             <div
               v-if="resource.coverUrl"

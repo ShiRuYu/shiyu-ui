@@ -1,5 +1,8 @@
-﻿<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+<script setup lang="ts">
+import type { DataTableColumns } from 'naive-ui';
+
+import { computed, h, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
@@ -7,6 +10,7 @@ import {
   NButton,
   NCard,
   NDataTable,
+  NInputNumber,
   NSelect,
   NTag,
   useMessage,
@@ -20,36 +24,68 @@ import {
   getKnowledgeRelations,
   type KnowledgeRelation,
 } from '#/api/knowledge/relation';
+import { dialog } from '#/adapter/naive';
 import { useKnowledgeStore } from '#/store';
+
+import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
+import KnowledgeSpaceHeader from '../components/knowledge-space-header.vue';
+import { getStatusLabel, relationTypeOptions } from '../constants/status';
+
+const route = useRoute();
 const message = useMessage();
 const store = useKnowledgeStore();
-const { activeSpaceId, spaceOptions } = storeToRefs(store);
+const { activeSpaceId } = storeToRefs(store);
 const options = ref<{ label: string; value: number }[]>([]);
 const selectedId = ref<number>();
 const relations = ref<KnowledgeRelation[]>([]);
 const loading = ref(false);
+const saving = ref(false);
 const targetId = ref<number>();
+const relationType = ref('PRE');
+const weight = ref(1);
 const incoming = computed(() =>
   relations.value.filter((item) => item.targetId === selectedId.value),
 );
 const outgoing = computed(() =>
   relations.value.filter((item) => item.sourceId === selectedId.value),
 );
-async function loadOptions() {
-  if (!activeSpaceId.value) return;
-  options.value = (
-    await getKnowledgePoints(activeSpaceId.value, {
-      pageNum: 1,
-      pageSize: 1000,
-    })
-  ).items.map((item) => ({
+const availableTargets = computed(() =>
+  options.value.filter((item) => item.value !== selectedId.value),
+);
+const currentTypeDescription = computed(
+  () =>
+    relationTypeOptions.find((item) => item.value === relationType.value)
+      ?.description,
+);
+
+async function loadOptions(reset = false) {
+  if (!activeSpaceId.value) {
+    options.value = [];
+    selectedId.value = undefined;
+    relations.value = [];
+    return;
+  }
+  const result = await getKnowledgePoints(activeSpaceId.value, {
+    pageNum: 1,
+    pageSize: 500,
+  });
+  options.value = result.items.map((item) => ({
     label: `${item.code} · ${item.name}`,
     value: item.id,
   }));
-  if (!selectedId.value) selectedId.value = options.value[0]?.value;
+  const queryId = Number(route.query.pointId);
+  if (reset || !options.value.some((item) => item.value === selectedId.value)) {
+    selectedId.value = options.value.some((item) => item.value === queryId)
+      ? queryId
+      : options.value[0]?.value;
+  }
 }
 async function loadRelations() {
-  if (!selectedId.value) return;
+  targetId.value = undefined;
+  if (!selectedId.value) {
+    relations.value = [];
+    return;
+  }
   loading.value = true;
   try {
     relations.value = await getKnowledgeRelations(selectedId.value);
@@ -57,62 +93,84 @@ async function loadRelations() {
     loading.value = false;
   }
 }
+async function refresh(reset = false) {
+  await loadOptions(reset);
+  await loadRelations();
+}
 async function addRelation() {
   if (!selectedId.value || !targetId.value) return;
-  await createKnowledgeRelation({
-    sourceId: selectedId.value,
-    targetId: targetId.value,
-    type: 'PRE',
-    weight: 1,
+  if (selectedId.value === targetId.value) {
+    message.warning('不能将知识点关联到自身');
+    return;
+  }
+  const exists = relations.value.some(
+    (item) =>
+      item.sourceId === selectedId.value &&
+      item.targetId === targetId.value &&
+      item.relationType === relationType.value,
+  );
+  if (exists) {
+    message.warning('该关系已存在，请勿重复添加');
+    return;
+  }
+  saving.value = true;
+  try {
+    await createKnowledgeRelation({
+      sourceId: selectedId.value,
+      targetId: targetId.value,
+      type: relationType.value,
+      weight: weight.value,
+    });
+    message.success('知识关系已建立');
+    await loadRelations();
+  } finally {
+    saving.value = false;
+  }
+}
+function removeRelation(row: KnowledgeRelation) {
+  dialog.warning({
+    title: '移除知识关系',
+    content: `确认移除“${getStatusLabel(row.relationType)}”关系吗？`,
+    negativeText: '取消',
+    positiveText: '移除',
+    onPositiveClick: async () => {
+      await deleteKnowledgeRelation(
+        row.sourceId,
+        row.targetId,
+        row.relationType,
+      );
+      message.success('关系已移除');
+      await loadRelations();
+    },
   });
-  targetId.value = undefined;
-  message.success('关系已添加');
-  await loadRelations();
 }
-async function removeRelation(row: KnowledgeRelation) {
-  const source =
-    row.sourceId === selectedId.value ? row.sourceId : row.targetId;
-  const target =
-    row.sourceId === selectedId.value ? row.targetId : row.sourceId;
-  await deleteKnowledgeRelation(source, target, row.relationType);
-  message.success('关系已删除');
-  await loadRelations();
-}
-async function changeSpace(value: number) {
-  store.setActiveSpace(value);
-  await loadOptions();
-  await loadRelations();
-}
-onMounted(async () => {
-  await store.loadSpaces();
-  await loadOptions();
-  await loadRelations();
-});
-const columns = [
+const columns: DataTableColumns<KnowledgeRelation> = [
   {
-    title: '关系方向',
     key: 'direction',
-    render: (row: KnowledgeRelation) =>
+    title: '关系方向',
+    minWidth: 260,
+    render: (row) =>
       row.sourceId === selectedId.value
-        ? '当前节点 → 目标节点'
-        : '来源节点 → 当前节点',
+        ? `当前节点 → ${row.target?.name || row.targetId}`
+        : `${row.source?.name || row.sourceId} → 当前节点`,
   },
   {
-    title: '关联节点',
-    key: 'target',
-    render: (row: KnowledgeRelation) =>
-      row.sourceId === selectedId.value ? row.target?.name : row.source?.name,
-  },
-  {
-    title: '类型',
     key: 'relationType',
-    render: (row: KnowledgeRelation) =>
-      h(NTag, { type: 'info' }, { default: () => row.relationType }),
+    title: '类型',
+    width: 100,
+    render: (row) =>
+      h(
+        NTag,
+        { type: 'info' },
+        { default: () => getStatusLabel(row.relationType) },
+      ),
   },
+  { key: 'weight', title: '权重', width: 90 },
   {
-    title: '操作',
     key: 'action',
-    render: (row: KnowledgeRelation) =>
+    title: '操作',
+    width: 100,
+    render: (row) =>
       h(
         NButton,
         { size: 'small', type: 'error', onClick: () => removeRelation(row) },
@@ -120,57 +178,88 @@ const columns = [
       ),
   },
 ];
-import { h } from 'vue';
+onMounted(async () => {
+  await store.loadSpaces();
+  await refresh(true);
+});
 </script>
+
 <template>
   <Page
     title="关系编排"
-    description="管理知识点之间的前置、后续和关联关系，保证知识网络可解释、可导航。"
+    description="管理知识点之间的方向、类型和权重，保持知识网络可解释。"
   >
+    <KnowledgeSpaceHeader :loading="loading" @refresh="refresh(true)" />
     <NCard :bordered="false">
-      <div class="flex flex-wrap gap-3">
+      <div class="grid gap-3 lg:grid-cols-[1.2fr_1.2fr_160px_130px_auto]">
         <NSelect
-          :value="activeSpaceId"
-          :options="spaceOptions"
-          class="w-56"
-          @update:value="changeSpace"
-        /><NSelect
           v-model:value="selectedId"
           :options="options"
           filterable
-          class="w-72"
-          placeholder="选择知识点"
+          placeholder="选择当前知识点"
           @update:value="loadRelations"
-        /><NSelect
+        />
+        <NSelect
           v-model:value="targetId"
-          :options="options.filter((item) => item.value !== selectedId)"
+          :options="availableTargets"
           filterable
-          class="w-72"
-          placeholder="选择关联目标"
-        /><NButton type="primary" :disabled="!targetId" @click="addRelation">
-          建立前置关系
-        </NButton>
+          placeholder="选择目标知识点"
+        />
+        <NSelect v-model:value="relationType" :options="relationTypeOptions" />
+        <NInputNumber
+          v-model:value="weight"
+          :min="0"
+          :max="10"
+          :step="0.1"
+          placeholder="权重"
+        />
+        <NButton
+          type="primary"
+          :loading="saving"
+          :disabled="!selectedId || !targetId"
+          @click="addRelation"
+          >建立关系</NButton
+        >
+      </div>
+      <div class="mt-2 text-xs text-muted-foreground">
+        {{ currentTypeDescription }}
       </div>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
-        <div class="rounded-lg bg-indigo-50 p-4">
-          <div class="text-sm text-indigo-600">关系总数</div>
-          <div class="mt-2 text-2xl font-semibold">{{ relations.length }}</div>
-        </div>
-        <div class="rounded-lg bg-emerald-50 p-4">
-          <div class="text-sm text-emerald-600">前置关系</div>
-          <div class="mt-2 text-2xl font-semibold">{{ outgoing.length }}</div>
-        </div>
-        <div class="rounded-lg bg-amber-50 p-4">
-          <div class="text-sm text-amber-600">被依赖关系</div>
-          <div class="mt-2 text-2xl font-semibold">{{ incoming.length }}</div>
-        </div>
+        <NCard size="small"
+          ><div class="text-sm text-muted-foreground">关系总数</div>
+          <div class="mt-2 text-2xl font-semibold">
+            {{ relations.length }}
+          </div></NCard
+        >
+        <NCard size="small"
+          ><div class="text-sm text-muted-foreground">当前节点发出</div>
+          <div class="mt-2 text-2xl font-semibold">
+            {{ outgoing.length }}
+          </div></NCard
+        >
+        <NCard size="small"
+          ><div class="text-sm text-muted-foreground">当前节点接收</div>
+          <div class="mt-2 text-2xl font-semibold">
+            {{ incoming.length }}
+          </div></NCard
+        >
       </div>
       <NDataTable
+        v-if="relations.length || loading"
         class="mt-5"
+        :bordered="false"
         :columns="columns"
         :data="relations"
         :loading="loading"
-        :bordered="false"
+      />
+      <KnowledgeEmptyState
+        v-else
+        class="mt-5"
+        :description="
+          selectedId
+            ? '当前知识点暂无关系，请在上方建立关系'
+            : '当前空间暂无知识点'
+        "
       />
     </NCard>
   </Page>

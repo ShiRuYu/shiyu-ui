@@ -9,11 +9,16 @@ import {
   type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 
+const ACTIVE_SPACE_KEY = 'shiyu-knowledge-active-space';
+const ACTIVE_SPACE_MANUAL_KEY = 'shiyu-knowledge-active-space-manual';
+
 export const useKnowledgeStore = defineStore('knowledge', () => {
   const spaces = ref<KnowledgeSpace[]>([]);
   const difficultyScale = ref<KnowledgeDifficultyScale>();
   const activeSpaceId = shallowRef<number>();
   const loading = shallowRef(false);
+  const switching = shallowRef(false);
+  let loadPromise: null | Promise<void> = null;
 
   const activeSpace = computed(() =>
     spaces.value.find((space) => space.id === activeSpaceId.value),
@@ -25,21 +30,40 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     })),
   );
 
-  async function loadSpaces() {
+  async function loadSpaces(force = false) {
+    if (!force && spaces.value.length > 0) return;
+    if (loadPromise) return loadPromise;
     loading.value = true;
-    try {
-      const result = await getSpaces({ pageNum: 1, pageSize: 100 });
-      spaces.value = result.items;
-      if (
-        activeSpaceId.value === undefined ||
-        !spaces.value.some((space) => space.id === activeSpaceId.value)
-      ) {
-        activeSpaceId.value = spaces.value[0]?.id;
+    loadPromise = (async () => {
+      try {
+        const result = await getSpaces({ pageNum: 1, pageSize: 100 });
+        spaces.value = result.items;
+        const savedId = Number(localStorage.getItem(ACTIVE_SPACE_KEY));
+        const hasManualSelection =
+          localStorage.getItem(ACTIVE_SPACE_MANUAL_KEY) === '1';
+        const defaultSpaceId = spaces.value.find(
+          (space) => space.code === 'default',
+        )?.id;
+        if (
+          activeSpaceId.value === undefined ||
+          !spaces.value.some((space) => space.id === activeSpaceId.value)
+        ) {
+          activeSpaceId.value =
+            hasManualSelection &&
+            spaces.value.some((space) => space.id === savedId)
+              ? savedId
+              : (defaultSpaceId ?? spaces.value[0]?.id);
+        }
+        if (activeSpaceId.value) {
+          localStorage.setItem(ACTIVE_SPACE_KEY, String(activeSpaceId.value));
+        }
+        await loadDifficultyScale();
+      } finally {
+        loading.value = false;
+        loadPromise = null;
       }
-      await loadDifficultyScale();
-    } finally {
-      loading.value = false;
-    }
+    })();
+    return loadPromise;
   }
 
   function setActiveSpace(spaceId?: number) {
@@ -48,6 +72,24 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       spaces.value.some((space) => space.id === spaceId)
     ) {
       activeSpaceId.value = spaceId;
+      if (spaceId) {
+        localStorage.setItem(ACTIVE_SPACE_KEY, String(spaceId));
+        localStorage.setItem(ACTIVE_SPACE_MANUAL_KEY, '1');
+      } else {
+        localStorage.removeItem(ACTIVE_SPACE_KEY);
+        localStorage.removeItem(ACTIVE_SPACE_MANUAL_KEY);
+      }
+    }
+  }
+
+  async function switchSpace(spaceId: number) {
+    if (activeSpaceId.value === spaceId) return;
+    switching.value = true;
+    try {
+      setActiveSpace(spaceId);
+      await loadDifficultyScale(spaceId);
+    } finally {
+      switching.value = false;
     }
   }
 
@@ -64,6 +106,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     difficultyScale.value = undefined;
     activeSpaceId.value = undefined;
     loading.value = false;
+    switching.value = false;
   }
 
   return {
@@ -75,6 +118,8 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     loadSpaces,
     loading,
     setActiveSpace,
+    switchSpace,
+    switching,
     spaceOptions,
     spaces,
   };
