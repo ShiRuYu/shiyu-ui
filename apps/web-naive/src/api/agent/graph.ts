@@ -71,6 +71,12 @@ export namespace AgentGraphApi {
     enabled: boolean;
     description: string;
     config: Record<string, any>;
+    timeout?: number;
+    retryCount?: number;
+    retryInterval?: number;
+    errorStrategy?: string;
+    logLevel?: string;
+    properties?: Record<string, any>;
   }
 
   /** 表单模式下使用的连线数据结构 */

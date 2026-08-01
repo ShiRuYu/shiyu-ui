@@ -23,6 +23,36 @@ export interface DocumentVersion {
   versionNo: number;
 }
 
+export interface KnowledgeDocumentRelation {
+  id: number;
+  sourceDocumentId: number;
+  targetDocumentId: number;
+  relationType:
+    | 'DERIVED_FROM'
+    | 'DUPLICATE_OF'
+    | 'REFERENCES'
+    | 'RELATED_TO'
+    | 'SUPERSEDES'
+    | 'TRANSLATION_OF'
+    | string;
+  targetTitle?: string;
+}
+
+export function getKnowledgeDocumentRelations(documentId: number) {
+  return requestClient.get<KnowledgeDocumentRelation[]>(
+    `/knowledge/documents/${documentId}/relations`,
+  );
+}
+
+export function replaceKnowledgeDocumentRelations(
+  documentId: number,
+  relations: Array<{ documentId: number; relationType: string }>,
+) {
+  return requestClient.put(`/knowledge/documents/${documentId}/relations`, {
+    relations,
+  });
+}
+
 export function getKnowledgeDocumentsByPoint(pointId: number) {
   return requestClient.get<KnowledgeDocumentSummary[]>(
     `/knowledge/points/${pointId}/documents`,

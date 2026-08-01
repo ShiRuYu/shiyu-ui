@@ -18,7 +18,7 @@ export namespace NodeTypeApi {
     defaultValue?: any;
     required?: boolean;
     options?: Record<string, any>;
-    source?: NodeTypeApi.DataSourceConfig;
+    source?: NodeTypeApi.DataSourceConfig | string;
   }
 
   export interface NodeTypeMetaVO {

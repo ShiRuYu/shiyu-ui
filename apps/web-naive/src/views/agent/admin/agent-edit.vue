@@ -37,7 +37,9 @@ import {
   updateAgent,
 } from '#/api/agent/admin';
 import {
+  getCanvasConfig,
   getGraphConfig,
+  updateCanvasConfig,
   updateGraphConfig,
   validateGraphConfig,
 } from '#/api/agent/graph';
@@ -53,6 +55,7 @@ import {
 import { getDictByType } from '#/api/system/dict';
 import { $t } from '#/locales';
 
+import AgentFlowCanvas from './modules/agent-flow-canvas.vue';
 import NodeForm from './modules/node-form.vue';
 import ValidateResult from './modules/validate-result.vue';
 
@@ -97,6 +100,7 @@ const { setTabTitle } = useTabs();
 
 const formNodes = ref<AgentGraphApi.FormNode[]>([]);
 const formEdges = ref<AgentGraphApi.FormEdge[]>([]);
+const canvasPositions = ref<Record<string, { x: number; y: number }>>({});
 
 const startNode = ref('');
 const endNode = ref('');
@@ -374,6 +378,7 @@ watch(selectedVersionId, async (newId) => {
   } else {
     formNodes.value = [];
     formEdges.value = [];
+    canvasPositions.value = {};
   }
 });
 
@@ -438,6 +443,12 @@ async function loadGraph() {
           enabled: nd.enabled !== false,
           description: nd.description || '',
           config: nd.config || {},
+          timeout: nd.timeout,
+          retryCount: nd.retryCount,
+          retryInterval: nd.retryInterval,
+          errorStrategy: nd.errorStrategy,
+          logLevel: nd.logLevel,
+          properties: nd.properties || {},
         });
       }
     }
@@ -489,6 +500,19 @@ async function loadGraph() {
     formEdges.value = edges;
     startNode.value = config.startNode || '';
     endNode.value = config.endNode || '';
+    try {
+      const rawCanvas = await getCanvasConfig(
+        agentId.value,
+        selectedVersionId.value,
+      );
+      const value =
+        typeof rawCanvas === 'string'
+          ? JSON.parse(rawCanvas || '{}')
+          : rawCanvas;
+      canvasPositions.value = value?.positions || {};
+    } catch {
+      canvasPositions.value = {};
+    }
   } catch {
     // ignore load errors for new/empty versions
   } finally {
@@ -504,6 +528,12 @@ function buildGraphConfig(): AgentGraphApi.GraphConfigRequest {
       description: n.description || '',
       nodeType: n.nodeType || '',
       enabled: n.enabled !== false,
+      timeout: n.timeout,
+      retryCount: n.retryCount,
+      retryInterval: n.retryInterval,
+      errorStrategy: n.errorStrategy,
+      logLevel: n.logLevel,
+      properties: n.properties || {},
       config: n.config || {},
     };
   }
@@ -552,6 +582,13 @@ async function handleSaveGraph() {
       selectedVersionId.value,
       buildGraphConfig(),
     );
+    if (selectedVersionId.value) {
+      await updateCanvasConfig(
+        agentId.value,
+        selectedVersionId.value,
+        JSON.stringify({ positions: canvasPositions.value }),
+      );
+    }
     message.success($t('agent.adminEditGraphSaved'));
   } catch {
     message.error($t('agent.adminEditGraphSaveFailed'));
@@ -586,9 +623,30 @@ function openAddNode() {
     enabled: true,
     description: '',
     config: {},
+    timeout: 30000,
+    retryCount: 0,
+    retryInterval: 1000,
+    errorStrategy: 'THROW',
+    logLevel: 'INFO',
+    properties: {},
   };
   isNewNode.value = true;
   showNodeModal.value = true;
+}
+
+function handleCanvasNodeSelect(node: AgentGraphApi.FormNode) {
+  openEditNode(node);
+}
+
+function handleCanvasConnect(edge: AgentGraphApi.FormEdge) {
+  if (!formEdges.value.some((item) => item.id === edge.id))
+    formEdges.value.push(edge);
+}
+
+function handleCanvasPositions(
+  positions: Record<string, { x: number; y: number }>,
+) {
+  canvasPositions.value = positions;
 }
 
 function openEditNode(node: AgentGraphApi.FormNode) {
@@ -1100,6 +1158,20 @@ function onBack() {
                     clearable
                   />
                 </NSpace>
+
+                <div
+                  class="h-[480px] overflow-hidden rounded border bg-slate-50"
+                >
+                  <AgentFlowCanvas
+                    :nodes="formNodes"
+                    :edges="formEdges"
+                    :positions="canvasPositions"
+                    :readonly="readonly"
+                    @select-node="handleCanvasNodeSelect"
+                    @connect="handleCanvasConnect"
+                    @update-positions="handleCanvasPositions"
+                  />
+                </div>
 
                 <!-- Nodes Table -->
                 <div>

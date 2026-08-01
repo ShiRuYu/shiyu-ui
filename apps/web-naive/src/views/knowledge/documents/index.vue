@@ -28,9 +28,11 @@ import { dialog } from '#/adapter/naive';
 import {
   type DocumentVersion,
   getDocumentVersions,
+  getKnowledgeDocumentRelations,
   getKnowledgePointIdsByDocument,
   previewDocument,
   replaceKnowledgeDocumentPoints,
+  replaceKnowledgeDocumentRelations,
   rollbackDocument,
 } from '#/api/knowledge/document';
 import {
@@ -67,6 +69,10 @@ const relationType = ref('RELATED');
 const pointOptions = ref<Array<{ label: string; value: number }>>([]);
 const pointOptionsLoading = ref(false);
 const relationSaving = ref(false);
+const documentRelations = ref<
+  Array<{ documentId: number; relationType: string }>
+>([]);
+const documentOptions = ref<Array<{ label: string; value: number }>>([]);
 const urlImportVisible = ref(false);
 const urlImporting = ref(false);
 const importUrl = ref('');
@@ -145,12 +151,24 @@ async function action(
 async function showDetail(row: KnowledgeDocument) {
   selected.value = row;
   drawer.value = true;
-  const [documentVersions, pointIds] = await Promise.all([
+  const [documentVersions, pointIds, relations] = await Promise.all([
     getDocumentVersions(row.id),
     getKnowledgePointIdsByDocument(row.id),
+    getKnowledgeDocumentRelations(row.id),
   ]);
   versions.value = documentVersions;
   selectedPointIds.value = pointIds;
+  documentRelations.value = relations.map((item) => ({
+    documentId: item.targetDocumentId,
+    relationType: item.relationType,
+  }));
+  const documentPage = await getDocuments(activeSpaceId.value!, {
+    pageNum: 1,
+    pageSize: 100,
+  });
+  documentOptions.value = documentPage.items
+    .filter((item) => item.id !== row.id)
+    .map((item) => ({ label: item.title, value: item.id }));
   await searchPointOptions('');
 }
 async function searchPointOptions(keyword: string) {
@@ -198,6 +216,29 @@ async function savePointRelations() {
   } finally {
     relationSaving.value = false;
   }
+}
+
+async function saveDocumentRelations() {
+  if (!selected.value) return;
+  relationSaving.value = true;
+  try {
+    await replaceKnowledgeDocumentRelations(
+      selected.value.id,
+      documentRelations.value,
+    );
+    message.success('document relation updated');
+  } finally {
+    relationSaving.value = false;
+  }
+}
+
+function updateDocumentSelection(ids: number[]) {
+  documentRelations.value = ids.map((id) => ({
+    documentId: id,
+    relationType:
+      documentRelations.value.find((item) => item.documentId === id)
+        ?.relationType || 'RELATED_TO',
+  }));
 }
 async function importFromUrl() {
   if (!activeSpaceId.value || !importUrl.value.trim()) {
@@ -572,6 +613,49 @@ onMounted(async () => {
                   @click="savePointRelations"
                 >
                   保存关联
+                </NButton>
+              </div>
+            </NTabPane>
+            <NTabPane name="documents" tab="文档关联">
+              <div class="space-y-3">
+                <div
+                  v-for="relation in documentRelations"
+                  :key="relation.documentId"
+                  class="flex items-center gap-2"
+                >
+                  <NTag class="max-w-48 truncate">
+                    {{
+                      documentOptions.find(
+                        (item) => item.value === relation.documentId,
+                      )?.label || relation.documentId
+                    }}
+                  </NTag>
+                  <NSelect
+                    v-model:value="relation.relationType"
+                    class="flex-1"
+                    :options="[
+                      { label: '引用', value: 'REFERENCES' },
+                      { label: '替代', value: 'SUPERSEDES' },
+                      { label: '派生', value: 'DERIVED_FROM' },
+                      { label: '翻译', value: 'TRANSLATION_OF' },
+                      { label: '重复', value: 'DUPLICATE_OF' },
+                      { label: '相关', value: 'RELATED_TO' },
+                    ]"
+                  />
+                </div>
+                <NSelect
+                  multiple
+                  :value="documentRelations.map((item) => item.documentId)"
+                  :options="documentOptions"
+                  placeholder="选择关联文档"
+                  @update:value="updateDocumentSelection"
+                />
+                <NButton
+                  type="primary"
+                  :loading="relationSaving"
+                  @click="saveDocumentRelations"
+                >
+                  保存文档关联
                 </NButton>
               </div>
             </NTabPane>
