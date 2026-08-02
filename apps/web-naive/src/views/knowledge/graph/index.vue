@@ -36,6 +36,7 @@ import { useKnowledgeStore } from '#/store';
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
 import KnowledgeGraphCanvas, {
   type KnowledgeGraphEdge,
+  type KnowledgeGraphNode,
 } from '../components/knowledge-graph-canvas.vue';
 import KnowledgeSpaceHeader from '../components/knowledge-space-header.vue';
 
@@ -60,16 +61,74 @@ const selectedNode = ref<KnowledgePoint>();
 const graph = ref<PointGraph>();
 const loading = ref(false);
 const relations = ref<KnowledgeRelation[]>([]);
-const flowNodes = computed(() => {
-  if (!graph.value?.node) return [];
-  return [
-    graph.value.node,
-    ...(graph.value.parentNodes || []),
-    ...(graph.value.childNodes || []),
-    ...(graph.value.relatedNodes || []),
-  ].filter(
-    (node, index, all) =>
-      all.findIndex((item) => item.id === node.id) === index,
+const graphCanvasKey = ref(0);
+type GraphGroup = 'center' | 'parent' | 'child' | 'related';
+
+function comparePoints(left: KnowledgePoint, right: KnowledgePoint) {
+  return (
+    left.code.localeCompare(right.code, 'zh-CN') ||
+    left.name.localeCompare(right.name, 'zh-CN') ||
+    left.id - right.id
+  );
+}
+
+function toPoint(node: { code: string; id: number; name: string }) {
+  return {
+    code: node.code,
+    id: node.id,
+    name: node.name,
+    spaceId: activeSpaceId.value ?? 0,
+  } satisfies KnowledgePoint;
+}
+
+function uniqueSortedPoints(points: KnowledgePoint[]) {
+  return [...new Map(points.map((point) => [point.id, point])).values()].sort(
+    comparePoints,
+  );
+}
+
+const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
+  const center = graph.value?.node;
+  if (!center) return { center: [], parent: [], child: [], related: [] };
+
+  const parent = [...(graph.value?.parentNodes || [])];
+  const child = [...(graph.value?.childNodes || [])];
+  const related = [...(graph.value?.relatedNodes || [])];
+  for (const relation of relations.value) {
+    const relationNode =
+      relation.sourceId === center.id ? relation.target : relation.source;
+    if (!relationNode || relationNode.id === center.id) continue;
+    const point = toPoint(relationNode);
+    if (relation.relationType === 'PRE') {
+      if (relation.targetId === center.id) child.push(point);
+      else if (relation.sourceId === center.id) parent.push(point);
+    } else if (relation.relationType === 'RELATED') {
+      related.push(point);
+    }
+  }
+
+  return {
+    center: [center],
+    parent: uniqueSortedPoints(parent),
+    child: uniqueSortedPoints(child),
+    related: uniqueSortedPoints(related),
+  };
+});
+
+const flowNodes = computed<KnowledgeGraphNode[]>(() => {
+  const groups: Array<[GraphGroup, KnowledgePoint[]]> = [
+    ['center', pointGroups.value.center],
+    ['parent', pointGroups.value.parent],
+    ['child', pointGroups.value.child],
+    ['related', pointGroups.value.related],
+  ];
+  return groups.flatMap(([group, points]) =>
+    points.map((point) => ({
+      code: point.code,
+      group,
+      id: point.id,
+      name: point.name,
+    })),
   );
 });
 const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
@@ -88,7 +147,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     }));
   if (direct.length) return direct;
   const fallback: KnowledgeGraphEdge[] = [];
-  graph.value?.parentNodes?.forEach((node) =>
+  pointGroups.value.parent.forEach((node) =>
     fallback.push({
       id: `${node.id}->${graph.value!.node!.id}:PRE`,
       relationType: 'PRE',
@@ -96,7 +155,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
       target: graph.value!.node!.id,
     }),
   );
-  graph.value?.childNodes?.forEach((node) =>
+  pointGroups.value.child.forEach((node) =>
     fallback.push({
       id: `${graph.value!.node!.id}->${node.id}:PRE`,
       relationType: 'PRE',
@@ -104,7 +163,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
       target: node.id,
     }),
   );
-  graph.value?.relatedNodes?.forEach((node) =>
+  pointGroups.value.related.forEach((node) =>
     fallback.push({
       id: `${graph.value!.node!.id}->${node.id}:RELATED`,
       relationType: 'RELATED',
@@ -128,17 +187,17 @@ const relationTypeOptions = [
 ];
 const groups = computed(() => [
   {
-    items: graph.value?.parentNodes || [],
+    items: pointGroups.value.parent,
     title: '前置知识',
     type: 'success' as const,
   },
   {
-    items: graph.value?.childNodes || [],
+    items: pointGroups.value.child,
     title: '后续知识',
     type: 'warning' as const,
   },
   {
-    items: graph.value?.relatedNodes || [],
+    items: pointGroups.value.related,
     title: '相关知识',
     type: 'info' as const,
   },
@@ -187,6 +246,7 @@ async function loadGraph() {
     graph.value = graphResult as PointGraph;
     relations.value = relationResult || [];
     selectedNode.value = graph.value.node;
+    graphCanvasKey.value += 1;
   } finally {
     loading.value = false;
   }
@@ -212,7 +272,13 @@ function chooseNode(node: KnowledgePoint) {
 }
 
 function handleGraphNodeSelect(nodeId: number) {
-  const node = flowNodes.value.find((item) => item.id === nodeId);
+  const node =
+    [
+      ...pointGroups.value.parent,
+      ...pointGroups.value.child,
+      ...pointGroups.value.related,
+    ].find((item) => item.id === nodeId) ||
+    pointGroups.value.center.find((item) => item.id === nodeId);
   if (node) selectedNode.value = node;
 }
 
@@ -226,6 +292,18 @@ function openCreateRelation(value: { sourceId: number; targetId: number }) {
   relationOriginalType.value = 'PRE';
   relationWeight.value = 1;
   relationModalVisible.value = true;
+}
+
+function openCreateRelationFromSelection() {
+  const sourceId = selectedId.value ?? options.value[0]?.value;
+  const targetId = options.value.find(
+    (option) => option.value !== sourceId,
+  )?.value;
+  if (!sourceId || !targetId) {
+    message.info('至少需要两个知识点才能建立关系');
+    return;
+  }
+  openCreateRelation({ sourceId, targetId });
 }
 
 function openEditRelation(edge: KnowledgeGraphEdge) {
@@ -310,6 +388,15 @@ onMounted(async () => {
           placeholder="选择中心知识点"
           @update:value="loadGraph"
         />
+        <NButton
+          class="mt-3"
+          block
+          type="primary"
+          :disabled="options.length < 2"
+          @click="openCreateRelationFromSelection"
+        >
+          新增关系
+        </NButton>
         <div class="mt-5 border-t pt-4">
           <div class="mb-2 text-sm font-medium">路径查询</div>
           <NSelect
@@ -354,6 +441,7 @@ onMounted(async () => {
               class="h-[560px] w-full overflow-hidden rounded-xl border bg-muted/20"
             >
               <KnowledgeGraphCanvas
+                :key="graphCanvasKey"
                 :edges="flowEdges"
                 :nodes="flowNodes"
                 :selected-id="selectedId"
@@ -466,10 +554,18 @@ onMounted(async () => {
   >
     <NForm label-placement="top">
       <NFormItem label="关系来源">
-        <NSelect :value="relationSourceId" :options="options" disabled />
+        <NSelect
+          v-model:value="relationSourceId"
+          :options="options"
+          :disabled="relationEditing"
+        />
       </NFormItem>
       <NFormItem label="关系目标">
-        <NSelect :value="relationTargetId" :options="options" disabled />
+        <NSelect
+          v-model:value="relationTargetId"
+          :options="options"
+          :disabled="relationEditing"
+        />
       </NFormItem>
       <NFormItem label="关系类型">
         <NSelect v-model:value="relationType" :options="relationTypeOptions" />
