@@ -195,8 +195,11 @@ function getFieldOptions(field: NodeTypeApi.FieldMeta) {
 }
 
 function isMultipleField(field: NodeTypeApi.FieldMeta) {
-  return field.key === 'spaceIds' || field.key === 'sourceTypes' ||
-    field.options?.multiple === true;
+  return (
+    field.key === 'spaceIds' ||
+    field.key === 'sourceTypes' ||
+    field.options?.multiple === true
+  );
 }
 </script>
 

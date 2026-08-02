@@ -156,8 +156,8 @@ export function createSpace(data: {
   chunkStrategy?: string;
   code: string;
   description?: string;
-  domainCode?: KnowledgeDomainCode;
   difficultyScaleId?: number;
+  domainCode?: KnowledgeDomainCode;
   embeddingProfile?: string;
   name: string;
   rerankProfile?: string;

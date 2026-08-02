@@ -1,6 +1,7 @@
+import type { KnowledgeDomainCode } from './enterprise';
+
 import { requestClient } from '#/api/request';
 import { useKnowledgeStore } from '#/store';
-import type { KnowledgeDomainCode } from './enterprise';
 
 export interface KnowledgePoint {
   category?: string;

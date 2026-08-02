@@ -6,8 +6,8 @@ import {
   getDifficultyScale,
   getKnowledgeDomainLabel,
   getSpaces,
-  type KnowledgeDomainCode,
   type KnowledgeDifficultyScale,
+  type KnowledgeDomainCode,
   type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 
