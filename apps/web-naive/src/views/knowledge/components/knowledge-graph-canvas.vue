@@ -19,6 +19,7 @@ export interface KnowledgeGraphNode {
 }
 
 export interface KnowledgeGraphEdge {
+  direction?: 'child' | 'parent' | 'related';
   id: string;
   relationType?: string;
   source: number;
@@ -66,6 +67,54 @@ async function syncGraph() {
     markerEnd: MarkerType.ArrowClosed,
     data: edge,
   }));
+  flowEdges.value = flowEdges.value.map((flowEdge) => {
+    const edge = flowEdge.data as KnowledgeGraphEdge;
+    const color =
+      edge.direction === 'parent'
+        ? '#16a34a'
+        : edge.direction === 'child'
+          ? '#d97706'
+          : '#2563eb';
+    const label =
+      edge.direction === 'parent'
+        ? '前置'
+        : edge.direction === 'child'
+          ? '后置'
+          : edge.direction === 'related'
+            ? '相关'
+            : edge.relationType || '关系';
+    return {
+      ...flowEdge,
+      type: edge.direction === 'related' ? 'default' : 'smoothstep',
+      label,
+      labelShowBg: true,
+      labelBgPadding: [6, 3] as [number, number],
+      labelBgBorderRadius: 4,
+      labelBgStyle: {
+        fill: '#ffffff',
+        fillOpacity: 0.96,
+        stroke: color,
+        strokeWidth: 1,
+      },
+      labelStyle: {
+        fill: color,
+        fontSize: '12px',
+        fontWeight: '600',
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color,
+        width: 18,
+        height: 18,
+      },
+      style: {
+        stroke: color,
+        strokeDasharray: edge.direction === 'related' ? '7 5' : undefined,
+        strokeWidth: 2.5,
+      },
+      zIndex: edge.direction === 'related' ? 1 : 2,
+    };
+  });
   await nextTick();
   try {
     await fitView({ padding: 0.2 });

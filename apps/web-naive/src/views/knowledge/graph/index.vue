@@ -140,6 +140,14 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     )
     .map((relation) => ({
       id: `${relation.sourceId}->${relation.targetId}:${relation.relationType}`,
+      direction:
+        relation.relationType === 'RELATED'
+          ? ('related' as const)
+          : relation.sourceId === graph.value?.node?.id
+            ? ('parent' as const)
+            : relation.targetId === graph.value?.node?.id
+              ? ('child' as const)
+              : undefined,
       relationType: relation.relationType,
       source: relation.sourceId,
       target: relation.targetId,
@@ -151,6 +159,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     fallback.push({
       id: `${node.id}->${graph.value!.node!.id}:PRE`,
       relationType: 'PRE',
+      direction: 'child',
       source: node.id,
       target: graph.value!.node!.id,
     }),
@@ -159,6 +168,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     fallback.push({
       id: `${graph.value!.node!.id}->${node.id}:PRE`,
       relationType: 'PRE',
+      direction: 'parent',
       source: graph.value!.node!.id,
       target: node.id,
     }),
@@ -167,6 +177,7 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     fallback.push({
       id: `${graph.value!.node!.id}->${node.id}:RELATED`,
       relationType: 'RELATED',
+      direction: 'related',
       source: graph.value!.node!.id,
       target: node.id,
     }),
