@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core';
 
-import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
+import {
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  shallowRef,
+  watch,
+} from 'vue';
 
 import { Background } from '@vue-flow/background';
 import { MarkerType, useVueFlow, VueFlow } from '@vue-flow/core';

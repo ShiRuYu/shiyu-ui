@@ -95,10 +95,10 @@ const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
     if (!relationNode || relationNode.id === center.id) continue;
     const point = toPoint(relationNode);
     const relationType = relation.relationType.toUpperCase();
-    if (['PRE', 'BELONG'].includes(relationType)) {
+    if (['BELONG', 'PRE'].includes(relationType)) {
       if (relation.sourceId === center.id) parent.push(point);
       else if (relation.targetId === center.id) child.push(point);
-    } else if (['NEXT', 'INCLUDE'].includes(relationType)) {
+    } else if (['INCLUDE', 'NEXT'].includes(relationType)) {
       if (relation.sourceId === center.id) child.push(point);
       else if (relation.targetId === center.id) parent.push(point);
     } else {
@@ -116,14 +116,42 @@ const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
 
 const relationTypeMeta: Record<
   string,
-  { description: string; label: string; tagType: 'default' | 'info' | 'primary' | 'success' | 'warning' }
+  {
+    description: string;
+    label: string;
+    tagType: 'default' | 'info' | 'primary' | 'success' | 'warning';
+  }
 > = {
-  PRE: { description: '目标知识依赖当前知识', label: '前置', tagType: 'success' },
-  NEXT: { description: '目标知识适合在当前知识之后学习', label: '后续', tagType: 'warning' },
-  INCLUDE: { description: '当前知识包含目标知识', label: '包含', tagType: 'primary' },
-  RELATED: { description: '两个知识点存在横向关联', label: '相关', tagType: 'info' },
-  SIMILAR: { description: '两个知识点内容或语义相似', label: '相似', tagType: 'info' },
-  BELONG: { description: '当前知识归属于目标知识', label: '归属', tagType: 'default' },
+  PRE: {
+    description: '目标知识依赖当前知识',
+    label: '前置',
+    tagType: 'success',
+  },
+  NEXT: {
+    description: '目标知识适合在当前知识之后学习',
+    label: '后续',
+    tagType: 'warning',
+  },
+  INCLUDE: {
+    description: '当前知识包含目标知识',
+    label: '包含',
+    tagType: 'primary',
+  },
+  RELATED: {
+    description: '两个知识点存在横向关联',
+    label: '相关',
+    tagType: 'info',
+  },
+  SIMILAR: {
+    description: '两个知识点内容或语义相似',
+    label: '相似',
+    tagType: 'info',
+  },
+  BELONG: {
+    description: '当前知识归属于目标知识',
+    label: '归属',
+    tagType: 'default',
+  },
 };
 
 const relationTypeOptions = Object.entries(relationTypeMeta).map(
@@ -151,10 +179,10 @@ function relationDirection(
     return 'related';
   }
   if (sourceId === centerId) {
-    return ['PRE', 'BELONG'].includes(relationType) ? 'parent' : 'child';
+    return ['BELONG', 'PRE'].includes(relationType) ? 'parent' : 'child';
   }
   if (targetId === centerId) {
-    return ['PRE', 'BELONG'].includes(relationType) ? 'child' : 'parent';
+    return ['BELONG', 'PRE'].includes(relationType) ? 'child' : 'parent';
   }
   return 'related';
 }
@@ -163,13 +191,20 @@ const selectedRelations = computed(() => {
   const nodeId = selectedNode.value?.id;
   if (!nodeId) return [];
   return [...relations.value]
-    .filter((relation) => relation.sourceId === nodeId || relation.targetId === nodeId)
+    .filter(
+      (relation) =>
+        relation.sourceId === nodeId || relation.targetId === nodeId,
+    )
     .sort((left, right) => {
       const typeCompare = relationLabel(left.relationType).localeCompare(
         relationLabel(right.relationType),
         'zh-CN',
       );
-      return typeCompare || left.sourceId - right.sourceId || left.targetId - right.targetId;
+      return (
+        typeCompare ||
+        left.sourceId - right.sourceId ||
+        left.targetId - right.targetId
+      );
     });
 });
 
@@ -447,15 +482,18 @@ onMounted(async () => {
 
       <NCard title="局部知识网络" :bordered="false">
         <NSpin :show="loading">
-          <div v-if="graph?.node" class="h-[680px] w-full overflow-hidden rounded-xl border bg-muted/20">
-              <KnowledgeGraphCanvas
-                :key="graphCanvasKey"
-                :edges="flowEdges"
-                :nodes="flowNodes"
-                :selected-id="selectedId"
-                @select-edge="openEditRelation"
-                @select-node="handleGraphNodeSelect"
-              />
+          <div
+            v-if="graph?.node"
+            class="h-[680px] w-full overflow-hidden rounded-xl border bg-muted/20"
+          >
+            <KnowledgeGraphCanvas
+              :key="graphCanvasKey"
+              :edges="flowEdges"
+              :nodes="flowNodes"
+              :selected-id="selectedId"
+              @select-edge="openEditRelation"
+              @select-node="handleGraphNodeSelect"
+            />
           </div>
           <KnowledgeEmptyState
             v-else
@@ -502,7 +540,9 @@ onMounted(async () => {
           <div class="mt-5 border-t pt-4">
             <div class="mb-3 flex items-center justify-between">
               <div class="font-medium">节点关系</div>
-              <span class="text-xs text-muted-foreground">{{ selectedRelations.length }} 条</span>
+              <span class="text-xs text-muted-foreground"
+                >{{ selectedRelations.length }} 条</span
+              >
             </div>
             <div v-if="selectedRelations.length" class="space-y-2">
               <div
@@ -511,10 +551,15 @@ onMounted(async () => {
                 class="rounded-lg border p-3"
               >
                 <div class="flex items-center justify-between gap-2">
-                  <NTag size="small" :type="relationTagType(relation.relationType)">
+                  <NTag
+                    size="small"
+                    :type="relationTagType(relation.relationType)"
+                  >
                     {{ relationLabel(relation.relationType) }}
                   </NTag>
-                  <span class="text-xs text-muted-foreground">权重 {{ relation.weight ?? 1 }}</span>
+                  <span class="text-xs text-muted-foreground"
+                    >权重 {{ relation.weight ?? 1 }}</span
+                  >
                 </div>
                 <div class="mt-2 text-sm leading-5">
                   {{ relation.source?.name || relation.sourceId }}
@@ -522,7 +567,11 @@ onMounted(async () => {
                   {{ relation.target?.name || relation.targetId }}
                 </div>
                 <div class="mt-2 flex justify-end gap-2">
-                  <NButton size="small" secondary @click="editRelation(relation)">
+                  <NButton
+                    size="small"
+                    secondary
+                    @click="editRelation(relation)"
+                  >
                     编辑
                   </NButton>
                   <NButton
@@ -537,7 +586,10 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
-            <div v-else class="rounded-lg border border-dashed p-4 text-center text-xs text-muted-foreground">
+            <div
+              v-else
+              class="rounded-lg border border-dashed p-4 text-center text-xs text-muted-foreground"
+            >
               当前节点暂无关系
             </div>
           </div>
