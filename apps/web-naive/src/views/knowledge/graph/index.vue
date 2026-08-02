@@ -62,7 +62,7 @@ const graph = ref<PointGraph>();
 const loading = ref(false);
 const relations = ref<KnowledgeRelation[]>([]);
 const graphCanvasKey = ref(0);
-type GraphGroup = 'center' | 'parent' | 'child' | 'related';
+type GraphGroup = 'center' | 'child' | 'parent' | 'related';
 
 function comparePoints(left: KnowledgePoint, right: KnowledgePoint) {
   return (

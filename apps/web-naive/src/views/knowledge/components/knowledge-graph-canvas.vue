@@ -5,7 +5,7 @@ import { nextTick, shallowRef, watch } from 'vue';
 
 import { Background } from '@vue-flow/background';
 import { Controls } from '@vue-flow/controls';
-import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core';
+import { MarkerType, useVueFlow, VueFlow } from '@vue-flow/core';
 import { MiniMap } from '@vue-flow/minimap';
 
 import '@vue-flow/core/dist/style.css';
