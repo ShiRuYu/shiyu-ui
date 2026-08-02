@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import { NButton, NCard, NSelect, NTag } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
+import { getKnowledgeDomainLabel } from '#/api/knowledge/enterprise';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeStatusTag from './knowledge-status-tag.vue';
@@ -39,6 +40,9 @@ async function changeSpace(value: null | number) {
             {{ activeSpace?.name || '未选择知识空间' }}
           </h2>
           <NTag v-if="activeSpace" size="small">{{ activeSpace.code }}</NTag>
+          <NTag v-if="activeSpace" size="small" type="info">
+            {{ getKnowledgeDomainLabel(activeSpace.domainCode) }}
+          </NTag>
           <KnowledgeStatusTag
             v-if="activeSpace"
             :value="activeSpace.reviewMode"

@@ -24,6 +24,7 @@ import { storeToRefs } from 'pinia';
 import { dialog } from '#/adapter/naive';
 import {
   createSpace,
+  getKnowledgeDomainLabel,
   getSpaces,
   type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
@@ -62,6 +63,7 @@ const form = reactive({
   chunkStrategy: 'HEADING',
   code: '',
   description: '',
+  domainCode: 'GENERAL',
   embeddingProfile: 'default',
   name: '',
   rerankProfile: 'default',
@@ -114,6 +116,7 @@ async function open(row?: KnowledgeSpace) {
           chunkStrategy: row.chunkStrategy,
           code: row.code,
           description: row.description || '',
+          domainCode: row.domainCode || 'GENERAL',
           embeddingProfile: row.embeddingProfile,
           name: row.name,
           rerankProfile: row.rerankProfile,
@@ -127,6 +130,7 @@ async function open(row?: KnowledgeSpace) {
           chunkStrategy: 'HEADING',
           code: '',
           description: '',
+          domainCode: 'GENERAL',
           embeddingProfile: 'default',
           name: '',
           rerankProfile: 'default',
@@ -205,6 +209,12 @@ const columns: DataTableColumns<KnowledgeSpace> = [
       ]),
   },
   { key: 'code', title: '编码', width: 160 },
+  {
+    key: 'domainCode',
+    title: '业务域',
+    width: 100,
+    render: (row) => getKnowledgeDomainLabel(row.domainCode),
+  },
   {
     key: 'accessMode',
     title: '访问范围',
@@ -354,6 +364,17 @@ onMounted(async () => {
                   :options="[
                     { label: '仅授权成员', value: 'PRIVATE' },
                     { label: '租户内可见', value: 'TENANT' },
+                  ]"
+                />
+              </NFormItem>
+              <NFormItem label="业务域">
+                <NSelect
+                  v-model:value="form.domainCode"
+                  :disabled="Boolean(editing)"
+                  :options="[
+                    { label: '通用', value: 'GENERAL' },
+                    { label: '企业', value: 'ENTERPRISE' },
+                    { label: '教育', value: 'EDUCATION' },
                   ]"
                 />
               </NFormItem>

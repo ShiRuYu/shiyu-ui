@@ -1,5 +1,6 @@
 import { requestClient } from '#/api/request';
 import { useKnowledgeStore } from '#/store';
+import type { KnowledgeDomainCode } from './enterprise';
 
 export interface KnowledgePoint {
   category?: string;
@@ -86,10 +87,15 @@ export function deleteKnowledgePoint(id: number) {
   return requestClient.delete(`/knowledge/points/${id}`);
 }
 
-export async function getKnowledgePointOptions() {
+export async function getKnowledgePointOptions(
+  domainCode: KnowledgeDomainCode = 'EDUCATION',
+) {
   const store = useKnowledgeStore();
-  if (!store.spaces.length) {
-    await store.loadSpaces();
+  if (
+    store.spaces.length === 0 ||
+    store.spaces.some((space) => space.domainCode !== domainCode)
+  ) {
+    await store.loadSpaces(false, domainCode);
   }
   const spaceId = store.activeSpaceId;
   if (!spaceId) return [];

@@ -6,6 +6,21 @@ export interface PageData<T> {
 }
 
 export type SpaceRole = 'ADMIN' | 'EDITOR' | 'REVIEWER' | 'VIEWER';
+export type KnowledgeDomainCode =
+  | 'EDUCATION'
+  | 'ENTERPRISE'
+  | 'GENERAL'
+  | (string & {});
+
+export const knowledgeDomainLabels: Record<string, string> = {
+  EDUCATION: '教育',
+  ENTERPRISE: '企业',
+  GENERAL: '通用',
+};
+
+export function getKnowledgeDomainLabel(domainCode?: string) {
+  return domainCode ? knowledgeDomainLabels[domainCode] || domainCode : '通用';
+}
 export type LifecycleStatus = 'ARCHIVED' | 'DRAFT' | 'PUBLISHED' | 'REVIEWING';
 export type JobStatus =
   | 'CANCELLED'
@@ -24,6 +39,7 @@ export interface KnowledgeSpace {
   chunkStrategy: string;
   code: string;
   createTime: string;
+  domainCode: KnowledgeDomainCode;
   description?: string;
   difficultyScaleId: number;
   embeddingProfile: string;
@@ -122,6 +138,7 @@ export interface KnowledgeAuditLog {
 }
 
 export function getSpaces(params: {
+  domainCode?: KnowledgeDomainCode;
   keyword?: string;
   pageNum: number;
   pageSize: number;
@@ -139,6 +156,7 @@ export function createSpace(data: {
   chunkStrategy?: string;
   code: string;
   description?: string;
+  domainCode?: KnowledgeDomainCode;
   difficultyScaleId?: number;
   embeddingProfile?: string;
   name: string;

@@ -184,13 +184,19 @@ function getFieldOptions(field: NodeTypeApi.FieldMeta) {
   if (normalizeSource(field)) {
     return apiOptionsCache.value[field.key] || [];
   }
-  if (field.options) {
-    return Object.entries(field.options).map(([k, v]) => ({
+  const options = field.options?.options ?? field.options;
+  if (options) {
+    return Object.entries(options).map(([k, v]) => ({
       label: String(v),
       value: k,
     }));
   }
   return [];
+}
+
+function isMultipleField(field: NodeTypeApi.FieldMeta) {
+  return field.key === 'spaceIds' || field.key === 'sourceTypes' ||
+    field.options?.multiple === true;
 }
 </script>
 
@@ -303,6 +309,8 @@ function getFieldOptions(field: NodeTypeApi.FieldMeta) {
           v-if="normalizeSource(field) || field.options"
           :value="getConfigValue(field.key) ?? field.defaultValue"
           :options="getFieldOptions(field)"
+          :multiple="isMultipleField(field)"
+          :max-tag-count="isMultipleField(field) ? 3 : undefined"
           :loading="
             normalizeSource(field) &&
             !apiOptionsCache[field.key] &&

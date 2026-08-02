@@ -138,8 +138,8 @@ onMounted(async () => {
 
 <template>
   <Page
-    title="企业知识工作台"
-    description="集中查看知识资产健康度、处理进度和优先待办。"
+    title="知识资产总览"
+    description="集中查看文档、知识条目、任务状态和优先待办。"
   >
     <KnowledgeSpaceHeader
       :loading="loading"
@@ -161,8 +161,8 @@ onMounted(async () => {
           class="cursor-pointer"
           @click="router.push('/knowledge/assets')"
         >
-          <NStatistic label="知识点总量" :value="pointCount" />
-          <div class="mt-2 text-xs text-muted-foreground">进入知识资产维护</div>
+          <NStatistic label="知识条目总量" :value="pointCount" />
+          <div class="mt-2 text-xs text-muted-foreground">进入知识条目管理</div>
         </NCard>
         <NCard
           size="small"
@@ -199,7 +199,7 @@ onMounted(async () => {
               v-for="item in [
                 {
                   title: '补充知识资产',
-                  desc: '新增知识点或导入业务文档',
+                  desc: '新增知识条目或导入业务文档',
                   path: '/knowledge/assets',
                 },
                 {

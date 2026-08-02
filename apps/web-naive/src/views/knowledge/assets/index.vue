@@ -68,12 +68,12 @@ const form = reactive({
 const rules: FormRules = {
   code: {
     required: true,
-    message: '请输入知识点编码',
+    message: '请输入知识条目编码',
     trigger: ['blur', 'input'],
   },
   name: {
     required: true,
-    message: '请输入知识点名称',
+    message: '请输入知识条目名称',
     trigger: ['blur', 'input'],
   },
 };
@@ -186,7 +186,7 @@ async function saveDocumentRelations() {
       selectedDocumentIds.value,
       relationType.value,
     );
-    message.success('知识点关联文档已更新');
+    message.success('知识条目关联文档已更新');
   } finally {
     relationSaving.value = false;
   }
@@ -208,7 +208,7 @@ async function save() {
     } else {
       await createKnowledgePoint(activeSpaceId.value, form);
     }
-    message.success(editing.value ? '知识点已更新' : '知识点已创建');
+    message.success(editing.value ? '知识条目已更新' : '知识条目已创建');
     showDrawer.value = false;
     await load();
   } finally {
@@ -217,13 +217,13 @@ async function save() {
 }
 function remove(row: KnowledgePoint) {
   dialog.warning({
-    title: '删除知识点',
+    title: '删除知识条目',
     content: `确认删除“${row.name}”吗？相关知识关系也可能受到影响。`,
     negativeText: '取消',
     positiveText: '删除',
     onPositiveClick: async () => {
       await deleteKnowledgePoint(row.id);
-      message.success('知识点已删除');
+      message.success('知识条目已删除');
       await load();
     },
   });
@@ -236,7 +236,7 @@ const columns: DataTableColumns<KnowledgePoint> = [
   {
     key: 'name',
     minWidth: 240,
-    title: '知识点',
+    title: '知识条目',
     render: (row) =>
       h('div', [
         h('div', { class: 'font-medium' }, row.name),
@@ -313,8 +313,8 @@ onMounted(async () => {
 
 <template>
   <Page
-    title="知识资产"
-    description="维护知识点本体，持续提升内容完整度和可复用性。"
+    title="知识条目"
+    description="维护可复用的通用知识概念，并管理其文档来源和关系。"
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="load" />
     <NCard :bordered="false">
@@ -330,12 +330,12 @@ onMounted(async () => {
           <NButton @click="search">查询</NButton>
         </div>
         <NButton type="primary" :disabled="!activeSpaceId" @click="open()">
-          新增知识点
+          新增知识条目
         </NButton>
       </div>
       <div class="mt-5 grid gap-3 md:grid-cols-3">
         <NCard size="small">
-          <div class="text-sm text-muted-foreground">资产总量</div>
+          <div class="text-sm text-muted-foreground">条目总量</div>
           <div class="mt-2 text-2xl font-semibold">{{ total }}</div>
         </NCard>
         <NCard size="small">
@@ -379,16 +379,16 @@ onMounted(async () => {
       <KnowledgeEmptyState
         v-else
         :description="
-          activeSpaceId ? '当前空间暂无知识点' : '请先选择或创建知识空间'
+          activeSpaceId ? '当前空间暂无知识条目' : '请先选择或创建知识空间'
         "
-        :action-text="activeSpaceId ? '新增知识点' : undefined"
+        :action-text="activeSpaceId ? '新增知识条目' : undefined"
         @action="open()"
       />
     </NCard>
 
     <NDrawer v-model:show="showDrawer" :width="520">
       <NDrawerContent
-        :title="editing ? '知识点详情与编辑' : '新增知识点'"
+        :title="editing ? '知识条目详情与编辑' : '新增知识条目'"
         closable
       >
         <NForm ref="formRef" :model="form" :rules="rules" label-placement="top">
@@ -427,7 +427,7 @@ onMounted(async () => {
               v-model:value="form.description"
               type="textarea"
               :rows="6"
-              placeholder="说明知识点定义、边界和使用场景"
+              placeholder="说明知识条目定义、边界和使用场景"
             />
           </NFormItem>
         </NForm>

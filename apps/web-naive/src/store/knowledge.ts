@@ -4,13 +4,20 @@ import { defineStore } from 'pinia';
 
 import {
   getDifficultyScale,
+  getKnowledgeDomainLabel,
   getSpaces,
+  type KnowledgeDomainCode,
   type KnowledgeDifficultyScale,
   type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 
 const ACTIVE_SPACE_KEY = 'shiyu-knowledge-active-space';
 const ACTIVE_SPACE_MANUAL_KEY = 'shiyu-knowledge-active-space-manual';
+const PLATFORM_SCOPE = 'PLATFORM';
+
+function storageKey(prefix: string, domainCode?: KnowledgeDomainCode) {
+  return `${prefix}:${domainCode || PLATFORM_SCOPE}`;
+}
 
 export const useKnowledgeStore = defineStore('knowledge', () => {
   const spaces = ref<KnowledgeSpace[]>([]);
@@ -18,29 +25,54 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   const activeSpaceId = shallowRef<number>();
   const loading = shallowRef(false);
   const switching = shallowRef(false);
+  const loadedDomainCode = shallowRef<KnowledgeDomainCode>();
   let loadPromise: null | Promise<void> = null;
+  let loadPromiseDomain: KnowledgeDomainCode | undefined;
 
   const activeSpace = computed(() =>
     spaces.value.find((space) => space.id === activeSpaceId.value),
   );
   const spaceOptions = computed(() =>
     spaces.value.map((space) => ({
-      label: space.name,
+      label: `${space.name} · ${getKnowledgeDomainLabel(space.domainCode)}`,
       value: space.id,
     })),
   );
 
-  async function loadSpaces(force = false) {
-    if (!force && spaces.value.length > 0) return;
-    if (loadPromise) return loadPromise;
+  async function loadSpaces(force = false, domainCode?: KnowledgeDomainCode) {
+    if (
+      !force &&
+      spaces.value.length > 0 &&
+      loadedDomainCode.value === domainCode
+    )
+      return;
+    if (loadPromise) {
+      if (loadPromiseDomain === domainCode) return loadPromise;
+      await loadPromise;
+      return loadSpaces(force, domainCode);
+    }
     loading.value = true;
+    loadPromiseDomain = domainCode;
     loadPromise = (async () => {
       try {
-        const result = await getSpaces({ pageNum: 1, pageSize: 100 });
-        spaces.value = result.items;
-        const savedId = Number(localStorage.getItem(ACTIVE_SPACE_KEY));
+        const result = await getSpaces({
+          domainCode,
+          pageNum: 1,
+          pageSize: 100,
+        });
+        // The platform entry manages all non-education spaces. The education
+        // entry is explicitly scoped by the server to EDUCATION.
+        spaces.value = domainCode
+          ? result.items
+          : result.items.filter((space) => space.domainCode !== 'EDUCATION');
+        loadedDomainCode.value = domainCode;
+        const savedId = Number(
+          localStorage.getItem(storageKey(ACTIVE_SPACE_KEY, domainCode)),
+        );
         const hasManualSelection =
-          localStorage.getItem(ACTIVE_SPACE_MANUAL_KEY) === '1';
+          localStorage.getItem(
+            storageKey(ACTIVE_SPACE_MANUAL_KEY, domainCode),
+          ) === '1';
         const defaultSpaceId = spaces.value.find(
           (space) => space.code === 'default',
         )?.id;
@@ -55,7 +87,10 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
               : (defaultSpaceId ?? spaces.value[0]?.id);
         }
         if (activeSpaceId.value) {
-          localStorage.setItem(ACTIVE_SPACE_KEY, String(activeSpaceId.value));
+          localStorage.setItem(
+            storageKey(ACTIVE_SPACE_KEY, domainCode),
+            String(activeSpaceId.value),
+          );
         }
         // The difficulty scale is optional metadata. A space without a valid
         // scale must not prevent the rest of the knowledge workspace (points,
@@ -64,6 +99,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
       } finally {
         loading.value = false;
         loadPromise = null;
+        loadPromiseDomain = undefined;
       }
     })();
     return loadPromise;
@@ -76,11 +112,21 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     ) {
       activeSpaceId.value = spaceId;
       if (spaceId) {
-        localStorage.setItem(ACTIVE_SPACE_KEY, String(spaceId));
-        localStorage.setItem(ACTIVE_SPACE_MANUAL_KEY, '1');
+        localStorage.setItem(
+          storageKey(ACTIVE_SPACE_KEY, loadedDomainCode.value),
+          String(spaceId),
+        );
+        localStorage.setItem(
+          storageKey(ACTIVE_SPACE_MANUAL_KEY, loadedDomainCode.value),
+          '1',
+        );
       } else {
-        localStorage.removeItem(ACTIVE_SPACE_KEY);
-        localStorage.removeItem(ACTIVE_SPACE_MANUAL_KEY);
+        localStorage.removeItem(
+          storageKey(ACTIVE_SPACE_KEY, loadedDomainCode.value),
+        );
+        localStorage.removeItem(
+          storageKey(ACTIVE_SPACE_MANUAL_KEY, loadedDomainCode.value),
+        );
       }
     }
   }
@@ -116,6 +162,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
 
   function $reset() {
     spaces.value = [];
+    loadedDomainCode.value = undefined;
     difficultyScale.value = undefined;
     activeSpaceId.value = undefined;
     loading.value = false;

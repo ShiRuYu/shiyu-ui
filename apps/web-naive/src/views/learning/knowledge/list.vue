@@ -56,7 +56,7 @@ async function handleSearch() {
   loading.value = true;
   try {
     if (!activeSpaceId.value) {
-      await knowledgeStore.loadSpaces();
+      await knowledgeStore.loadSpaces(false, 'EDUCATION');
     }
     if (!activeSpaceId.value) return;
     const result = await getKnowledgePoints(activeSpaceId.value, {
@@ -77,7 +77,7 @@ function goToKnowledge(row: any) {
 }
 
 onMounted(async () => {
-  await knowledgeStore.loadSpaces();
+  await knowledgeStore.loadSpaces(false, 'EDUCATION');
   loadSubjects();
 });
 </script>

@@ -10,6 +10,7 @@ export interface SpacePayload {
   chunkStrategy?: string;
   code: string;
   description?: string;
+  domainCode?: string;
   difficultyScaleId?: number;
   embeddingProfile?: string;
   name: string;
@@ -23,6 +24,10 @@ export interface SpaceMember {
 }
 export function getSpace(id: number) {
   return requestClient.get<KnowledgeSpace>(`/knowledge/spaces/${id}`);
+}
+
+export function getKnowledgeSpaceOptions() {
+  return requestClient.get<KnowledgeSpace[]>('/knowledge/spaces/options');
 }
 export function getSpaceMembers(id: number) {
   return requestClient.get<SpaceMember[]>(`/knowledge/spaces/${id}/members`);
