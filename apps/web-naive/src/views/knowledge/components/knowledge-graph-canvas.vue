@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node } from '@vue-flow/core';
+import type { Edge, Node } from '@vue-flow/core';
 
-import { nextTick, shallowRef, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
 
 import { Background } from '@vue-flow/background';
-import { Controls } from '@vue-flow/controls';
 import { MarkerType, useVueFlow, VueFlow } from '@vue-flow/core';
 import { MiniMap } from '@vue-flow/minimap';
 
@@ -30,19 +29,27 @@ export interface KnowledgeGraphEdge {
 const props = defineProps<{
   edges: KnowledgeGraphEdge[];
   nodes: KnowledgeGraphNode[];
-  readonly?: boolean;
   selectedId?: number;
 }>();
 
 const emit = defineEmits<{
-  (e: 'connect', value: { sourceId: number; targetId: number }): void;
   (e: 'selectEdge', edge: KnowledgeGraphEdge): void;
   (e: 'selectNode', nodeId: number): void;
 }>();
 
 const flowNodes = shallowRef<Node[]>([]);
 const flowEdges = shallowRef<Edge[]>([]);
-const { fitView } = useVueFlow();
+const canvasRoot = ref<HTMLElement>();
+const isFullscreen = ref(false);
+const { fitView, zoomIn, zoomOut } = useVueFlow();
+const relationLabels: Record<string, string> = {
+  BELONG: '归属',
+  INCLUDE: '包含',
+  NEXT: '后续',
+  PRE: '前置',
+  RELATED: '相关',
+  SIMILAR: '相似',
+};
 
 async function syncGraph() {
   flowNodes.value = props.nodes.map((node, index) => ({
@@ -76,13 +83,14 @@ async function syncGraph() {
           ? '#d97706'
           : '#2563eb';
     const label =
-      edge.direction === 'parent'
+      relationLabels[edge.relationType?.toUpperCase() || ''] ||
+      (edge.direction === 'parent'
         ? '前置'
         : edge.direction === 'child'
-          ? '后置'
+          ? '后续'
           : edge.direction === 'related'
             ? '相关'
-            : edge.relationType || '关系';
+            : edge.relationType || '关系');
     return {
       ...flowEdge,
       type: edge.direction === 'related' ? 'default' : 'smoothstep',
@@ -159,38 +167,92 @@ function handleEdgeClick({ edge }: { edge: Edge }) {
   if (value) emit('selectEdge', value);
 }
 
-function handleConnect(connection: Connection) {
-  if (
-    props.readonly ||
-    !connection.source ||
-    !connection.target ||
-    connection.source === connection.target
-  ) {
+async function toggleFullscreen() {
+  if (!canvasRoot.value) return;
+  if (document.fullscreenElement) {
+    await document.exitFullscreen();
     return;
   }
-  emit('connect', {
-    sourceId: Number(connection.source),
-    targetId: Number(connection.target),
-  });
+  await canvasRoot.value.requestFullscreen();
 }
+
+function handleFullscreenChange() {
+  isFullscreen.value = document.fullscreenElement === canvasRoot.value;
+}
+
+onMounted(() => {
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', handleFullscreenChange);
+});
 </script>
 
 <template>
-  <div class="knowledge-graph-canvas h-full min-h-[560px] w-full">
+  <div
+    ref="canvasRoot"
+    class="knowledge-graph-canvas relative h-full min-h-[560px] w-full"
+    :class="{ 'knowledge-graph-canvas-fullscreen': isFullscreen }"
+  >
+    <div
+      class="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-lg border bg-white/95 p-1 shadow-sm dark:bg-slate-900/95"
+      role="toolbar"
+      aria-label="图谱视图工具"
+    >
+      <button
+        class="graph-tool-button"
+        type="button"
+        title="放大"
+        aria-label="放大"
+        data-testid="knowledge-graph-zoom-in"
+        @click="() => zoomIn()"
+      >
+        +
+      </button>
+      <button
+        class="graph-tool-button"
+        type="button"
+        title="缩小"
+        aria-label="缩小"
+        data-testid="knowledge-graph-zoom-out"
+        @click="() => zoomOut()"
+      >
+        −
+      </button>
+      <button
+        class="graph-tool-button graph-tool-button-wide"
+        type="button"
+        title="适应画布"
+        aria-label="适应画布"
+        data-testid="knowledge-graph-fit-view"
+        @click="fitView({ padding: 0.2 })"
+      >
+        适应
+      </button>
+      <button
+        class="graph-tool-button graph-tool-button-wide"
+        type="button"
+        :title="isFullscreen ? '退出全屏' : '全屏'"
+        :aria-label="isFullscreen ? '退出全屏' : '全屏'"
+        data-testid="knowledge-graph-fullscreen"
+        @click="toggleFullscreen"
+      >
+        {{ isFullscreen ? '退出' : '全屏' }}
+      </button>
+    </div>
     <VueFlow
       :edges="flowEdges"
       :nodes="flowNodes"
       :elements-selectable="true"
-      :nodes-connectable="!readonly"
+      :nodes-connectable="false"
       :nodes-draggable="true"
       fit-view-on-init
-      @connect="handleConnect"
       @edge-click="handleEdgeClick"
       @node-click="handleNodeClick"
     >
       <Background pattern-color="#cbd5e1" :gap="20" />
       <MiniMap pannable zoomable />
-      <Controls />
     </VueFlow>
   </div>
 </template>
@@ -213,5 +275,40 @@ function handleConnect(connection: Connection) {
 .knowledge-graph-canvas :deep(.vue-flow__edge-text) {
   fill: #475569;
   font-size: 11px;
+}
+
+.knowledge-graph-canvas-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.knowledge-graph-canvas:fullscreen {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.graph-tool-button {
+  display: inline-flex;
+  min-width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.graph-tool-button:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.graph-tool-button-wide {
+  padding: 0 8px;
+  font-size: 12px;
 }
 </style>

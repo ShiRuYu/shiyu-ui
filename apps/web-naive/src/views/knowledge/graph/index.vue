@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
@@ -20,7 +20,6 @@ import {
 import { storeToRefs } from 'pinia';
 
 import {
-  findKnowledgePointPath,
   getKnowledgePointGraph,
   getKnowledgePoints,
   type KnowledgePoint,
@@ -47,16 +46,12 @@ interface PointGraph {
   relatedNodes?: KnowledgePoint[];
 }
 
-const router = useRouter();
 const route = useRoute();
 const message = useMessage();
 const store = useKnowledgeStore();
 const { activeSpaceId } = storeToRefs(store);
 const options = ref<{ label: string; value: number }[]>([]);
 const selectedId = ref<number>();
-const pathTargetId = ref<number>();
-const pathIds = ref<number[]>([]);
-const pathLoading = ref(false);
 const selectedNode = ref<KnowledgePoint>();
 const graph = ref<PointGraph>();
 const loading = ref(false);
@@ -99,10 +94,14 @@ const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
       relation.sourceId === center.id ? relation.target : relation.source;
     if (!relationNode || relationNode.id === center.id) continue;
     const point = toPoint(relationNode);
-    if (relation.relationType === 'PRE') {
-      if (relation.targetId === center.id) child.push(point);
-      else if (relation.sourceId === center.id) parent.push(point);
-    } else if (relation.relationType === 'RELATED') {
+    const relationType = relation.relationType.toUpperCase();
+    if (['PRE', 'BELONG'].includes(relationType)) {
+      if (relation.sourceId === center.id) parent.push(point);
+      else if (relation.targetId === center.id) child.push(point);
+    } else if (['NEXT', 'INCLUDE'].includes(relationType)) {
+      if (relation.sourceId === center.id) child.push(point);
+      else if (relation.targetId === center.id) parent.push(point);
+    } else {
       related.push(point);
     }
   }
@@ -113,6 +112,65 @@ const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
     child: uniqueSortedPoints(child),
     related: uniqueSortedPoints(related),
   };
+});
+
+const relationTypeMeta: Record<
+  string,
+  { description: string; label: string; tagType: 'default' | 'info' | 'primary' | 'success' | 'warning' }
+> = {
+  PRE: { description: '目标知识依赖当前知识', label: '前置', tagType: 'success' },
+  NEXT: { description: '目标知识适合在当前知识之后学习', label: '后续', tagType: 'warning' },
+  INCLUDE: { description: '当前知识包含目标知识', label: '包含', tagType: 'primary' },
+  RELATED: { description: '两个知识点存在横向关联', label: '相关', tagType: 'info' },
+  SIMILAR: { description: '两个知识点内容或语义相似', label: '相似', tagType: 'info' },
+  BELONG: { description: '当前知识归属于目标知识', label: '归属', tagType: 'default' },
+};
+
+const relationTypeOptions = Object.entries(relationTypeMeta).map(
+  ([value, meta]) => ({
+    label: `${meta.label}：${meta.description}`,
+    value,
+  }),
+);
+
+function relationLabel(type: string) {
+  return relationTypeMeta[type.toUpperCase()]?.label || type;
+}
+
+function relationTagType(type: string) {
+  return relationTypeMeta[type.toUpperCase()]?.tagType || 'default';
+}
+
+function relationDirection(
+  relationType: string,
+  sourceId: number,
+  targetId: number,
+  centerId?: number,
+): KnowledgeGraphEdge['direction'] {
+  if (!centerId || ['RELATED', 'SIMILAR'].includes(relationType)) {
+    return 'related';
+  }
+  if (sourceId === centerId) {
+    return ['PRE', 'BELONG'].includes(relationType) ? 'parent' : 'child';
+  }
+  if (targetId === centerId) {
+    return ['PRE', 'BELONG'].includes(relationType) ? 'child' : 'parent';
+  }
+  return 'related';
+}
+
+const selectedRelations = computed(() => {
+  const nodeId = selectedNode.value?.id;
+  if (!nodeId) return [];
+  return [...relations.value]
+    .filter((relation) => relation.sourceId === nodeId || relation.targetId === nodeId)
+    .sort((left, right) => {
+      const typeCompare = relationLabel(left.relationType).localeCompare(
+        relationLabel(right.relationType),
+        'zh-CN',
+      );
+      return typeCompare || left.sourceId - right.sourceId || left.targetId - right.targetId;
+    });
 });
 
 const flowNodes = computed<KnowledgeGraphNode[]>(() => {
@@ -140,14 +198,12 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
     )
     .map((relation) => ({
       id: `${relation.sourceId}->${relation.targetId}:${relation.relationType}`,
-      direction:
-        relation.relationType === 'RELATED'
-          ? ('related' as const)
-          : relation.sourceId === graph.value?.node?.id
-            ? ('parent' as const)
-            : relation.targetId === graph.value?.node?.id
-              ? ('child' as const)
-              : undefined,
+      direction: relationDirection(
+        relation.relationType.toUpperCase(),
+        relation.sourceId,
+        relation.targetId,
+        graph.value?.node?.id,
+      ),
       relationType: relation.relationType,
       source: relation.sourceId,
       target: relation.targetId,
@@ -192,34 +248,11 @@ const relationType = ref('PRE');
 const relationOriginalType = ref('PRE');
 const relationWeight = ref(1);
 const relationSaving = ref(false);
-const relationTypeOptions = [
-  { label: '前置关系', value: 'PRE' },
-  { label: '相关关系', value: 'RELATED' },
-];
-const groups = computed(() => [
-  {
-    items: pointGroups.value.parent,
-    title: '前置知识',
-    type: 'success' as const,
-  },
-  {
-    items: pointGroups.value.child,
-    title: '后续知识',
-    type: 'warning' as const,
-  },
-  {
-    items: pointGroups.value.related,
-    title: '相关知识',
-    type: 'info' as const,
-  },
-]);
 
 async function loadOptions(reset = false) {
   if (!activeSpaceId.value) {
     options.value = [];
     selectedId.value = undefined;
-    pathTargetId.value = undefined;
-    pathIds.value = [];
     graph.value = undefined;
     return;
   }
@@ -236,11 +269,6 @@ async function loadOptions(reset = false) {
     selectedId.value = options.value.some((item) => item.value === queryId)
       ? queryId
       : options.value[0]?.value;
-  }
-  if (!options.value.some((item) => item.value === pathTargetId.value)) {
-    pathTargetId.value = options.value.find(
-      (item) => item.value !== selectedId.value,
-    )?.value;
   }
 }
 async function loadGraph() {
@@ -262,27 +290,11 @@ async function loadGraph() {
     loading.value = false;
   }
 }
-async function queryPath() {
-  if (!selectedId.value || !pathTargetId.value) return;
-  pathLoading.value = true;
-  try {
-    pathIds.value = await findKnowledgePointPath(
-      selectedId.value,
-      pathTargetId.value,
-    );
-  } finally {
-    pathLoading.value = false;
-  }
-}
 async function refresh(reset = false) {
   await loadOptions(reset);
   await loadGraph();
 }
-function chooseNode(node: KnowledgePoint) {
-  selectedNode.value = node;
-}
-
-function handleGraphNodeSelect(nodeId: number) {
+async function handleGraphNodeSelect(nodeId: number) {
   const node =
     [
       ...pointGroups.value.parent,
@@ -290,7 +302,12 @@ function handleGraphNodeSelect(nodeId: number) {
       ...pointGroups.value.related,
     ].find((item) => item.id === nodeId) ||
     pointGroups.value.center.find((item) => item.id === nodeId);
-  if (node) selectedNode.value = node;
+  if (!node) return;
+  selectedNode.value = node;
+  if (selectedId.value !== nodeId) {
+    selectedId.value = nodeId;
+    await loadGraph();
+  }
 }
 
 function openCreateRelation(value: { sourceId: number; targetId: number }) {
@@ -306,7 +323,7 @@ function openCreateRelation(value: { sourceId: number; targetId: number }) {
 }
 
 function openCreateRelationFromSelection() {
-  const sourceId = selectedId.value ?? options.value[0]?.value;
+  const sourceId = selectedNode.value?.id ?? selectedId.value;
   const targetId = options.value.find(
     (option) => option.value !== sourceId,
   )?.value;
@@ -328,6 +345,10 @@ function openEditRelation(edge: KnowledgeGraphEdge) {
     message.info('该方向关系来自图谱推导，请通过真实关系连线编辑');
     return;
   }
+  editRelation(relation);
+}
+
+function editRelation(relation: KnowledgeRelation) {
   relationEditing.value = true;
   relationSourceId.value = relation.sourceId;
   relationTargetId.value = relation.targetId;
@@ -335,6 +356,13 @@ function openEditRelation(edge: KnowledgeGraphEdge) {
   relationOriginalType.value = relation.relationType;
   relationWeight.value = relation.weight ?? 1;
   relationModalVisible.value = true;
+}
+
+async function removeRelationValue(relation: KnowledgeRelation) {
+  relationSourceId.value = relation.sourceId;
+  relationTargetId.value = relation.targetId;
+  relationOriginalType.value = relation.relationType;
+  await removeRelation();
 }
 
 async function saveRelation() {
@@ -390,8 +418,8 @@ onMounted(async () => {
     description="围绕中心节点查看前置、后续和横向关联，快速理解知识结构。"
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="refresh(true)" />
-    <div class="grid gap-4 xl:grid-cols-[280px_1fr_300px]">
-      <NCard title="分析对象" :bordered="false">
+    <div class="grid gap-4 xl:grid-cols-[220px_1fr_360px]">
+      <NCard title="图谱导航" :bordered="false">
         <NSelect
           v-model:value="selectedId"
           :options="options"
@@ -399,117 +427,39 @@ onMounted(async () => {
           placeholder="选择中心知识点"
           @update:value="loadGraph"
         />
-        <NButton
-          class="mt-3"
-          block
-          type="primary"
-          :disabled="options.length < 2"
-          @click="openCreateRelationFromSelection"
-        >
-          新增关系
-        </NButton>
-        <div class="mt-5 border-t pt-4">
-          <div class="mb-2 text-sm font-medium">路径查询</div>
-          <NSelect
-            v-model:value="pathTargetId"
-            :options="options"
-            filterable
-            placeholder="选择目标知识点"
-          />
-          <NButton
-            class="mt-2"
-            block
-            :loading="pathLoading"
-            :disabled="!selectedId || !pathTargetId"
-            @click="queryPath"
-          >
-            查询最短路径
-          </NButton>
-          <div
-            v-if="pathIds.length"
-            class="mt-3 rounded-lg bg-primary/5 p-3 text-xs leading-6"
-          >
-            <div class="font-medium">路径节点（{{ pathIds.length }}）</div>
-            <div>{{ pathIds.join(' → ') }}</div>
-          </div>
-          <div v-else class="mt-2 text-xs text-muted-foreground">
-            路径查询结果会显示在这里
-          </div>
-        </div>
         <div class="mt-4 rounded-lg bg-muted p-4 text-sm text-muted-foreground">
-          在图中拖拽节点之间的连线即可编排关系；点击连线可以修改或删除关系。
+          点击图中节点切换分析中心，关系新增、编辑和删除统一在右侧节点详情中完成。
         </div>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <NTag type="primary">中心</NTag><NTag type="success">前置</NTag
-          ><NTag type="warning">后续</NTag><NTag type="info">相关</NTag>
+        <div class="mt-4 space-y-2">
+          <div class="text-xs font-medium text-muted-foreground">关系类型</div>
+          <div class="flex flex-wrap gap-2">
+            <NTag
+              v-for="option in relationTypeOptions"
+              :key="option.value"
+              size="small"
+              :type="relationTagType(option.value)"
+            >
+              {{ relationLabel(option.value) }}
+            </NTag>
+          </div>
         </div>
       </NCard>
 
       <NCard title="局部知识网络" :bordered="false">
         <NSpin :show="loading">
-          <div v-if="graph?.node" class="space-y-6">
-            <div
-              class="h-[560px] w-full overflow-hidden rounded-xl border bg-muted/20"
-            >
+          <div v-if="graph?.node" class="h-[680px] w-full overflow-hidden rounded-xl border bg-muted/20">
               <KnowledgeGraphCanvas
                 :key="graphCanvasKey"
                 :edges="flowEdges"
                 :nodes="flowNodes"
                 :selected-id="selectedId"
-                @connect="openCreateRelation"
                 @select-edge="openEditRelation"
                 @select-node="handleGraphNodeSelect"
               />
-            </div>
-            <div class="flex justify-center">
-              <button
-                class="min-w-56 rounded-2xl border-2 border-primary bg-primary/10 p-5 text-center shadow-sm"
-                @click="chooseNode(graph.node!)"
-              >
-                <NTag size="small" type="primary">中心知识点</NTag>
-                <div class="mt-2 text-lg font-semibold">
-                  {{ graph.node.name }}
-                </div>
-                <div class="mt-1 text-xs text-muted-foreground">
-                  {{ graph.node.code }}
-                </div>
-              </button>
-            </div>
-            <div class="grid gap-5 lg:grid-cols-3">
-              <section v-for="group in groups" :key="group.title">
-                <div class="mb-3 flex items-center justify-between">
-                  <NTag :type="group.type">{{ group.title }}</NTag
-                  ><span class="text-xs text-muted-foreground"
-                    >{{ group.items.length }} 个</span
-                  >
-                </div>
-                <div class="space-y-2">
-                  <button
-                    v-for="node in group.items"
-                    :key="node.id"
-                    class="w-full rounded-xl border p-3 text-left transition hover:border-primary hover:shadow-sm"
-                    @click="chooseNode(node)"
-                  >
-                    <div class="font-medium">{{ node.name }}</div>
-                    <div class="mt-1 text-xs text-muted-foreground">
-                      {{ node.code }}
-                    </div>
-                  </button>
-                  <div
-                    v-if="!group.items.length"
-                    class="rounded-xl border border-dashed p-5 text-center text-xs text-muted-foreground"
-                  >
-                    暂无{{ group.title }}
-                  </div>
-                </div>
-              </section>
-            </div>
           </div>
           <KnowledgeEmptyState
             v-else
             description="当前空间暂无可展示的图谱数据"
-            action-text="维护知识关系"
-            @action="router.push('/knowledge/graph')"
           />
         </NSpin>
       </NCard>
@@ -544,13 +494,53 @@ onMounted(async () => {
             class="mt-5"
             type="primary"
             block
-            @click="
-              selectedId = selectedNode.id;
-              loadGraph();
-            "
+            :disabled="options.length < 2"
+            @click="openCreateRelationFromSelection"
           >
-            刷新该节点关系
+            新增关系
           </NButton>
+          <div class="mt-5 border-t pt-4">
+            <div class="mb-3 flex items-center justify-between">
+              <div class="font-medium">节点关系</div>
+              <span class="text-xs text-muted-foreground">{{ selectedRelations.length }} 条</span>
+            </div>
+            <div v-if="selectedRelations.length" class="space-y-2">
+              <div
+                v-for="relation in selectedRelations"
+                :key="`${relation.sourceId}-${relation.targetId}-${relation.relationType}`"
+                class="rounded-lg border p-3"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <NTag size="small" :type="relationTagType(relation.relationType)">
+                    {{ relationLabel(relation.relationType) }}
+                  </NTag>
+                  <span class="text-xs text-muted-foreground">权重 {{ relation.weight ?? 1 }}</span>
+                </div>
+                <div class="mt-2 text-sm leading-5">
+                  {{ relation.source?.name || relation.sourceId }}
+                  <span class="px-1 text-muted-foreground">→</span>
+                  {{ relation.target?.name || relation.targetId }}
+                </div>
+                <div class="mt-2 flex justify-end gap-2">
+                  <NButton size="small" secondary @click="editRelation(relation)">
+                    编辑
+                  </NButton>
+                  <NButton
+                    size="small"
+                    secondary
+                    type="error"
+                    :loading="relationSaving"
+                    @click="removeRelationValue(relation)"
+                  >
+                    删除
+                  </NButton>
+                </div>
+              </div>
+            </div>
+            <div v-else class="rounded-lg border border-dashed p-4 text-center text-xs text-muted-foreground">
+              当前节点暂无关系
+            </div>
+          </div>
         </template>
         <KnowledgeEmptyState v-else description="点击节点查看详情" />
       </NCard>
