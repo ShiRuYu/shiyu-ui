@@ -36,6 +36,9 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'userId',
       label: $t('education.student.userId'),
+      rules: z
+        .number()
+        .min(1, $t('ui.formRules.required', [$t('education.student.userId')])),
     },
     {
       component: 'Input',
@@ -64,6 +67,9 @@ export function useSchema(): VbenFormSchema[] {
       component: 'InputNumber',
       fieldName: 'grade',
       label: $t('education.student.grade'),
+      rules: z
+        .number()
+        .min(1, $t('ui.formRules.required', [$t('education.student.grade')])),
     },
     {
       component: 'Input',

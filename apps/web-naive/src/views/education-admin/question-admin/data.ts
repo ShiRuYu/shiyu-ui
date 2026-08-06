@@ -50,6 +50,9 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Select',
       fieldName: 'type',
       label: $t('education.question.type'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('education.question.type')])),
       componentProps: {
         options: [
           { label: $t('education.question.typeChoice'), value: 'CHOICE' },
@@ -75,16 +78,31 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'subjectCode',
       label: $t('education.question.subjectCode'),
+      rules: z
+        .string()
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('education.question.subjectCode')]),
+        ),
     },
     {
       component: 'InputNumber',
       fieldName: 'grade',
       label: $t('education.course.grade'),
+      rules: z
+        .number()
+        .min(1, $t('ui.formRules.required', [$t('education.course.grade')])),
     },
     {
       component: 'Select',
       fieldName: 'difficulty',
       label: $t('education.question.difficulty'),
+      rules: z
+        .number()
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('education.question.difficulty')]),
+        ),
       componentProps: {
         options: [
           { label: $t('education.question.difficultyBasic'), value: 1 },
@@ -110,6 +128,9 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: { type: 'textarea', rows: 3 },
       fieldName: 'answer',
       label: $t('education.question.answer'),
+      rules: z
+        .string()
+        .min(1, $t('ui.formRules.required', [$t('education.question.answer')])),
     },
     {
       component: 'Input',

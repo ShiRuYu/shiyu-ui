@@ -134,12 +134,6 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'adminUsername',
       label: $t('system.tenant.adminUsername'),
-      rules: z
-        .string()
-        .min(
-          1,
-          $t('ui.formRules.required', [$t('system.tenant.adminUsername')]),
-        ),
     },
     {
       component: 'Input',
@@ -153,7 +147,6 @@ export function useSchema(): VbenFormSchema[] {
       },
       fieldName: 'adminPassword',
       label: $t('system.tenant.adminPassword'),
-      rules: z.string().min(6, $t('system.tenant.adminPasswordMinLength')),
     },
     {
       component: 'RadioGroup',

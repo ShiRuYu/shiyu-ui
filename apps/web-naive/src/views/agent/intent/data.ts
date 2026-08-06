@@ -38,8 +38,8 @@ async function getIntentCategoryOptions() {
 async function getAgentOptions() {
   const data = await getAgentListAll();
   return (data || []).map((item: any) => ({
-    label: item.name,
-    value: item.code,
+    id: item.agentId,
+    name: item.name,
   }));
 }
 
@@ -108,7 +108,9 @@ export function useSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         api: getAgentOptions,
+        labelField: 'name',
         placeholder: '选择所属Agent',
+        valueField: 'id',
       },
       fieldName: 'agentId',
       label: '所属 Agent',

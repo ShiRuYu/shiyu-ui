@@ -208,6 +208,19 @@ function resetForm() {
 
 const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
+    if (!formData.value?.id) {
+      const values = await formApi.getValues();
+      if (!values.adminUsername) {
+        message.warning(
+          $t('ui.formRules.required', [$t('system.tenant.adminUsername')]),
+        );
+        return;
+      }
+      if (!values.adminPassword || String(values.adminPassword).length < 6) {
+        message.warning($t('system.tenant.adminPasswordMinLength'));
+        return;
+      }
+    }
     if (!formData.value?.id && checkedMenuIds.value.length === 0) {
       message.warning($t('system.tenant.selectAtLeastOneMenu'));
       return;
@@ -234,6 +247,10 @@ const [Modal, modalApi] = useVbenModal({
             }),
       };
       delete submitData.adminRoleCode;
+      if (formData.value?.id) {
+        delete submitData.adminUsername;
+        delete submitData.adminPassword;
+      }
       if (submitData.status !== undefined) {
         submitData.status = String(submitData.status);
       }

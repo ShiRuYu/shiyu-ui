@@ -31,8 +31,18 @@ const roleLoadingByTenant = ref<Record<number, boolean>>({});
 const rows = ref<AssignmentRow[]>([]);
 const loading = ref(false);
 
+function flattenTenants(items: SystemTenantApi.SystemTenant[]) {
+  return items.flatMap((item) => [
+    item,
+    ...flattenTenants(item.children ?? []),
+  ]);
+}
+
 const tenantOptions = computed(() =>
-  tenants.value.map((item) => ({ label: item.name, value: item.id })),
+  flattenTenants(tenants.value).map((item) => ({
+    label: item.name,
+    value: item.id,
+  })),
 );
 const roleOptions = (tenantId: null | number) =>
   tenantId === null

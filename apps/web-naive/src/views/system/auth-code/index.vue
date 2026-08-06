@@ -179,6 +179,7 @@ refreshGrid();
 
       <NSpin :show="loading">
         <NCollapse
+          :key="groups.map((group) => group.module).join(',')"
           v-if="groups.length > 0"
           :default-expanded-names="groups.map((group) => group.module)"
         >
@@ -202,6 +203,9 @@ refreshGrid();
             </template>
 
             <NCollapse
+              :key="
+                module.resources.map((resource) => resource.resource).join(',')
+              "
               :default-expanded-names="
                 module.resources.map((resource) => resource.resource)
               "
