@@ -24,5 +24,6 @@
   "showSearchPanel": "Show search panel",
   "hideSearchPanel": "Hide search panel",
   "expandAll": "Expand all",
-  "collapseAll": "Collapse all"
+  "collapseAll": "Collapse all",
+  "notShow": "Don't Show"
 }
