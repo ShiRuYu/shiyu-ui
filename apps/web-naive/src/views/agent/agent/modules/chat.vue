@@ -53,7 +53,9 @@ async function onSend() {
     }
   } catch (error: any) {
     if (error?.name !== 'AbortError') {
-      response.value = `Error: ${error?.message || error}`;
+      response.value = $t('agent.chatConfigError', {
+        message: error?.message || String(error),
+      });
     } else if (!response.value) {
       response.value = $t('agent.chatStopped');
     }
@@ -79,8 +81,8 @@ onBeforeUnmount(() => controller?.abort());
       <NSpace vertical :size="16">
         <div class="flex items-center gap-3">
           <NRadioGroup v-model:value="streamMode" size="small">
-            <NRadio :value="false">同步</NRadio>
-            <NRadio :value="true">流式</NRadio>
+            <NRadio :value="false">{{ $t('agent.chatConfigSync') }}</NRadio>
+            <NRadio :value="true">{{ $t('agent.chatConfigStream') }}</NRadio>
           </NRadioGroup>
         </div>
         <NInput

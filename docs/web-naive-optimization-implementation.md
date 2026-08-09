@@ -11,7 +11,7 @@
 | 原问题 | 实施结果 | 主要位置 |
 | --- | --- | --- |
 | 生产 API 指向 Mock | 默认改为同源 `/api`，部署环境负责覆盖 | `apps/web-naive/.env.production` |
-| `/dashboard` 父路由不可达 | 增加显式重定向、相对子路由和旧地址别名 | `router/routes/modules/dashboard.ts` |
+| `/dashboard` 父路由不可达、静态导航目录缺失 | 工作台恢复为前端静态路由，增加显式重定向、相对子路由和旧地址别名 | `router/routes/static/workbench.ts` |
 | Vben Modal 类型迁移不完整 | 31 处 Modal 数据泛型迁移，类型错误归零 | 各模块 `modules/form.vue` |
 | 导航层级过长 | 六个一级任务域；教育空间六组二级聚合 | `docs/web-naive-layout-redesign.md` |
 | 后端菜单可能引用不存在页面 | 请求后运行 Schema、唯一名称和组件路径校验 | `router/menu-contract.ts` |
@@ -24,6 +24,7 @@
 | 课程、计划等固定列数 | 课程/资源 1–4 列，Agent/计划/考试 1–3 列，复习 1–2 列 | 对应列表页 |
 | 可点击卡片不可键盘操作 | 课程和学习计划卡支持 Enter、Space、焦点轮廓和 link 语义 | 对应列表页 |
 | AI 对话同步输出整段 JSON | 改用 SSE 内容字段，支持停止、重试、复制、自动滚动与错误恢复 | `views/ai-tutor/chat/index.vue` |
+| 对话调试依赖后端默认模型 | AI 对话页和模型调试弹窗均支持平台切换，并只加载该平台下模型；请求明确携带平台代码和模型名 | `views/ai-tutor/chat/`、`views/agent/model/modules/chat-dialog.vue` |
 | SSE 按网络 chunk 拼接 | 增加跨 chunk 帧缓存、多行 data 解析、AbortSignal 和 `[DONE]` 处理 | `api/stream.ts` |
 | 模型输出缺少 Markdown/代码块 | 使用先转义再渲染的安全 Markdown 子集 | `utils/markdown.ts` |
 | Agent 编辑器职责混杂 | 拆出基本信息、版本管理、画布、节点表单、校验结果和调试弹窗 | `views/agent/admin/modules/` |
@@ -31,6 +32,8 @@
 | Agent 缺少闭环操作 | 编辑页形成“编辑 → 校验 → 保存 → 发布 → 调试”路径 | `agent-edit.vue` |
 | 主题色硬编码 | 核心 Agent 画布与聊天使用业务设计 Token，指标卡统一 | `agent-flow-canvas.vue`、业务组件 |
 | 无跳过导航与焦点恢复 | 增加 skip link；路由完成后将焦点恢复到主标题 | `layouts/basic.vue` |
+| Token 过期出现两条错误 | 认证失效采用单例跳转，跳过无意义的二次登出请求，并抑制已处理 401 的通用错误提示 | `api/request.ts`、请求拦截器 |
+| 工作台窄屏截断且统计为 0 | 指标和排行改为响应式网格；后端归一化 overview 字段并返回真实平台、模型、调用与 Token 指标 | `views/dashboard/overview/`、`UsageRecordRepositoryImpl` |
 | CI 实际未运行 | 移除上游仓库名条件，强制 typecheck、Vitest、production build | `.github/workflows/ci.yml` |
 
 ## 2. 业务级通用组件
@@ -56,6 +59,8 @@
 ## 4. 国际化与无障碍约定
 
 - 新增核心交互均同时提供 `zh-CN` 与 `en-US` 文案；Agent 编排的节点、连线、校验、停止生成等操作已迁移。
+- 应用 14 组中英文 JSON 文件保持文件和叶子键完全一致，`locale-parity.test.ts` 在 Vitest 中阻止缺键回归；本轮将缺失英文键从 295 个降为 0。
+- AI 讲解、出题、规划、报告、对话、平台/模型调试和工作台不再直接写用户可见中文。源码 CJK 扫描仍用于发现历史页面候选，注释和业务中文数据不能仅凭扫描结果自动替换。
 - 流式回复容器使用 `role="log"` 与 `aria-live="polite"`。
 - 页面跳转后主标题可获得程序化焦点；键盘用户可直接跳到 `main`。
 - 可点击非按钮内容必须提供语义角色、`tabindex`、Enter/Space 操作及清晰焦点样式。
@@ -75,7 +80,7 @@ $env:PLAYWRIGHT_BASE_URL='http://127.0.0.1:5888'
 pnpm run test:e2e
 ```
 
-Playwright 用例覆盖：登录、六域导航、模板残留、全部 65 个授权菜单页面、代表性业务路由水平溢出、手机视口和模拟 SSE 回复。
+Playwright 用例覆盖：登录、六域导航及六个教育分组、模板残留、全部 65 个授权菜单页面、代表性业务路由水平溢出、手机视口、平台/模型联动的 SSE 请求体，以及 Token 过期无重复错误。
 
 后端：
 

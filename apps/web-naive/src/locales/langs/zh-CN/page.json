@@ -1,4 +1,5 @@
 {
+  "title": "页面管理",
   "auth": {
     "login": "登录",
     "register": "注册",

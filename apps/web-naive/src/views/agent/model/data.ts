@@ -153,8 +153,11 @@ export function useColumns(
         },
         name: 'CellOperation',
         options: [
-          { code: 'chat', label: '对话' },
-          { code: 'setDefault', label: '设为默认' },
+          { code: 'chat', label: $t('system.model.chatAction') },
+          {
+            code: 'setDefault',
+            label: $t('system.model.setDefaultAction'),
+          },
           'edit',
           'delete',
         ],

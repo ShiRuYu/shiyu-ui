@@ -58,8 +58,23 @@ test.describe('web-naive critical journeys', () => {
         page.getByText(title, { exact: true }).first(),
       ).toBeVisible();
     }
+    await page.getByText('教育空间', { exact: true }).first().click();
+    for (const title of [
+      '学习',
+      '练习与考试',
+      '复习',
+      'AI 辅学',
+      '学习分析',
+      '教育配置',
+    ]) {
+      await expect(
+        page.getByText(title, { exact: true }).first(),
+      ).toBeVisible();
+    }
     await expect(page.getByText('收到了 14 份新周报')).toHaveCount(0);
     await expect(page.getByText('Vben Admin', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('2/10', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('300', { exact: true })).toHaveCount(0);
     expect(runtimeErrors).toEqual([]);
   });
 
@@ -75,6 +90,10 @@ test.describe('web-naive critical journeys', () => {
       '/practice/question',
       '/review/today',
       '/analytics-center/report',
+      '/ai-tutor/teacher',
+      '/ai-tutor/practice',
+      '/ai-tutor/planner',
+      '/ai-tutor/report',
       '/record/records',
       '/system/user',
     ]) {
@@ -117,9 +136,13 @@ test.describe('web-naive critical journeys', () => {
     expect(runtimeErrors).toEqual([]);
   });
 
-  test('renders a streamed AI reply from SSE frames', async ({ page }) => {
+  test('streams with the selected platform and one of its models', async ({
+    page,
+  }) => {
     await signIn(page);
+    let requestBody: Record<string, string> | undefined;
     await page.route('**/chat/send-stream', async (route) => {
+      requestBody = route.request().postDataJSON();
       await route.fulfill({
         body:
           'data: {"success":true,"content":"Hello "}\n\n' +
@@ -129,9 +152,42 @@ test.describe('web-naive critical journeys', () => {
       });
     });
     await page.goto('/ai-tutor/chat');
+    await page.getByLabel(/AI 平台|AI platform/).click();
+    await page.getByText('DeepSeek', { exact: true }).last().click();
+    await page.getByLabel(/模型|Model/).click();
+    await page.getByText('DeepSeek Chat', { exact: true }).last().click();
     await page.getByPlaceholder(/输入你的问题|Ask a question/).fill('hello');
     await page.getByRole('button', { name: /发送|Send/ }).click();
     await expect(page.getByRole('log')).toContainText('Hello world');
     await expect(page.getByRole('button', { name: /复制|Copy/ })).toBeVisible();
+    expect(requestBody).toMatchObject({
+      model: 'deepseek-chat',
+      platform: 'DEEPSEEK',
+      prompt: 'hello',
+    });
+  });
+
+  test('redirects an expired session without duplicate error messages', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.route('**/usage/**', async (route) => {
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 401,
+          data: null,
+          message: 'Expired session',
+        }),
+        contentType: 'application/json',
+        status: 401,
+      });
+    });
+
+    await page.goto('/dashboard/overview');
+    await expect(page).toHaveURL(/\/auth\/login/, { timeout: 15_000 });
+    await expect(page.locator('.n-message--error')).toHaveCount(0);
+    await expect(
+      page.getByText('Expired session', { exact: true }),
+    ).toHaveCount(0);
   });
 });

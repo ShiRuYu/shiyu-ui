@@ -16,6 +16,7 @@ import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
 
 import { getModelUsageApi, getUsageOverviewApi } from '#/api/dashboard/usage';
+import { $t } from '#/locales';
 
 import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
 
@@ -29,37 +30,37 @@ const quickNavItems = [
   {
     color: '#2563EB',
     icon: 'carbon:development',
-    title: 'Agent 管理',
+    title: $t('dashboard.workbench.agentManagement'),
     url: '/agent/admin/list',
   },
   {
     color: '#059669',
     icon: 'carbon:concept',
-    title: '知识库',
+    title: $t('dashboard.workbench.knowledgeBase'),
     url: '/knowledge/list',
   },
   {
     color: '#D97706',
     icon: 'lucide:book',
-    title: '课程学习',
+    title: $t('dashboard.workbench.courseLearning'),
     url: '/learning/course',
   },
   {
     color: '#7C3AED',
     icon: 'lucide:message-circle',
-    title: 'AI 对话',
+    title: $t('dashboard.workbench.aiChat'),
     url: '/ai-tutor/chat',
   },
   {
     color: '#DC2626',
     icon: 'lucide:bar-chart-3',
-    title: '数据看板',
+    title: $t('dashboard.workbench.analytics'),
     url: '/dashboard/analytics',
   },
   {
     color: '#0891B2',
     icon: 'carbon:notebook',
-    title: '日常记录',
+    title: $t('dashboard.workbench.records'),
     url: '/record/profile',
   },
 ];
@@ -67,21 +68,21 @@ const quickNavItems = [
 const todoItems = ref([
   {
     completed: false,
-    content: '检查平台 Agent 运行状态，确认所有节点正常运作。',
-    title: '平台运行巡检',
-    date: new Date().toLocaleDateString('zh-CN'),
+    content: $t('dashboard.workbench.platformInspectionDescription'),
+    title: $t('dashboard.workbench.platformInspection'),
+    date: new Date().toLocaleDateString(preferences.app.locale),
   },
   {
     completed: false,
-    content: 'Review 近期 API 调用趋势，关注异常波动。',
-    title: 'API 用量监控',
-    date: new Date().toLocaleDateString('zh-CN'),
+    content: $t('dashboard.workbench.usageMonitoringDescription'),
+    title: $t('dashboard.workbench.usageMonitoring'),
+    date: new Date().toLocaleDateString(preferences.app.locale),
   },
   {
     completed: false,
-    content: '检查知识库索引状态，确保搜索质量。',
-    title: '知识库索引维护',
-    date: new Date().toLocaleDateString('zh-CN'),
+    content: $t('dashboard.workbench.indexMaintenanceDescription'),
+    title: $t('dashboard.workbench.indexMaintenance'),
+    date: new Date().toLocaleDateString(preferences.app.locale),
   },
 ]);
 
@@ -97,6 +98,12 @@ const modelUsageItems = ref<
   }[]
 >([]);
 
+function formatTokenCount(value: number) {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
+  return value.toLocaleString(preferences.app.locale);
+}
+
 async function fetchData() {
   loading.value = true;
   try {
@@ -104,8 +111,11 @@ async function fetchData() {
     const modelUsage = await getModelUsageApi();
     modelUsageItems.value = (modelUsage || []).slice(0, 6).map((m) => ({
       title: m.model,
-      content: `调用 ${m.call_count} 次 · ${(m.total_tokens / 1000).toFixed(1)}K tokens`,
-      date: new Date().toISOString(),
+      content: $t('dashboard.workbench.usageSummary', {
+        calls: m.call_count.toLocaleString(),
+        tokens: formatTokenCount(m.total_tokens),
+      }),
+      date: '',
       group: m.platform,
       icon: 'carbon:ibm-watson-machine-learning',
       color: '#2563EB',
@@ -122,13 +132,20 @@ onMounted(fetchData);
 </script>
 
 <template>
-  <div class="p-5">
+  <div class="min-w-0 p-3 sm:p-5">
     <WorkbenchHeader
       :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
+      :show-default-actions="false"
     >
-      <template #title> AI 平台工作台 </template>
+      <template #title>{{ $t('dashboard.workbench.title') }}</template>
       <template #description>
-        欢迎回来，{{ userStore.userInfo?.realName || '用户' }}
+        {{
+          $t('dashboard.workbench.welcome', {
+            name:
+              userStore.userInfo?.realName ||
+              $t('dashboard.workbench.defaultUser'),
+          })
+        }}
       </template>
     </WorkbenchHeader>
 
@@ -136,7 +153,9 @@ onMounted(fetchData);
     <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         <div class="flex items-center justify-between">
-          <p class="text-sm text-muted-foreground">平台数</p>
+          <p class="text-sm text-muted-foreground">
+            {{ $t('dashboard.workbench.platformCount') }}
+          </p>
           <span
             class="h-8 w-8 rounded-md bg-blue-100 p-1.5 text-blue-600 dark:bg-blue-900 dark:text-blue-300"
           >
@@ -149,7 +168,9 @@ onMounted(fetchData);
       </div>
       <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         <div class="flex items-center justify-between">
-          <p class="text-sm text-muted-foreground">模型数</p>
+          <p class="text-sm text-muted-foreground">
+            {{ $t('dashboard.workbench.modelCount') }}
+          </p>
           <span
             class="h-8 w-8 rounded-md bg-emerald-100 p-1.5 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300"
           >
@@ -164,7 +185,9 @@ onMounted(fetchData);
       </div>
       <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         <div class="flex items-center justify-between">
-          <p class="text-sm text-muted-foreground">总调用次数</p>
+          <p class="text-sm text-muted-foreground">
+            {{ $t('dashboard.workbench.totalCalls') }}
+          </p>
           <span
             class="h-8 w-8 rounded-md bg-amber-100 p-1.5 text-amber-600 dark:bg-amber-900 dark:text-amber-300"
           >
@@ -177,7 +200,9 @@ onMounted(fetchData);
       </div>
       <div class="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
         <div class="flex items-center justify-between">
-          <p class="text-sm text-muted-foreground">Token 用量</p>
+          <p class="text-sm text-muted-foreground">
+            {{ $t('dashboard.workbench.tokenUsage') }}
+          </p>
           <span
             class="h-8 w-8 rounded-md bg-purple-100 p-1.5 text-purple-600 dark:bg-purple-900 dark:text-purple-300"
           >
@@ -187,31 +212,38 @@ onMounted(fetchData);
           </span>
         </div>
         <p class="mt-2 text-2xl font-bold">
-          {{ ((overview?.total_tokens ?? 0) / 1000000).toFixed(1) }}M
+          {{ formatTokenCount(overview?.total_tokens ?? 0) }}
         </p>
       </div>
     </div>
 
-    <div class="mt-5 flex flex-col lg:flex-row">
-      <div class="mr-4 w-full lg:w-3/5">
+    <div class="mt-5 grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-5">
+      <div class="min-w-0 xl:col-span-3">
         <!-- 模型用量排行 -->
         <WorkbenchProject
           :items="modelUsageItems.length > 0 ? modelUsageItems : undefined"
           :loading="loading"
-          title="模型调用排行"
+          :title="$t('dashboard.workbench.modelRanking')"
           @click="(item: any) => item.url && router.push(item.url)"
         />
-        <WorkbenchTrends class="mt-5" title="系统动态" />
+        <WorkbenchTrends
+          class="mt-5"
+          :title="$t('dashboard.workbench.systemActivity')"
+        />
       </div>
-      <div class="w-full lg:w-2/5">
+      <div class="min-w-0 xl:col-span-2">
         <WorkbenchQuickNav
           :items="quickNavItems"
-          class="mt-5 lg:mt-0"
-          title="快捷导航"
+          class="xl:mt-0"
+          :title="$t('dashboard.quickNav')"
           @click="(item: any) => item.url && router.push(item.url)"
         />
-        <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
-        <AnalysisChartCard class="mt-5" title="访问来源">
+        <WorkbenchTodo
+          :items="todoItems"
+          class="mt-5"
+          :title="$t('dashboard.todos')"
+        />
+        <AnalysisChartCard class="mt-5" :title="$t('dashboard.visitSource')">
           <AnalyticsVisitsSource />
         </AnalysisChartCard>
       </div>

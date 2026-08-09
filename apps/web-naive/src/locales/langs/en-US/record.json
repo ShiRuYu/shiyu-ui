@@ -33,7 +33,11 @@
     "height": "Height",
     "sort": "Sort",
     "bucket": "Bucket",
-    "objectKey": "Object Key"
+    "objectKey": "Object Key",
+    "typeImage": "Image",
+    "typeVideo": "Video",
+    "typeAudio": "Audio",
+    "typeFile": "File"
   },
   "records": {
     "title": "Record Content Management",

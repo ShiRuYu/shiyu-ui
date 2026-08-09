@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import routes from '../routes/modules/dashboard';
+import routes from '../routes/static/workbench';
 
 describe('workbench route contract', () => {
   it('uses a reachable parent route with relative children and legacy aliases', () => {

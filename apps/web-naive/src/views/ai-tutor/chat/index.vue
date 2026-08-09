@@ -1,11 +1,21 @@
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, ref } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NEmpty, NInput, NSpace, useMessage } from 'naive-ui';
+import {
+  NAlert,
+  NButton,
+  NCard,
+  NEmpty,
+  NInput,
+  NSelect,
+  NSpace,
+  useMessage,
+} from 'naive-ui';
 
-import { chatStream } from '#/api/agent/chat';
+import { chatStream, getModelOptions } from '#/api/agent/chat';
+import { getPlatformOptions } from '#/api/agent/platform';
 import { $t } from '#/locales';
 import { renderSafeMarkdown } from '#/utils/markdown';
 
@@ -21,8 +31,63 @@ const input = ref('');
 const loading = ref(false);
 const messageId = ref(0);
 const messageList = ref<HTMLElement>();
+const platformOptions = ref<
+  Array<{ code: string; label: string; value: number }>
+>([]);
+const modelOptions = ref<Array<{ label: string; value: string }>>([]);
+const selectedPlatformId = ref<number>();
+const selectedModel = ref<string>();
+const loadingPlatforms = ref(false);
+const loadingModels = ref(false);
+const catalogError = ref(false);
 const notice = useMessage();
 let controller: AbortController | undefined;
+
+async function loadModels(platformId: number) {
+  loadingModels.value = true;
+  selectedModel.value = undefined;
+  modelOptions.value = [];
+  try {
+    const models = await getModelOptions(platformId);
+    modelOptions.value = (models ?? [])
+      .filter((item) => item.value)
+      .map((item) => ({
+        label: item.name || item.value || '',
+        value: item.value || '',
+      }));
+    selectedModel.value = modelOptions.value[0]?.value;
+  } catch {
+    catalogError.value = true;
+  } finally {
+    loadingModels.value = false;
+  }
+}
+
+async function loadPlatforms() {
+  loadingPlatforms.value = true;
+  catalogError.value = false;
+  try {
+    const platforms = await getPlatformOptions();
+    platformOptions.value = (platforms ?? []).map((item) => ({
+      code: item.code,
+      label: item.name,
+      value: item.id,
+    }));
+    selectedPlatformId.value = platformOptions.value[0]?.value;
+    if (selectedPlatformId.value) {
+      await loadModels(selectedPlatformId.value);
+    }
+  } catch {
+    catalogError.value = true;
+  } finally {
+    loadingPlatforms.value = false;
+  }
+}
+
+async function onPlatformChange(platformId: number) {
+  catalogError.value = false;
+  await loadModels(platformId);
+}
 
 async function scrollToLatest() {
   await nextTick();
@@ -34,6 +99,14 @@ async function scrollToLatest() {
 async function sendMessage(promptOverride?: string) {
   const prompt = (promptOverride ?? input.value).trim();
   if (!prompt || loading.value) return;
+
+  const platform = platformOptions.value.find(
+    (item) => item.value === selectedPlatformId.value,
+  )?.code;
+  if (!platform || !selectedModel.value) {
+    notice.warning($t('ai-tutor.selectionRequired'));
+    return;
+  }
 
   messages.value.push({ content: prompt, id: ++messageId.value, role: 'user' });
   const assistant: ChatMessage = {
@@ -50,7 +123,7 @@ async function sendMessage(promptOverride?: string) {
 
   try {
     await chatStream(
-      { prompt },
+      { model: selectedModel.value, platform, prompt },
       (chunk) => {
         assistant.content += chunk;
         void scrollToLatest();
@@ -93,11 +166,36 @@ async function copyMessage(content: string) {
 }
 
 onBeforeUnmount(() => controller?.abort());
+onMounted(loadPlatforms);
 </script>
 
 <template>
   <Page :title="$t('page.aiTutor.chat')" auto-content-height>
     <NCard class="chat-shell" content-class="chat-card-content">
+      <div class="model-toolbar">
+        <NSelect
+          v-model:value="selectedPlatformId"
+          class="model-select"
+          :aria-label="$t('ai-tutor.platform')"
+          :disabled="loading"
+          :loading="loadingPlatforms"
+          :options="platformOptions"
+          :placeholder="$t('ai-tutor.selectPlatform')"
+          @update:value="onPlatformChange"
+        />
+        <NSelect
+          v-model:value="selectedModel"
+          class="model-select"
+          :aria-label="$t('ai-tutor.model')"
+          :disabled="loading || !selectedPlatformId"
+          :loading="loadingModels"
+          :options="modelOptions"
+          :placeholder="$t('ai-tutor.selectModel')"
+        />
+      </div>
+      <NAlert v-if="catalogError" class="mb-3" type="error">
+        {{ $t('ai-tutor.catalogError') }}
+      </NAlert>
       <div
         ref="messageList"
         class="message-list"
@@ -166,7 +264,13 @@ onBeforeUnmount(() => controller?.abort());
           v-else
           attr-type="submit"
           type="primary"
-          :disabled="!input.trim()"
+          :disabled="
+            !input.trim() ||
+            !selectedPlatformId ||
+            !selectedModel ||
+            loadingPlatforms ||
+            loadingModels
+          "
         >
           {{ $t('ai-tutor.send') }}
         </NButton>
@@ -188,6 +292,18 @@ onBeforeUnmount(() => controller?.abort());
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.model-toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 18rem));
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.model-select {
+  width: 100%;
 }
 
 .message-list {
@@ -249,6 +365,10 @@ onBeforeUnmount(() => controller?.abort());
 }
 
 @media (max-width: 639px) {
+  .model-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .message-list {
     padding: 0.5rem 0;
   }

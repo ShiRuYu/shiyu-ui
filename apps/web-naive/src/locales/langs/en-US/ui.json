@@ -5,7 +5,8 @@
     "deleteConfirm": "Are you sure you want to delete?",
     "deleteSuccess": "Deleted successfully: {0}",
     "editSuccess": "Updated successfully",
-    "operationSuccess": "Operation successful"
+    "operationSuccess": "Operation successful",
+    "deleteFailed": "Delete failed"
   },
   "actionTitle": {
     "create": "Create {0}",

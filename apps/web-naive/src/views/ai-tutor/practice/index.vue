@@ -15,17 +15,17 @@ const difficulty = ref(2);
 const count = ref(3);
 
 const knowledgeOptions = [
-  { label: '绝对值 (知识点ID: 5)', value: 5 },
-  { label: '相反数 (知识点ID: 4)', value: 4 },
-  { label: '数轴 (知识点ID: 3)', value: 3 },
-  { label: '有理数运算 (知识点ID: 6)', value: 6 },
+  { label: $t('ai-tutor.knowledgeAbsoluteValue'), value: 5 },
+  { label: $t('ai-tutor.knowledgeOppositeNumber'), value: 4 },
+  { label: $t('ai-tutor.knowledgeNumberLine'), value: 3 },
+  { label: $t('ai-tutor.knowledgeRationalOperations'), value: 6 },
 ];
 
 const difficultyOptions = [
-  { label: '基础 (1)', value: 1 },
-  { label: '提升 (2)', value: 2 },
-  { label: '拔高 (3)', value: 3 },
-  { label: '竞赛 (4)', value: 4 },
+  { label: $t('education.question.difficultyBasic'), value: 1 },
+  { label: $t('education.question.difficultyMedium'), value: 2 },
+  { label: $t('education.question.difficultyHard'), value: 3 },
+  { label: $t('education.question.difficultyCompetition'), value: 4 },
 ];
 
 async function handlePractice() {
@@ -40,7 +40,7 @@ async function handlePractice() {
     });
     result.value = JSON.stringify(res, null, 2);
   } catch (error) {
-    result.value = 'AI出题接口调用失败（需后端Agent支持）';
+    result.value = $t('ai-tutor.featureRequestFailed');
     console.error(error);
   } finally {
     loading.value = false;
@@ -52,23 +52,23 @@ async function handlePractice() {
   <Page :title="$t('page.aiTutor.practice')">
     <NCard>
       <NSpace class="mb-4" vertical>
-        <NSpace>
+        <NSpace wrap>
           <NSelect
             v-model:value="knowledgeId"
             :options="knowledgeOptions"
-            placeholder="选择知识点"
-            style="width: 250px"
+            class="w-full sm:w-[250px]"
+            :placeholder="$t('ai-tutor.selectKnowledge')"
           />
           <NSelect
             v-model:value="difficulty"
             :options="difficultyOptions"
-            style="width: 120px"
+            class="w-full sm:w-[140px]"
           />
           <NInputNumber
             v-model:value="count"
             :min="1"
             :max="10"
-            style="width: 80px"
+            class="w-full sm:w-[100px]"
           />
           <NButton
             type="primary"
@@ -76,17 +76,17 @@ async function handlePractice() {
             :disabled="!knowledgeId"
             @click="handlePractice"
           >
-            AI出题
+            {{ $t('ai-tutor.generateQuestions') }}
           </NButton>
         </NSpace>
       </NSpace>
 
       <NSpin :show="loading">
-        <div v-if="result" class="rounded bg-gray-50 p-4">
+        <div v-if="result" class="bg-muted rounded p-4">
           <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">
-          选择参数点击"AI出题"
+        <div v-else class="py-10 text-center text-muted-foreground">
+          {{ $t('ai-tutor.practiceEmptyHint') }}
         </div>
       </NSpin>
     </NCard>

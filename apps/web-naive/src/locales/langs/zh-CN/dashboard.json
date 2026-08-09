@@ -22,5 +22,29 @@
   "components": "组件",
   "systemManagement": "系统管理",
   "permissionManagement": "权限管理",
-  "charts": "图表"
+  "charts": "图表",
+  "workbench": {
+    "title": "AI 平台工作台",
+    "welcome": "欢迎回来，{name}",
+    "defaultUser": "用户",
+    "platformCount": "平台数",
+    "modelCount": "模型数",
+    "totalCalls": "总调用次数",
+    "tokenUsage": "Token 用量",
+    "modelRanking": "模型调用排行",
+    "systemActivity": "系统动态",
+    "agentManagement": "Agent 管理",
+    "knowledgeBase": "知识库",
+    "courseLearning": "课程学习",
+    "aiChat": "AI 对话",
+    "analytics": "数据看板",
+    "records": "日常记录",
+    "platformInspection": "平台运行巡检",
+    "platformInspectionDescription": "检查平台 Agent 运行状态，确认所有节点正常运作。",
+    "usageMonitoring": "API 用量监控",
+    "usageMonitoringDescription": "检查近期 API 调用趋势，关注异常波动。",
+    "indexMaintenance": "知识库索引维护",
+    "indexMaintenanceDescription": "检查知识库索引状态，确保搜索质量。",
+    "usageSummary": "调用 {calls} 次 · {tokens} tokens"
+  }
 }

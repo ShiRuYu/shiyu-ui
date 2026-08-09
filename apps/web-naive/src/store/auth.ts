@@ -89,11 +89,13 @@ export const useAuthStore = defineStore('auth', () => {
     return { userInfo };
   }
 
-  async function logout(redirect = true) {
-    try {
-      await logoutApi();
-    } catch {
-      // Ignore logout failures and clear local state.
+  async function logout(redirect = true, requestServer = true) {
+    if (requestServer) {
+      try {
+        await logoutApi();
+      } catch {
+        // Ignore logout failures and clear local state.
+      }
     }
     resetAllStores();
     accessStore.setLoginExpired(false);

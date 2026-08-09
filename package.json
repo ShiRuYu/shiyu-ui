@@ -66,6 +66,7 @@
     "catalog": "pnpm dlx codemod pnpm/catalog"
   },
   "dependencies": {
+    "dayjs": "catalog:",
     "sortablejs": "catalog:"
   },
   "devDependencies": {

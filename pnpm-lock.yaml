@@ -477,6 +477,9 @@ importers:
 
   .:
     dependencies:
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.21
       sortablejs:
         specifier: 'catalog:'
         version: 1.15.7

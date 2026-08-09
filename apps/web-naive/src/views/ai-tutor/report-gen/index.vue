@@ -13,8 +13,8 @@ const result = ref('');
 const period = ref('WEEKLY');
 
 const periodOptions = [
-  { label: '周报', value: 'WEEKLY' },
-  { label: '月报', value: 'MONTHLY' },
+  { label: $t('ai-tutor.weeklyReport'), value: 'WEEKLY' },
+  { label: $t('ai-tutor.monthlyReport'), value: 'MONTHLY' },
 ];
 
 async function handleReport() {
@@ -23,7 +23,7 @@ async function handleReport() {
     const res = await generateReport({ studentId: 1, period: period.value });
     result.value = JSON.stringify(res, null, 2);
   } catch (error) {
-    result.value = 'AI报告接口调用失败（需后端Agent支持）';
+    result.value = $t('ai-tutor.featureRequestFailed');
     console.error(error);
   } finally {
     loading.value = false;
@@ -34,23 +34,23 @@ async function handleReport() {
 <template>
   <Page :title="$t('page.aiTutor.report')">
     <NCard>
-      <NSpace class="mb-4">
+      <NSpace class="mb-4" wrap>
         <NSelect
           v-model:value="period"
           :options="periodOptions"
-          style="width: 120px"
+          class="w-full sm:w-[140px]"
         />
         <NButton type="primary" :loading="loading" @click="handleReport">
-          生成报告
+          {{ $t('ai-tutor.generateReport') }}
         </NButton>
       </NSpace>
 
       <NSpin :show="loading">
-        <div v-if="result" class="rounded bg-gray-50 p-4">
+        <div v-if="result" class="bg-muted rounded p-4">
           <pre class="whitespace-pre-wrap text-sm">{{ result }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">
-          点击"生成报告"生成学习报告
+        <div v-else class="py-10 text-center text-muted-foreground">
+          {{ $t('ai-tutor.reportEmptyHint') }}
         </div>
       </NSpin>
     </NCard>

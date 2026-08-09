@@ -1,28 +1,92 @@
 {
   "title": "Page Management",
+  "auth": {
+    "login": "Sign In",
+    "register": "Register",
+    "codeLogin": "Verification Code Sign In",
+    "qrcodeLogin": "QR Code Sign In",
+    "forgetPassword": "Forgot Password",
+    "profile": "Profile"
+  },
   "dashboard": {
     "title": "Workbench",
     "analytics": "Analytics",
     "overview": "Platform Overview"
   },
+  "system": {
+    "title": "System Management",
+    "user": "User Management",
+    "role": "Role Management",
+    "menu": "Menu Management",
+    "authCode": "Permission Codes",
+    "dict": "Dictionary Management",
+    "tenant": "Tenant Management"
+  },
   "learning": {
+    "title": "Learning Center",
+    "course": "Course Learning",
+    "knowledge": "Knowledge Browser",
+    "plan": "Learning Plans",
+    "resource": "Learning Resources",
     "courseDetail": "Course Detail",
-    "knowledgeDetail": "Knowledge Detail",
+    "knowledgeDetail": "Knowledge Point Detail",
     "planDetail": "Plan Detail"
   },
-  "agent": {
-    "title": "Agent",
-    "admin": "Agent Management",
-    "adminEdit": "Agent Edit",
-    "platform": "Platform Management",
-    "model": "Model Management",
-    "chatConfig": "Chat Config",
-    "intent": "Intent Management"
+  "practice": {
+    "title": "Practice Center",
+    "question": "Question Practice",
+    "wrong": "Incorrect Questions",
+    "doing": "Answering"
   },
-  "system": {
-    "authCode": "Auth Code",
-    "dict": "Dictionary",
-    "tenant": "Tenant"
+  "exam": {
+    "title": "Exam Center",
+    "list": "Online Exams",
+    "take": "Taking Exam",
+    "result": "Exam Result",
+    "aiExam": "AI Exam Generator"
+  },
+  "review": {
+    "title": "Review Center",
+    "today": "Today's Review",
+    "history": "Review History"
+  },
+  "analyticsCenter": {
+    "title": "Learning Analytics",
+    "report": "Learning Report",
+    "radar": "Ability Radar",
+    "trend": "Learning Trends",
+    "weak": "Weakness Analysis"
+  },
+  "aiTutor": {
+    "title": "AI Assistant",
+    "teacher": "AI Tutor",
+    "practice": "AI Question Generator",
+    "planner": "AI Planner",
+    "chat": "AI Chat",
+    "report": "AI Report"
+  },
+  "knowledge": {
+    "title": "Knowledge Base Management",
+    "list": "Knowledge Point Management",
+    "graph": "Knowledge Graph",
+    "document": "Document Management",
+    "index": "Index Management",
+    "relation": "Knowledge Relations"
+  },
+  "eduAdmin": {
+    "title": "Education Management",
+    "subject": "Subject Management",
+    "textbook": "Textbook Management",
+    "chapter": "Chapter Management",
+    "course": "Course Management",
+    "question": "Question Bank Management",
+    "exam": "Exam Management",
+    "student": "Student Management",
+    "resource": "Resource Management",
+    "plan": "Learning Plans",
+    "review": "Review Tasks",
+    "analytics": "Learning Analysis",
+    "wrongQuestion": "Incorrect Question Management"
   },
   "file": {
     "title": "File Management",
@@ -40,5 +104,24 @@
     "deleteSuccess": "File deleted",
     "deleteConfirm": "Delete this file?",
     "download": "Download"
+  },
+  "educationCenter": {
+    "title": "Education Center",
+    "learning": "Learning",
+    "practice": "Practice",
+    "exam": "Exams",
+    "review": "Review",
+    "data": "Analytics",
+    "ai": "AI Assistance",
+    "admin": "Configuration"
+  },
+  "agent": {
+    "title": "Agent",
+    "admin": "Agent Management",
+    "adminEdit": "Agent Edit",
+    "platform": "Platform Management",
+    "model": "Model Management",
+    "chatConfig": "Chat Debugging",
+    "intent": "Intent Management"
   }
 }

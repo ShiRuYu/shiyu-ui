@@ -136,7 +136,8 @@
     "availableModels": "可用模型 (JSON)",
     "extraConfig": "扩展配置 (JSON)",
     "isDefault": "默认平台",
-    "reload": "刷新适配器"
+    "reload": "刷新适配器",
+    "setDefaultAction": "设为默认"
   },
   "tenant": {
     "title": "租户管理",
@@ -175,7 +176,9 @@
     "description": "描述",
     "modelConfig": "模型参数 (JSON)",
     "isDefault": "默认模型",
-    "sort": "排序"
+    "sort": "排序",
+    "chatAction": "对话",
+    "setDefaultAction": "设为默认"
   },
   "authCode": {
     "title": "权限码管理",

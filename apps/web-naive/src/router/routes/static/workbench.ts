@@ -2,6 +2,10 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { $t } from '#/locales';
 
+/**
+ * The workbench remains available as a frontend-owned recovery entry in mixed
+ * access mode. The permission-sensitive business domains come from the API.
+ */
 const routes: RouteRecordRaw[] = [
   {
     meta: {

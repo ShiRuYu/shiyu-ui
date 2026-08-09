@@ -36,7 +36,14 @@
     "typeCatalog": "Catalog",
     "typeEmbedded": "Embedded",
     "typeLink": "Link",
-    "typeMenu": "Menu"
+    "typeMenu": "Menu",
+    "code": "Menu Code",
+    "layout": "Layout",
+    "method": "Request Method",
+    "description": "Description",
+    "show": "Visible",
+    "order": "Sort Order",
+    "appendChild": "Add Child"
   },
   "role": {
     "title": "Role Management",
@@ -59,7 +66,9 @@
     "authCodeResource": "Resource",
     "authCodeAction": "Action",
     "authCodeCode": "Permission Code",
-    "authCodeSelected": "{0} / {1} selected"
+    "authCodeSelected": "{0} / {1} selected",
+    "code": "Role Code",
+    "menuAssignment": "Assign Menus"
   },
   "user": {
     "title": "User Management",
@@ -78,7 +87,22 @@
     "operation": "Operation",
     "resetPassword": "Reset Password",
     "confirmResetPassword": "Are you sure you want to reset password for \"{0}\"?",
-    "passwordPlaceholder": "Leave blank to generate a random password"
+    "passwordPlaceholder": "Leave blank to generate a random password",
+    "assignTenant": "Assign Tenant",
+    "selectTenant": "Select Tenant",
+    "selectRole": "Select Role",
+    "addTenant": "Add Tenant",
+    "removeTenant": "Remove",
+    "noTenantAssigned": "No tenants assigned",
+    "tenantAssignmentIncomplete": "Select both a tenant and role",
+    "sex": "Gender",
+    "sexMale": "Male",
+    "sexFemale": "Female",
+    "sexUnknown": "Unknown",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "postIds": "Positions",
+    "resettingPassword": "Resetting password..."
   },
   "dict": {
     "title": "Dictionary Management",
@@ -92,7 +116,12 @@
     "listClass": "List Class",
     "isDefault": "Is Default",
     "status": "Status",
-    "remark": "Remark"
+    "remark": "Remark",
+    "batchDelete": "Delete Selected",
+    "batchDeleteConfirm": "Delete the selected {0} items?",
+    "batchDeleting": "Deleting selected items...",
+    "batchDeleteSuccess": "Deleted {0} items",
+    "selectFirst": "Select dictionary items to delete first"
   },
   "platform": {
     "title": "AI Platform Management",
@@ -107,7 +136,8 @@
     "availableModels": "Available Models (JSON)",
     "extraConfig": "Extra Config (JSON)",
     "isDefault": "Default Platform",
-    "reload": "Reload Adapters"
+    "reload": "Reload Adapters",
+    "setDefaultAction": "Set as Default"
   },
   "tenant": {
     "title": "Tenant Management",
@@ -146,7 +176,9 @@
     "description": "Description",
     "modelConfig": "Model Config (JSON)",
     "isDefault": "Default Model",
-    "sort": "Sort"
+    "sort": "Sort",
+    "chatAction": "Chat",
+    "setDefaultAction": "Set as Default"
   },
   "authCode": {
     "title": "Auth Code",

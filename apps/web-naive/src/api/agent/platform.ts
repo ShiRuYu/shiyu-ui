@@ -3,6 +3,12 @@ import type { Recordable } from '@vben/types';
 import { requestClient } from '#/api/request';
 
 export namespace PlatformApi {
+  export interface PlatformOption {
+    code: string;
+    id: number;
+    name: string;
+  }
+
   export interface PlatformItem {
     [key: string]: any;
     apiKey?: string;
@@ -56,7 +62,7 @@ async function setDefaultPlatform(id: number) {
 }
 
 async function getPlatformOptions() {
-  return requestClient.get<{ id: number; name: string }[]>(
+  return requestClient.get<PlatformApi.PlatformOption[]>(
     '/admin/platform/options',
   );
 }

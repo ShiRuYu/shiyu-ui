@@ -70,10 +70,17 @@ export const authenticateResponseInterceptor = ({
         throw error;
       }
 
+      // A public request (for example, a failed login) has no session to
+      // expire. Keep it in the normal error flow so the caller gets feedback.
+      if (!config?.headers?.Authorization) {
+        throw error;
+      }
+
       // 判断是否启用了 refreshToken 功能
       // 如果没有启用或者已经是重试请求了，直接跳转到重新登录
       if (!enableRefreshToken || config.__isRetryRequest) {
         await doReAuthenticate();
+        error.__handledByAuth = true;
         throw error;
       }
       // 如果正在刷新 token，则将请求加入队列，等待刷新完成
@@ -107,6 +114,9 @@ export const authenticateResponseInterceptor = ({
         console.error('Refresh token failed, please login again.');
         await doReAuthenticate();
 
+        if (refreshError && typeof refreshError === 'object') {
+          Object.assign(refreshError, { __handledByAuth: true });
+        }
         throw refreshError;
       } finally {
         client.isRefreshing = false;
@@ -121,6 +131,12 @@ export const errorMessageResponseInterceptor = (
   return {
     rejected: (error: any) => {
       if (axios.isCancel(error)) {
+        return Promise.reject(error);
+      }
+
+      // Session expiry has already initiated a single redirect/re-auth flow.
+      // Showing a generic 401 toast here duplicates that feedback.
+      if (error?.__handledByAuth) {
         return Promise.reject(error);
       }
 

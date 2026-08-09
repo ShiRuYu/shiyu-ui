@@ -22,5 +22,29 @@
   "components": "Components",
   "systemManagement": "System Management",
   "permissionManagement": "Permissions",
-  "charts": "Charts"
+  "charts": "Charts",
+  "workbench": {
+    "title": "AI Platform Workbench",
+    "welcome": "Welcome back, {name}",
+    "defaultUser": "User",
+    "platformCount": "Platforms",
+    "modelCount": "Models",
+    "totalCalls": "Total calls",
+    "tokenUsage": "Token usage",
+    "modelRanking": "Model usage ranking",
+    "systemActivity": "System activity",
+    "agentManagement": "Agent Management",
+    "knowledgeBase": "Knowledge Base",
+    "courseLearning": "Course Learning",
+    "aiChat": "AI Chat",
+    "analytics": "Analytics",
+    "records": "Daily Records",
+    "platformInspection": "Platform health check",
+    "platformInspectionDescription": "Check Agent runtime status and confirm that all nodes are healthy.",
+    "usageMonitoring": "API usage monitoring",
+    "usageMonitoringDescription": "Review recent API usage and investigate unusual changes.",
+    "indexMaintenance": "Knowledge index maintenance",
+    "indexMaintenanceDescription": "Check index health to maintain search quality.",
+    "usageSummary": "{calls} calls · {tokens} tokens"
+  }
 }

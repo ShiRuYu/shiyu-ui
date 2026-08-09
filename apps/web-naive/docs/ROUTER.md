@@ -96,7 +96,7 @@ const routes: RouteRecordRaw[] = [
 路由或菜单变更至少执行：
 
 ```bash
-pnpm exec vitest run apps/web-naive/src/router/routes/modules/dashboard.test.ts --dom
+pnpm exec vitest run apps/web-naive/src/router/__tests__/dashboard.test.ts --dom
 pnpm -F @vben/web-naive run typecheck
 pnpm -F @vben/web-naive run build
 ```

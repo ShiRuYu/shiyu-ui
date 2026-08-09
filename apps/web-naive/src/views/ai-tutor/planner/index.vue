@@ -14,8 +14,8 @@ const knowledgeId = ref<null | number>(null);
 const targetDate = ref<number>(Date.now() + 14 * 86_400_000);
 
 const knowledgeOptions = [
-  { label: '二次函数', value: 8 },
-  { label: '导数入门', value: 10 },
+  { label: $t('ai-tutor.knowledgeQuadraticFunction'), value: 8 },
+  { label: $t('ai-tutor.knowledgeCalculusIntroduction'), value: 10 },
 ];
 
 async function handlePlan() {
@@ -30,6 +30,7 @@ async function handlePlan() {
     });
     result.value = res;
   } catch (error) {
+    result.value = $t('ai-tutor.featureRequestFailed');
     console.error(error);
   } finally {
     loading.value = false;
@@ -40,17 +41,17 @@ async function handlePlan() {
 <template>
   <Page :title="$t('page.aiTutor.planner')">
     <NCard>
-      <NSpace class="mb-4">
+      <NSpace class="mb-4" wrap>
         <NSelect
           v-model:value="knowledgeId"
           :options="knowledgeOptions"
-          placeholder="选择目标知识点"
-          style="width: 250px"
+          class="w-full sm:w-[250px]"
+          :placeholder="$t('ai-tutor.selectTargetKnowledge')"
         />
         <NDatePicker
           v-model:value="targetDate"
           type="date"
-          style="width: 150px"
+          class="w-full sm:w-[160px]"
         />
         <NButton
           type="primary"
@@ -58,18 +59,18 @@ async function handlePlan() {
           :disabled="!knowledgeId"
           @click="handlePlan"
         >
-          生成计划
+          {{ $t('ai-tutor.generatePlan') }}
         </NButton>
       </NSpace>
 
       <NSpin :show="loading">
-        <div v-if="result" class="rounded bg-gray-50 p-4">
+        <div v-if="result" class="bg-muted rounded p-4">
           <pre class="whitespace-pre-wrap text-sm">{{
             JSON.stringify(result, null, 2)
           }}</pre>
         </div>
-        <div v-else class="py-10 text-center text-gray-400">
-          选择目标知识点和日期，生成学习计划
+        <div v-else class="py-10 text-center text-muted-foreground">
+          {{ $t('ai-tutor.plannerEmptyHint') }}
         </div>
       </NSpin>
     </NCard>
