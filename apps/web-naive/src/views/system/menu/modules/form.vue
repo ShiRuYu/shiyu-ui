@@ -29,11 +29,11 @@ const [Form, formApi] = useVbenForm({
 });
 
 function resetForm() {
-  formApi.resetForm();
+  formApi.reset();
   formApi.setValues(formData.value || {});
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<SystemMenuApi.SystemMenu>({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
@@ -65,7 +65,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<SystemMenuApi.SystemMenu>();
+      const data = modalApi.getData();
       if (data) {
         // 处理 pid 为 0 的情况（number 类型）
         if (data.pid === 0) {

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { EducationChapterApi } from '#/api/education/chapter';
+
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
@@ -17,7 +19,7 @@ import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 const emit = defineEmits(['success']);
-const formData = ref();
+const formData = ref<EducationChapterApi.Chapter>();
 const getTitle = computed(() => {
   return formData.value?.id
     ? $t('ui.actionTitle.edit', [$t('education.chapter.name')])
@@ -28,7 +30,7 @@ const [Form, formApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<EducationChapterApi.Chapter>({
   async onConfirm() {
     const r = await formApi.validate();
     if (r.valid) {
@@ -59,7 +61,7 @@ const [Modal, modalApi] = useVbenModal({
   onOpenChange(isOpen) {
     if (isOpen) {
       const data = modalApi.getData();
-      formApi.resetForm();
+      formApi.reset();
       formData.value = data?.id ? data : undefined;
       if (data?.id) {
         formApi.setValues(data);
@@ -78,7 +80,7 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="formApi.resetForm()">
+        <NButton type="error" @click="formApi.reset()">
           {{ $t('common.reset') }}
         </NButton>
       </div>

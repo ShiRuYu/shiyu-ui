@@ -201,12 +201,12 @@ function resetInitializationSelections() {
 }
 
 function resetForm() {
-  formApi.resetForm();
+  formApi.reset();
   formApi.setValues(formData.value || createDefaults.value);
   if (!formData.value?.id) resetInitializationSelections();
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<SystemTenantApi.SystemTenant>({
   async onConfirm() {
     if (!formData.value?.id) {
       const values = await formApi.getValues();
@@ -272,8 +272,8 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
-    const data = modalApi.getData<SystemTenantApi.SystemTenant>();
-    formApi.resetForm();
+    const data = modalApi.getData();
+    formApi.reset();
     if (data?.id) {
       formData.value = data;
       createDefaults.value = {};

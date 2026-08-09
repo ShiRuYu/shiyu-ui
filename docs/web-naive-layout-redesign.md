@@ -1,179 +1,139 @@
-# web-naive 页面布局重新规划方案
+# web-naive 信息架构与导航实施方案
 
-> 基于 AI Agent 平台底座 + 多业务域架构日期：2026-07-13 使用技能：naive-ui / vue-best-practices / design-taste-frontend
+> 状态：已实施更新日期：2026-08-09适用范围：`apps/web-naive` 与 `shiyu-ai` 动态菜单接口
 
----
+## 1. 设计目标
 
-## 一、后端架构全景
+导航按“平台能力 + 业务空间”组织，避免按技术模块或页面数量平铺。用户应先识别任务域，再进入具体页面。
 
-后端由 6 个独立 Maven 模块构成：
+一级导航固定为：
 
-```
-shiyu-ai 后端模块
-├─ 📦 shiyu-ai-agent          ← Agent 核心引擎（运行/编排/节点/意图）
-├─ 📦 shiyu-ai-auth           ← 系统底座（用户/角色/菜单/租户/字典）
-├─ 📦 shiyu-ai-knowledge      ← 知识引擎（知识管理/文档/图谱）
-├─ 📦 shiyu-ai-usage          ← 用量统计（平台级数据分析）
-│
-├─ 📦 shiyu-ai-education      ← 业务域 A：教育
-└─ 📦 shiyu-ai-record         ← 业务域 B：日常记录
-```
+1. 工作台
+2. Agent 平台
+3. 知识引擎
+4. 教育空间
+5. 日常记录
+6. 系统管理
 
-核心架构是 **AI Agent 平台底座 + 可插拔业务域**：Agent 提供 LLM 编排、意图识别、RAG、工具调用等能力，向上为 education / record 等业务域赋能。
+其中“工作台”由前端核心路由注册，其余五项由后端权限菜单返回。文件管理不再占用一级入口，归入系统管理。
 
----
+## 2. 目标菜单树
 
-## 二、当前问题诊断
+```text
+工作台
+├─ 平台概览                 /dashboard/overview
+└─ 数据看板                 /dashboard/analytics
 
-| 问题 | 说明 |
-| --- | --- |
-| ❌ **Agent 核心埋没** | Agent 引擎是平台核心，却只排在第 60 位菜单，弱化了"平台"属性 |
-| ❌ **教育中心统揽一切** | 教育中心把 7 个功能塞进 SubMenuCards，AI 辅学/数据中心等也被归于教育 |
-| ❌ **日常记录无入口** | record 模块代码完整，但完全没有路由文件和菜单入口 |
-| ❌ **隐藏菜单泛滥** | 7 个路由模块全部 `hideInMenu: true`，通过卡片跳转，丢失侧边栏导航一致性 |
-| ❌ **菜单层级不反映架构** | 菜单结构是"教育中心→卡片→功能"，而非"平台底座 + 业务域" |
-| ❌ **虚假占位数据** | 平台概览使用 Github/Vue/React 等教育无关的示例内容 |
+Agent 平台                  /platform
+├─ Agent                    /agent/definition/list
+├─ 平台管理                 /agent/platform
+├─ 模型管理                 /agent/model
+├─ 对话调试                 /agent/chat-config
+└─ 意图管理                 /agent/intent
 
----
+知识引擎                    /knowledge
+├─ 企业知识工作台           /knowledge/workbench
+├─ 空间管理                 /knowledge/spaces
+├─ 知识资产                 /knowledge/assets
+├─ 文档中心                 /knowledge/documents
+├─ 图谱洞察                 /knowledge/graph
+├─ 检索实验室               /knowledge/search
+├─ 索引与任务               /knowledge/index
+├─ 系统运维                 /knowledge/operations
+└─ 评测中心                 /knowledge/evaluations
 
-## 三、目标菜单结构
+教育空间                    /education-center
+├─ 学习
+│  ├─ 课程学习             /learning/course
+│  ├─ 知识浏览             /learning/knowledge
+│  ├─ 学习计划             /learning/plan
+│  └─ 学习资源             /learning/resource
+├─ 练习与考试
+│  ├─ 题库练习             /practice/question
+│  ├─ 错题本               /practice/wrong
+│  ├─ 在线考试             /exam/list
+│  └─ AI 组卷              /exam/ai-exam
+├─ 复习
+│  ├─ 今日复习             /review/today
+│  └─ 复习历史             /review/history
+├─ AI 辅学
+│  ├─ AI 讲解              /ai-tutor/teacher
+│  ├─ AI 出题              /ai-tutor/practice
+│  ├─ AI 规划              /ai-tutor/planner
+│  ├─ AI 对话              /ai-tutor/chat
+│  └─ AI 报告              /ai-tutor/report
+├─ 学习分析
+│  ├─ 学习报告             /analytics-center/report
+│  ├─ 能力雷达             /analytics-center/radar
+│  ├─ 学习趋势             /analytics-center/trend
+│  └─ 薄弱分析             /analytics-center/weak
+└─ 教育配置                /education-center/config
+   ├─ 学科管理             /edu/subject
+   ├─ 教材管理             /edu/textbook
+   ├─ 章节管理             /edu/chapter
+   ├─ 课程管理             /edu/course
+   ├─ 题库管理             /edu/question
+   ├─ 考试管理             /edu/exam
+   ├─ 学生管理             /edu/student
+   ├─ 学习计划             /edu/plan
+   ├─ 复习任务             /edu/review
+   ├─ 学情分析             /edu/analytics
+   ├─ 资源管理             /edu/resource
+   └─ 错题管理             /edu/wrong-question
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  📊 工作台                         ← 平台级入口           │
-│  ├─ 数据看板 → /analytics          (平台用量概览)          │
-│  └─ 平台概览 → /overview            (AI 平台首页)           │
-├─────────────────────────────────────────────────────────────┤
-│  ⚙️ 平台管理                         ← 平台底座核心       │
-│  ├─ Agent 管理 → /agent/admin/list  (Agent 编排)           │
-│  ├─ 平台管理   → /agent/platform    (LLM 平台配置)         │
-│  ├─ 模型管理   → /agent/model       (模型配置)             │
-│  ├─ 意图管理   → /agent/intent      (意图识别)             │
-│  └─ 对话调试   → /agent/chat-config (测试控制台)           │
-├─────────────────────────────────────────────────────────────┤
-│  🧠 知识引擎                         ← 平台核心能力        │
-│  ├─ 知识库     → /knowledge/list                           │
-│  ├─ 知识图谱   → /knowledge/graph                          │
-│  ├─ 文档管理   → /knowledge/document                       │
-│  ├─ 索引重建   → /knowledge/index                          │
-│  └─ 知识关系   → /knowledge/relation                       │
-├─────────────────────────────────────────────────────────────┤
-│  🎓 教育空间                         ← 业务域 A           │
-│  ├─ 课程学习   → /learning/course                          │
-│  ├─ 知识点     → /learning/knowledge                       │
-│  ├─ 学习计划   → /learning/plan                            │
-│  ├─ 学习资源   → /learning/resource                        │
-│  ├─ 题库练习   → /practice/question                        │
-│  ├─ 错题本     → /practice/wrong                           │
-│  ├─ 在线考试   → /exam/list                                │
-│  ├─ AI 组卷    → /exam/ai-exam                             │
-│  ├─ 今日复习   → /review/today                             │
-│  ├─ 复习历史   → /review/history                           │
-│  ├─ AI 讲解    → /ai-tutor/teacher                         │
-│  ├─ AI 出题    → /ai-tutor/practice                        │
-│  ├─ AI 规划    → /ai-tutor/planner                         │
-│  ├─ AI 对话    → /ai-tutor/chat                            │
-│  ├─ AI 报告    → /ai-tutor/report                          │
-│  ├─ 学习报告   → /analytics-center/report                  │
-│  ├─ 能力雷达   → /analytics-center/radar                   │
-│  ├─ 学习趋势   → /analytics-center/trend                   │
-│  ├─ 薄弱分析   → /analytics-center/weak                    │
-│  └─ ⚙️ 后台管理 → [二级折叠子菜单]                         │
-│      ├─ 学科管理 → /edu/subject                            │
-│      ├─ 教材管理 → /edu/textbook                           │
-│      ├─ 章节管理 → /edu/chapter                            │
-│      ├─ 课程管理 → /edu/course                             │
-│      ├─ 题库管理 → /edu/question                           │
-│      ├─ 考试管理 → /edu/exam                               │
-│      ├─ 学生管理 → /edu/student                            │
-│      ├─ 资源管理 → /edu/resource                           │
-│      ├─ 学习计划 → /edu/plan                               │
-│      ├─ 复习任务 → /edu/review                             │
-│      ├─ 学情分析 → /edu/analytics                          │
-│      └─ 错题管理 → /edu/wrong-question                     │
-├─────────────────────────────────────────────────────────────┤
-│  📓 日常记录                         ← 业务域 B 【新增】  │
-│  ├─ 人物管理   → /record/profile                           │
-│  ├─ 时间轴     → /record/timeline                          │
-│  ├─ 记录内容   → /record/records                           │
-│  ├─ 附件管理   → /record/media                             │
-│  └─ 标签管理   → /record/tag                               │
-├─────────────────────────────────────────────────────────────┤
-│  📁 文件管理                         ← 平台基础设施        │
-│    → /file                                                 │
-├─────────────────────────────────────────────────────────────┤
-│  🔧 系统设置                         ← 平台基础设施        │
-│  ├─ 用户管理   → /system/user                              │
-│  ├─ 角色管理   → /system/role                              │
-│  ├─ 菜单管理   → /system/menu                              │
-│  ├─ 字典管理   → /system/dict                              │
-│  ├─ 租户管理   → /system/tenant                            │
-│  ├─ 租户配置   → /system/tenant                            │
-│  ├─ 授权码     → /system/auth-code                          │
-│  └─ 关于       → /vben-admin/about                         │
-└─────────────────────────────────────────────────────────────┘
+日常记录                    /record
+├─ 人物管理                 /record/profile
+├─ 时间轴                   /record/timeline
+├─ 记录内容                 /record/records
+├─ 标签管理                 /record/tags
+└─ 附件管理                 /record/media
+
+系统管理                    /system
+├─ 用户管理                 /system/user
+├─ 角色管理                 /system/role
+├─ 菜单管理                 /system/menu
+├─ 租户管理                 /system/tenant
+├─ 字典管理                 /system/dict
+├─ 权限码管理               /system/auth-code
+└─ 文件管理                 /file
 ```
 
----
+课程详情、学习过程、答题、考试与结果页继续作为隐藏路由挂在对应分组下，不占用侧栏空间。
 
-## 四、需要修改的文件清单
+## 3. 路由与菜单所有权
 
-### 4.1 路由文件
+- `accessMode: mixed` 保持不变。
+- 前端只注册工作台、认证页、个人中心、404 等核心能力路由。
+- 后端 `AUTH_MENU` 是业务菜单标题、顺序、层级和角色可见性的权威来源。
+- 前端 `views/**/*.vue` 是组件路径注册表；后端 `component` 必须能映射到真实 Vue 文件。
+- 所有现有业务 URL 保持不变。教育分组目录只承担导航和重定向，不改变 API 或书签地址。
 
-| 文件 | 操作 | 说明 |
-| --- | --- | --- |
-| `router/routes/modules/education-center.ts` | **重写** | 改为「教育空间」一级，展开为扁平子菜单 |
-| `router/routes/modules/learning.ts` | 移除 `hideInMenu` | 子菜单直接挂到教育空间下 |
-| `router/routes/modules/practice.ts` | 移除 `hideInMenu` | 同上 |
-| `router/routes/modules/exam.ts` | 移除 `hideInMenu` | 同上 |
-| `router/routes/modules/review.ts` | 移除 `hideInMenu` | 同上 |
-| `router/routes/modules/ai-tutor.ts` | 移除 `hideInMenu` | 同上 |
-| `router/routes/modules/analytics-center.ts` | 移除 `hideInMenu` | 同上 |
-| `router/routes/modules/education-admin.ts` | 移除 `hideInMenu` | 作为教育的子路由保持嵌套 |
-| `router/routes/modules/agent.ts` | **重写** | 改为「平台管理」，order 置前 |
-| `router/routes/modules/system.ts` | **重写** | 扩展为完整系统设置菜单 |
-| `router/routes/modules/record.ts` | **新建** | 日常记录 5 个子菜单 |
-| `router/routes/modules/dashboard.ts` | 微调 | 保留两个子页面 |
+## 4. 权限规则
 
-### 4.2 页面文件
+- 超级管理员和管理员拥有六个教育分组。
+- 普通用户拥有学习、练习与考试、复习、AI 辅学、学习分析，不授予教育配置。
+- 新增分组目录必须与其任一已授权子页面同时授权，否则路由树会因缺少祖先节点而不可达。
+- 存量数据库升级会根据已有子页面授权自动补充分组目录授权，不扩大原有页面权限。
 
-| 文件 | 操作 |
-| --- | --- |
-| `views/education-center/` | 清理 SubMenuCards.vue + 6 个 index.vue |
-| `views/dashboard/overview/index.vue` | AI 平台概览 |
+## 5. 兼容与升级
 
-### 4.3 国际化文件
+- `/dashboard` 重定向到 `/dashboard/overview`。
+- `/overview` 与 `/analytics` 保留为兼容别名，新代码使用 `/dashboard/*`。
+- 后端基线版本为 `2`。版本 `1` 启动时执行事务迁移：重命名一级菜单、移动文件管理、增加教育分组、重建父子关系并补齐租户/角色目录授权。
+- 迁移不修改业务页面 path、component 或权限码。
 
-| 文件                              | 操作             |
-| --------------------------------- | ---------------- |
-| `locales/langs/zh-CN/record.json` | 已有，无需修改   |
-| `locales/langs/zh-CN/page.json`   | 无需修改         |
-| `locales/langs/en-US/`            | 学步 record 翻译 |
+## 6. 验收标准
 
----
+1. 管理员看到六个一级导航，且没有独立的文件管理一级入口。
+2. 教育空间直属可见子项恰好为六个目录。
+3. 普通用户不显示教育配置，但其他已授权教育页面仍可访问。
+4. `/dashboard`、旧别名和全部业务 URL 均可正常打开。
+5. 后端新库初始化与版本 1 升级测试通过。
+6. 前端路由单测、类型检查、生产构建和 Playwright 菜单回归通过。
 
-## 五、命名空间对应关系
+## 7. 相关实现
 
-| 侧边栏分组 | 后端模块 | 前端路由前缀 |
-| --- | --- | --- |
-| 平台概览 | auth / usage | /analytics, /overview |
-| 平台管理 | agent | /agent/\* |
-| 知识引擎 | knowledge | /knowledge/\* |
-| 教育空间 | education | /learning/_, /practice/_, /exam/_, /review/_, /ai-tutor/_, /analytics-center/_, /edu/\* |
-| 日常记录 | record | /record/\* |
-| 文件管理 | auth | /file |
-| 系统设置 | auth | /system/_, /vben-admin/_ |
-
----
-
-## 六、实施计划
-
-| 阶段        | 内容                                  | 涉及文件     |
-| ----------- | ------------------------------------- | ------------ |
-| **Phase 1** | 重写 education-center.ts 为扁平化路由 | 1 个路由文件 |
-| **Phase 2** | 重写 agent.ts 为平台管理              | 1 个路由文件 |
-| **Phase 3** | 重写 system.ts 为完整系统设置         | 1 个路由文件 |
-| **Phase 4** | 新建 record.ts 路由                   | 1 个路由文件 |
-| **Phase 5** | 移除 7 个模块的 hideInMenu            | 7 个路由文件 |
-| **Phase 6** | 清理 education-center 页面文件        | 7 个文件     |
-| **Phase 7** | 完成 AI 平台概览首页                  | 1 个页面文件 |
+- 前端工作台路由：`apps/web-naive/src/router/routes/modules/dashboard.ts`
+- 后端菜单基线：`infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/02_auth.sql`
+- 后端升级脚本：`infrastructure/shiyu-ai-dal/src/main/resources/db/migration/h2/01_menu_information_architecture.sql`
+- 后端架构说明：`shiyu-ai/docs/architecture/菜单信息架构.md`

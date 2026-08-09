@@ -11,10 +11,12 @@ const routes: RouteRecordRaw[] = [
     },
     name: 'Dashboard',
     path: '/dashboard',
+    redirect: '/dashboard/overview',
     children: [
       {
         name: 'Analytics',
-        path: '/analytics',
+        path: 'analytics',
+        alias: '/analytics',
         component: () => import('#/views/dashboard/analytics/index.vue'),
         meta: {
           affixTab: true,
@@ -24,7 +26,8 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'Overview',
-        path: '/overview',
+        path: 'overview',
+        alias: '/overview',
         component: () => import('#/views/dashboard/overview/index.vue'),
         meta: {
           icon: 'lucide:layout-dashboard',

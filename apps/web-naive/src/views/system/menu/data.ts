@@ -118,9 +118,7 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'component',
       label: $t('system.menu.component'),
       dependencies: {
-        if(values) {
-          return values.type === 'menu';
-        },
+        resolve: ({ values }) => ({ if: values.type === 'menu' }),
         triggerFields: ['type'],
       },
     },
@@ -146,9 +144,7 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'layout',
       label: $t('system.menu.layout'),
       dependencies: {
-        if(values) {
-          return values.type === 'menu';
-        },
+        resolve: ({ values }) => ({ if: values.type === 'menu' }),
         triggerFields: ['type'],
       },
     },
@@ -205,9 +201,7 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'meta.keepAlive',
       label: $t('system.menu.keepAlive'),
       dependencies: {
-        if(values) {
-          return values.type === 'menu';
-        },
+        resolve: ({ values }) => ({ if: values.type === 'menu' }),
         triggerFields: ['type'],
       },
     },

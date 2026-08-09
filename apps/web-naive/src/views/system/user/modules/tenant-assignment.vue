@@ -31,7 +31,9 @@ const roleLoadingByTenant = ref<Record<number, boolean>>({});
 const rows = ref<AssignmentRow[]>([]);
 const loading = ref(false);
 
-function flattenTenants(items: SystemTenantApi.SystemTenant[]) {
+function flattenTenants(
+  items: SystemTenantApi.SystemTenant[],
+): SystemTenantApi.SystemTenant[] {
   return items.flatMap((item) => [
     item,
     ...flattenTenants(item.children ?? []),
@@ -83,7 +85,7 @@ function isTenantUsed(tenantId: null | number, index: number) {
   );
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<SystemUserApi.SystemUser>({
   async onConfirm() {
     if (!user.value?.id) return;
     if (
@@ -112,7 +114,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
-    user.value = modalApi.getData<SystemUserApi.SystemUser>();
+    user.value = modalApi.getData();
     if (!user.value?.id) return;
     loading.value = true;
     try {

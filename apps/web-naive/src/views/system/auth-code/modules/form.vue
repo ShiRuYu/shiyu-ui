@@ -28,7 +28,7 @@ const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
 });
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<AuthCodeApi.AuthCodeItem>({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
@@ -59,8 +59,8 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<AuthCodeApi.AuthCodeItem>();
-      formApi.resetForm();
+      const data = modalApi.getData();
+      formApi.reset();
       formData.value = data?.id ? data : undefined;
       if (data?.id) formApi.setValues(data);
     }

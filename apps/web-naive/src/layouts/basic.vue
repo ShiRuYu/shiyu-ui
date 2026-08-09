@@ -63,7 +63,7 @@ const notifications = ref<NotificationItem[]>([
     isRead: false,
     message: '描述信息描述信息描述信息',
     title: '查看平台概览',
-    link: '/overview',
+    link: '/dashboard/overview',
   },
   {
     id: 6,

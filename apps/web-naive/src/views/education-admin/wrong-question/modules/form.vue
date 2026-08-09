@@ -29,42 +29,44 @@ const [Form, formApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-const [Modal, modalApi] = useVbenModal({
-  async onConfirm() {
-    const { valid } = await formApi.validate();
-    if (valid) {
-      modalApi.lock();
-      const data = await formApi.getValues();
-      try {
-        await (formData.value?.id
-          ? updateWrongQuestion(formData.value.id, data)
-          : createWrongQuestion(data));
-        message.success($t('ui.actionMessage.operationSuccess'));
-        modalApi.close();
-        emit('success');
-      } catch (error) {
-        console.error(error);
-      } finally {
-        modalApi.lock(false);
+const [Modal, modalApi] = useVbenModal<EducationWrongQuestionApi.WrongQuestion>(
+  {
+    async onConfirm() {
+      const { valid } = await formApi.validate();
+      if (valid) {
+        modalApi.lock();
+        const data = await formApi.getValues();
+        try {
+          await (formData.value?.id
+            ? updateWrongQuestion(formData.value.id, data)
+            : createWrongQuestion(data));
+          message.success($t('ui.actionMessage.operationSuccess'));
+          modalApi.close();
+          emit('success');
+        } catch (error) {
+          console.error(error);
+        } finally {
+          modalApi.lock(false);
+        }
       }
-    }
+    },
+    onOpenChange(isOpen) {
+      if (isOpen) {
+        const data = modalApi.getData();
+        formApi.reset();
+        formData.value = data?.id ? data : undefined;
+        if (data?.id) formApi.setValues(data);
+      }
+    },
   },
-  onOpenChange(isOpen) {
-    if (isOpen) {
-      const data = modalApi.getData<EducationWrongQuestionApi.WrongQuestion>();
-      formApi.resetForm();
-      formData.value = data?.id ? data : undefined;
-      if (data?.id) formApi.setValues(data);
-    }
-  },
-});
+);
 </script>
 <template>
   <Modal :title="getTitle" class="w-[640px]">
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="formApi.resetForm()">
+        <NButton type="error" @click="formApi.reset()">
           {{ $t('common.reset') }}
         </NButton>
       </div>

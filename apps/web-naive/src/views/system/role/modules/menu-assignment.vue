@@ -99,7 +99,7 @@ async function loadAssignedMenus() {
   }
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<SystemRoleApi.SystemRole>({
   async onConfirm() {
     if (!role.value?.id || tenantId.value === null) return;
     modalApi.lock();
@@ -119,7 +119,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (!isOpen) return;
-    const data = modalApi.getData<SystemRoleApi.SystemRole>();
+    const data = modalApi.getData();
     role.value = data;
     loading.value = true;
     try {

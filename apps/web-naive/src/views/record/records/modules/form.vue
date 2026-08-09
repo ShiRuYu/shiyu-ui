@@ -27,7 +27,7 @@ const [Form, formApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<RecordsApi.Record>({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
@@ -49,8 +49,8 @@ const [Modal, modalApi] = useVbenModal({
   },
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<RecordsApi.Record>();
-      formApi.resetForm();
+      const data = modalApi.getData();
+      formApi.reset();
       formData.value = data?.id ? data : undefined;
       await nextTick();
       if (data?.id) formApi.setValues(data);
@@ -63,7 +63,7 @@ const [Modal, modalApi] = useVbenModal({
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
-        <NButton type="error" @click="formApi.resetForm()">
+        <NButton type="error" @click="formApi.reset()">
           {{ $t('common.reset') }}
         </NButton>
       </div>

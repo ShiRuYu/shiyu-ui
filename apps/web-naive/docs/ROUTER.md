@@ -1,150 +1,110 @@
-﻿# ROUTER.md — 路由系统
+# ROUTER.md — 路由与动态菜单
 
-## 一、路由结构
+## 1. 运行模式
 
-```
-router/
-├── index.ts           # 路由创建 + 注册
-├── guard.ts           # 路由守卫（权限校验）
-├── access.ts          # 权限访问控制
-└── routes/
-    ├── index.ts       # 路由聚合
-    ├── core.ts        # 核心路由（根路由、登录、404）
-    ├── modules/       # 动态路由（业务模块）
-    └── static/        # 静态后备路由
-```
-
-## 二、路由类型
-
-### 核心路由 `core.ts`
-
-包含必须存在的路由：
-
-- **Root** (`/`) — 基础布局容器，重定向到首页
-- **Authentication** (`/auth`) — 认证布局，包含登录/注册/忘记密码
-- **FallbackNotFound** — 404 兜底
-
-### 动态路由 `modules/`
-
-通过 `import.meta.glob` 自动扫描加载：
+`apps/web-naive` 使用 Vben `mixed` 权限模式：
 
 ```ts
-const dynamicRouteFiles = import.meta.glob('./modules/**/*.ts', {
-  eager: true,
-});
+app: {
+  accessMode: 'mixed',
+}
 ```
 
-**当前仅有**：
+前端路由与后端菜单按 `name` 合并。业务菜单的层级、标题、顺序和可见性由后端 `/menu/all` 返回，前端负责把 `component` 字符串映射到 `src/views/**/*.vue`。
 
-- `modules/dashboard.ts` — 仪表盘路由
+## 2. 路由目录
 
-其他业务模块路由**尚未模块化**，需要逐步迁移。
+```text
+src/router/
+├─ index.ts                 路由创建
+├─ guard.ts                 登录、权限和首页守卫
+├─ access.ts                获取后端菜单并生成可访问路由
+└─ routes/
+   ├─ core.ts               根路由、认证、个人中心、404
+   ├─ modules/dashboard.ts  工作台路由
+   └─ static/               必要的静态后备路由
+```
 
-### 静态路由 `static/`
+业务页面不应再重复创建一套完整的前端菜单树。新增业务页面时：
 
-作为动态路由的备选，在后端未返回时使用默认菜单。
+1. 在 `src/views` 创建组件；
+2. 在后端菜单中登记唯一 `name`、URL 和组件路径；
+3. 为租户和角色分配菜单；
+4. 验证组件路径与真实 Vue 文件一致。
 
-## 三、路由配置示例
+## 3. 工作台路由
+
+工作台是前端拥有的一级入口。子路由必须使用相对路径，父路由必须有明确重定向：
 
 ```ts
-// router/routes/modules/dashboard.ts
-import type { RouteRecordRaw } from 'vue-router';
-import { $t } from '#/locales';
-
 const routes: RouteRecordRaw[] = [
   {
+    name: 'Dashboard',
+    path: '/dashboard',
+    redirect: '/dashboard/overview',
     meta: {
       icon: 'lucide:layout-dashboard',
       order: -1,
       title: $t('page.dashboard.title'),
     },
-    name: 'Dashboard',
-    path: '/dashboard',
     children: [
       {
         name: 'Analytics',
-        path: '/analytics',
+        path: 'analytics',
+        alias: '/analytics',
         component: () => import('#/views/dashboard/analytics/index.vue'),
-        meta: {
-          affixTab: true,
-          icon: 'lucide:area-chart',
-          title: $t('page.dashboard.analytics'),
-        },
       },
       {
         name: 'Overview',
-        path: '/overview',
+        path: 'overview',
+        alias: '/overview',
         component: () => import('#/views/dashboard/overview/index.vue'),
-        meta: {
-          icon: 'lucide:layout-dashboard',
-          title: $t('page.dashboard.overview'),
-        },
       },
     ],
   },
 ];
-
-export default routes;
 ```
 
-## 四、路由 Meta 规范
+规范地址是 `/dashboard/overview` 和 `/dashboard/analytics`。旧地址 `/overview`、`/analytics` 仅作为兼容别名保留。
 
-| Meta 属性          | 类型      | 说明                       |
-| ------------------ | --------- | -------------------------- |
-| `title`            | `string`  | 页面标题（支持 $t 国际化） |
-| `icon`             | `string`  | 菜单图标（Iconify 格式）   |
-| `order`            | `number`  | 菜单排序                   |
-| `affixTab`         | `boolean` | 是否固定标签页             |
-| `hideInMenu`       | `boolean` | 是否在菜单隐藏             |
-| `hideInTab`        | `boolean` | 是否在标签页隐藏           |
-| `hideInBreadcrumb` | `boolean` | 是否在面包屑隐藏           |
+## 4. 后端菜单契约
 
-## 五、路由守卫 `guard.ts`
+后端路由对象至少包含：
 
-守卫流程：
+| 字段              | 规则                                               |
+| ----------------- | -------------------------------------------------- |
+| `name`            | 全局唯一，作为前后端合并键                         |
+| `path`            | 页面使用稳定绝对 URL；目录使用不会与页面冲突的路径 |
+| `type`            | `catalog`、`menu`、`link` 或 `embedded`            |
+| `component`       | 页面对应 `/目录/文件`；目录留空                    |
+| `redirect`        | 有子页面的目录必须指向一个可访问页面               |
+| `meta.title`      | 用户可见标题                                       |
+| `meta.order`      | 同级排序                                           |
+| `meta.hideInMenu` | 详情、执行中、结果页等隐藏路由设为 `true`          |
+| `children`        | 必须包含所有已授权祖先节点，支持任意深度           |
 
-```
-路由跳转
-  │
-  ├── 白名单路径（登录页等） → 直接放行
-  │
-  └── 需要认证路径
-       │
-       ├── 未登录 → 跳转登录页
-       │
-       └── 已登录
-            │
-            ├── 权限校验 → 无权限 → 403
-            │
-            └── 有权限 → 放行
-```
+目录本身不渲染页面。Vben 会在根 `BasicLayout` 内注册目录树，最终页面组件仍渲染到主内容区。
 
-## 六、路由组织建议
+## 5. 信息架构
 
-**当前问题**：所有业务路由未按模块拆分为独立文件。
+一级导航为工作台、Agent 平台、知识引擎、教育空间、日常记录、系统管理。教育空间继续聚合为学习、练习与考试、复习、AI 辅学、学习分析、教育配置。
 
-**推荐结构**：
+完整树、权限规则与升级兼容策略见 [`docs/web-naive-layout-redesign.md`](../../../docs/web-naive-layout-redesign.md)。
 
-```
-router/routes/modules/
-├── dashboard.ts      # 仪表盘 ✅ 已存在
-├── agent.ts          # Agent 管理（待添加）
-├── knowledge.ts      # 知识引擎（待添加）
-├── education.ts      # 教育模块（待添加）
-├── system.ts         # 系统管理（待添加）
-├── record.ts         # 成长记录（待添加）
-└── ...
+## 6. 变更检查
+
+路由或菜单变更至少执行：
+
+```bash
+pnpm exec vitest run apps/web-naive/src/router/routes/modules/dashboard.test.ts --dom
+pnpm -F @vben/web-naive run typecheck
+pnpm -F @vben/web-naive run build
 ```
 
-**推荐 Route Meta 扩展**：
+联调时还应检查：
 
-```ts
-meta: {
-  cache: true,          // 是否缓存页面
-  skeleton: "list",     // 骨架屏类型
-  transition: "fade",   // 页面过渡动画
-  permission: "admin",  // 所需权限
-  breadcrumb: ["首页", "配置"], // 自定义面包屑
-  search: true,         // 是否显示搜索
-}
-```
+- `/menu/all` 的一级菜单名称和顺序；
+- 教育空间直属可见子目录数量必须为 6；
+- 每个后端 `component` 都能映射到 Vue 文件；
+- 管理员与普通用户的目录授权不同但页面权限不被扩大；
+- `/dashboard` 与旧别名可访问且不会出现空白内容区。

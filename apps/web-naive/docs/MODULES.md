@@ -6,17 +6,19 @@
 | --- | --- | :-: | --- |
 | `agent` | `/agent` | 17 | Agent 管理（管理、模型、平台、意图） |
 | `ai-tutor` | `/ai-tutor` | 5 | AI 家教（聊天、规划、练习、报告） |
-| `analytics` | `/analytics` | 4 | 数据分析 |
-| `dashboard` | `/dashboard` | 7 | 仪表盘 |
-| `education-admin` | `/education-admin` | 34 | 教育管理后台 |
+| `analytics` | `/analytics-center` | 4 | 教育学习分析 |
+| `dashboard` | `/dashboard` | 7 | 平台工作台 |
+| `education-admin` | `/edu` | 34 | 教育配置后台 |
 | `exam` | `/exam` | 4 | 考试模块 |
-| `knowledge` | `/knowledge` | 9 | 企业知识平台 |
+| `knowledge` | `/knowledge` | 9 | 知识引擎 |
 | `learning` | `/learning` | 10 | 学习模块 |
 | `practice` | `/practice` | 2 | 练习模块 |
-| `record` | `/record` | 15 | 成长记录 |
+| `record` | `/record` | 15 | 日常记录 |
 | `review` | `/review` | 2 | 复习 |
 | `system` | `/system` | 21 | 系统管理 |
 | `_core` | `/` | 14 | 核心页面（登录/注册/个人信息） |
+
+侧栏不是按本表逐项平铺。一级导航及教育空间的六组聚合以 [`docs/web-naive-layout-redesign.md`](../../../docs/web-naive-layout-redesign.md) 为准。
 
 ---
 

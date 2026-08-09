@@ -8,7 +8,9 @@ import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
 import { $t } from '#/locales';
 
-export function useCrudFormModal<T extends { [key: string]: any; id?: number }>(
+type CrudModalData = { [key: string]: any; id?: number };
+
+export function useCrudFormModal<T extends CrudModalData>(
   schema: VbenFormSchema[],
   createFn: (data: any) => Promise<any>,
   updateFn: (id: number, data: any) => Promise<any>,
@@ -33,7 +35,7 @@ export function useCrudFormModal<T extends { [key: string]: any; id?: number }>(
     showDefaultActions: false,
   });
 
-  const [Modal, modalApi] = useVbenModal({
+  const [Modal, modalApi] = useVbenModal<CrudModalData>({
     async onConfirm() {
       const { valid } = await formApi.validate();
       if (valid) {
@@ -55,8 +57,8 @@ export function useCrudFormModal<T extends { [key: string]: any; id?: number }>(
     },
     onOpenChange(isOpen) {
       if (isOpen) {
-        const data = modalApi.getData<T>();
-        formApi.resetForm();
+        const data = modalApi.getData() as T | undefined;
+        formApi.reset();
         formData.value = data?.id ? data : undefined;
         if (data?.id) formApi.setValues(data);
       }

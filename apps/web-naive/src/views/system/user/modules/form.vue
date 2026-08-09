@@ -29,11 +29,11 @@ const [Form, formApi] = useVbenForm({
 });
 
 function resetForm() {
-  formApi.resetForm();
+  formApi.reset();
   formApi.setValues(formData.value || {});
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<SystemUserApi.SystemUser>({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
@@ -72,8 +72,8 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<SystemUserApi.SystemUser>();
-      formApi.resetForm();
+      const data = modalApi.getData();
+      formApi.reset();
       if (data) {
         formData.value = data;
         formApi.setValues({

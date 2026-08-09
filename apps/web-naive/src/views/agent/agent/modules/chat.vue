@@ -16,10 +16,10 @@ const prompt = ref('');
 const response = ref('');
 const loading = ref(false);
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useVbenModal<AgentApi.AgentDefinition>({
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<AgentApi.AgentDefinition>();
+      const data = modalApi.getData();
       agentData.value = data;
       prompt.value = '';
       response.value = '';

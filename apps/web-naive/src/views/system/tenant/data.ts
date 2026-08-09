@@ -104,7 +104,7 @@ export function useSchema(): VbenFormSchema[] {
       },
       defaultValue: 'tenant_super',
       dependencies: {
-        if: (values) => !values.id,
+        resolve: ({ values }) => ({ if: !values.id }),
         triggerFields: ['id'],
       },
       fieldName: 'adminRoleCode',
@@ -114,7 +114,7 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       defaultValue: $t('system.tenant.defaultAdminRoleName'),
       dependencies: {
-        if: (values) => !values.id,
+        resolve: ({ values }) => ({ if: !values.id }),
         triggerFields: ['id'],
       },
       fieldName: 'adminRoleName',
@@ -129,7 +129,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       dependencies: {
-        if: (values) => !values.id,
+        resolve: ({ values }) => ({ if: !values.id }),
         triggerFields: ['id'],
       },
       fieldName: 'adminUsername',
@@ -142,7 +142,7 @@ export function useSchema(): VbenFormSchema[] {
         type: 'password',
       },
       dependencies: {
-        if: (values) => !values.id,
+        resolve: ({ values }) => ({ if: !values.id }),
         triggerFields: ['id'],
       },
       fieldName: 'adminPassword',

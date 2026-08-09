@@ -76,9 +76,7 @@ export function useSchema(): VbenFormSchema[] {
       label: $t('system.user.password'),
       defaultValue: '',
       dependencies: {
-        if(values) {
-          return !values.id;
-        },
+        resolve: ({ values }) => ({ if: !values.id }),
         triggerFields: ['id'],
       },
     },
@@ -268,13 +266,13 @@ export function useColumns(
         options: [
           {
             code: 'resetPassword',
+            label: $t('system.user.resetPassword'),
             show: () => can('system:user:password'),
-            text: $t('system.user.resetPassword'),
           },
           {
             code: 'assignTenant',
+            label: $t('system.user.assignTenant'),
             show: () => can('system:user:update'),
-            text: $t('system.user.assignTenant'),
           },
           { code: 'edit', show: () => can('system:user:update') },
           { code: 'delete', show: () => can('system:user:delete') },

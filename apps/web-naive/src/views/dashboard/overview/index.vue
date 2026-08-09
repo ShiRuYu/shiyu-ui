@@ -54,7 +54,7 @@ const quickNavItems = [
     color: '#DC2626',
     icon: 'lucide:bar-chart-3',
     title: '数据看板',
-    url: '/analytics',
+    url: '/dashboard/analytics',
   },
   {
     color: '#0891B2',

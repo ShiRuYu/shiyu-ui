@@ -119,10 +119,10 @@ async function onSend() {
   }
 }
 
-const [FormModal, modalApi] = useVbenModal({
+const [FormModal, modalApi] = useVbenModal<ModelApi.ModelItem>({
   async onOpenChange(isOpen: boolean) {
     if (!isOpen) return;
-    const row = modalApi.getData<ModelApi.ModelItem>();
+    const row = modalApi.getData();
     await nextTick();
     await loadPlatforms(row);
   },
