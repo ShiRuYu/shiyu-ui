@@ -132,9 +132,17 @@ onMounted(() => {
       </NSpin>
     </NCard>
 
-    <NGrid :cols="3" :x-gap="16" :y-gap="16" responsive="screen">
+    <NGrid cols="1 s:2 l:3" :x-gap="16" :y-gap="16" responsive="screen">
       <NGi v-for="plan in plans" :key="plan.id">
-        <NCard hoverable class="cursor-pointer" @click="goToPlan(plan)">
+        <NCard
+          hoverable
+          class="cursor-pointer focus-visible:outline focus-visible:outline-2"
+          role="link"
+          tabindex="0"
+          @click="goToPlan(plan)"
+          @keydown.enter.prevent="goToPlan(plan)"
+          @keydown.space.prevent="goToPlan(plan)"
+        >
           <template #header>
             <span class="text-base font-medium">{{ plan.name }}</span>
           </template>

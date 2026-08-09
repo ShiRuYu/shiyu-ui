@@ -59,7 +59,7 @@ const [Modal, modalApi] = useVbenModal<TagApi.Tag>({
 });
 </script>
 <template>
-  <Modal :title="getTitle" class="w-[640px]">
+  <Modal :title="getTitle" class="w-[92vw] max-w-[640px]">
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">

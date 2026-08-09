@@ -1,80 +1,18 @@
 <script lang="ts" setup>
-import type { NotificationItem } from '@vben/layouts';
-
-import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, nextTick, onMounted, watch } from 'vue';
+import { isNavigationFailure, useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
-import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
-import {
-  BasicLayout,
-  LockScreen,
-  Notification,
-  UserDropdown,
-} from '@vben/layouts';
+import { BasicLayout, LockScreen, UserDropdown } from '@vben/layouts';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow, parseExtInfo } from '@vben/utils';
+import { parseExtInfo } from '@vben/utils';
 
-import { switchCurrentRoleApi } from '#/api';
 import { $t } from '#/locales';
+import { resetRoutes } from '#/router';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
-
-const notifications = ref<NotificationItem[]>([
-  {
-    id: 1,
-    avatar: 'https://avatar.vercel.sh/vercel.svg?text=VB',
-    date: '3小时前',
-    isRead: true,
-    message: '描述信息描述信息描述信息',
-    title: '收到了 14 份新周报',
-  },
-  {
-    id: 2,
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '刚刚',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '朱偏右 回复了你',
-  },
-  {
-    id: 3,
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '2024-01-01',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '曲丽丽 评论了你',
-  },
-  {
-    id: 4,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '代办提醒',
-  },
-  {
-    id: 5,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '查看平台概览',
-    link: '/dashboard/overview',
-  },
-  {
-    id: 6,
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '跳转外部链接示例',
-    link: 'https://doc.vben.pro',
-  },
-]);
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -82,9 +20,6 @@ const authStore = useAuthStore();
 const accessStore = useAccessStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 const { isDark } = usePreferences();
-const showDot = computed(() =>
-  notifications.value.some((item) => !item.isRead),
-);
 
 const menus = computed(() => [
   {
@@ -93,33 +28,6 @@ const menus = computed(() => [
     },
     icon: 'lucide:user',
     text: $t('page.auth.profile'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_DOC_URL, {
-        target: '_blank',
-      });
-    },
-    icon: BookOpenText,
-    text: $t('ui.widgets.document'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
-        target: '_blank',
-      });
-    },
-    icon: SvgGithubIcon,
-    text: 'GitHub',
-  },
-  {
-    handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
-        target: '_blank',
-      });
-    },
-    icon: CircleHelp,
-    text: $t('ui.widgets.qa'),
   },
 ]);
 
@@ -149,68 +57,70 @@ const userRoleList = computed(() => {
 });
 
 async function handleSwitchRole(roleId: number) {
+  const currentPath = router.currentRoute.value.fullPath;
+  if (!(await prepareContextSwitch())) return;
   try {
-    await switchCurrentRoleApi(roleId);
-    window.location.reload();
+    await authStore.switchRole(roleId);
+    await refreshAccessContext(currentPath);
   } catch {
-    // error handled in api
+    await router.replace(currentPath);
   }
 }
 
 async function handleSwitchTenant(tenantId: number) {
-  await authStore.switchTenant(tenantId);
-  window.location.reload();
+  const currentPath = router.currentRoute.value.fullPath;
+  if (!(await prepareContextSwitch())) return;
+  try {
+    await authStore.switchTenant(tenantId);
+    await refreshAccessContext(currentPath);
+  } catch {
+    await router.replace(currentPath);
+  }
+}
+
+async function prepareContextSwitch(): Promise<boolean> {
+  const result = await router.push({
+    path: '/profile',
+    query: { contextPreparation: Date.now().toString() },
+  });
+  return !isNavigationFailure(result);
+}
+
+async function refreshAccessContext(currentPath: string) {
+  resetRoutes();
+  accessStore.setAccessMenus([]);
+  accessStore.setAccessRoutes([]);
+  accessStore.setIsAccessChecked(false);
+
+  // 使用静态个人中心作为过渡路由，触发菜单与动态路由重新生成。
+  await router.replace({
+    path: '/profile',
+    query: { contextRefresh: Date.now().toString() },
+  });
+  await router.replace(currentPath);
 }
 
 async function handleLogout() {
   await authStore.logout(false);
 }
 
-function handleNoticeClear() {
-  notifications.value = [];
-}
-
-function markRead(id: number | string) {
-  const item = notifications.value.find((item) => item.id === id);
-  if (item) {
-    item.isRead = true;
+async function focusPageHeading() {
+  await nextTick();
+  const main = document.querySelector<HTMLElement>('main');
+  if (main && !main.id) main.id = 'app-main';
+  const heading = main?.querySelector<HTMLElement>('h1');
+  if (heading) {
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
   }
 }
 
-function remove(id: number | string) {
-  notifications.value = notifications.value.filter((item) => item.id !== id);
-}
-
-function handleMakeAll() {
-  notifications.value.forEach((item) => (item.isRead = true));
-}
-
-const viewAll = () => {};
-
-const handleClick = (item: NotificationItem) => {
-  // 如果通知项有链接，点击时跳转
-  if (item.link) {
-    navigateTo(item.link, item.query, item.state);
-  }
-};
-
-function navigateTo(
-  link: string,
-  query?: Record<string, any>,
-  state?: Record<string, any>,
-) {
-  if (link.startsWith('http://') || link.startsWith('https://')) {
-    // 外部链接，在新标签页打开
-    window.open(link, '_blank');
-  } else {
-    // 内部路由链接，支持 query 参数和 state
-    router.push({
-      path: link,
-      query: query || {},
-      state,
-    });
-  }
-}
+onMounted(() => {
+  void focusPageHeading();
+  router.afterEach(() => {
+    void focusPageHeading();
+  });
+});
 
 watch(
   () => ({
@@ -253,6 +163,7 @@ watch(
 </script>
 
 <template>
+  <a class="skip-link" href="#app-main">{{ $t('common.skipToContent') }}</a>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
     <template #user-dropdown>
       <UserDropdown
@@ -273,18 +184,6 @@ watch(
         @switch-role="handleSwitchRole"
       />
     </template>
-    <template #notification>
-      <Notification
-        :dot="showDot"
-        :notifications="notifications"
-        @clear="handleNoticeClear"
-        @read="(item) => item.id && markRead(item.id)"
-        @remove="(item) => item.id && remove(item.id)"
-        @make-all="handleMakeAll"
-        @on-click="handleClick"
-        @view-all="viewAll"
-      />
-    </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
@@ -298,3 +197,21 @@ watch(
     </template>
   </BasicLayout>
 </template>
+
+<style scoped>
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 9999;
+  padding: 0.5rem 0.75rem;
+  color: var(--primary-foreground);
+  background: hsl(var(--primary));
+  border-radius: 0.375rem;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+</style>

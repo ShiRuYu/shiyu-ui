@@ -1,0 +1,17 @@
+{
+  "title": "AI Assistant",
+  "chat": "AI Chat",
+  "send": "Send",
+  "stop": "Stop generating",
+  "promptPlaceholder": "Ask a question...",
+  "messageList": "AI chat messages",
+  "startChat": "Ask a question to start a conversation",
+  "thinking": "Thinking…",
+  "emptyResponse": "The model returned no content",
+  "chatError": "The request failed. Please try again.",
+  "stopped": "Generation stopped",
+  "copy": "Copy",
+  "copied": "Response copied",
+  "retry": "Regenerate",
+  "inputHint": "Press Enter to send; Shift + Enter for a new line"
+}

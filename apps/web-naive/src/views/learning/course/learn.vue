@@ -204,8 +204,11 @@ onMounted(() => {
         <NButton @click="router.back()">{{ $t('common.back') }}</NButton>
       </NSpace>
     </template>
-    <div class="flex h-[calc(100vh-120px)] gap-0">
-      <div v-show="!sideCollapsed" class="w-72 flex-shrink-0 border-r bg-white">
+    <div class="course-learning-layout flex min-h-[calc(100vh-120px)] gap-0">
+      <div
+        v-show="!sideCollapsed"
+        class="course-learning-sidebar w-72 flex-shrink-0 border-r bg-white"
+      >
         <div class="border-b p-3 font-medium text-sm">
           {{ $t('learning.chapterDirectory') }}
           <span class="ml-2 text-xs text-gray-400"
@@ -338,7 +341,9 @@ onMounted(() => {
           </div>
         </template>
       </div>
-      <div class="w-48 flex-shrink-0 border-l bg-white p-4">
+      <div
+        class="course-learning-progress w-48 flex-shrink-0 border-l bg-white p-4"
+      >
         <h3 class="mb-3 text-sm font-medium">{{ $t('learning.progress') }}</h3>
         <NProgress
           type="circle"
@@ -356,7 +361,7 @@ onMounted(() => {
       v-model:show="showDocModal"
       :title="currentDoc?.title || $t('learning.document')"
       preset="card"
-      class="w-[800px]"
+      class="w-[94vw] max-w-[800px]"
       style="max-height: 80vh"
       :bordered="false"
       :segmented="{ content: true }"
@@ -380,3 +385,22 @@ onMounted(() => {
     </NModal>
   </Page>
 </template>
+
+<style scoped>
+@media (max-width: 767px) {
+  .course-learning-layout {
+    flex-direction: column;
+  }
+
+  .course-learning-sidebar,
+  .course-learning-progress {
+    width: 100%;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .course-learning-progress {
+    border-top: 1px solid var(--border);
+  }
+}
+</style>

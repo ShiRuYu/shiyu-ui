@@ -1,6 +1,6 @@
 # web-naive 信息架构与导航实施方案
 
-> 状态：已实施更新日期：2026-08-09适用范围：`apps/web-naive` 与 `shiyu-ai` 动态菜单接口
+> 状态：已实施更新日期：2026-08-10适用范围：`apps/web-naive` 与 `shiyu-ai` 动态菜单接口
 
 ## 1. 设计目标
 
@@ -137,3 +137,4 @@ Agent 平台                  /platform
 - 后端菜单基线：`infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/02_auth.sql`
 - 后端升级脚本：`infrastructure/shiyu-ai-dal/src/main/resources/db/migration/h2/01_menu_information_architecture.sql`
 - 后端架构说明：`shiyu-ai/docs/architecture/菜单信息架构.md`
+- 工程与体验优化：`docs/web-naive-optimization-implementation.md`

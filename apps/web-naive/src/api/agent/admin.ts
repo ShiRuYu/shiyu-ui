@@ -47,7 +47,14 @@ async function getAgentPage(params: {
 }) {
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
     '/agent/definition/page',
-    { params },
+    {
+      params: {
+        name: params.name,
+        pageNo: params.page,
+        pageSize: params.pageSize,
+        status: params.status,
+      },
+    },
   );
 }
 

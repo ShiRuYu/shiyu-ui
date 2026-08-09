@@ -4,24 +4,28 @@ import type { RoleInfo } from '@vben/types';
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { ProfileBaseSetting } from '@vben/common-ui';
-import { useUserStore } from '@vben/stores';
+import { useAccessStore, useUserStore } from '@vben/stores';
 import { parseExtInfo } from '@vben/utils';
 
 import { message } from '#/adapter/naive';
-import { getUserInfoApi, switchCurrentRoleApi } from '#/api';
+import { getUserInfoApi } from '#/api';
 import {
   getTimezone,
   getTimezoneOptions,
   setTimezone,
 } from '#/api/common/timezone';
 import { updateUser } from '#/api/system/user';
+import { resetRoutes } from '#/router';
 import { useAuthStore } from '#/store';
 
 const profileBaseSettingRef = ref();
 const userStore = useUserStore();
 const authStore = useAuthStore();
+const accessStore = useAccessStore();
+const router = useRouter();
 
 const lastLoginInfo = ref<Record<string, any>>({});
 const userRoles = ref<RoleInfo[]>([]);
@@ -61,8 +65,8 @@ async function switchRole() {
   );
   if (!target) return;
   try {
-    await switchCurrentRoleApi(target.id);
-    setTimeout(() => window.location.reload(), 100);
+    await authStore.switchRole(target.id);
+    await refreshAccessRoutes();
     message.success(`已切换到角色: ${target.name}`);
   } catch {
     message.error('角色切换失败');
@@ -73,11 +77,22 @@ async function switchTenant() {
   if (selectedTenantId.value === null) return;
   try {
     await authStore.switchTenant(selectedTenantId.value);
-    setTimeout(() => window.location.reload(), 100);
+    await refreshAccessRoutes();
     message.success('租户切换成功');
   } catch (error: any) {
     message.error(error?.message ?? '租户切换失败');
   }
+}
+
+async function refreshAccessRoutes() {
+  resetRoutes();
+  accessStore.setAccessMenus([]);
+  accessStore.setAccessRoutes([]);
+  accessStore.setIsAccessChecked(false);
+  await router.replace({
+    path: '/profile',
+    query: { contextRefresh: Date.now().toString() },
+  });
 }
 
 async function loadTimezone() {

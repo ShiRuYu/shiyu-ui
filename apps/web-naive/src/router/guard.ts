@@ -52,6 +52,9 @@ function setupAccessGuard(router: Router) {
 
     // 基本路由，这些路由不需要进入权限拦截
     if (coreRouteNames.includes(to.name as string)) {
+      if (to.meta.ignoreAccess) {
+        return true;
+      }
       if (to.path === LOGIN_PATH && accessStore.accessToken) {
         return decodeURIComponent(
           (to.query?.redirect as string) ||
@@ -104,12 +107,28 @@ function setupAccessGuard(router: Router) {
     const userRoles = userInfo.roles ?? [];
 
     // 生成菜单和路由
-    const { accessibleMenus, accessibleRoutes } = await generateAccess({
-      roles: userRoles,
-      router,
-      // 则会在菜单中显示，但是访问会被重定向到403
-      routes: accessRoutes,
-    });
+    let accessibleMenus;
+    let accessibleRoutes;
+    try {
+      const accessResult = await generateAccess({
+        roles: userRoles,
+        router,
+        // 则会在菜单中显示，但是访问会被重定向到403
+        routes: accessRoutes,
+      });
+      accessibleMenus = accessResult.accessibleMenus;
+      accessibleRoutes = accessResult.accessibleRoutes;
+    } catch (error) {
+      console.error('Failed to load accessible menus', error);
+      accessStore.setAccessMenus([]);
+      accessStore.setAccessRoutes([]);
+      accessStore.setIsAccessChecked(false);
+      return {
+        path: '/menu-load-error',
+        query: { redirect: to.fullPath },
+        replace: true,
+      };
+    }
 
     // 保存菜单信息和路由信息
     accessStore.setAccessMenus(accessibleMenus);

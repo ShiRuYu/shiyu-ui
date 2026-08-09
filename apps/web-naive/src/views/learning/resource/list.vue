@@ -114,7 +114,7 @@ onMounted(() => {
       </NSpace>
     </template>
 
-    <NGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
+    <NGrid cols="1 s:2 m:3 l:4" :x-gap="16" :y-gap="16" responsive="screen">
       <NGi v-for="resource in resources" :key="resource.id">
         <NCard
           class="cursor-pointer"

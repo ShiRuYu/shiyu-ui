@@ -305,7 +305,7 @@ const [Modal, modalApi] = useVbenModal<SystemTenantApi.SystemTenant>({
 </script>
 
 <template>
-  <Modal :title="getTitle" class="w-[920px]">
+  <Modal :title="getTitle" class="w-[94vw] max-w-[920px]">
     <NTabs v-if="!formData?.id" animated type="line">
       <NTabPane name="base" :tab="$t('system.tenant.baseInfo')">
         <Form class="mx-4" />

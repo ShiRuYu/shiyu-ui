@@ -14,7 +14,18 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     loginExpiredMode: 'page',
     accessMode: 'mixed',
+    defaultAvatar: '/avatar.svg',
+    enableCheckUpdates: false,
     enableRefreshToken: true,
   },
-  copyright: appCopyrightPreferences,
+  copyright: {
+    ...appCopyrightPreferences,
+    companyName: 'ShiYu AI',
+    companySiteLink: '',
+    date: String(new Date().getFullYear()),
+  },
+  logo: {
+    source: '/logo.svg',
+    sourceDark: '/logo.svg',
+  },
 });

@@ -16,6 +16,7 @@ import {
   getUserTenantsApi,
   loginApi,
   logoutApi,
+  switchCurrentRoleApi,
   switchTenantApi,
 } from '#/api';
 
@@ -139,6 +140,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function switchRole(roleId: number) {
+    await switchCurrentRoleApi(roleId);
+    const [userInfo, accessCodes] = await Promise.all([
+      getUserInfoApi(),
+      getAccessCodesApi(),
+    ]);
+    userStore.setUserInfo(userInfo);
+    accessStore.setAccessCodes(accessCodes);
+  }
+
   function $reset() {
     loginLoading.value = false;
   }
@@ -150,6 +161,7 @@ export const useAuthStore = defineStore('auth', () => {
     loginLoading,
     logout,
     refreshTenantInfo,
+    switchRole,
     switchTenant,
   };
 });

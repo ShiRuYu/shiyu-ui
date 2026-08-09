@@ -3,9 +3,10 @@ import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { NCard, NGi, NGrid, NStatistic } from 'naive-ui';
+import { NCard, NGi, NGrid } from 'naive-ui';
 
 import { getOverview } from '#/api/education/analytics';
+import MetricCard from '#/components/business/metric-card.vue';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
@@ -23,38 +24,30 @@ onMounted(async () => {
 <template>
   <Page auto-content-height>
     <NCard :title="$t('page.eduAdmin.analytics')" :bordered="false">
-      <NGrid :cols="4" :x-gap="16" :y-gap="16">
+      <NGrid cols="1 s:2 l:4" responsive="screen" :x-gap="16" :y-gap="16">
         <NGi>
-          <NCard :bordered="true">
-            <NStatistic
-              :value="overview.totalStudyDays || 0"
-              :label="$t('analytics.totalStudyDays')"
-            />
-          </NCard>
+          <MetricCard
+            :value="overview.totalStudyDays || 0"
+            :label="$t('analytics.totalStudyDays')"
+          />
         </NGi>
         <NGi>
-          <NCard :bordered="true">
-            <NStatistic
-              :value="overview.totalKnowledge || 0"
-              :label="$t('analytics.totalKnowledge')"
-            />
-          </NCard>
+          <MetricCard
+            :value="overview.totalKnowledge || 0"
+            :label="$t('analytics.totalKnowledge')"
+          />
         </NGi>
         <NGi>
-          <NCard :bordered="true">
-            <NStatistic
-              :value="overview.masteredKnowledge || 0"
-              :label="$t('analytics.masteredKnowledge')"
-            />
-          </NCard>
+          <MetricCard
+            :value="overview.masteredKnowledge || 0"
+            :label="$t('analytics.masteredKnowledge')"
+          />
         </NGi>
         <NGi>
-          <NCard :bordered="true">
-            <NStatistic
-              :value="(overview.accuracy || 0).toFixed(1)"
-              :label="$t('analytics.accuracy')"
-            />
-          </NCard>
+          <MetricCard
+            :value="`${(overview.accuracy || 0).toFixed(1)}%`"
+            :label="$t('analytics.accuracy')"
+          />
         </NGi>
       </NGrid>
     </NCard>

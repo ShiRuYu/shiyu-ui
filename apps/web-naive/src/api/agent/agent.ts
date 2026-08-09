@@ -1,4 +1,5 @@
 import { requestClient } from '#/api/request';
+import { consumeEventStream } from '#/api/stream';
 
 export namespace AgentApi {
   export interface AgentVersion {
@@ -104,6 +105,7 @@ async function executeAgentStream(
   agentId: string,
   data: Record<string, any>,
   onMessage: (chunk: string) => void,
+  options: { signal?: AbortSignal } = {},
 ): Promise<void> {
   const { useAccessStore } = await import('@vben/stores');
   const accessStore = useAccessStore();
@@ -119,22 +121,30 @@ async function executeAgentStream(
         'Content-Type': 'application/json',
       },
       method: 'POST',
+      signal: options.signal,
     },
   );
 
-  if (!response.ok || !response.body) {
-    throw new Error(`Stream error: ${response.status}`);
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    const text = decoder.decode(value, { stream: true });
-    onMessage(text);
-  }
+  await consumeEventStream(
+    response,
+    ({ data: eventData }) => {
+      if (!eventData || eventData === '[DONE]') return;
+      try {
+        const event = JSON.parse(eventData) as Record<string, any>;
+        const payload = event.data ?? event;
+        const output =
+          payload.output ?? payload.content ?? payload.text ?? payload.delta;
+        onMessage(
+          typeof output === 'string'
+            ? output
+            : `${JSON.stringify(payload, null, 2)}\n`,
+        );
+      } catch {
+        onMessage(eventData);
+      }
+    },
+    options.signal,
+  );
 }
 
 export {

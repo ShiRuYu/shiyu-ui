@@ -47,6 +47,18 @@ const coreRoutes: RouteRecordRaw[] = [
           title: $t('page.auth.profile'),
         },
       },
+      {
+        name: 'MenuLoadError',
+        path: '/menu-load-error',
+        component: () => import('#/views/_core/fallback/menu-load-error.vue'),
+        meta: {
+          hideInBreadcrumb: true,
+          hideInMenu: true,
+          hideInTab: true,
+          ignoreAccess: true,
+          title: $t('common.menuLoadFailedTitle'),
+        },
+      },
     ],
   },
   {

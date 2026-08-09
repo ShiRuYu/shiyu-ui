@@ -69,7 +69,7 @@ const [Modal, modalApi] = useVbenModal<AuthCodeApi.AuthCodeItem>({
 </script>
 
 <template>
-  <Modal :title="getTitle" class="w-[500px]">
+  <Modal :title="getTitle" class="w-[92vw] max-w-[500px]">
     <Form />
   </Modal>
 </template>

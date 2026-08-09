@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import type { AgentApi } from '#/api/agent/agent';
 import type { AgentGraphApi } from '#/api/agent/graph';
 import type { NodeTypeApi } from '#/api/agent/node-type';
 
-import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { useTabs } from '@vben/hooks';
 
 import {
@@ -16,12 +17,8 @@ import {
   NEmpty,
   NForm,
   NFormItem,
-  NFormItemGi,
-  NGi,
-  NGrid,
   NInput,
   NModal,
-  NPopconfirm,
   NSelect,
   NSpace,
   NSpin,
@@ -54,7 +51,10 @@ import {
 import { getDictByType } from '#/api/system/dict';
 import { $t } from '#/locales';
 
+import AgentChat from '../agent/modules/chat.vue';
+import AgentBasicInfo from './modules/agent-basic-info.vue';
 import AgentFlowCanvas from './modules/agent-flow-canvas.vue';
+import AgentVersionManager from './modules/agent-version-manager.vue';
 import NodeForm from './modules/node-form.vue';
 import ValidateResult from './modules/validate-result.vue';
 
@@ -97,12 +97,19 @@ const nodeTypesMeta = ref<NodeTypeApi.NodeTypeMetaVO[]>([]);
 // Tab title
 const { setTabTitle } = useTabs();
 
+const [DebugModal, debugModalApi] = useVbenModal({
+  connectedComponent: AgentChat,
+  destroyOnClose: true,
+});
+
 const formNodes = ref<AgentGraphApi.FormNode[]>([]);
 const formEdges = ref<AgentGraphApi.FormEdge[]>([]);
 const canvasPositions = ref<Record<string, { x: number; y: number }>>({});
 
 const startNode = ref('');
 const endNode = ref('');
+const savedInfoFingerprint = ref('');
+const savedGraphFingerprint = ref('');
 
 const showValidateResult = ref(false);
 const validationResult = ref<AgentGraphApi.GraphValidationVO>({
@@ -170,9 +177,51 @@ const nodeOptions = computed(() =>
   })),
 );
 
+const infoFingerprint = computed(() =>
+  JSON.stringify({
+    agentDescription: agentDescription.value,
+    agentId: agentId.value,
+    agentName: agentName.value,
+    agentStatus: agentStatus.value,
+  }),
+);
+
+const graphFingerprint = computed(() =>
+  JSON.stringify({
+    canvasPositions: canvasPositions.value,
+    endNode: endNode.value,
+    formEdges: formEdges.value,
+    formNodes: formNodes.value,
+    startNode: startNode.value,
+  }),
+);
+
+const isDirty = computed(
+  () =>
+    (!readonly.value && infoFingerprint.value !== savedInfoFingerprint.value) ||
+    (!readonly.value &&
+      Boolean(selectedVersionId.value) &&
+      graphFingerprint.value !== savedGraphFingerprint.value),
+);
+
+function confirmLeave(): boolean {
+  return !isDirty.value || window.confirm($t('agent.adminEditUnsavedConfirm'));
+}
+
+function handleBeforeUnload(event: BeforeUnloadEvent) {
+  if (!isDirty.value) return;
+  event.preventDefault();
+  event.returnValue = '';
+}
+
+onBeforeRouteLeave(() => confirmLeave());
+
 // --------------- Lifecycle ---------------
 
 onMounted(async () => {
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  savedInfoFingerprint.value = infoFingerprint.value;
+  savedGraphFingerprint.value = graphFingerprint.value;
   const id = route.query.id as string;
   const isNewMode = route.query.new === 'true';
   if (id) {
@@ -182,6 +231,10 @@ onMounted(async () => {
     await loadAgentOptions();
   }
   await loadNodeTypes();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload);
 });
 
 async function loadAgentOptions() {
@@ -213,6 +266,7 @@ async function loadAgentDetail(id: number) {
     setTabTitle(agentName.value);
     agentDescription.value = detail.description || '';
     agentStatus.value = detail.status ?? 1;
+    savedInfoFingerprint.value = infoFingerprint.value;
     await loadVersions();
   } catch (error) {
     console.error('Failed to load agent detail', error);
@@ -289,6 +343,10 @@ async function handleCreateNewAgent() {
     });
     message.success($t('agent.adminEditCreated'));
     agentDetailId.value = vo.id;
+    isNew.value = false;
+    savedInfoFingerprint.value = infoFingerprint.value;
+    await router.replace({ path: route.path, query: { id: vo.id } });
+    await loadAgentDetail(vo.id);
   } catch {
     message.error($t('agent.adminEditCreateFailed'));
   }
@@ -306,6 +364,7 @@ async function handleSaveAgent() {
       status: agentStatus.value,
     });
     message.success($t('agent.adminEditSaveSuccess'));
+    savedInfoFingerprint.value = infoFingerprint.value;
   } catch {
     message.error($t('agent.adminEditSaveFailed'));
   }
@@ -316,9 +375,17 @@ async function handleSaveAgent() {
 async function loadGraph() {
   if (!agentId.value || !selectedVersionId.value) return;
   loading.value = true;
+  formNodes.value = [];
+  formEdges.value = [];
+  canvasPositions.value = {};
+  startNode.value = '';
+  endNode.value = '';
   try {
     const detail = await getGraphConfig(agentId.value, selectedVersionId.value);
-    if (!detail?.graphConfig) return;
+    if (!detail?.graphConfig) {
+      savedGraphFingerprint.value = graphFingerprint.value;
+      return;
+    }
     const config = detail.graphConfig;
 
     const nodes: AgentGraphApi.FormNode[] = [];
@@ -404,6 +471,7 @@ async function loadGraph() {
     } catch {
       canvasPositions.value = {};
     }
+    savedGraphFingerprint.value = graphFingerprint.value;
   } catch {
     // ignore load errors for new/empty versions
   } finally {
@@ -481,6 +549,7 @@ async function handleSaveGraph() {
       );
     }
     message.success($t('agent.adminEditGraphSaved'));
+    savedGraphFingerprint.value = graphFingerprint.value;
   } catch {
     message.error($t('agent.adminEditGraphSaveFailed'));
   } finally {
@@ -532,11 +601,11 @@ function handleCanvasNodeSelect(node: AgentGraphApi.FormNode) {
 
 function handleCanvasConnect(edge: AgentGraphApi.FormEdge) {
   if (edge.source === edge.target) {
-    message.warning('节点不能连接到自身');
+    message.warning($t('agent.graphSelfConnection'));
     return;
   }
   if (formEdges.value.some((item) => item.id === edge.id)) {
-    message.warning('该连线已经存在');
+    message.warning($t('agent.graphEdgeExists'));
     return;
   }
   if (edge.edgeType === 'conditional') {
@@ -629,7 +698,7 @@ function confirmEdge() {
       (item) => item.id === id && item.id !== editingEdgeId.value,
     )
   ) {
-    message.warning('该普通连线已经存在');
+    message.warning($t('agent.graphNormalEdgeExists'));
     return;
   }
   if (isNewEdge.value) {
@@ -669,7 +738,7 @@ function confirmCondEdge() {
     isNewCondEdge.value &&
     formEdges.value.some((item) => item.id === edge.id)
   ) {
-    message.warning('该条件连线已经存在');
+    message.warning($t('agent.graphConditionalEdgeExists'));
     return;
   }
   if (isNewCondEdge.value) {
@@ -774,6 +843,15 @@ async function loadNodeTypes() {
 function onBack() {
   router.push({ path: '/agent/admin/list' });
 }
+
+function openDebug() {
+  const definition: AgentApi.AgentDefinition = {
+    agentId: agentId.value,
+    description: agentDescription.value,
+    name: agentName.value,
+  };
+  debugModalApi.setData(definition).open();
+}
 </script>
 
 <template>
@@ -819,109 +897,38 @@ function onBack() {
 
       <!-- New agent form (isNew mode) -->
       <div v-if="isNew" class="max-w-[480px] space-y-3">
-        <NForm label-placement="top" label-width="auto">
-          <NGrid :cols="1" :x-gap="12">
-            <NGi>
-              <NFormItemGi :label="$t('agent.adminEditAgentId')">
-                <NInput
-                  v-model:value="agentId"
-                  :placeholder="$t('agent.adminEditAgentIdPlaceholder')"
-                />
-              </NFormItemGi>
-            </NGi>
-            <NGi>
-              <NFormItemGi :label="$t('agent.adminEditName')">
-                <NInput
-                  v-model:value="agentName"
-                  :placeholder="$t('agent.adminEditNamePlaceholder')"
-                />
-              </NFormItemGi>
-            </NGi>
-            <NGi>
-              <NFormItemGi :label="$t('agent.description')">
-                <NInput
-                  v-model:value="agentDescription"
-                  :maxlength="500"
-                  :rows="2"
-                  :placeholder="$t('agent.adminEditDescriptionPlaceholder')"
-                  type="textarea"
-                />
-              </NFormItemGi>
-            </NGi>
-            <NGi>
-              <NFormItemGi :label="$t('agent.adminEditStatus')">
-                <NSelect v-model:value="agentStatus" :options="statusOptions" />
-              </NFormItemGi>
-            </NGi>
-          </NGrid>
-          <NButton type="primary" @click="handleCreateNewAgent">
-            {{ $t('agent.adminEditCreateAgent') }}
-          </NButton>
-        </NForm>
+        <AgentBasicInfo
+          v-model:agent-id="agentId"
+          v-model:name="agentName"
+          v-model:description="agentDescription"
+          v-model:status="agentStatus"
+          :save-label="$t('agent.adminEditCreateAgent')"
+          :status-options="statusOptions"
+          @save="handleCreateNewAgent"
+        />
       </div>
 
       <NSpin v-if="agentDetailId" :show="loadingAgent">
-        <div class="flex flex-1 gap-4 overflow-hidden">
+        <div class="editor-workspace flex flex-1 gap-4 overflow-hidden">
           <!-- Left: Agent Info + Version Control -->
-          <div class="w-[380px] flex-shrink-0 overflow-y-auto space-y-3">
+          <div class="editor-sidebar flex-shrink-0 overflow-y-auto space-y-3">
             <!-- Agent Info Section -->
             <NCollapse :default-expanded-names="['info']">
               <NCollapseItem name="info">
                 <template #header>
                   <span>{{ $t('agent.adminEditBasicInfo') }}</span>
                 </template>
-                <NForm label-placement="top" label-width="auto">
-                  <NGrid :cols="1" :x-gap="12">
-                    <NGi>
-                      <NFormItemGi :label="$t('agent.adminEditAgentId')">
-                        <NInput
-                          v-model:value="agentId"
-                          :disabled="true"
-                          :placeholder="
-                            $t('agent.adminEditAgentIdPlaceholderReadonly')
-                          "
-                        />
-                      </NFormItemGi>
-                    </NGi>
-                    <NGi>
-                      <NFormItemGi :label="$t('agent.adminEditName')">
-                        <NInput
-                          v-model:value="agentName"
-                          :disabled="readonly"
-                          :placeholder="$t('agent.adminEditNamePlaceholder')"
-                        />
-                      </NFormItemGi>
-                    </NGi>
-                    <NGi>
-                      <NFormItemGi :label="$t('agent.description')">
-                        <NInput
-                          v-model:value="agentDescription"
-                          :disabled="readonly"
-                          :maxlength="500"
-                          :rows="2"
-                          :placeholder="
-                            $t('agent.adminEditDescriptionPlaceholder')
-                          "
-                          type="textarea"
-                        />
-                      </NFormItemGi>
-                    </NGi>
-                    <NGi>
-                      <NFormItemGi :label="$t('agent.adminEditStatus')">
-                        <NSelect
-                          v-model:value="agentStatus"
-                          :disabled="readonly"
-                          :options="statusOptions"
-                        />
-                      </NFormItemGi>
-                    </NGi>
-                  </NGrid>
-                  <div v-if="!readonly" class="mt-2">
-                    <NButton type="primary" @click="handleSaveAgent">
-                      {{ $t('agent.adminEditSaveInfo') }}
-                    </NButton>
-                  </div>
-                </NForm>
+                <AgentBasicInfo
+                  v-model:agent-id="agentId"
+                  v-model:name="agentName"
+                  v-model:description="agentDescription"
+                  v-model:status="agentStatus"
+                  agent-id-disabled
+                  :readonly="readonly"
+                  :save-label="$t('agent.adminEditSaveInfo')"
+                  :status-options="statusOptions"
+                  @save="handleSaveAgent"
+                />
               </NCollapseItem>
             </NCollapse>
 
@@ -931,121 +938,22 @@ function onBack() {
                 <template #header>
                   <span>{{ $t('agent.adminEditVersionManagement') }}</span>
                 </template>
-                <div class="space-y-3">
-                  <NSpace vertical>
-                    <label class="text-sm font-medium">{{
-                      $t('agent.adminEditSelectVersion')
-                    }}</label>
-                    <NSpace>
-                      <NSelect
-                        v-model:value="selectedVersionId"
-                        :disabled="versions.length === 0 || readonly"
-                        :loading="loadingVersions"
-                        :options="versions"
-                        class="flex-1"
-                        :placeholder="
-                          $t('agent.adminEditSelectVersionPlaceholder')
-                        "
-                      />
-                      <NButton
-                        v-if="!readonly"
-                        size="small"
-                        @click="showCreateVersion = !showCreateVersion"
-                      >
-                        {{ $t('agent.adminEditCreateVersion') }}
-                      </NButton>
-                    </NSpace>
-                  </NSpace>
-
-                  <!-- Quick create version -->
-                  <div v-if="showCreateVersion" class="rounded border p-2">
-                    <NSpace vertical>
-                      <NInput
-                        v-model:value="newVersionNumber"
-                        :placeholder="
-                          $t('agent.adminEditVersionNumberPlaceholder')
-                        "
-                        size="small"
-                      />
-                      <NInput
-                        v-model:value="newVersionDesc"
-                        :maxlength="500"
-                        :rows="1"
-                        :placeholder="
-                          $t('agent.adminEditVersionDescPlaceholder')
-                        "
-                        size="small"
-                        type="textarea"
-                      />
-                      <NButton
-                        size="small"
-                        type="primary"
-                        @click="handleCreateVersion"
-                      >
-                        {{ $t('agent.adminEditConfirmCreate') }}
-                      </NButton>
-                    </NSpace>
-                  </div>
-
-                  <!-- Version info -->
-                  <div
-                    v-if="selectedVersionInfo"
-                    class="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800"
-                  >
-                    <div>
-                      {{ $t('agent.adminEditVersionPrefix') }}:
-                      {{ selectedVersionInfo.versionNumber }}
-                    </div>
-                    <div>
-                      {{ $t('agent.adminEditStatus') }}:
-                      <NTag :bordered="false" size="small">
-                        {{ statusLabel(selectedVersionInfo.status) }}
-                      </NTag>
-                    </div>
-                    <div v-if="selectedVersionInfo.description" class="mt-1">
-                      {{ $t('agent.description') }}:
-                      {{ selectedVersionInfo.description }}
-                    </div>
-                  </div>
-
-                  <!-- Version actions -->
-                  <div
-                    v-if="selectedVersionId && !readonly"
-                    class="flex flex-wrap gap-2"
-                  >
-                    <NButton
-                      v-if="selectedVersionInfo?.status !== 1 /* PUBLISHED */"
-                      size="small"
-                      type="primary"
-                      @click="handlePublish"
-                    >
-                      {{ $t('agent.adminEditPublish') }}
-                    </NButton>
-                    <NButton
-                      v-if="selectedVersionInfo?.status === 1 /* PUBLISHED */"
-                      size="small"
-                      type="success"
-                      @click="handleActivate"
-                    >
-                      {{ $t('agent.adminEditActivate') }}
-                    </NButton>
-                    <NButton
-                      v-if="selectedVersionInfo?.status === 1 /* PUBLISHED */"
-                      size="small"
-                      @click="handleArchive"
-                    >
-                      {{ $t('agent.adminEditArchive') }}
-                    </NButton>
-                    <NPopconfirm @positive-click="handleDeleteVersion">
-                      <template #trigger>
-                        <NButton size="small" type="error">
-                          {{ $t('agent.adminEditDeleteVersion') }}
-                        </NButton>
-                      </template>
-                      {{ $t('agent.adminEditConfirmDeleteVersion') }}
-                    </NPopconfirm>
-                  </div>
-                </div>
+                <AgentVersionManager
+                  v-model:selected-version-id="selectedVersionId"
+                  v-model:show-create="showCreateVersion"
+                  v-model:new-version-number="newVersionNumber"
+                  v-model:new-version-description="newVersionDesc"
+                  :loading="loadingVersions"
+                  :readonly="readonly"
+                  :selected-info="selectedVersionInfo"
+                  :status-label="statusLabel"
+                  :versions="versions"
+                  @activate="handleActivate"
+                  @archive="handleArchive"
+                  @create="handleCreateVersion"
+                  @delete="handleDeleteVersion"
+                  @publish="handlePublish"
+                />
               </NCollapseItem>
             </NCollapse>
           </div>
@@ -1071,6 +979,13 @@ function onBack() {
                 @click="handleValidate"
               >
                 {{ $t('agent.adminEditValidate') }}
+              </NButton>
+              <NButton
+                :disabled="!agentId || isDirty"
+                size="small"
+                @click="openDebug"
+              >
+                {{ $t('agent.adminEditDebug') }}
               </NButton>
               <NButton
                 v-if="!readonly"
@@ -1102,7 +1017,7 @@ function onBack() {
                     :options="nodeOptions"
                     :disabled="readonly"
                     :placeholder="$t('agent.adminEditStartNode')"
-                    class="w-[200px]"
+                    class="node-selector"
                     clearable
                   />
                   <NSelect
@@ -1110,7 +1025,7 @@ function onBack() {
                     :options="nodeOptions"
                     :disabled="readonly"
                     :placeholder="$t('agent.adminEditEndNode')"
-                    class="w-[200px]"
+                    class="node-selector"
                     clearable
                   />
                 </NSpace>
@@ -1146,7 +1061,7 @@ function onBack() {
           ? $t('agent.adminEditAddNodeModal')
           : $t('agent.adminEditEditNodeModal')
       "
-      class="w-[480px]"
+      class="w-[92vw] max-w-[480px]"
     >
       <NodeForm
         v-model:node-data="editingNode"
@@ -1159,7 +1074,7 @@ function onBack() {
             type="error"
             @click="deleteEditingNode"
           >
-            删除节点
+            {{ $t('agent.nodeDelete') }}
           </NButton>
           <NButton @click="showNodeModal = false">
             {{ $t('agent.adminEditCancel') }}
@@ -1176,7 +1091,7 @@ function onBack() {
       v-model:show="showEdgeModal"
       preset="card"
       :title="$t('agent.adminEditAddEdgeModal')"
-      class="w-[420px]"
+      class="w-[92vw] max-w-[420px]"
     >
       <NForm label-placement="top">
         <NFormItem :label="$t('agent.adminEditSourceNode')">
@@ -1201,7 +1116,7 @@ function onBack() {
             type="error"
             @click="deleteEditingEdge"
           >
-            删除连线
+            {{ $t('agent.edgeDelete') }}
           </NButton>
           <NButton @click="showEdgeModal = false">
             {{ $t('agent.adminEditCancel') }}
@@ -1218,7 +1133,7 @@ function onBack() {
       v-model:show="showCondEdgeModal"
       preset="card"
       :title="$t('agent.adminEditAddCondEdgeModal')"
-      class="w-[480px]"
+      class="w-[92vw] max-w-[480px]"
     >
       <NForm label-placement="top">
         <NFormItem :label="$t('agent.adminEditSourceNode')">
@@ -1264,7 +1179,7 @@ function onBack() {
             type="error"
             @click="deleteEditingEdge"
           >
-            删除连线
+            {{ $t('agent.edgeDelete') }}
           </NButton>
           <NButton @click="showCondEdgeModal = false">
             {{ $t('agent.adminEditCancel') }}
@@ -1281,9 +1196,42 @@ function onBack() {
       v-model:show="showValidateResult"
       preset="card"
       :title="$t('agent.adminEditValidationResult')"
-      class="w-[480px]"
+      class="w-[92vw] max-w-[480px]"
     >
       <ValidateResult :result="validationResult" />
     </NModal>
+    <DebugModal />
   </Page>
 </template>
+
+<style scoped>
+.editor-sidebar {
+  width: 23.75rem;
+}
+
+.node-selector {
+  width: min(100%, 12.5rem);
+}
+
+@media (max-width: 1023px) {
+  .editor-workspace {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .editor-sidebar {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .editor-workspace > :last-child {
+    min-height: 38rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .node-selector {
+    width: 100%;
+  }
+}
+</style>

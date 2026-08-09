@@ -160,7 +160,10 @@ onMounted(() => {
     </div>
     <NCard class="mt-4" :title="$t('learning.learningMaterials')">
       <NSpin :show="docLoading">
-        <div v-if="documents.length > 0" class="grid grid-cols-3 gap-3">
+        <div
+          v-if="documents.length > 0"
+          class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        >
           <div
             v-for="doc in documents"
             :key="doc.id"
@@ -178,7 +181,7 @@ onMounted(() => {
       v-model:show="showDocModal"
       :title="currentDoc?.title || $t('learning.document')"
       preset="card"
-      class="w-[800px]"
+      class="w-[94vw] max-w-[800px]"
       style="max-height: 80vh"
       :bordered="false"
     >

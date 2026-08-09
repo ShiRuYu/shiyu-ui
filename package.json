@@ -1,5 +1,5 @@
 {
-  "name": "vben-admin-monorepo",
+  "name": "shiyu-ui",
   "version": "5.7.0",
   "private": true,
   "keywords": [
@@ -14,14 +14,13 @@
     "vue vben admin pro",
     "vue3"
   ],
-  "homepage": "https://github.com/vbenjs/vue-vben-admin",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
-  "repository": "vbenjs/vue-vben-admin.git",
+  "homepage": "https://github.com/ShiRuYu/shiyu-ui",
+  "bugs": "https://github.com/ShiRuYu/shiyu-ui/issues",
+  "repository": "ShiRuYu/shiyu-ui.git",
   "license": "MIT",
   "author": {
-    "name": "vben",
-    "email": "ann.vben@gmail.com",
-    "url": "https://github.com/anncwb"
+    "name": "ShiRuYu",
+    "url": "https://github.com/ShiRuYu"
   },
   "type": "module",
   "scripts": {
@@ -61,7 +60,7 @@
     "reinstall": "pnpm run clean -- --del-lock && pnpm install",
     "test:benchmark": "vitest bench --run",
     "test:unit": "vitest run --dom",
-    "test:e2e": "turbo run test:e2e",
+    "test:e2e": "playwright test",
     "update:deps": "npx taze -r -w",
     "version": "pnpm exec changeset version && pnpm install --no-frozen-lockfile",
     "catalog": "pnpm dlx codemod pnpm/catalog"

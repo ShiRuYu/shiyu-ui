@@ -8,6 +8,7 @@ import { NButton, NCheckbox, NInput, NInputNumber, NSelect } from 'naive-ui';
 
 import { requestClient } from '#/api/request';
 import { getDictByType } from '#/api/system/dict';
+import { $t } from '#/locales';
 
 const props = defineProps<{
   nodeData: AgentGraphApi.FormNode;
@@ -65,13 +66,13 @@ function applyAdvancedConfig() {
   try {
     const parsed = JSON.parse(advancedConfigText.value || '{}');
     if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') {
-      throw new Error('JSON 配置必须是对象');
+      throw new Error($t('agent.nodeJsonObjectRequired'));
     }
     advancedConfigError.value = '';
     emit('update:nodeData', { ...props.nodeData, config: parsed });
   } catch (error) {
     advancedConfigError.value =
-      error instanceof Error ? error.message : 'JSON 格式不正确';
+      error instanceof Error ? error.message : $t('agent.nodeJsonInvalid');
   }
 }
 
@@ -206,7 +207,7 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
 <template>
   <div class="flex flex-col gap-3">
     <div>
-      <label class="mb-1 block text-xs">节点名称</label>
+      <label class="mb-1 block text-xs">{{ $t('agent.nodeName') }}</label>
       <NInput
         :value="nodeData.nodeName"
         size="small"
@@ -215,7 +216,7 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
     </div>
 
     <div>
-      <label class="mb-1 block text-xs">节点类型</label>
+      <label class="mb-1 block text-xs">{{ $t('agent.nodeType') }}</label>
       <NSelect
         :value="nodeData.nodeType"
         :options="
@@ -227,7 +228,7 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
     </div>
 
     <div>
-      <label class="mb-1 block text-xs">描述</label>
+      <label class="mb-1 block text-xs">{{ $t('agent.description') }}</label>
       <NInput
         :value="nodeData.description"
         size="small"
@@ -241,12 +242,12 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
       :checked="nodeData.enabled !== false"
       @update:checked="(v: boolean) => setPartial({ enabled: v })"
     >
-      启用
+      {{ $t('common.enabled') }}
     </NCheckbox>
 
     <div class="grid grid-cols-2 gap-2">
       <div>
-        <label class="mb-1 block text-xs">超时（毫秒）</label>
+        <label class="mb-1 block text-xs">{{ $t('agent.nodeTimeout') }}</label>
         <NInputNumber
           :value="nodeData.timeout ?? 30000"
           :min="0"
@@ -255,7 +256,9 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
         />
       </div>
       <div>
-        <label class="mb-1 block text-xs">重试次数</label>
+        <label class="mb-1 block text-xs">{{
+          $t('agent.nodeRetryCount')
+        }}</label>
         <NInputNumber
           :value="nodeData.retryCount ?? 0"
           :min="0"
@@ -266,7 +269,9 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
         />
       </div>
       <div>
-        <label class="mb-1 block text-xs">重试间隔（毫秒）</label>
+        <label class="mb-1 block text-xs">{{
+          $t('agent.nodeRetryInterval')
+        }}</label>
         <NInputNumber
           :value="nodeData.retryInterval ?? 1000"
           :min="0"
@@ -277,19 +282,21 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
         />
       </div>
       <div>
-        <label class="mb-1 block text-xs">异常策略</label>
+        <label class="mb-1 block text-xs">{{
+          $t('agent.nodeErrorStrategy')
+        }}</label>
         <NSelect
           :value="nodeData.errorStrategy ?? 'THROW'"
           size="small"
           :options="[
-            { label: '抛出异常', value: 'THROW' },
-            { label: '继续执行', value: 'CONTINUE' },
+            { label: $t('agent.nodeErrorThrow'), value: 'THROW' },
+            { label: $t('agent.nodeErrorContinue'), value: 'CONTINUE' },
           ]"
           @update:value="(v: string) => updateCommon('errorStrategy', v)"
         />
       </div>
       <div>
-        <label class="mb-1 block text-xs">日志级别</label>
+        <label class="mb-1 block text-xs">{{ $t('agent.nodeLogLevel') }}</label>
         <NSelect
           :value="nodeData.logLevel ?? 'INFO'"
           size="small"
@@ -305,7 +312,7 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
     </div>
 
     <div v-if="fieldSchemas.length > 0">
-      <div class="mb-2 text-xs font-bold">配置参数</div>
+      <div class="mb-2 text-xs font-bold">{{ $t('agent.nodeParameters') }}</div>
       <div v-for="field in fieldSchemas" :key="field.key" class="mb-2">
         <label class="mb-1 block text-xs">{{ field.label || field.key }}</label>
         <NSelect
@@ -320,7 +327,7 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
             !normalizeSource(field)?.dependsOn
           "
           size="small"
-          :placeholder="field.description || '请选择'"
+          :placeholder="field.description || $t('agent.nodeSelectPlaceholder')"
           :clearable="true"
           @update:value="(v: any) => updateField(field.key, v)"
         />
@@ -358,19 +365,21 @@ function isMultipleField(field: NodeTypeApi.FieldMeta) {
     </div>
 
     <div>
-      <div class="mb-2 text-xs font-bold">高级 JSON 配置</div>
+      <div class="mb-2 text-xs font-bold">
+        {{ $t('agent.nodeAdvancedJson') }}
+      </div>
       <NInput
         v-model:value="advancedConfigText"
         type="textarea"
         :autosize="{ minRows: 4, maxRows: 10 }"
         size="small"
-        placeholder="请输入节点专属 JSON 配置"
+        :placeholder="$t('agent.nodeAdvancedJsonPlaceholder')"
       />
       <div v-if="advancedConfigError" class="mt-1 text-xs text-red-500">
         {{ advancedConfigError }}
       </div>
       <NButton class="mt-2" size="tiny" secondary @click="applyAdvancedConfig">
-        应用 JSON 配置
+        {{ $t('agent.nodeApplyJson') }}
       </NButton>
     </div>
   </div>

@@ -29,12 +29,15 @@
 ```
 agent/
 ├── admin/                    # Agent 管理
-│   ├── agent-list.vue        # Agent 列表页 (229 行)
-│   ├── agent-edit.vue        # Agent 编辑页 (1219 行) ⚠️ 需要拆分
+│   ├── agent-list.vue        # 响应式卡片列表 + 服务端分页
+│   ├── agent-edit.vue        # Agent 编辑流程编排容器
 │   ├── data.ts               # 类型定义
 │   └── modules/
-│       ├── node-form.vue     # 节点表单组件
-│       └── validate-result.vue # 验证结果组件
+│       ├── agent-basic-info.vue      # 基本信息
+│       ├── agent-version-manager.vue # 版本、发布、归档
+│       ├── agent-flow-canvas.vue     # 可视化编排画布
+│       ├── node-form.vue             # 节点配置
+│       └── validate-result.vue       # 校验结果
 ├── agent/                    # Agent 执行
 │   └── modules/
 │       └── chat.vue          # 聊天组件

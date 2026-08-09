@@ -155,7 +155,7 @@ const [Modal, modalApi] = useVbenModal<SystemRoleApi.SystemRole>({
 </script>
 
 <template>
-  <Modal :title="title" class="w-[720px]">
+  <Modal :title="title" class="w-[92vw] max-w-[720px]">
     <div class="space-y-3">
       <div class="flex items-center gap-3">
         <NInput

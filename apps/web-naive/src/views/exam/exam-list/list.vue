@@ -78,7 +78,7 @@ onMounted(() => {
     <NTabs v-model:value="activeTab" type="line" animated>
       <!-- 学生端：在线考试 -->
       <NTabPane name="student" :tab="$t('page.exam.list')">
-        <NGrid :cols="3" :x-gap="16" :y-gap="16">
+        <NGrid cols="1 s:2 l:3" responsive="screen" :x-gap="16" :y-gap="16">
           <NGi v-for="exam in exams" :key="exam.id">
             <NCard hoverable>
               <template #header>

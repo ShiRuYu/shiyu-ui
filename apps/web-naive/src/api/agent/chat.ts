@@ -1,6 +1,7 @@
 import { useAccessStore } from '@vben/stores';
 
 import { requestClient } from '#/api/request';
+import { consumeEventStream } from '#/api/stream';
 
 export namespace ChatApi {
   export interface ChatRequest {
@@ -35,6 +36,7 @@ async function chat(data: ChatApi.ChatRequest) {
 async function chatStream(
   data: ChatApi.ChatRequest,
   onMessage: (text: string) => void,
+  options: { signal?: AbortSignal } = {},
 ): Promise<void> {
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
@@ -47,21 +49,28 @@ async function chatStream(
       'Content-Type': 'application/json',
     },
     method: 'POST',
+    signal: options.signal,
   });
 
-  if (!response.ok || !response.body) {
-    throw new Error(`Stream error: ${response.status}`);
-  }
-
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    const text = decoder.decode(value, { stream: true });
-    onMessage(text);
-  }
+  await consumeEventStream(
+    response,
+    ({ data: eventData }) => {
+      if (!eventData || eventData === '[DONE]') return;
+      try {
+        const payload = JSON.parse(eventData) as ChatApi.ChatResponse & {
+          errorMessage?: string;
+        };
+        if (!payload.success && payload.errorMessage) {
+          throw new Error(payload.errorMessage);
+        }
+        if (payload.content) onMessage(payload.content);
+      } catch (error) {
+        if (error instanceof SyntaxError) onMessage(eventData);
+        else throw error;
+      }
+    },
+    options.signal,
+  );
 }
 
 export { chat, chatStream, getModelOptions };

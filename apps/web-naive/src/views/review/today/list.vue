@@ -61,7 +61,7 @@ onMounted(() => loadReviews());
     <NTabs v-model:value="activeTab" type="line" animated>
       <!-- 学生端：今日复习 -->
       <NTabPane name="student" :tab="$t('page.review.today')">
-        <NGrid :cols="2" :x-gap="16" :y-gap="16">
+        <NGrid cols="1 s:2" responsive="screen" :x-gap="16" :y-gap="16">
           <NGi v-for="review in reviews" :key="review.id">
             <NCard>
               <template #header>

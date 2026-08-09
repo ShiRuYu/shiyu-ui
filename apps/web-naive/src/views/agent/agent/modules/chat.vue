@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AgentApi } from '#/api/agent/agent';
 
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
@@ -15,6 +15,7 @@ const streamMode = ref(false);
 const prompt = ref('');
 const response = ref('');
 const loading = ref(false);
+let controller: AbortController | undefined;
 
 const [Modal, modalApi] = useVbenModal<AgentApi.AgentDefinition>({
   async onOpenChange(isOpen) {
@@ -23,6 +24,8 @@ const [Modal, modalApi] = useVbenModal<AgentApi.AgentDefinition>({
       agentData.value = data;
       prompt.value = '';
       response.value = '';
+    } else {
+      controller?.abort();
     }
   },
 });
@@ -31,29 +34,46 @@ async function onSend() {
   if (!prompt.value.trim() || !agentData.value) return;
   loading.value = true;
   response.value = '';
+  controller = new AbortController();
   try {
     const requestData = { input: prompt.value };
 
     if (streamMode.value) {
-      await executeAgentStream(agentData.value.agentId, requestData, (text) => {
-        response.value += text;
-      });
+      await executeAgentStream(
+        agentData.value.agentId,
+        requestData,
+        (text) => {
+          response.value += text;
+        },
+        { signal: controller.signal },
+      );
     } else {
       const data = await executeAgent(agentData.value.agentId, requestData);
       response.value = data?.output || JSON.stringify(data, null, 2);
     }
   } catch (error: any) {
-    response.value = `Error: ${error?.message || error}`;
+    if (error?.name !== 'AbortError') {
+      response.value = `Error: ${error?.message || error}`;
+    } else if (!response.value) {
+      response.value = $t('agent.chatStopped');
+    }
   } finally {
     loading.value = false;
+    controller = undefined;
   }
 }
+
+function stopGeneration() {
+  controller?.abort();
+}
+
+onBeforeUnmount(() => controller?.abort());
 </script>
 
 <template>
   <Modal
     :title="`${$t('agent.chat')} - ${agentData?.name || ''}`"
-    class="w-[800px]"
+    class="w-[94vw] max-w-[800px]"
   >
     <div class="mx-4">
       <NSpace vertical :size="16">
@@ -72,14 +92,19 @@ async function onSend() {
           @keydown.enter.exact.prevent="onSend"
         />
         <NSpace>
-          <NButton :loading="loading" type="primary" @click="onSend">
+          <NButton v-if="!loading" type="primary" @click="onSend">
             {{ $t('agent.send') }}
+          </NButton>
+          <NButton v-else type="warning" @click="stopGeneration">
+            {{ $t('agent.chatStop') }}
           </NButton>
         </NSpace>
         <NSpin v-if="loading" />
         <div
           v-if="response"
           class="bg-muted mt-4 max-h-[400px] overflow-auto rounded-md p-4"
+          aria-live="polite"
+          role="status"
         >
           <pre class="whitespace-pre-wrap font-mono text-sm">{{
             response

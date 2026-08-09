@@ -96,9 +96,17 @@ onMounted(() => {
           />
         </NSpace>
 
-        <NGrid :cols="4" :x-gap="16" :y-gap="16" responsive="screen">
+        <NGrid cols="1 s:2 m:3 l:4" :x-gap="16" :y-gap="16" responsive="screen">
           <NGi v-for="course in courses" :key="course.id">
-            <NCard hoverable class="cursor-pointer" @click="goToCourse(course)">
+            <NCard
+              hoverable
+              class="cursor-pointer focus-visible:outline focus-visible:outline-2"
+              role="link"
+              tabindex="0"
+              @click="goToCourse(course)"
+              @keydown.enter.prevent="goToCourse(course)"
+              @keydown.space.prevent="goToCourse(course)"
+            >
               <template #cover>
                 <div
                   v-if="course.coverUrl"

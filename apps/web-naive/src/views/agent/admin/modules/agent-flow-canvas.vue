@@ -11,6 +11,8 @@ import { addEdge, MarkerType, VueFlow } from '@vue-flow/core';
 import { MiniMap } from '@vue-flow/minimap';
 import { NButton, NSpace } from 'naive-ui';
 
+import { $t } from '#/locales';
+
 import '@vue-flow/core/dist/style.css';
 import '@vue-flow/core/dist/theme-default.css';
 
@@ -56,8 +58,10 @@ function syncGraph() {
     label:
       edge.edgeType === 'conditional'
         ? edge.isDefault
-          ? '默认'
-          : edge.conditionMapping || edge.conditionType || '条件'
+          ? $t('agent.flowDefaultEdge')
+          : edge.conditionMapping ||
+            edge.conditionType ||
+            $t('agent.flowConditionalEdge')
         : undefined,
     markerEnd: MarkerType.ArrowClosed,
     animated: edge.edgeType === 'conditional',
@@ -108,31 +112,36 @@ function handleConnect(connection: Connection) {
   <div class="agent-flow-canvas relative h-full min-h-[480px] w-full">
     <div
       v-if="!readonly"
-      class="absolute left-3 top-3 z-10 rounded-lg border bg-white/95 p-2 shadow-sm"
+      class="bg-background/95 absolute left-3 top-3 z-10 rounded-lg border p-2 shadow-sm"
     >
       <NSpace align="center" :size="6">
         <NButton size="small" type="primary" @click.stop="emit('addNode')">
-          添加节点
+          {{ $t('agent.flowAddNode') }}
         </NButton>
         <NButton
           size="small"
           :type="connectionMode === 'normal' ? 'info' : 'default'"
           @click.stop="connectionMode = 'normal'"
         >
-          普通连线
+          {{ $t('agent.flowNormalEdge') }}
         </NButton>
         <NButton
           size="small"
           :type="connectionMode === 'conditional' ? 'warning' : 'default'"
           @click.stop="connectionMode = 'conditional'"
         >
-          条件连线
+          {{ $t('agent.flowConditionalEdge') }}
         </NButton>
       </NSpace>
-      <div class="mt-1 text-[11px] text-gray-500">
-        当前模式：{{
-          connectionMode === 'normal' ? '普通连线' : '条件连线'
-        }}；点击节点或连线可编辑
+      <div class="mt-1 text-[11px] text-muted-foreground">
+        {{
+          $t('agent.flowModeHint', {
+            mode:
+              connectionMode === 'normal'
+                ? $t('agent.flowNormalEdge')
+                : $t('agent.flowConditionalEdge'),
+          })
+        }}
       </div>
     </div>
     <VueFlow
@@ -147,7 +156,7 @@ function handleConnect(connection: Connection) {
       @node-drag-stop="handleDragStop"
       @connect="handleConnect"
     >
-      <Background pattern-color="#cbd5e1" :gap="20" />
+      <Background pattern-color="hsl(var(--border))" :gap="20" />
       <MiniMap pannable zoomable />
       <Controls />
     </VueFlow>
@@ -156,11 +165,11 @@ function handleConnect(connection: Connection) {
 
 <style scoped>
 .agent-flow-canvas :deep(.vue-flow__node) {
-  border: 1px solid #94a3b8;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
   border-radius: 8px;
-  background: #fff;
-  color: #0f172a;
-  box-shadow: 0 2px 8px rgb(15 23 42 / 8%);
+  box-shadow: 0 2px 8px hsl(var(--foreground) / 8%);
 }
 
 .agent-flow-canvas :deep(.agent-flow-node-disabled) {

@@ -1,0 +1,8 @@
+{
+  "backToLogin": "Back to sign in",
+  "loadingMenu": "Loading navigation...",
+  "menuLoadFailedDescription": "Navigation and permissions could not be loaded. Check your connection and try again.",
+  "menuLoadFailedTitle": "Navigation failed to load",
+  "retry": "Try again",
+  "skipToContent": "Skip to main content"
+}

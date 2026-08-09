@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { AgentGraphApi } from '#/api/agent/graph';
 
+import { $t } from '#/locales';
+
 defineProps<{
   result: AgentGraphApi.GraphValidationVO;
 }>();
@@ -9,29 +11,35 @@ defineProps<{
 <template>
   <div>
     <div class="mb-4 text-center">
-      <span v-if="result.valid" class="text-lg font-bold text-green-500">
-        校验通过
+      <span v-if="result.valid" class="text-lg font-bold text-success">
+        {{ $t('agent.validationPassed') }}
       </span>
-      <span v-else class="text-lg font-bold text-red-500"> 校验失败 </span>
+      <span v-else class="text-lg font-bold text-error">
+        {{ $t('agent.validationFailed') }}
+      </span>
     </div>
 
     <div v-if="result.errors && result.errors.length > 0" class="mb-3">
-      <div class="mb-1 font-bold text-red-500">错误</div>
+      <div class="mb-1 font-bold text-error">
+        {{ $t('agent.validationErrors') }}
+      </div>
       <div
         v-for="(err, i) in result.errors"
         :key="i"
-        class="mb-1 text-sm text-red-400"
+        class="mb-1 text-sm text-error"
       >
         {{ err }}
       </div>
     </div>
 
     <div v-if="result.warnings && result.warnings.length > 0">
-      <div class="mb-1 font-bold text-yellow-500">警告</div>
+      <div class="mb-1 font-bold text-warning">
+        {{ $t('agent.validationWarnings') }}
+      </div>
       <div
         v-for="(warn, i) in result.warnings"
         :key="i"
-        class="mb-1 text-sm text-yellow-400"
+        class="mb-1 text-sm text-warning"
       >
         {{ warn }}
       </div>

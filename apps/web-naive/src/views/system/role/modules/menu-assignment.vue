@@ -143,7 +143,7 @@ const [Modal, modalApi] = useVbenModal<SystemRoleApi.SystemRole>({
 </script>
 
 <template>
-  <Modal :title="title" class="w-[640px]">
+  <Modal :title="title" class="w-[92vw] max-w-[640px]">
     <NSpin :show="loading">
       <NTree
         :checked-keys="checkedTreeKeys"
