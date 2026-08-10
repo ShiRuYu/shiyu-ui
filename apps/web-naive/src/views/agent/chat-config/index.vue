@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 import {
   NButton,
@@ -14,38 +14,112 @@ import {
   useMessage,
 } from 'naive-ui';
 
-import { chat, chatStream } from '#/api/agent/chat';
+import { chat, chatStream, getModelOptions } from '#/api/agent/chat';
 import { getPlatformOptions } from '#/api/agent/platform';
 import { $t } from '#/locales';
 
 const message = useMessage();
 
-const platforms = ref<{ label: string; value: string }[]>([]);
-const platform = ref('SILICON_FLOW');
-const model = ref('');
+interface PlatformSelectOption {
+  code: string;
+  label: string;
+  value: number;
+}
+
+const platforms = ref<PlatformSelectOption[]>([]);
+const models = ref<Array<{ label: string; value: string }>>([]);
+const platformId = ref<number>();
+const model = ref<string>();
 const prompt = ref('');
 const mode = ref<'stream' | 'sync'>('sync');
 const result = ref('');
 const loading = ref(false);
+const loadingPlatforms = ref(false);
+const loadingModels = ref(false);
+let controller: AbortController | undefined;
+let modelRequestSequence = 0;
 
-async function loadPlatforms() {
+function getSelectedPlatformCode() {
+  return platforms.value.find((item) => item.value === platformId.value)?.code;
+}
+
+async function loadModels(selectedPlatformId: number) {
+  const requestSequence = ++modelRequestSequence;
+  loadingModels.value = true;
+  model.value = undefined;
+  models.value = [];
+
   try {
-    const list = await getPlatformOptions();
-    platforms.value = (list || []).map((p: any) => ({
-      label: p.name,
-      value: p.code || p.name,
-    }));
+    const list = await getModelOptions(selectedPlatformId);
+    if (requestSequence !== modelRequestSequence) return;
+
+    models.value = (list ?? [])
+      .filter((item) => item.value)
+      .map((item) => ({
+        label: item.name || item.value || '',
+        value: item.value || '',
+      }));
+    model.value = models.value[0]?.value;
   } catch {
-    platforms.value = [
-      { label: 'SiliconFlow', value: 'SILICON_FLOW' },
-      { label: 'DeepSeek', value: 'DEEPSEEK' },
-      { label: 'OpenAI', value: 'OPENAI' },
-    ];
+    if (requestSequence === modelRequestSequence) {
+      message.error($t('agent.chatConfigCatalogError'));
+    }
+  } finally {
+    if (requestSequence === modelRequestSequence) {
+      loadingModels.value = false;
+    }
   }
 }
 
+async function loadPlatforms() {
+  loadingPlatforms.value = true;
+  try {
+    const list = await getPlatformOptions();
+    platforms.value = (list ?? []).map((item) => ({
+      code: item.code,
+      label: item.name,
+      value: item.id,
+    }));
+    platformId.value =
+      platforms.value.find((item) => item.code === 'SILICON_FLOW')?.value ??
+      platforms.value[0]?.value;
+
+    if (platformId.value) {
+      await loadModels(platformId.value);
+    }
+  } catch {
+    message.error($t('agent.chatConfigCatalogError'));
+  } finally {
+    loadingPlatforms.value = false;
+  }
+}
+
+async function handlePlatformChange(selectedPlatformId: number | null) {
+  if (selectedPlatformId === null) {
+    model.value = undefined;
+    models.value = [];
+    return;
+  }
+  await loadModels(selectedPlatformId);
+}
+
+function stopStream() {
+  controller?.abort();
+}
+
+function clearConversation() {
+  stopStream();
+  prompt.value = '';
+  result.value = '';
+}
+
 async function handleSend() {
-  if (!prompt.value) {
+  const platform = getSelectedPlatformCode();
+  if (!platform || !model.value) {
+    message.warning($t('agent.chatConfigSelectPlatformModel'));
+    return;
+  }
+  if (!prompt.value.trim()) {
     message.warning($t('agent.chatConfigInputPrompt'));
     return;
   }
@@ -53,36 +127,40 @@ async function handleSend() {
   result.value = '';
 
   try {
+    const request = {
+      model: model.value,
+      platform,
+      prompt: prompt.value.trim(),
+    };
     if (mode.value === 'sync') {
-      const res = await chat({
-        platform: platform.value,
-        model: model.value || undefined,
-        prompt: prompt.value,
-      });
+      const res = await chat(request);
       result.value = res?.content || JSON.stringify(res);
     } else {
-      result.value = '';
+      controller = new AbortController();
       await chatStream(
-        {
-          platform: platform.value,
-          model: model.value || undefined,
-          prompt: prompt.value,
-        },
+        request,
         (text: string) => {
           result.value += text;
         },
+        { signal: controller.signal },
       );
     }
   } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      result.value ||= $t('agent.chatStopped');
+      return;
+    }
     result.value = $t('agent.chatConfigError', {
       message: error.message || $t('agent.chatConfigUnknownError'),
     });
   } finally {
+    controller = undefined;
     loading.value = false;
   }
 }
 
-loadPlatforms();
+onMounted(loadPlatforms);
+onBeforeUnmount(stopStream);
 </script>
 
 <template>
@@ -90,10 +168,27 @@ loadPlatforms();
     <NForm label-placement="left" label-width="100">
       <NFormItem :label="$t('agent.chatConfigPlatform')">
         <NSelect
-          v-model:value="platform"
+          v-model:value="platformId"
+          class="catalog-select"
+          :aria-label="$t('agent.chatConfigPlatform')"
+          :disabled="loading"
+          :loading="loadingPlatforms"
           :options="platforms"
+          :placeholder="$t('agent.chatConfigSelectPlatform')"
           filterable
-          style="width: 250px"
+          @update:value="handlePlatformChange"
+        />
+      </NFormItem>
+      <NFormItem :label="$t('agent.chatConfigModel')">
+        <NSelect
+          v-model:value="model"
+          class="catalog-select"
+          :aria-label="$t('agent.chatConfigModel')"
+          :disabled="loading || !platformId"
+          :loading="loadingModels"
+          :options="models"
+          :placeholder="$t('agent.chatConfigSelectModel')"
+          filterable
         />
       </NFormItem>
       <NFormItem :label="$t('agent.chatConfigMode')">
@@ -112,17 +207,25 @@ loadPlatforms();
       </NFormItem>
       <NFormItem>
         <NSpace>
-          <NButton type="primary" :loading="loading" @click="handleSend">
-            {{ $t('agent.chatConfigSend') }}
+          <NButton
+            v-if="loading && mode === 'stream'"
+            type="warning"
+            @click="stopStream"
+          >
+            {{ $t('agent.chatStop') }}
           </NButton>
           <NButton
-            @click="
-              () => {
-                prompt = '';
-                result = '';
-              }
+            v-else
+            type="primary"
+            :disabled="
+              !platformId || !model || loadingPlatforms || loadingModels
             "
+            :loading="loading"
+            @click="handleSend"
           >
+            {{ $t('agent.chatConfigSend') }}
+          </NButton>
+          <NButton :disabled="loading" @click="clearConversation">
             {{ $t('agent.chatConfigClear') }}
           </NButton>
         </NSpace>
@@ -138,3 +241,9 @@ loadPlatforms();
     </NCard>
   </NCard>
 </template>
+
+<style scoped>
+.catalog-select {
+  width: min(100%, 20rem);
+}
+</style>

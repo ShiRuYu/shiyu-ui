@@ -167,6 +167,129 @@ test.describe('web-naive critical journeys', () => {
     });
   });
 
+  test('changes the model on the standalone chat debug page', async ({
+    page,
+  }) => {
+    const apiResponse = (data: unknown) =>
+      JSON.stringify({ code: 200, data, message: 'success' });
+
+    await page.route('**/auth/login', (route) => {
+      if (route.request().method() !== 'POST') return route.fallback();
+      return route.fulfill({
+        body: apiResponse({ accessToken: 'e2e-isolated-token' }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/user/detail', (route) =>
+      route.fulfill({
+        body: apiResponse({
+          homePath: '/agent/chat-config',
+          id: 1,
+          realName: 'E2E User',
+          roles: ['admin'],
+          username: 'e2e',
+        }),
+        contentType: 'application/json',
+      }),
+    );
+    await page.route('**/auth/codes', (route) =>
+      route.fulfill({
+        body: apiResponse([]),
+        contentType: 'application/json',
+      }),
+    );
+    await page.route('**/auth/tenants', (route) =>
+      route.fulfill({
+        body: apiResponse([]),
+        contentType: 'application/json',
+      }),
+    );
+    await page.route('**/menu/all', (route) =>
+      route.fulfill({
+        body: apiResponse([
+          {
+            children: [
+              {
+                component: '/agent/chat-config/index',
+                meta: { title: '对话调试' },
+                name: 'AgentChatConfig',
+                path: '/agent/chat-config',
+              },
+            ],
+            component: 'BasicLayout',
+            meta: { title: 'Agent 平台' },
+            name: 'AgentPlatform',
+            path: '/agent',
+          },
+        ]),
+        contentType: 'application/json',
+      }),
+    );
+    await page.route('**/admin/platform/options', (route) =>
+      route.fulfill({
+        body: apiResponse([
+          { code: 'SILICON_FLOW', id: 1, name: 'SiliconFlow' },
+          { code: 'DEEPSEEK', id: 2, name: 'DeepSeek' },
+        ]),
+        contentType: 'application/json',
+      }),
+    );
+    await page.route('**/agent/model/options**', (route) => {
+      const platformId = new URL(route.request().url()).searchParams.get(
+        'platformId',
+      );
+      return route.fulfill({
+        body: apiResponse(
+          platformId === '2'
+            ? [
+                {
+                  id: 20,
+                  name: 'DeepSeek Chat',
+                  value: 'deepseek-chat',
+                },
+              ]
+            : [
+                {
+                  id: 10,
+                  name: 'Qwen Plus',
+                  value: 'qwen-plus',
+                },
+              ],
+        ),
+        contentType: 'application/json',
+      });
+    });
+
+    await signIn(page);
+    let requestBody: Record<string, string> | undefined;
+    await page.route('**/chat/send-stream', async (route) => {
+      requestBody = route.request().postDataJSON();
+      await route.fulfill({
+        body: 'data: {"success":true,"content":"debug ok"}\n\n',
+        contentType: 'text/event-stream',
+        status: 200,
+      });
+    });
+
+    await page.goto('/agent/chat-config');
+    await page.getByLabel(/平台|Platform/).click();
+    await page.getByText('DeepSeek', { exact: true }).last().click();
+    await page.getByLabel(/模型|Model/).click();
+    await page.getByText('DeepSeek Chat', { exact: true }).last().click();
+    await page.getByText(/流式 \(SSE\)|Stream \(SSE\)/).click();
+    await page
+      .getByPlaceholder(/输入对话内容|Enter your message/)
+      .fill('debug');
+    await page.getByRole('button', { name: /发送|Send/ }).click();
+
+    await expect(page.getByText('debug ok', { exact: true })).toBeVisible();
+    expect(requestBody).toMatchObject({
+      model: 'deepseek-chat',
+      platform: 'DEEPSEEK',
+      prompt: 'debug',
+    });
+  });
+
   test('redirects an expired session without duplicate error messages', async ({
     page,
   }) => {
