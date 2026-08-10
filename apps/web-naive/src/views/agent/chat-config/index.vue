@@ -94,7 +94,7 @@ async function loadPlatforms() {
   }
 }
 
-async function handlePlatformChange(selectedPlatformId: number | null) {
+async function handlePlatformChange(selectedPlatformId: null | number) {
   if (selectedPlatformId === null) {
     model.value = undefined;
     models.value = [];
