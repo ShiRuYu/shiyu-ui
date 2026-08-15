@@ -1,4 +1,4 @@
-﻿# QUICK-START.md
+# QUICK-START.md
 
 ## 环境要求
 

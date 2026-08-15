@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import type {
+  KnowledgeGraphEdge,
+  KnowledgeGraphNode,
+} from '../components/knowledge-graph-canvas.vue';
+
+import type { KnowledgePoint } from '#/api/knowledge/point';
+import type { KnowledgeRelation } from '#/api/knowledge/relation';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -22,21 +30,16 @@ import { storeToRefs } from 'pinia';
 import {
   getKnowledgePointGraph,
   getKnowledgePoints,
-  type KnowledgePoint,
 } from '#/api/knowledge/point';
 import {
   createKnowledgeRelation,
   deleteKnowledgeRelation,
   getKnowledgeRelations,
-  type KnowledgeRelation,
 } from '#/api/knowledge/relation';
 import { useKnowledgeStore } from '#/store';
 
 import KnowledgeEmptyState from '../components/knowledge-empty-state.vue';
-import KnowledgeGraphCanvas, {
-  type KnowledgeGraphEdge,
-  type KnowledgeGraphNode,
-} from '../components/knowledge-graph-canvas.vue';
+import KnowledgeGraphCanvas from '../components/knowledge-graph-canvas.vue';
 import KnowledgeSpaceHeader from '../components/knowledge-space-header.vue';
 
 interface PointGraph {
@@ -77,9 +80,9 @@ function toPoint(node: { code: string; id: number; name: string }) {
 }
 
 function uniqueSortedPoints(points: KnowledgePoint[]) {
-  return [...new Map(points.map((point) => [point.id, point])).values()].sort(
-    comparePoints,
-  );
+  return [
+    ...new Map(points.map((point) => [point.id, point])).values(),
+  ].toSorted(comparePoints);
 }
 
 const pointGroups = computed<Record<GraphGroup, KnowledgePoint[]>>(() => {
@@ -195,7 +198,7 @@ const selectedRelations = computed(() => {
       (relation) =>
         relation.sourceId === nodeId || relation.targetId === nodeId,
     )
-    .sort((left, right) => {
+    .toSorted((left, right) => {
       const typeCompare = relationLabel(left.relationType).localeCompare(
         relationLabel(right.relationType),
         'zh-CN',
@@ -244,32 +247,34 @@ const flowEdges = computed<KnowledgeGraphEdge[]>(() => {
       target: relation.targetId,
       weight: relation.weight,
     }));
-  if (direct.length) return direct;
+  if (direct.length > 0) return direct;
+  const centerId = graph.value?.node?.id;
+  if (!centerId) return [];
   const fallback: KnowledgeGraphEdge[] = [];
   pointGroups.value.parent.forEach((node) =>
     fallback.push({
-      id: `${node.id}->${graph.value!.node!.id}:PRE`,
+      id: `${node.id}->${centerId}:PRE`,
       relationType: 'PRE',
       direction: 'child',
       source: node.id,
-      target: graph.value!.node!.id,
+      target: centerId,
     }),
   );
   pointGroups.value.child.forEach((node) =>
     fallback.push({
-      id: `${graph.value!.node!.id}->${node.id}:PRE`,
+      id: `${centerId}->${node.id}:PRE`,
       relationType: 'PRE',
       direction: 'parent',
-      source: graph.value!.node!.id,
+      source: centerId,
       target: node.id,
     }),
   );
   pointGroups.value.related.forEach((node) =>
     fallback.push({
-      id: `${graph.value!.node!.id}->${node.id}:RELATED`,
+      id: `${centerId}->${node.id}:RELATED`,
       relationType: 'RELATED',
       direction: 'related',
-      source: graph.value!.node!.id,
+      source: centerId,
       target: node.id,
     }),
   );

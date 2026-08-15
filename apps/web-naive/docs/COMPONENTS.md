@@ -1,4 +1,4 @@
-﻿# COMPONENTS.md — 组件开发指南
+# COMPONENTS.md — 组件开发指南
 
 ## 一、组件结构规范
 

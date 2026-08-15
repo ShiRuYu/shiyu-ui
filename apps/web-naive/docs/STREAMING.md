@@ -1,4 +1,4 @@
-﻿# STREAMING.md — AI Streaming 架构指南
+# STREAMING.md — AI Streaming 架构指南
 
 ## 一、当前实现
 

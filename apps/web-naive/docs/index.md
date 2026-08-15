@@ -1,4 +1,4 @@
-﻿# shiyu-ui 项目文档
+# shiyu-ui 项目文档
 
 > 基于 Vben Admin v5.7 的 AI 教育平台前端
 

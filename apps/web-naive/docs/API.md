@@ -1,4 +1,4 @@
-﻿# API.md — API 层规范
+# API.md — API 层规范
 
 ## 一、接口层架构
 

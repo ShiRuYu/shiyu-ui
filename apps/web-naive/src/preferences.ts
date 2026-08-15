@@ -16,7 +16,9 @@ export const overridesPreferences = defineOverridesPreferences({
     accessMode: 'mixed',
     defaultAvatar: '/avatar.svg',
     enableCheckUpdates: false,
-    enableRefreshToken: true,
+    // The backend currently rotates a still-valid access token; it does not
+    // issue an independent refresh token that can recover an expired session.
+    enableRefreshToken: false,
   },
   copyright: {
     ...appCopyrightPreferences,

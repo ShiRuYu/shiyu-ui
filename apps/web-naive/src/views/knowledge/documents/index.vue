@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { DataTableColumns, UploadCustomRequestOptions } from 'naive-ui';
 
+import type { DocumentVersion } from '#/api/knowledge/document';
+import type { KnowledgeDocument } from '#/api/knowledge/enterprise';
+
 import { h, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -26,7 +29,6 @@ import { storeToRefs } from 'pinia';
 
 import { dialog } from '#/adapter/naive';
 import {
-  type DocumentVersion,
   getDocumentVersions,
   getKnowledgeDocumentRelations,
   getKnowledgePointIdsByDocument,
@@ -39,7 +41,6 @@ import {
   deleteDocument,
   getDocuments,
   importDocumentFromUrl,
-  type KnowledgeDocument,
   transitionDocument,
   uploadDocument,
 } from '#/api/knowledge/enterprise';
@@ -149,6 +150,8 @@ async function action(
   await load();
 }
 async function showDetail(row: KnowledgeDocument) {
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) return;
   selected.value = row;
   drawer.value = true;
   const [documentVersions, pointIds, relations] = await Promise.all([
@@ -162,7 +165,7 @@ async function showDetail(row: KnowledgeDocument) {
     documentId: item.targetDocumentId,
     relationType: item.relationType,
   }));
-  const documentPage = await getDocuments(activeSpaceId.value!, {
+  const documentPage = await getDocuments(spaceId, {
     pageNum: 1,
     pageSize: 100,
   });
@@ -187,7 +190,7 @@ async function searchPointOptions(keyword: string) {
     const missingIds = selectedPointIds.value.filter(
       (id) => !options.some((option) => option.value === id),
     );
-    if (missingIds.length) {
+    if (missingIds.length > 0) {
       const missing = await Promise.all(
         missingIds.map((id) => getKnowledgePoint(id)),
       );
@@ -266,16 +269,17 @@ async function importFromUrl() {
   }
 }
 async function rollback(versionId: number) {
-  if (!selected.value) return;
+  const document = selected.value;
+  if (!document) return;
   dialog.warning({
     title: '回滚文档版本',
     content: '回滚后会生成新的当前版本，并重新触发相关处理流程，是否继续？',
     negativeText: '取消',
     positiveText: '确认回滚',
     onPositiveClick: async () => {
-      await rollbackDocument(selected.value!.id, versionId);
+      await rollbackDocument(document.id, versionId);
       message.success('已回滚到指定版本');
-      await Promise.all([load(), showDetail(selected.value!)]);
+      await Promise.all([load(), showDetail(document)]);
     },
   });
 }

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { DataTableColumns } from 'naive-ui';
 
+import type {
+  EmbeddedRuntimeStatus,
+  IngestionJob,
+  JobStatus,
+} from '#/api/knowledge/enterprise';
+
 import {
   computed,
   h,
@@ -32,11 +38,8 @@ import { storeToRefs } from 'pinia';
 import { dialog } from '#/adapter/naive';
 import {
   cancelJob,
-  type EmbeddedRuntimeStatus,
   getEmbeddedRuntimeStatus,
   getJobs,
-  type IngestionJob,
-  type JobStatus,
   rebuildSpaceIndex,
   retryJob,
 } from '#/api/knowledge/enterprise';
@@ -114,7 +117,8 @@ async function load(silent = false) {
   }
 }
 function rebuild() {
-  if (!activeSpaceId.value) return;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) return;
   dialog.warning({
     title: '重建当前空间索引',
     content: '重建会创建后台任务，期间检索结果可能短暂使用旧索引。确认继续吗？',
@@ -123,7 +127,7 @@ function rebuild() {
     onPositiveClick: async () => {
       rebuilding.value = true;
       try {
-        await rebuildSpaceIndex(activeSpaceId.value!);
+        await rebuildSpaceIndex(spaceId);
         message.success('索引重建任务已提交');
         await load();
       } finally {
@@ -178,16 +182,15 @@ const columns: DataTableColumns<IngestionJob> = [
     key: 'progress',
     title: '进度',
     minWidth: 180,
-    render: (row) =>
-      h(NProgress, {
+    render: (row) => {
+      let progressStatus: 'default' | 'error' | 'success' = 'default';
+      if (row.status === 'FAILED') progressStatus = 'error';
+      if (row.status === 'SUCCEEDED') progressStatus = 'success';
+      return h(NProgress, {
         percentage: row.progress,
-        status:
-          row.status === 'FAILED'
-            ? 'error'
-            : row.status === 'SUCCEEDED'
-              ? 'success'
-              : 'default',
-      }),
+        status: progressStatus,
+      });
+    },
   },
   {
     key: 'actions',

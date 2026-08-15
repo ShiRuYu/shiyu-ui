@@ -1,4 +1,4 @@
-﻿# STATE-MANAGEMENT.md — 状态管理
+# STATE-MANAGEMENT.md — 状态管理
 
 ## 一、当前状态
 

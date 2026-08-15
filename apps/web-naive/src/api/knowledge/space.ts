@@ -1,4 +1,4 @@
-﻿import type { KnowledgeSpace, PageData } from './enterprise';
+import type { KnowledgeSpace, PageData } from './enterprise';
 
 import { requestClient } from '#/api/request';
 

@@ -28,7 +28,7 @@ function byFile(modules: Record<string, LocaleTree>) {
   return Object.fromEntries(
     Object.entries(modules).map(([path, messages]) => [
       fileName(path),
-      flattenKeys(messages).sort(),
+      flattenKeys(messages).toSorted(),
     ]),
   );
 }

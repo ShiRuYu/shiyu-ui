@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 
+import type {
+  KnowledgeEvaluationCase,
+  KnowledgeEvaluationRunResult,
+} from '#/api/knowledge/evaluation';
+
 import { h, onMounted, reactive, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -24,8 +29,6 @@ import {
   createKnowledgeEvaluation,
   deleteKnowledgeEvaluation,
   getKnowledgeEvaluations,
-  type KnowledgeEvaluationCase,
-  type KnowledgeEvaluationRunResult,
   runKnowledgeEvaluation,
 } from '#/api/knowledge/evaluation';
 import { useKnowledgeStore } from '#/store';

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 
+import type { KnowledgeSpace } from '#/api/knowledge/enterprise';
+import type { SpaceMember } from '#/api/knowledge/space';
+
 import { h, onMounted, reactive, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -26,13 +29,11 @@ import {
   createSpace,
   getKnowledgeDomainLabel,
   getSpaces,
-  type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 import {
   deleteSpace,
   getSpaceMembers,
   replaceSpaceMembers,
-  type SpaceMember,
   updateSpace,
 } from '#/api/knowledge/space';
 import { useKnowledgeStore } from '#/store';

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 
+import type { KnowledgePoint } from '#/api/knowledge/point';
+
 import { computed, h, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -31,7 +33,6 @@ import {
   createKnowledgePoint,
   deleteKnowledgePoint,
   getKnowledgePoints,
-  type KnowledgePoint,
   updateKnowledgePoint,
 } from '#/api/knowledge/point';
 import { useKnowledgeStore } from '#/store';
@@ -92,9 +93,9 @@ function parseTags(value?: string) {
     // 兼容历史逗号分隔格式。
   }
   return value
-    .replace(/^\[|\]$/g, '')
+    .replaceAll(/^\[|\]$/g, '')
     .split(/[,，]/)
-    .map((item) => item.replace(/^["']|["']$/g, '').trim())
+    .map((item) => item.replaceAll(/^["']|["']$/g, '').trim())
     .filter(Boolean);
 }
 
@@ -139,9 +140,10 @@ async function open(row?: KnowledgePoint) {
           tags: '',
         },
   );
-  selectedDocumentIds.value = row
-    ? (await getKnowledgeDocumentsByPoint(row.id)).map((item) => item.id)
+  const relatedDocuments = row
+    ? await getKnowledgeDocumentsByPoint(row.id)
     : [];
+  selectedDocumentIds.value = relatedDocuments.map((item) => item.id);
   await searchDocumentOptions('');
   showDrawer.value = true;
 }
@@ -161,7 +163,7 @@ async function searchDocumentOptions(keyword: string) {
     const missingIds = selectedDocumentIds.value.filter(
       (id) => !options.some((option) => option.value === id),
     );
-    if (missingIds.length) {
+    if (missingIds.length > 0) {
       const missing = await Promise.all(
         missingIds.map((id) => getKnowledgeDocument(id)),
       );

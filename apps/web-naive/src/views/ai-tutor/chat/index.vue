@@ -153,7 +153,7 @@ function stopGeneration() {
 
 function retryMessage(index: number) {
   const previous = [...messages.value.slice(0, index)]
-    .reverse()
+    .toReversed()
     .find((item) => item.role === 'user');
   if (!previous) return;
   messages.value.splice(index, 1);

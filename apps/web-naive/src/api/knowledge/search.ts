@@ -1,4 +1,4 @@
-﻿import type { HybridHit } from './enterprise';
+import type { HybridHit } from './enterprise';
 
 import { requestClient } from '#/api/request';
 export interface SearchResponse {

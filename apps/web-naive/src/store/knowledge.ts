@@ -1,3 +1,9 @@
+import type {
+  KnowledgeDifficultyScale,
+  KnowledgeDomainCode,
+  KnowledgeSpace,
+} from '#/api/knowledge/enterprise';
+
 import { computed, ref, shallowRef } from 'vue';
 
 import { defineStore } from 'pinia';
@@ -6,9 +12,6 @@ import {
   getDifficultyScale,
   getKnowledgeDomainLabel,
   getSpaces,
-  type KnowledgeDifficultyScale,
-  type KnowledgeDomainCode,
-  type KnowledgeSpace,
 } from '#/api/knowledge/enterprise';
 
 const ACTIVE_SPACE_KEY = 'shiyu-knowledge-active-space';

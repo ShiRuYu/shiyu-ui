@@ -1,4 +1,4 @@
-﻿# CODING-STANDARDS.md — 编码规范
+# CODING-STANDARDS.md — 编码规范
 
 ## 一、Vue / TypeScript 规范
 

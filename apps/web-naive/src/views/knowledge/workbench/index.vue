@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import type {
+  IngestionJob,
+  KnowledgeDocument,
+} from '#/api/knowledge/enterprise';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -7,12 +12,7 @@ import { Page } from '@vben/common-ui';
 import { NButton, NCard, NStatistic, NTag } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
-import {
-  getDocuments,
-  getJobs,
-  type IngestionJob,
-  type KnowledgeDocument,
-} from '#/api/knowledge/enterprise';
+import { getDocuments, getJobs } from '#/api/knowledge/enterprise';
 import { getKnowledgePoints } from '#/api/knowledge/point';
 import { useKnowledgeStore } from '#/store';
 

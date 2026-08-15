@@ -93,7 +93,7 @@ function normalizeSource(
 ): NodeTypeApi.DataSourceConfig | undefined {
   if (!field.source) return undefined;
   if (typeof field.source !== 'string') return field.source;
-  const text = field.source.replace(/^@\{|\}$/g, '');
+  const text = field.source.replaceAll(/^@\{|\}$/g, '');
   const values: Record<string, string> = {};
   for (const item of text.split(';')) {
     const [key, ...rest] = item.split('=');

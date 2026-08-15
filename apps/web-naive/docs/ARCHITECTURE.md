@@ -1,4 +1,4 @@
-﻿# ARCHITECTURE.md
+# ARCHITECTURE.md
 
 ## 架构总览
 

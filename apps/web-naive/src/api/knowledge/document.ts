@@ -1,4 +1,4 @@
-﻿import type { KnowledgeDocument } from './enterprise';
+import type { KnowledgeDocument } from './enterprise';
 
 import { requestClient } from '#/api/request';
 

@@ -25,12 +25,11 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'selectNode', node: AgentGraphApi.FormNode): void;
-  (e: 'selectEdge', edge: AgentGraphApi.FormEdge): void;
+  (e: 'connect' | 'selectEdge', edge: AgentGraphApi.FormEdge): void;
   (
     e: 'updatePositions',
     positions: Record<string, { x: number; y: number }>,
   ): void;
-  (e: 'connect', edge: AgentGraphApi.FormEdge): void;
   (e: 'addNode'): void;
 }>();
 
@@ -51,22 +50,25 @@ function syncGraph() {
       node.enabled === false ? 'agent-flow-node-disabled' : 'agent-flow-node',
     data: node,
   }));
-  flowEdges.value = props.edges.map((edge) => ({
-    id: edge.id,
-    source: edge.source,
-    target: edge.target,
-    label:
-      edge.edgeType === 'conditional'
-        ? edge.isDefault
-          ? $t('agent.flowDefaultEdge')
-          : edge.conditionMapping ||
-            edge.conditionType ||
-            $t('agent.flowConditionalEdge')
-        : undefined,
-    markerEnd: MarkerType.ArrowClosed,
-    animated: edge.edgeType === 'conditional',
-    data: edge,
-  }));
+  flowEdges.value = props.edges.map((edge) => {
+    let label: string | undefined;
+    if (edge.edgeType === 'conditional') {
+      label = edge.isDefault
+        ? $t('agent.flowDefaultEdge')
+        : edge.conditionMapping ||
+          edge.conditionType ||
+          $t('agent.flowConditionalEdge');
+    }
+    return {
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
+      label,
+      markerEnd: MarkerType.ArrowClosed,
+      animated: edge.edgeType === 'conditional',
+      data: edge,
+    };
+  });
 }
 
 watch(() => [props.nodes, props.edges], syncGraph, {

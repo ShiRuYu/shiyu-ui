@@ -1,4 +1,4 @@
-﻿# shiyu-ui Project Documentation
+# shiyu-ui Project Documentation
 
 > AI Education Platform Frontend built on Vben Admin v5.7
 

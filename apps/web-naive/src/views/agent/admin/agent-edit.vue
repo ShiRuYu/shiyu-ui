@@ -205,6 +205,8 @@ const isDirty = computed(
 );
 
 function confirmLeave(): boolean {
+  // The router guard requires a synchronous browser decision.
+  // oxlint-disable-next-line eslint/no-alert
   return !isDirty.value || window.confirm($t('agent.adminEditUnsavedConfirm'));
 }
 
@@ -583,7 +585,7 @@ function openAddNode() {
     enabled: true,
     description: '',
     config: {},
-    timeout: 30000,
+    timeout: 30_000,
     retryCount: 0,
     retryInterval: 1000,
     errorStrategy: 'THROW',
@@ -707,7 +709,7 @@ function confirmEdge() {
     const index = formEdges.value.findIndex(
       (item) => item.id === editingEdgeId.value,
     );
-    if (index >= 0) formEdges.value.splice(index, 1, edge);
+    if (index !== -1) formEdges.value.splice(index, 1, edge);
   }
   showEdgeModal.value = false;
 }
@@ -747,7 +749,7 @@ function confirmCondEdge() {
     const index = formEdges.value.findIndex(
       (item) => item.id === editingEdgeId.value,
     );
-    if (index >= 0) formEdges.value.splice(index, 1, edge);
+    if (index !== -1) formEdges.value.splice(index, 1, edge);
   }
   showCondEdgeModal.value = false;
 }

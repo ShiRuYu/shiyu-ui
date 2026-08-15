@@ -71,7 +71,7 @@ async function loadPlatforms(row?: ModelApi.ModelItem) {
     if (selectedPlatformId.value) {
       await loadModels(selectedPlatformId.value, row);
     }
-  } catch (error) {
+  } catch {
     response.value = $t('ai-tutor.catalogError');
   } finally {
     loadingPlatforms.value = false;

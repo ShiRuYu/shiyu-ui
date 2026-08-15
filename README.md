@@ -13,7 +13,7 @@ ShiYu AI 的 Vue 3 管理端，基于 Vben 5.7、Vue 3.5、TypeScript、Vite 与
 5. 日常记录
 6. 系统管理
 
-教育空间继续聚合为“学习、练习与考试、复习、AI 辅学、学习分析、教育配置”六组。完整菜单树与权限边界见 [信息架构说明](./docs/web-naive-layout-redesign.md)。
+教育空间继续聚合为“学习、练习与考试、复习、AI 辅学、学习分析、教育配置”六组。完整产品说明从 [前端文档导航](./docs/文档导航.md) 进入，76 个菜单路由与角色基线见 [页面路由与角色清单](./docs/参考/页面路由与角色清单.md)。
 
 ## 环境要求
 
@@ -62,7 +62,7 @@ apps/web-naive/src/
 └─ views/           页面与模块组件
 ```
 
-模块边界见 [MODULES.md](./apps/web-naive/docs/MODULES.md)，本轮工程优化与验收记录见 [实施说明](./docs/web-naive-optimization-implementation.md)。
+模块边界见 [MODULES.md](./apps/web-naive/docs/MODULES.md)，本轮工程优化、契约和联调结果见后端仓库的 [质量与联调报告](../shiyu-ai/docs/质量与联调报告.md)。
 
 ## 动态菜单契约
 

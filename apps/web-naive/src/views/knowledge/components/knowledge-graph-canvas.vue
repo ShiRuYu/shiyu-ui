@@ -58,6 +58,22 @@ const relationLabels: Record<string, string> = {
   SIMILAR: '相似',
 };
 
+function getEdgeColor(direction?: KnowledgeGraphEdge['direction']) {
+  if (direction === 'parent') return '#16a34a';
+  if (direction === 'child') return '#d97706';
+  return '#2563eb';
+}
+
+function getEdgeLabel(edge: KnowledgeGraphEdge) {
+  const configuredLabel =
+    relationLabels[edge.relationType?.toUpperCase() || ''];
+  if (configuredLabel) return configuredLabel;
+  if (edge.direction === 'parent') return '前置';
+  if (edge.direction === 'child') return '后续';
+  if (edge.direction === 'related') return '相关';
+  return edge.relationType || '关系';
+}
+
 async function syncGraph() {
   flowNodes.value = props.nodes.map((node, index) => ({
     id: String(node.id),
@@ -83,21 +99,8 @@ async function syncGraph() {
   }));
   flowEdges.value = flowEdges.value.map((flowEdge) => {
     const edge = flowEdge.data as KnowledgeGraphEdge;
-    const color =
-      edge.direction === 'parent'
-        ? '#16a34a'
-        : edge.direction === 'child'
-          ? '#d97706'
-          : '#2563eb';
-    const label =
-      relationLabels[edge.relationType?.toUpperCase() || ''] ||
-      (edge.direction === 'parent'
-        ? '前置'
-        : edge.direction === 'child'
-          ? '后续'
-          : edge.direction === 'related'
-            ? '相关'
-            : edge.relationType || '关系');
+    const color = getEdgeColor(edge.direction);
+    const label = getEdgeLabel(edge);
     return {
       ...flowEdge,
       type: edge.direction === 'related' ? 'default' : 'smoothstep',

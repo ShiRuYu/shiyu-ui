@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { DataTableColumns } from 'naive-ui';
 
+import type {
+  BackupResult,
+  EmbeddedRuntimeStatus,
+  KnowledgeAuditLog,
+} from '#/api/knowledge/enterprise';
+
 import { computed, onMounted, reactive, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -20,13 +26,10 @@ import { storeToRefs } from 'pinia';
 
 import { dialog } from '#/adapter/naive';
 import {
-  type BackupResult,
   checkEmbeddedBackup,
   createEmbeddedBackup,
-  type EmbeddedRuntimeStatus,
   getEmbeddedRuntimeStatus,
   getKnowledgeAudits,
-  type KnowledgeAuditLog,
 } from '#/api/knowledge/enterprise';
 import { useKnowledgeStore } from '#/store';
 

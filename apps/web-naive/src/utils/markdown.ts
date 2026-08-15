@@ -9,9 +9,9 @@ function escapeHtml(value: string): string {
 
 function renderInline(value: string): string {
   return value
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    .replaceAll(/`([^`]+)`/g, '<code>$1</code>')
+    .replaceAll(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replaceAll(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
 /**
@@ -22,7 +22,7 @@ function renderInline(value: string): string {
 function renderSafeMarkdown(markdown: string): string {
   const escaped = escapeHtml(markdown);
   const codeBlocks: string[] = [];
-  const withPlaceholders = escaped.replace(
+  const withPlaceholders = escaped.replaceAll(
     /```([\w-]*)\n?([\s\S]*?)```/g,
     (_match, language: string, code: string) => {
       const index = codeBlocks.length;
@@ -34,7 +34,7 @@ function renderSafeMarkdown(markdown: string): string {
     },
   );
 
-  let html = renderInline(withPlaceholders).replace(/\n/g, '<br>');
+  let html = renderInline(withPlaceholders).replaceAll('\n', '<br>');
   codeBlocks.forEach((block, index) => {
     html = html.replace(`\u0000CODE${index}\u0000`, block);
   });

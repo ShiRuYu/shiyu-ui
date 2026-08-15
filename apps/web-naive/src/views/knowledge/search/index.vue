@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { HybridHit } from '#/api/knowledge/enterprise';
+
 import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -19,7 +21,6 @@ import {
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
-import { type HybridHit } from '#/api/knowledge/enterprise';
 import { searchKnowledge } from '#/api/knowledge/search';
 import { useKnowledgeStore } from '#/store';
 
@@ -50,16 +51,15 @@ async function search() {
   loading.value = true;
   const startedAt = performance.now();
   try {
-    hits.value = (
-      await searchKnowledge({
-        mode: mode.value,
-        query: query.value.trim(),
-        rerank: rerank.value,
-        spaceId: activeSpaceId.value,
-        threshold: threshold.value || undefined,
-        topK: topK.value,
-      })
-    ).hits;
+    const result = await searchKnowledge({
+      mode: mode.value,
+      query: query.value.trim(),
+      rerank: rerank.value,
+      spaceId: activeSpaceId.value,
+      threshold: threshold.value || undefined,
+      topK: topK.value,
+    });
+    hits.value = result.hits;
     searched.value = true;
     elapsed.value = Math.round(performance.now() - startedAt);
   } finally {
@@ -79,14 +79,14 @@ function highlight(content: string) {
     .trim()
     .split(/\s+/)
     .filter((item) => item.length > 1);
-  return terms.reduce(
-    (result, term) =>
-      result.replace(
-        new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'),
-        (match) => `<mark class="rounded bg-warning/20 px-0.5">${match}</mark>`,
-      ),
-    escaped,
-  );
+  let highlighted = escaped;
+  for (const term of terms) {
+    highlighted = highlighted.replaceAll(
+      new RegExp(term.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`), 'gi'),
+      (match) => `<mark class="rounded bg-warning/20 px-0.5">${match}</mark>`,
+    );
+  }
+  return highlighted;
 }
 onMounted(() => store.loadSpaces());
 </script>
