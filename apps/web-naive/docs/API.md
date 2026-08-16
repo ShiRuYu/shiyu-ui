@@ -161,15 +161,18 @@ async function chatStream(
   data: ChatRequest,
   onMessage: (text: string) => void,
 ): Promise<void> {
-  const response = await fetch(`${baseURL}/generations/${generationId}/events?afterSeq=-1`, {
-    body: JSON.stringify(data),
-    headers: {
-      Accept: 'text/event-stream',
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${baseURL}/generations/${generationId}/events?afterSeq=-1`,
+    {
+      body: JSON.stringify(data),
+      headers: {
+        Accept: 'text/event-stream',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
     },
-    method: 'GET',
-  });
+  );
 
   const reader = response.body!.getReader();
   const decoder = new TextDecoder();

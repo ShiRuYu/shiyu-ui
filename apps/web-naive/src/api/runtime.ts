@@ -1,8 +1,9 @@
-import { requestClient } from '#/api/request';
-import { consumeEventStream } from '#/api/stream';
 import { useAccessStore } from '@vben/stores';
 
-export type RuntimeMode = 'chat' | 'agent' | 'rag';
+import { requestClient } from '#/api/request';
+import { consumeEventStream } from '#/api/stream';
+
+export type RuntimeMode = 'agent' | 'chat' | 'rag';
 
 export interface AiAppSummary {
   id: string;
@@ -43,7 +44,9 @@ export async function listRuntimeAppVersions(appId: string) {
 }
 
 export async function getRuntimeRunEvents(runId: string, afterSeq = 0) {
-  return requestClient.get<AiRunEvent[]>(`/v1/runs/${runId}/event-history`, { params: { afterSeq } });
+  return requestClient.get<AiRunEvent[]>(`/v1/runs/${runId}/event-history`, {
+    params: { afterSeq },
+  });
 }
 
 export async function cancelRuntimeRun(runId: string) {
@@ -67,20 +70,27 @@ export async function streamGenerationRuntimeEvents(
       signal,
     },
   );
-  await consumeEventStream(response, ({ data }) => {
-    if (!data || data === '[DONE]') return;
-    try {
-      onEvent(JSON.parse(data) as AiRunEvent);
-    } catch {
-      // Ignore malformed intermediary frames; the durable generation stream remains authoritative.
-    }
-  }, signal);
+  await consumeEventStream(
+    response,
+    ({ data }) => {
+      if (!data || data === '[DONE]') return;
+      try {
+        onEvent(JSON.parse(data) as AiRunEvent);
+      } catch {
+        // Ignore malformed intermediary frames; the durable generation stream remains authoritative.
+      }
+    },
+    signal,
+  );
 }
 
 export async function listRunApprovals(runId: string) {
   return requestClient.get<ToolApproval[]>(`/v1/runs/${runId}/approvals`);
 }
 
-export async function decideApproval(id: string, decision: 'approve' | 'reject') {
+export async function decideApproval(
+  id: string,
+  decision: 'approve' | 'reject',
+) {
   return requestClient.post<ToolApproval>(`/v1/approvals/${id}/${decision}`);
 }

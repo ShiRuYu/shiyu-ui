@@ -66,15 +66,18 @@ async function mockConversationStream(
       status: 200,
     });
   });
-  await page.route('**/v1/generations/generation-e2e/runtime-events', async (route) => {
-    await route.fulfill({
-      body:
-        'data: {"runId":"generation-e2e","seq":0,"type":"RUN_COMPLETED"}\n\n' +
-        'data: [DONE]\n\n',
-      contentType: 'text/event-stream',
-      status: 200,
-    });
-  });
+  await page.route(
+    '**/v1/generations/generation-e2e/runtime-events',
+    async (route) => {
+      await route.fulfill({
+        body:
+          'data: {"runId":"generation-e2e","seq":0,"type":"RUN_COMPLETED"}\n\n' +
+          'data: [DONE]\n\n',
+        contentType: 'text/event-stream',
+        status: 200,
+      });
+    },
+  );
 }
 
 async function signIn(page: Page): Promise<MenuNode[]> {
