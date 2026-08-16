@@ -19,6 +19,64 @@ function collectPagePaths(nodes: MenuNode[]): string[] {
   return [...paths];
 }
 
+async function mockConversationStream(
+  page: Page,
+  onGeneration: (body: Record<string, unknown>) => void,
+) {
+  await page.route('**/conversations?*', async (route) => {
+    if (route.request().method() !== 'GET') return route.fallback();
+    await route.fulfill({
+      body: JSON.stringify({ code: 200, data: [], message: 'success' }),
+      contentType: 'application/json',
+    });
+  });
+  await page.route('**/conversations', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    await route.fulfill({
+      body: JSON.stringify({
+        code: 200,
+        data: { id: 'conversation-e2e', title: 'E2E conversation' },
+        message: 'success',
+      }),
+      contentType: 'application/json',
+    });
+  });
+  await page.route('**/conversations/*/generations', async (route) => {
+    onGeneration(route.request().postDataJSON() as Record<string, unknown>);
+    await route.fulfill({
+      body: JSON.stringify({
+        code: 200,
+        data: { id: 'generation-e2e' },
+        message: 'success',
+      }),
+      contentType: 'application/json',
+    });
+  });
+  await page.route('**/generations/generation-e2e/events*', async (route) => {
+    await route.fulfill({
+      body:
+        'id: 0\n' +
+        'data: {"success":true,"type":"DELTA","content":"Hello "}\n\n' +
+        'id: 1\n' +
+        'data: {"success":true,"type":"DELTA","content":"**world**"}\n\n' +
+        'id: 2\n' +
+        'data: {"success":true,"type":"COMPLETED"}\n\n' +
+        'data: [DONE]\n\n',
+      contentType: 'text/event-stream',
+      status: 200,
+    });
+  });
+  await page.route('**/v1/generations/generation-e2e/runtime-events', async (route) => {
+    await route.fulfill({
+      body:
+        'data: {"runId":"generation-e2e","seq":0,"type":"RUN_COMPLETED"}\n\n' +
+        'data: [DONE]\n\n',
+      contentType: 'text/event-stream',
+      status: 200,
+    });
+  });
+}
+
 async function signIn(page: Page): Promise<MenuNode[]> {
   test.skip(!password, 'Set E2E_PASSWORD to run authenticated smoke tests.');
   await page.goto('/auth/login');
@@ -140,16 +198,9 @@ test.describe('web-naive critical journeys', () => {
     page,
   }) => {
     await signIn(page);
-    let requestBody: Record<string, string> | undefined;
-    await page.route('**/chat/send-stream', async (route) => {
-      requestBody = route.request().postDataJSON();
-      await route.fulfill({
-        body:
-          'data: {"success":true,"content":"Hello "}\n\n' +
-          'data: {"success":true,"content":"**world**"}\n\n',
-        contentType: 'text/event-stream',
-        status: 200,
-      });
+    let requestBody: Record<string, unknown> | undefined;
+    await mockConversationStream(page, (body) => {
+      requestBody = body;
     });
     await page.goto('/ai-tutor/chat');
     await page.getByLabel(/AI 平台|AI platform/).click();
@@ -163,7 +214,7 @@ test.describe('web-naive critical journeys', () => {
     expect(requestBody).toMatchObject({
       model: 'deepseek-chat',
       platform: 'DEEPSEEK',
-      prompt: 'hello',
+      content: 'hello',
     });
   });
 
@@ -261,14 +312,9 @@ test.describe('web-naive critical journeys', () => {
     });
 
     await signIn(page);
-    let requestBody: Record<string, string> | undefined;
-    await page.route('**/chat/send-stream', async (route) => {
-      requestBody = route.request().postDataJSON();
-      await route.fulfill({
-        body: 'data: {"success":true,"content":"debug ok"}\n\n',
-        contentType: 'text/event-stream',
-        status: 200,
-      });
+    let requestBody: Record<string, unknown> | undefined;
+    await mockConversationStream(page, (body) => {
+      requestBody = body;
     });
 
     await page.goto('/agent/chat-config');
@@ -286,7 +332,7 @@ test.describe('web-naive critical journeys', () => {
     expect(requestBody).toMatchObject({
       model: 'deepseek-chat',
       platform: 'DEEPSEEK',
-      prompt: 'debug',
+      content: 'debug',
     });
   });
 

@@ -1,0 +1,86 @@
+import { requestClient } from '#/api/request';
+import { consumeEventStream } from '#/api/stream';
+import { useAccessStore } from '@vben/stores';
+
+export type RuntimeMode = 'chat' | 'agent' | 'rag';
+
+export interface AiAppSummary {
+  id: string;
+  name: string;
+  description?: string;
+  status?: string;
+}
+
+export interface AiAppVersionSummary {
+  id: string;
+  appId: string;
+  version: string;
+  status: string;
+}
+
+export interface AiRunEvent {
+  runId: string;
+  seq: number;
+  type: string;
+  payload?: string;
+  createdAt?: string;
+}
+
+export interface ToolApproval {
+  id: string;
+  runId: string;
+  toolName: string;
+  status: string;
+  reason?: string;
+}
+
+export async function listRuntimeApps() {
+  return requestClient.get<AiAppSummary[]>('/v1/apps');
+}
+
+export async function listRuntimeAppVersions(appId: string) {
+  return requestClient.get<AiAppVersionSummary[]>(`/v1/apps/${appId}/versions`);
+}
+
+export async function getRuntimeRunEvents(runId: string, afterSeq = 0) {
+  return requestClient.get<AiRunEvent[]>(`/v1/runs/${runId}/event-history`, { params: { afterSeq } });
+}
+
+export async function cancelRuntimeRun(runId: string) {
+  return requestClient.post<unknown>(`/v1/runs/${runId}/cancel`);
+}
+
+export async function streamGenerationRuntimeEvents(
+  generationId: string,
+  onEvent: (event: AiRunEvent) => void,
+  signal?: AbortSignal,
+) {
+  const token = useAccessStore().accessToken;
+  const baseURL = requestClient.getBaseUrl() ?? '';
+  const response = await fetch(
+    `${baseURL}/v1/generations/${encodeURIComponent(generationId)}/runtime-events`,
+    {
+      headers: {
+        Accept: 'text/event-stream',
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+      signal,
+    },
+  );
+  await consumeEventStream(response, ({ data }) => {
+    if (!data || data === '[DONE]') return;
+    try {
+      onEvent(JSON.parse(data) as AiRunEvent);
+    } catch {
+      // Ignore malformed intermediary frames; the durable generation stream remains authoritative.
+    }
+  }, signal);
+}
+
+export async function listRunApprovals(runId: string) {
+  return requestClient.get<ToolApproval[]>(`/v1/runs/${runId}/approvals`);
+}
+
+export async function decideApproval(id: string, decision: 'approve' | 'reject') {
+  return requestClient.post<ToolApproval>(`/v1/approvals/${id}/${decision}`);
+}

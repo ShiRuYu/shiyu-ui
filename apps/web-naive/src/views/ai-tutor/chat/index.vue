@@ -7,21 +7,22 @@ import {
   NAlert,
   NButton,
   NCard,
-  NEmpty,
+  NEmpty, NList, NListItem, NDrawer, NDrawerContent,
   NInput,
   NSelect,
   NSpace,
   useMessage,
 } from 'naive-ui';
 
-import { chatStream, getModelOptions } from '#/api/agent/chat';
+import { cancelGeneration, chatStream, createConversation, editMessage, getConversationMessages, getModelOptions, getPromptPreview, listBranches, listConversations, retryGeneration, streamGeneration } from '#/api/agent/chat';
 import { getPlatformOptions } from '#/api/agent/platform';
+import { cancelRuntimeRun, getRuntimeRunEvents, listRuntimeApps, streamGenerationRuntimeEvents, type AiAppSummary, type AiRunEvent, type RuntimeMode } from '#/api/runtime';
 import { $t } from '#/locales';
 import { renderSafeMarkdown } from '#/utils/markdown';
 
 interface ChatMessage {
   content: string;
-  id: number;
+  id: string;
   role: 'assistant' | 'user';
   status?: 'error' | 'streaming';
 }
@@ -30,6 +31,22 @@ const messages = ref<ChatMessage[]>([]);
 const input = ref('');
 const loading = ref(false);
 const messageId = ref(0);
+const conversations = ref<Array<{ id: string; title?: string }>>([]);
+const branches = ref<Array<{ id: string; title?: string }>>([]);
+const editingMessageId = ref<string>();
+const editingText = ref('');
+const activeConversationId = ref<string>();
+const promptPreview = ref<{
+  messages: Array<{ role: string; contentParts?: Array<{ text?: string }> }>;
+  sources?: Array<{ source: string; content: string; estimatedTokens: number }>;
+  estimatedTokens: number;
+  truncated: boolean;
+  truncationReason?: string;
+  modelParameters?: Record<string, unknown>;
+}>();
+const previewVisible = ref(false);
+const traceVisible = ref(false);
+const runtimeEvents = ref<AiRunEvent[]>([]);
 const messageList = ref<HTMLElement>();
 const platformOptions = ref<
   Array<{ code: string; label: string; value: number }>
@@ -37,11 +54,15 @@ const platformOptions = ref<
 const modelOptions = ref<Array<{ label: string; value: string }>>([]);
 const selectedPlatformId = ref<number>();
 const selectedModel = ref<string>();
+const mode = ref<RuntimeMode>('chat');
+const runtimeApps = ref<AiAppSummary[]>([]);
+const selectedAppId = ref<string>();
 const loadingPlatforms = ref(false);
 const loadingModels = ref(false);
 const catalogError = ref(false);
 const notice = useMessage();
 let controller: AbortController | undefined;
+let activeRunId: string | undefined;
 
 async function loadModels(platformId: number) {
   loadingModels.value = true;
@@ -108,10 +129,15 @@ async function sendMessage(promptOverride?: string) {
     return;
   }
 
-  messages.value.push({ content: prompt, id: ++messageId.value, role: 'user' });
+  if (!activeConversationId.value) {
+    const created = await createConversation({ platform, model: selectedModel.value, title: prompt.slice(0, 40), sceneType: mode.value });
+    activeConversationId.value = created.id;
+    conversations.value = [{ id: created.id, title: created.title }, ...conversations.value];
+  }
+  messages.value.push({ content: prompt, id: String(++messageId.value), role: 'user' });
   const assistant: ChatMessage = {
     content: '',
-    id: ++messageId.value,
+    id: String(++messageId.value),
     role: 'assistant',
     status: 'streaming',
   };
@@ -122,14 +148,26 @@ async function sendMessage(promptOverride?: string) {
   await scrollToLatest();
 
   try {
-    await chatStream(
-      { model: selectedModel.value, platform, prompt },
+    const generationId = await chatStream(
+      { model: selectedModel.value, platform, prompt, conversationId: activeConversationId.value, sceneType: mode.value, appId: selectedAppId.value },
       (chunk) => {
         assistant.content += chunk;
         void scrollToLatest();
       },
-      { signal: controller.signal },
+      { signal: controller.signal, onRunId: (runId) => { activeRunId = runId; } },
     );
+    try {
+      runtimeEvents.value = [];
+      if (mode.value === 'agent') {
+        runtimeEvents.value = (await getRuntimeRunEvents(generationId)) ?? [];
+      } else {
+        await streamGenerationRuntimeEvents(generationId, (event) => {
+          runtimeEvents.value.push(event);
+        });
+      }
+    } catch {
+      // Runtime tracing is observational and must not turn a completed chat into an error.
+    }
     if (!assistant.content) assistant.content = $t('ai-tutor.emptyResponse');
     assistant.status = undefined;
   } catch (error) {
@@ -143,21 +181,102 @@ async function sendMessage(promptOverride?: string) {
   } finally {
     loading.value = false;
     controller = undefined;
+    activeRunId = undefined;
     await scrollToLatest();
   }
 }
 
-function stopGeneration() {
+async function loadConversation(id: string) {
+  if (loading.value) return;
+  activeConversationId.value = id;
+  branches.value = await listBranches(id).catch(() => []);
+  const remote = await getConversationMessages(id);
+  messages.value = (remote ?? []).filter((item) => item.role === 'USER' || item.role === 'ASSISTANT').map((item) => ({
+    id: item.id, role: item.role.toLowerCase() as 'user' | 'assistant', content: (item.contentParts ?? []).map((part) => part.text ?? '').join(''),
+  }));
+  await scrollToLatest();
+}
+
+function beginEdit(message: ChatMessage) {
+  editingMessageId.value = message.id;
+  editingText.value = message.content;
+}
+
+async function saveEdit() {
+  if (!editingMessageId.value || !editingText.value.trim()) return;
+  await editMessage(editingMessageId.value, editingText.value.trim());
+  editingMessageId.value = undefined;
+  if (activeConversationId.value) await loadConversation(activeConversationId.value);
+}
+
+function newConversation() {
+  if (loading.value) return;
+  activeConversationId.value = undefined;
+  messages.value = [];
+}
+
+async function loadConversationList() {
+  try { conversations.value = (await listConversations()) ?? []; } catch { catalogError.value = true; }
+}
+
+async function loadRuntimeApps() {
+  try {
+    runtimeApps.value = (await listRuntimeApps()) ?? [];
+    selectedAppId.value = runtimeApps.value[0]?.id;
+  } catch {
+    // App selection is optional for the chat mode; keep the workspace usable.
+    runtimeApps.value = [];
+  }
+}
+
+async function showPromptPreview() {
+  if (!activeConversationId.value) return;
+  promptPreview.value = await getPromptPreview(activeConversationId.value);
+  previewVisible.value = true;
+}
+
+async function stopGeneration() {
+  const runId = activeRunId;
+  if (runId) {
+    try {
+      if (mode.value === 'agent') await cancelRuntimeRun(runId);
+      else await cancelGeneration(runId);
+    } catch { /* the local abort still releases the UI */ }
+  }
   controller?.abort();
 }
 
-function retryMessage(index: number) {
+async function retryMessage(index: number) {
   const previous = [...messages.value.slice(0, index)]
     .toReversed()
     .find((item) => item.role === 'user');
   if (!previous) return;
+  if (!activeConversationId.value || previous.id.length < 10) {
+    messages.value.splice(index, 1);
+    await sendMessage(previous.content);
+    return;
+  }
+  const platform = platformOptions.value.find((item) => item.value === selectedPlatformId.value)?.code;
+  if (!platform || !selectedModel.value || loading.value) return;
   messages.value.splice(index, 1);
-  void sendMessage(previous.content);
+  const assistant: ChatMessage = { content: '', id: `retry-${Date.now()}`, role: 'assistant', status: 'streaming' };
+  messages.value.push(assistant);
+  loading.value = true;
+  controller = new AbortController();
+  try {
+    const run = await retryGeneration(previous.id, { platform, model: selectedModel.value });
+    activeRunId = run.id;
+    await streamGeneration(run.id, (chunk) => { assistant.content += chunk; void scrollToLatest(); }, controller.signal);
+    assistant.status = undefined;
+  } catch (error) {
+    assistant.status = 'error';
+    assistant.content ||= error instanceof DOMException && error.name === 'AbortError' ? $t('ai-tutor.stopped') : $t('ai-tutor.chatError');
+  } finally {
+    loading.value = false;
+    controller = undefined;
+    activeRunId = undefined;
+    await loadConversation(activeConversationId.value);
+  }
 }
 
 async function copyMessage(content: string) {
@@ -166,13 +285,50 @@ async function copyMessage(content: string) {
 }
 
 onBeforeUnmount(() => controller?.abort());
-onMounted(loadPlatforms);
+onMounted(async () => { await Promise.all([loadPlatforms(), loadConversationList(), loadRuntimeApps()]); });
 </script>
 
 <template>
   <Page :title="$t('page.aiTutor.chat')" auto-content-height>
-    <NCard class="chat-shell" content-class="chat-card-content">
+    <div class="workspace-shell">
+      <NCard class="conversation-sidebar" content-class="sidebar-content">
+        <div class="sidebar-title">Conversations</div>
+        <NButton size="small" block @click="newConversation">New conversation</NButton>
+        <NList v-if="conversations.length" clickable>
+          <NListItem v-for="conversation in conversations" :key="conversation.id" @click="loadConversation(conversation.id)">
+            <span class="truncate">{{ conversation.title || conversation.id }}</span>
+          </NListItem>
+        </NList>
+        <template v-if="branches.length">
+          <div class="sidebar-subtitle">Branches</div>
+          <NList clickable>
+            <NListItem v-for="branch in branches" :key="branch.id" @click="loadConversation(branch.id)">
+              <span class="truncate">{{ branch.title || branch.id }}</span>
+            </NListItem>
+          </NList>
+        </template>
+        <NEmpty v-else size="small" description="No conversations" />
+      </NCard>
+      <NCard class="chat-shell" content-class="chat-card-content">
       <div class="model-toolbar">
+        <NSelect
+          v-model:value="mode"
+          class="model-select"
+          aria-label="Runtime mode"
+          :options="[
+            { label: 'Chat', value: 'chat' },
+            { label: 'Agent', value: 'agent' },
+            { label: 'RAG', value: 'rag' },
+          ]"
+        />
+        <NSelect
+          v-if="mode !== 'chat' && runtimeApps.length"
+          v-model:value="selectedAppId"
+          class="model-select"
+          aria-label="AI App"
+          :options="runtimeApps.map((app) => ({ label: app.name, value: app.id }))"
+          placeholder="Select AI App"
+        />
         <NSelect
           v-model:value="selectedPlatformId"
           class="model-select"
@@ -195,6 +351,9 @@ onMounted(loadPlatforms);
       </div>
       <NAlert v-if="catalogError" class="mb-3" type="error">
         {{ $t('ai-tutor.catalogError') }}
+      </NAlert>
+      <NAlert v-if="mode !== 'chat'" class="mb-3" type="info">
+        {{ mode === 'agent' ? 'Agent mode uses the selected published App and records an AiRun trace.' : 'RAG mode keeps citations and MAGMA relations in the runtime context.' }}
       </NAlert>
       <div
         ref="messageList"
@@ -228,10 +387,15 @@ onMounted(loadPlatforms);
                 class="chat-markdown"
                 v-html="renderSafeMarkdown(msg.content)"
               ></div>
-              <span v-else class="whitespace-pre-wrap">{{ msg.content }}</span>
+              <template v-else>
+                <NInput v-if="editingMessageId === msg.id" v-model:value="editingText" type="textarea" />
+                <span v-else class="whitespace-pre-wrap">{{ msg.content }}</span>
+              </template>
             </div>
 
-            <NSpace v-if="msg.role === 'assistant' && msg.content" size="small">
+            <NSpace v-if="msg.role === 'user' || (msg.role === 'assistant' && msg.content)" size="small">
+              <NButton v-if="msg.role === 'user' && editingMessageId !== msg.id" text size="tiny" @click="beginEdit(msg)">Edit</NButton>
+              <NButton v-if="msg.role === 'user' && editingMessageId === msg.id" text size="tiny" @click="saveEdit">Save</NButton>
               <NButton text size="tiny" @click="copyMessage(msg.content)">
                 {{ $t('ai-tutor.copy') }}
               </NButton>
@@ -248,6 +412,10 @@ onMounted(loadPlatforms);
         </article>
       </div>
 
+      <div class="workspace-actions">
+        <NButton size="small" secondary :disabled="!activeConversationId" @click="showPromptPreview">Prompt preview</NButton>
+        <NButton size="small" secondary :disabled="runtimeEvents.length === 0" @click="traceVisible = true">Run trace</NButton>
+      </div>
       <form class="composer" @submit.prevent="sendMessage()">
         <NInput
           v-model:value="input"
@@ -278,12 +446,60 @@ onMounted(loadPlatforms);
       <p class="mt-2 text-xs text-muted-foreground">
         {{ $t('ai-tutor.inputHint') }}
       </p>
-    </NCard>
+      </NCard>
+      <NDrawer v-model:show="previewVisible" placement="right" :width="360">
+        <NDrawerContent title="Prompt preview">
+          <p>Estimated tokens: {{ promptPreview?.estimatedTokens ?? 0 }}</p>
+          <p v-if="promptPreview?.truncated">Prompt was truncated to model limits.</p>
+          <p v-if="promptPreview?.truncationReason">{{ promptPreview.truncationReason }}</p>
+          <div v-for="(segment, index) in promptPreview?.sources ?? []" :key="`${segment.source}-${index}`" class="preview-segment">
+            <strong>{{ segment.source }}</strong>
+            <span>{{ segment.estimatedTokens }} tokens</span>
+            <pre>{{ segment.content }}</pre>
+          </div>
+        </NDrawerContent>
+      </NDrawer>
+      <NDrawer v-model:show="traceVisible" placement="right" :width="360">
+        <NDrawerContent title="Run trace">
+          <NList v-if="runtimeEvents.length" bordered>
+            <NListItem v-for="event in runtimeEvents" :key="`${event.runId}-${event.seq}`">
+              <div class="trace-event">
+                <strong>{{ event.seq }} · {{ event.type }}</strong>
+                <span v-if="event.createdAt">{{ event.createdAt }}</span>
+                <pre v-if="event.payload">{{ event.payload }}</pre>
+              </div>
+            </NListItem>
+          </NList>
+          <NEmpty v-else description="No runtime events" />
+        </NDrawerContent>
+      </NDrawer>
+    </div>
   </Page>
 </template>
 
 <style scoped>
+.workspace-shell {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  min-height: 32rem;
+}
+
+.conversation-sidebar {
+  width: 15rem;
+  flex: 0 0 15rem;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sidebar-title { font-weight: 600; }
+
 .chat-shell {
+  flex: 1;
   height: 100%;
   min-height: 32rem;
 }
@@ -351,6 +567,8 @@ onMounted(loadPlatforms);
   border-top: 1px solid hsl(var(--border));
 }
 
+.workspace-actions { display: flex; justify-content: flex-end; padding-top: 0.75rem; }
+
 .chat-markdown :deep(pre) {
   max-width: 100%;
   padding: 0.75rem;
@@ -365,6 +583,8 @@ onMounted(loadPlatforms);
 }
 
 @media (max-width: 639px) {
+  .workspace-shell { display: block; }
+  .conversation-sidebar { width: 100%; margin-bottom: 0.75rem; }
   .model-toolbar {
     grid-template-columns: minmax(0, 1fr);
   }

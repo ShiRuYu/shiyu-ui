@@ -14,14 +14,14 @@ async function chatStream(
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
 
-  const response = await fetch(`${baseURL}/chat/send-stream`, {
+  const response = await fetch(`${baseURL}/generations/${generationId}/events?afterSeq=-1`, {
     body: JSON.stringify(data),
     headers: {
       Accept: 'text/event-stream',
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    method: 'POST',
+    method: 'GET',
   });
 
   const reader = response.body!.getReader();
@@ -237,7 +237,7 @@ export const useChatStore = defineStore('chat', () => {
 
     // 流式连接
     await connect({
-      url: '/api/chat/send-stream',
+      url: '/api/generations/{generationId}/events?afterSeq=-1',
       body: { prompt },
       onMessage: (chunk) => {
         // 逐步更新最后一条消息
