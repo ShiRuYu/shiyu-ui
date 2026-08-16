@@ -27,7 +27,7 @@ export namespace ChatApi {
   export interface ConversationMessage {
     id: string;
     role: 'ASSISTANT' | 'SYSTEM' | 'TOOL' | 'USER';
-    contentParts?: Array<{ text?: string; type: string; }>;
+    contentParts?: Array<{ text?: string; type: string }>;
   }
   export interface PromptPreview {
     messages: ConversationMessage[];
@@ -98,7 +98,7 @@ async function editMessage(messageId: string, content: string) {
 
 async function retryGeneration(
   messageId: string,
-  data: { model?: string; platform?: string; },
+  data: { model?: string; platform?: string },
 ) {
   return requestClient.post<{ id: string }>(
     `/messages/${messageId}/generations`,
@@ -129,7 +129,7 @@ async function chat(data: ChatApi.ChatRequest) {
 async function chatStream(
   data: ChatApi.ChatRequest,
   onMessage: (text: string) => void,
-  options: { onRunId?: (runId: string) => void; signal?: AbortSignal; } = {},
+  options: { onRunId?: (runId: string) => void; signal?: AbortSignal } = {},
 ): Promise<string> {
   if (data.appId && data.sceneType === 'agent') {
     const result = await requestClient.post<{

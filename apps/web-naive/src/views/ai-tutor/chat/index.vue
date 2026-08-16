@@ -62,9 +62,9 @@ const editingText = ref('');
 const activeConversationId = ref<string>();
 const promptPreview = ref<{
   estimatedTokens: number;
-  messages: Array<{ contentParts?: Array<{ text?: string }>; role: string; }>;
+  messages: Array<{ contentParts?: Array<{ text?: string }>; role: string }>;
   modelParameters?: Record<string, unknown>;
-  sources?: Array<{ content: string; estimatedTokens: number; source: string; }>;
+  sources?: Array<{ content: string; estimatedTokens: number; source: string }>;
   truncated: boolean;
   truncationReason?: string;
 }>();
@@ -380,11 +380,9 @@ onMounted(async () => {
     <div class="workspace-shell">
       <NCard class="conversation-sidebar" content-class="sidebar-content">
         <div class="sidebar-title">Conversations</div>
-        <NButton size="small" block @click="newConversation"
-          >
-New conversation
-</NButton
-        >
+        <NButton size="small" block @click="newConversation">
+          New conversation
+        </NButton>
         <NList v-if="conversations.length" clickable>
           <NListItem
             v-for="conversation in conversations"
@@ -518,19 +516,17 @@ New conversation
                   text
                   size="tiny"
                   @click="beginEdit(msg)"
-                  >
-Edit
-</NButton
                 >
+                  Edit
+                </NButton>
                 <NButton
                   v-if="msg.role === 'user' && editingMessageId === msg.id"
                   text
                   size="tiny"
                   @click="saveEdit"
-                  >
-Save
-</NButton
                 >
+                  Save
+                </NButton>
                 <NButton text size="tiny" @click="copyMessage(msg.content)">
                   {{ $t('ai-tutor.copy') }}
                 </NButton>
@@ -553,19 +549,17 @@ Save
             secondary
             :disabled="!activeConversationId"
             @click="showPromptPreview"
-            >
-Prompt preview
-</NButton
           >
+            Prompt preview
+          </NButton>
           <NButton
             size="small"
             secondary
             :disabled="runtimeEvents.length === 0"
             @click="traceVisible = true"
-            >
-Run trace
-</NButton
           >
+            Run trace
+          </NButton>
         </div>
         <form class="composer" @submit.prevent="sendMessage()">
           <NInput
