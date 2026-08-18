@@ -29,7 +29,7 @@ const loading = ref(false);
 const saving = ref(false);
 const loadError = ref('');
 const appId = ref(typeof route.query.id === 'string' ? route.query.id : '');
-const versions = ref<Array<{ id: string; status: string; version: string; }>>(
+const versions = ref<Array<{ id: string; status: string; version: string }>>(
   [],
 );
 const form = reactive({
