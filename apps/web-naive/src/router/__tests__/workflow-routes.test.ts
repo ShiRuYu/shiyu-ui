@@ -22,7 +22,9 @@ describe('workflow route contract', () => {
       'AppStudio',
       'EducationWorkspace',
     ]);
-    expect(routes.map((route) => route.name)).not.toContain('EducationPractice');
+    expect(routes.map((route) => route.name)).not.toContain(
+      'EducationPractice',
+    );
   });
 
   it('registers every non-menu workflow used by action buttons', () => {
