@@ -60,12 +60,16 @@ export async function updateTextbook(
   id: number,
   data: Partial<EducationTextbookApi.Textbook>,
 ) {
-  return requestClient.post('/v1/education/textbook/update', data, { params: { id } });
+  return requestClient.post('/v1/education/textbook/update', data, {
+    params: { id },
+  });
 }
 
 /** 删除教材 */
 export async function deleteTextbook(id: number) {
-  return requestClient.post('/v1/education/textbook/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/textbook/delete', null, {
+    params: { id },
+  });
 }
 
 /** 获取教材下拉选项 */

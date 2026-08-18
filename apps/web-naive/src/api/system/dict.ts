@@ -29,9 +29,12 @@ export namespace DictApi {
  */
 async function getDictPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>('/v1/system/dicts/list', {
-    params: { pageNum: page, pageSize, ...rest },
-  });
+  return requestClient.get<DictApi.PageResult<DictApi.DictItem>>(
+    '/v1/system/dicts/list',
+    {
+      params: { pageNum: page, pageSize, ...rest },
+    },
+  );
 }
 
 /**
@@ -54,14 +57,18 @@ async function createDict(data: Omit<DictApi.DictItem, 'id'>) {
  * 更新字典
  */
 async function updateDict(id: number, data: Partial<DictApi.DictItem>) {
-  return requestClient.post('/v1/system/dicts/update', data, { params: { id } });
+  return requestClient.post('/v1/system/dicts/update', data, {
+    params: { id },
+  });
 }
 
 /**
  * 删除字典
  */
 async function deleteDict(id: number) {
-  return requestClient.post('/v1/system/dicts/delete', null, { params: { id } });
+  return requestClient.post('/v1/system/dicts/delete', null, {
+    params: { id },
+  });
 }
 
 /**

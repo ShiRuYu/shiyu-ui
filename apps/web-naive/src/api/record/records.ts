@@ -39,7 +39,9 @@ async function updateRecord(data: RecordsApi.Record) {
 }
 
 async function deleteRecord(id: number) {
-  return requestClient.post('/v1/record/record/delete', null, { params: { id } });
+  return requestClient.post('/v1/record/record/delete', null, {
+    params: { id },
+  });
 }
 
 async function getRecordOptions() {

@@ -38,11 +38,15 @@ async function createMedia(data: Omit<MediaApi.Media, 'id'>) {
 }
 
 async function updateMedia(id: number, data: Partial<MediaApi.Media>) {
-  return requestClient.post('/v1/record/media/update', data, { params: { id } });
+  return requestClient.post('/v1/record/media/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteMedia(id: number) {
-  return requestClient.post('/v1/record/media/delete', null, { params: { id } });
+  return requestClient.post('/v1/record/media/delete', null, {
+    params: { id },
+  });
 }
 
 export { createMedia, deleteMedia, getMediaPage, updateMedia };

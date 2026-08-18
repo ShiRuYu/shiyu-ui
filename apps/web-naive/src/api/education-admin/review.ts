@@ -50,18 +50,24 @@ async function updateReview(
   id: number,
   data: Partial<EducationReviewApi.ReviewTask>,
 ) {
-  return requestClient.post('/v1/education/review/update', data, { params: { id } });
+  return requestClient.post('/v1/education/review/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteReview(id: number) {
-  return requestClient.post('/v1/education/review/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/review/delete', null, {
+    params: { id },
+  });
 }
 
 async function completeReview(
   id: number,
   data: EducationReviewApi.CompleteReviewRequest,
 ) {
-  return requestClient.post('/v1/education/review/complete', data, { params: { id } });
+  return requestClient.post('/v1/education/review/complete', data, {
+    params: { id },
+  });
 }
 
 export {

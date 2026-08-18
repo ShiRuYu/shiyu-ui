@@ -35,15 +35,21 @@ async function getExamById(id: number) {
 }
 
 async function getExamBySubject(subjectCode: string) {
-  return requestClient.get<EducationExamApi.Exam[]>('/v1/education/exam/subject', {
-    params: { subjectCode },
-  });
+  return requestClient.get<EducationExamApi.Exam[]>(
+    '/v1/education/exam/subject',
+    {
+      params: { subjectCode },
+    },
+  );
 }
 
 async function getExamByTeacher(teacherId: number) {
-  return requestClient.get<EducationExamApi.Exam[]>('/v1/education/exam/teacher', {
-    params: { teacherId },
-  });
+  return requestClient.get<EducationExamApi.Exam[]>(
+    '/v1/education/exam/teacher',
+    {
+      params: { teacherId },
+    },
+  );
 }
 
 async function createExam(data: Omit<EducationExamApi.Exam, 'id'>) {
@@ -51,11 +57,15 @@ async function createExam(data: Omit<EducationExamApi.Exam, 'id'>) {
 }
 
 async function updateExam(id: number, data: Partial<EducationExamApi.Exam>) {
-  return requestClient.post('/v1/education/exam/update', data, { params: { id } });
+  return requestClient.post('/v1/education/exam/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteExam(id: number) {
-  return requestClient.post('/v1/education/exam/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/exam/delete', null, {
+    params: { id },
+  });
 }
 
 export {

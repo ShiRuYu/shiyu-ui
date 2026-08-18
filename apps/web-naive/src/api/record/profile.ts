@@ -36,7 +36,10 @@ async function getProfilePage(params?: Recordable<any>) {
  * 创建档案
  */
 async function createProfile(data: Omit<ProfileApi.Profile, 'delFlag' | 'id'>) {
-  return requestClient.post<ProfileApi.Profile>('/v1/record/profile/create', data);
+  return requestClient.post<ProfileApi.Profile>(
+    '/v1/record/profile/create',
+    data,
+  );
 }
 
 /**

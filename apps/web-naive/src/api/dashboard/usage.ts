@@ -37,7 +37,9 @@ export async function getUsageOverviewApi() {
  * 按日查询聚合用量
  */
 export async function getDailyUsageApi(days = 7) {
-  return requestClient.get<DailyUsage[]>('/v1/usage/daily', { params: { days } });
+  return requestClient.get<DailyUsage[]>('/v1/usage/daily', {
+    params: { days },
+  });
 }
 
 /**

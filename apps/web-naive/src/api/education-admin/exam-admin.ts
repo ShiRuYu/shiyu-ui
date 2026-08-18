@@ -27,9 +27,12 @@ async function getExamList(pageNum = 1, pageSize = 10) {
 }
 
 async function getExamById(id: number) {
-  return requestClient.get<EducationAdminExamApi.Exam>('/v1/education/exam/detail', {
-    params: { id },
-  });
+  return requestClient.get<EducationAdminExamApi.Exam>(
+    '/v1/education/exam/detail',
+    {
+      params: { id },
+    },
+  );
 }
 
 async function createExam(data: Omit<EducationAdminExamApi.Exam, 'id'>) {
@@ -40,11 +43,15 @@ async function updateExam(
   id: number,
   data: Partial<EducationAdminExamApi.Exam>,
 ) {
-  return requestClient.post('/v1/education/exam/update', data, { params: { id } });
+  return requestClient.post('/v1/education/exam/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteExam(id: number) {
-  return requestClient.post('/v1/education/exam/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/exam/delete', null, {
+    params: { id },
+  });
 }
 
 export { createExam, deleteExam, getExamById, getExamList, updateExam };

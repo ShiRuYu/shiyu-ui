@@ -39,9 +39,12 @@ async function getStudentList(pageNum = 1, pageSize = 10) {
 }
 
 async function getStudentById(id: number) {
-  return requestClient.get<EducationStudentApi.Student>('/v1/education/student/detail', {
-    params: { id },
-  });
+  return requestClient.get<EducationStudentApi.Student>(
+    '/v1/education/student/detail',
+    {
+      params: { id },
+    },
+  );
 }
 
 async function createStudent(data: EducationStudentApi.StudentRequest) {
@@ -55,11 +58,15 @@ async function updateStudent(
   id: number,
   data: EducationStudentApi.StudentRequest,
 ) {
-  return requestClient.post('/v1/education/student/update', data, { params: { id } });
+  return requestClient.post('/v1/education/student/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteStudent(id: number) {
-  return requestClient.post('/v1/education/student/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/student/delete', null, {
+    params: { id },
+  });
 }
 
 async function getStudentOptions() {

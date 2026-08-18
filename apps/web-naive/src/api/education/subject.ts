@@ -26,15 +26,21 @@ async function getSubjectList(pageNum = 1, pageSize = 10) {
 }
 
 async function getSubjectById(id: number) {
-  return requestClient.get<EducationSubjectApi.Subject>('/v1/education/subject/detail', {
-    params: { id },
-  });
+  return requestClient.get<EducationSubjectApi.Subject>(
+    '/v1/education/subject/detail',
+    {
+      params: { id },
+    },
+  );
 }
 
 async function getSubjectByCode(code: string) {
-  return requestClient.get<EducationSubjectApi.Subject>('/v1/education/subject/code', {
-    params: { code },
-  });
+  return requestClient.get<EducationSubjectApi.Subject>(
+    '/v1/education/subject/code',
+    {
+      params: { code },
+    },
+  );
 }
 
 async function getSubjectByGradeLevel(gradeLevel: string) {
@@ -52,11 +58,15 @@ async function updateSubject(
   id: number,
   data: Partial<EducationSubjectApi.Subject>,
 ) {
-  return requestClient.post('/v1/education/subject/update', data, { params: { id } });
+  return requestClient.post('/v1/education/subject/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteSubject(id: number) {
-  return requestClient.post('/v1/education/subject/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/subject/delete', null, {
+    params: { id },
+  });
 }
 
 async function getSubjectOptions() {

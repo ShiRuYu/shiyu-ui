@@ -69,11 +69,15 @@ async function updatePlan(
   id: number,
   data: Partial<EducationPlanApi.StudyPlan>,
 ) {
-  return requestClient.post('/v1/education/study-plan/update', data, { params: { id } });
+  return requestClient.post('/v1/education/study-plan/update', data, {
+    params: { id },
+  });
 }
 
 async function deletePlan(id: number) {
-  return requestClient.post('/v1/education/study-plan/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/study-plan/delete', null, {
+    params: { id },
+  });
 }
 
 export {

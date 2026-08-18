@@ -100,7 +100,9 @@ export namespace SystemMenuApi {
  * 获取根节点菜单（懒加载初始加载）
  */
 async function getMenuRoots() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/v1/system/menus/roots');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
+    '/v1/system/menus/roots',
+  );
 }
 
 /**
@@ -108,16 +110,21 @@ async function getMenuRoots() {
  * @param parentId 父菜单 ID
  */
 async function getMenuChildren(parentId: number) {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/v1/system/menus/children', {
-    params: { parentId },
-  });
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
+    '/v1/system/menus/children',
+    {
+      params: { parentId },
+    },
+  );
 }
 
 /**
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  const data = await requestClient.get<Array<Recordable<any>>>('/v1/system/menus/list');
+  const data = await requestClient.get<Array<Recordable<any>>>(
+    '/v1/system/menus/list',
+  );
   const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
     ...item,
     id: Number(item.id),
@@ -255,7 +262,9 @@ function toMenuRequest(data: Recordable<any>) {
  * @param id 菜单 ID
  */
 async function deleteMenu(id: number) {
-  return requestClient.post('/v1/system/menus/delete', null, { params: { id } });
+  return requestClient.post('/v1/system/menus/delete', null, {
+    params: { id },
+  });
 }
 
 export {

@@ -76,12 +76,16 @@ export async function updateQuestion(
   id: number,
   data: Partial<EducationQuestionApi.Question>,
 ) {
-  return requestClient.post('/v1/education/question/update', data, { params: { id } });
+  return requestClient.post('/v1/education/question/update', data, {
+    params: { id },
+  });
 }
 
 /** 删除题目 */
 export async function deleteQuestion(id: number) {
-  return requestClient.post('/v1/education/question/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/question/delete', null, {
+    params: { id },
+  });
 }
 
 /** 获取题目下拉选项 */

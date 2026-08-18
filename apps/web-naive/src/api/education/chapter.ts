@@ -15,9 +15,12 @@ export namespace EducationChapterApi {
 
 /** 获取章节详情 */
 export async function getChapterById(id: number) {
-  return requestClient.get<EducationChapterApi.Chapter>('/v1/education/chapter/detail', {
-    params: { id },
-  });
+  return requestClient.get<EducationChapterApi.Chapter>(
+    '/v1/education/chapter/detail',
+    {
+      params: { id },
+    },
+  );
 }
 
 /** 获取教材所有章节（平铺） */
@@ -30,9 +33,12 @@ export async function getChaptersByTextbook(textbookId: number) {
 
 /** 获取教材章节树 */
 export async function getChapterTree(textbookId: number) {
-  return requestClient.get<EducationChapterApi.Chapter[]>('/v1/education/chapter/tree', {
-    params: { textbookId },
-  });
+  return requestClient.get<EducationChapterApi.Chapter[]>(
+    '/v1/education/chapter/tree',
+    {
+      params: { textbookId },
+    },
+  );
 }
 
 /** 创建章节 */
@@ -47,12 +53,16 @@ export async function updateChapter(
   id: number,
   data: Partial<EducationChapterApi.Chapter>,
 ) {
-  return requestClient.post('/v1/education/chapter/update', data, { params: { id } });
+  return requestClient.post('/v1/education/chapter/update', data, {
+    params: { id },
+  });
 }
 
 /** 删除章节 */
 export async function deleteChapter(id: number) {
-  return requestClient.post('/v1/education/chapter/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/chapter/delete', null, {
+    params: { id },
+  });
 }
 
 export async function getChapterKnowledgeIds(chapterId: number) {
@@ -65,9 +75,13 @@ export async function replaceChapterKnowledgeIds(
   chapterId: number,
   knowledgeIds: number[],
 ) {
-  return requestClient.post('/v1/education/chapter/knowledge/bind', knowledgeIds, {
-    params: { chapterId },
-  });
+  return requestClient.post(
+    '/v1/education/chapter/knowledge/bind',
+    knowledgeIds,
+    {
+      params: { chapterId },
+    },
+  );
 }
 
 /** 获取章节下拉选项 */

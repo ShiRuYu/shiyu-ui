@@ -156,9 +156,13 @@ async function replaceUserTenantAssignments(
   userId: number,
   assignments: Array<{ roleId: number; tenantId: number }>,
 ) {
-  return requestClient.post('/v1/system/users/tenant-assignments/replace', assignments, {
-    params: { userId },
-  });
+  return requestClient.post(
+    '/v1/system/users/tenant-assignments/replace',
+    assignments,
+    {
+      params: { userId },
+    },
+  );
 }
 
 export {

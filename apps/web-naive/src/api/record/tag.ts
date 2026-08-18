@@ -17,9 +17,12 @@ export namespace TagApi {
 
 async function getTagPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get<TagApi.PageResult<TagApi.Tag>>('/v1/record/tag/list', {
-    params: { pageNum: page, pageSize, ...rest },
-  });
+  return requestClient.get<TagApi.PageResult<TagApi.Tag>>(
+    '/v1/record/tag/list',
+    {
+      params: { pageNum: page, pageSize, ...rest },
+    },
+  );
 }
 async function createTag(data: Omit<TagApi.Tag, 'id'>) {
   return requestClient.post('/v1/record/tag/create', data);

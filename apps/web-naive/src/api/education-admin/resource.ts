@@ -58,11 +58,15 @@ async function updateResource(
   id: number,
   data: Partial<EducationResourceApi.Resource>,
 ) {
-  return requestClient.post('/v1/education/resource/update', data, { params: { id } });
+  return requestClient.post('/v1/education/resource/update', data, {
+    params: { id },
+  });
 }
 
 async function deleteResource(id: number) {
-  return requestClient.post('/v1/education/resource/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/resource/delete', null, {
+    params: { id },
+  });
 }
 
 export {

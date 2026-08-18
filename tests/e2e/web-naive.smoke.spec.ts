@@ -87,7 +87,8 @@ async function signIn(page: Page): Promise<MenuNode[]> {
   await inputs.nth(0).fill(username);
   await inputs.nth(1).fill(password!);
   const menuResponsePromise = page.waitForResponse(
-    (response) => response.url().endsWith('/v1/system/menus/all') && response.ok(),
+    (response) =>
+      response.url().endsWith('/v1/system/menus/all') && response.ok(),
   );
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(page).not.toHaveURL(/\/auth\/login/, { timeout: 15_000 });

@@ -24,7 +24,9 @@ export namespace AuthCodeApi {
 
 /** 获取所有权限码 */
 async function getAuthCodeList() {
-  return requestClient.get<AuthCodeApi.AuthCodeItem[]>('/v1/system/auth-codes/list');
+  return requestClient.get<AuthCodeApi.AuthCodeItem[]>(
+    '/v1/system/auth-codes/list',
+  );
 }
 
 async function getAuthCodePage(params?: Record<string, any>) {
@@ -44,12 +46,16 @@ async function updateAuthCode(
   id: number,
   data: Partial<AuthCodeApi.AuthCodeItem>,
 ) {
-  return requestClient.post('/v1/system/auth-codes/update', data, { params: { id } });
+  return requestClient.post('/v1/system/auth-codes/update', data, {
+    params: { id },
+  });
 }
 
 /** 删除权限码 */
 async function deleteAuthCode(id: number) {
-  return requestClient.post('/v1/system/auth-codes/delete', null, { params: { id } });
+  return requestClient.post('/v1/system/auth-codes/delete', null, {
+    params: { id },
+  });
 }
 
 async function getRoleAuthCodes(roleId: number, tenantId: number) {
@@ -59,7 +65,9 @@ async function getRoleAuthCodes(roleId: number, tenantId: number) {
 }
 
 async function getAuthCodeOptions() {
-  return requestClient.get<AuthCodeApi.AuthCodeOption[]>('/v1/system/auth-codes/options');
+  return requestClient.get<AuthCodeApi.AuthCodeOption[]>(
+    '/v1/system/auth-codes/options',
+  );
 }
 
 async function replaceRoleAuthCodes(
