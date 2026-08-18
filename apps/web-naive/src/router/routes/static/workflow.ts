@@ -37,41 +37,47 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    name: 'EducationPractice',
-    path: '/education-center/practice',
+    name: 'EducationWorkspace',
+    path: '/education-center',
     children: [
       {
-        name: 'EducationExamList',
-        path: 'exams',
-        component: () => import('#/views/exam/exam-list/list.vue'),
-        meta: {
-          hideInBreadcrumb: true,
-          hideInMenu: true,
-          hideInTab: true,
-          title: '考试列表',
-        },
-      },
-      {
-        name: 'EducationExamTake',
-        path: 'exams/take/:id',
-        component: () => import('#/views/exam/exam-list/take.vue'),
-        meta: {
-          hideInBreadcrumb: true,
-          hideInMenu: true,
-          hideInTab: true,
-          title: '参加考试',
-        },
-      },
-      {
-        name: 'EducationExamResult',
-        path: 'exams/result/:id',
-        component: () => import('#/views/exam/exam-list/result.vue'),
-        meta: {
-          hideInBreadcrumb: true,
-          hideInMenu: true,
-          hideInTab: true,
-          title: '考试结果',
-        },
+        name: 'EducationPractice',
+        path: 'practice',
+        children: [
+          {
+            name: 'EducationExamList',
+            path: 'exams',
+            component: () => import('#/views/exam/exam-list/list.vue'),
+            meta: {
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              hideInTab: true,
+              title: '考试列表',
+            },
+          },
+          {
+            name: 'EducationExamTake',
+            path: 'exams/take/:id',
+            component: () => import('#/views/exam/exam-list/take.vue'),
+            meta: {
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              hideInTab: true,
+              title: '参加考试',
+            },
+          },
+          {
+            name: 'EducationExamResult',
+            path: 'exams/result/:id',
+            component: () => import('#/views/exam/exam-list/result.vue'),
+            meta: {
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              hideInTab: true,
+              title: '考试结果',
+            },
+          },
+        ],
       },
     ],
   },

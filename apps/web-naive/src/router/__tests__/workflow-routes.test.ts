@@ -17,6 +17,14 @@ function flattenPaths(values: typeof routes, parent = ''): string[] {
 }
 
 describe('workflow route contract', () => {
+  it('merges workflow parents into existing menu hierarchy', () => {
+    expect(routes.map((route) => route.name)).toEqual([
+      'AppStudio',
+      'EducationWorkspace',
+    ]);
+    expect(routes.map((route) => route.name)).not.toContain('EducationPractice');
+  });
+
   it('registers every non-menu workflow used by action buttons', () => {
     const paths = flattenPaths(routes);
     expect(paths).toEqual(
@@ -31,10 +39,16 @@ describe('workflow route contract', () => {
   });
 
   it('keeps workflow pages out of primary navigation', () => {
-    for (const route of routes.flatMap((item) => item.children ?? [])) {
-      expect(route.meta?.hideInMenu).toBe(true);
-      expect(route.component).toBeDefined();
-    }
+    const visit = (route: (typeof routes)[number]) => {
+      for (const child of route.children ?? []) {
+        if (child.children?.length) visit(child as (typeof routes)[number]);
+        else {
+          expect(child.meta?.hideInMenu).toBe(true);
+          expect(child.component).toBeDefined();
+        }
+      }
+    };
+    routes.forEach(visit);
   });
 
   it('resolves workflow URLs instead of falling through to the 404 route', () => {

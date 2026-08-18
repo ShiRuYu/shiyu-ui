@@ -169,6 +169,29 @@ test.describe('web-naive critical journeys', () => {
     }
   });
 
+  test('opens app and exam workflow routes from their parent pages', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.goto('/app-studio/apps');
+    await page.getByRole('button', { name: '创建 App', exact: true }).click();
+    await expect(page).toHaveURL(/\/app-studio\/apps\/edit\?new=true/);
+    await expect(page.getByText('创建 AI App', { exact: true })).toBeVisible();
+
+    for (const path of [
+      '/app-studio/agents/edit?new=true',
+      '/education-center/practice/exams',
+      '/education-center/practice/exams/take/42',
+      '/education-center/practice/exams/result/42',
+    ]) {
+      await page.goto(path);
+      await expect(page.getByText('404', { exact: true })).toHaveCount(0);
+      await expect(
+        page.getByText(/菜单加载失败|Navigation failed/),
+      ).toHaveCount(0);
+    }
+  });
+
   test('opens every authorized menu page without runtime failures', async ({
     page,
   }, testInfo) => {
