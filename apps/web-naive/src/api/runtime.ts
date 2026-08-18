@@ -61,8 +61,8 @@ export async function listRuntimeApps() {
 }
 
 export async function createRuntimeApp(data: {
-  name: string;
   description?: string;
+  name: string;
 }) {
   return requestClient.post<AiAppSummary>('/v1/apps', data);
 }

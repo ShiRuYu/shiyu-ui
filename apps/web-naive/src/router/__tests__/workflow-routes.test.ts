@@ -1,12 +1,10 @@
-import { describe, expect, it } from 'vitest';
 import { createMemoryHistory, createRouter } from 'vue-router';
+
+import { describe, expect, it } from 'vitest';
 
 import routes from '../routes/static/workflow';
 
-function flattenPaths(
-  values: typeof routes,
-  parent = '',
-): string[] {
+function flattenPaths(values: typeof routes, parent = ''): string[] {
   return values.flatMap((route) => {
     const path = route.path.startsWith('/')
       ? route.path

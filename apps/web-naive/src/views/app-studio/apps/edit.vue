@@ -3,6 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
+
 import {
   NAlert,
   NButton,
@@ -28,7 +29,9 @@ const loading = ref(false);
 const saving = ref(false);
 const loadError = ref('');
 const appId = ref(typeof route.query.id === 'string' ? route.query.id : '');
-const versions = ref<Array<{ id: string; version: string; status: string }>>([]);
+const versions = ref<Array<{ id: string; status: string; version: string; }>>(
+  [],
+);
 const form = reactive({
   name: '',
   description: '',
@@ -122,7 +125,7 @@ onMounted(loadApp);
             v-model:value="form.configJson"
             type="textarea"
             :rows="12"
-            placeholder='{"executionType":"AGENT","agentId":"..."}'
+            placeholder="{&quot;executionType&quot;:&quot;AGENT&quot;,&quot;agentId&quot;:&quot;...&quot;}"
           />
         </NFormItem>
         <NSpace justify="end">

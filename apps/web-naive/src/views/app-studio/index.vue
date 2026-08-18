@@ -53,9 +53,7 @@ function openApp(app: AiAppSummary) {
       },
       { label: '发布治理', value: '评测门槛' },
     ]"
-    :actions="[
-      { label: '创建 App', path: '/app-studio/apps/edit?new=true' },
-    ]"
+    :actions="[{ label: '创建 App', path: '/app-studio/apps/edit?new=true' }]"
   >
     <NSpin v-if="loading" size="small" />
     <NEmpty v-else-if="loadError" description="App 列表加载失败，请稍后重试" />
