@@ -174,6 +174,7 @@ test.describe('web-naive critical journeys', () => {
   }) => {
     await signIn(page);
     await page.goto('/app-studio/apps');
+    await expect(page.getByText('EducationPractice', { exact: true })).toHaveCount(0);
     await page.getByRole('button', { name: '创建 App', exact: true }).click();
     await expect(page).toHaveURL(/\/app-studio\/apps\/edit\?new=true/);
     await expect(page.getByText('创建 AI App', { exact: true })).toBeVisible();
