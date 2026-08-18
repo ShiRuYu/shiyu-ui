@@ -33,7 +33,7 @@ const saving = ref(false);
 const loadError = ref('');
 const appId = ref(typeof route.query.id === 'string' ? route.query.id : '');
 const versions = ref<
-  Array<{ configJson?: string; id: string; status: string; version: string; }>
+  Array<{ configJson?: string; id: string; status: string; version: string }>
 >([]);
 const agentOptions = ref<Array<{ label: string; value: string }>>([]);
 const form = reactive({
