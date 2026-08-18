@@ -170,7 +170,6 @@
   "intentListTitle": "意图定义管理",
   "intentListCreate": "新增意图",
   "intentListDeleteSuccess": "删除成功",
-  "chatConfigTitle": "AI 对话调试",
   "chatConfigPlatform": "平台",
   "chatConfigModel": "模型",
   "chatConfigSelectPlatform": "请选择平台",

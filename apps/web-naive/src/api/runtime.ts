@@ -27,6 +27,26 @@ export interface AiRunEvent {
   createdAt?: string;
 }
 
+export interface AiRunSummary {
+  id: string;
+  sourceType?: string;
+  model?: string;
+  status: string;
+  promptTokens?: number;
+  completionTokens?: number;
+  createdAt?: string;
+  completedAt?: string;
+  errorCode?: string;
+}
+
+export interface ModelProviderCapability {
+  provider: string;
+  model: string;
+  features?: string[];
+  contextWindow?: number;
+  healthy?: boolean;
+}
+
 export interface ToolApproval {
   id: string;
   runId: string;
@@ -37,6 +57,14 @@ export interface ToolApproval {
 
 export async function listRuntimeApps() {
   return requestClient.get<AiAppSummary[]>('/v1/apps');
+}
+
+export async function listRuntimeRuns(limit = 50) {
+  return requestClient.get<AiRunSummary[]>('/v1/runs', { params: { limit } });
+}
+
+export async function listModelProviders() {
+  return requestClient.get<ModelProviderCapability[]>('/admin/model-providers');
 }
 
 export async function listRuntimeAppVersions(appId: string) {
@@ -61,7 +89,7 @@ export async function streamGenerationRuntimeEvents(
   const token = useAccessStore().accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
   const response = await fetch(
-    `${baseURL}/v1/generations/${encodeURIComponent(generationId)}/runtime-events`,
+    `${baseURL}/v1/generations/${encodeURIComponent(generationId)}/runtime-events?follow=true&waitMs=30000`,
     {
       headers: {
         Accept: 'text/event-stream',

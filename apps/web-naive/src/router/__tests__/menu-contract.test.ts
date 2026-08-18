@@ -7,6 +7,12 @@ describe('backend menu contract', () => {
     expect(normalizeComponentPath('/learning/course/list')).toBe(
       '../views/learning/course/list.vue',
     );
+    expect(normalizeComponentPath('/workspace/agent/index')).toBe(
+      '../views/workspace/agent/index.vue',
+    );
+    expect(normalizeComponentPath('/workspace/chat/index')).toBe(
+      '../views/workspace/chat/index.vue',
+    );
   });
 
   it('accepts nested menus with registered components', () => {

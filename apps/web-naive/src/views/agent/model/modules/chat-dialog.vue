@@ -141,7 +141,7 @@ const [FormModal, modalApi] = useVbenModal<ModelApi.ModelItem>({
     await nextTick();
     await loadPlatforms(row);
   },
-  title: $t('ai-tutor.directDebug'),
+  title: $t('ai-tutor.modelTest'),
 });
 </script>
 

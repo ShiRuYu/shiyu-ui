@@ -47,7 +47,8 @@ import { renderSafeMarkdown } from '#/utils/markdown';
 interface ChatMessage {
   content: string;
   id: string;
-  role: 'assistant' | 'user';
+  role: 'assistant' | 'system' | 'tool' | 'user';
+  reasoning?: string;
   status?: 'error' | 'streaming';
 }
 
@@ -84,6 +85,9 @@ const selectedAppId = ref<string>();
 const loadingPlatforms = ref(false);
 const loadingModels = ref(false);
 const catalogError = ref(false);
+const contextTab = ref<'context' | 'details' | 'trace'>('context');
+const sidebarVisible = ref(false);
+const mobileContextVisible = ref(false);
 const notice = useMessage();
 let controller: AbortController | undefined;
 let activeRunId: string | undefined;
@@ -199,6 +203,11 @@ async function sendMessage(promptOverride?: string) {
       },
       {
         signal: controller.signal,
+        onEvent: (event) => {
+          if (event.type === 'REASONING_DELTA' && event.reasoningContent) {
+            assistant.reasoning = `${assistant.reasoning ?? ''}${event.reasoningContent}`;
+          }
+        },
         onRunId: (runId) => {
           activeRunId = runId;
         },
@@ -239,15 +248,11 @@ async function loadConversation(id: string) {
   activeConversationId.value = id;
   branches.value = await listBranches(id).catch(() => []);
   const remote = await getConversationMessages(id);
-  messages.value = (remote ?? [])
-    .filter((item) => item.role === 'USER' || item.role === 'ASSISTANT')
-    .map((item) => ({
-      id: item.id,
-      role: item.role.toLowerCase() as 'assistant' | 'user',
-      content: (item.contentParts ?? [])
-        .map((part) => part.text ?? '')
-        .join(''),
-    }));
+  messages.value = (remote ?? []).map((item) => ({
+    id: item.id,
+    role: item.role.toLowerCase() as ChatMessage['role'],
+    content: (item.contentParts ?? []).map((part) => part.text ?? '').join(''),
+  }));
   await scrollToLatest();
 }
 
@@ -305,6 +310,11 @@ async function stopGeneration() {
     }
   }
   controller?.abort();
+}
+
+function openMobileContext(tab: 'context' | 'details' | 'trace') {
+  contextTab.value = tab;
+  mobileContextVisible.value = true;
 }
 
 async function retryMessage(index: number) {
@@ -379,9 +389,9 @@ onMounted(async () => {
   <Page :title="$t('page.aiTutor.chat')" auto-content-height>
     <div class="workspace-shell">
       <NCard class="conversation-sidebar" content-class="sidebar-content">
-        <div class="sidebar-title">Conversations</div>
+        <div class="sidebar-title">会话与分支</div>
         <NButton size="small" block @click="newConversation">
-          New conversation
+          新建会话
         </NButton>
         <NList v-if="conversations.length" clickable>
           <NListItem
@@ -395,7 +405,7 @@ onMounted(async () => {
           </NListItem>
         </NList>
         <template v-if="branches.length">
-          <div class="sidebar-subtitle">Branches</div>
+          <div class="sidebar-subtitle">当前分支</div>
           <NList clickable>
             <NListItem
               v-for="branch in branches"
@@ -406,49 +416,89 @@ onMounted(async () => {
             </NListItem>
           </NList>
         </template>
-        <NEmpty v-else size="small" description="No conversations" />
+        <NEmpty v-else size="small" description="暂无会话" />
       </NCard>
       <NCard class="chat-shell" content-class="chat-card-content">
-        <div class="model-toolbar">
-          <NSelect
-            v-model:value="mode"
-            class="model-select"
-            aria-label="Runtime mode"
-            :options="[
-              { label: 'Chat', value: 'chat' },
-              { label: 'Agent', value: 'agent' },
-              { label: 'RAG', value: 'rag' },
-            ]"
-          />
-          <NSelect
-            v-if="mode !== 'chat' && runtimeApps.length"
-            v-model:value="selectedAppId"
-            class="model-select"
-            aria-label="AI App"
-            :options="
-              runtimeApps.map((app) => ({ label: app.name, value: app.id }))
-            "
-            placeholder="Select AI App"
-          />
-          <NSelect
-            v-model:value="selectedPlatformId"
-            class="model-select"
-            :aria-label="$t('ai-tutor.platform')"
-            :disabled="loading"
-            :loading="loadingPlatforms"
-            :options="platformOptions"
-            :placeholder="$t('ai-tutor.selectPlatform')"
-            @update:value="onPlatformChange"
-          />
-          <NSelect
-            v-model:value="selectedModel"
-            class="model-select"
-            :aria-label="$t('ai-tutor.model')"
-            :disabled="loading || !selectedPlatformId"
-            :loading="loadingModels"
-            :options="modelOptions"
-            :placeholder="$t('ai-tutor.selectModel')"
-          />
+        <div class="workspace-topbar">
+          <NButton
+            class="mobile-session-button"
+            secondary
+            size="small"
+            @click="sidebarVisible = true"
+          >
+            会话
+          </NButton>
+          <div class="workspace-heading">
+            <span class="eyebrow">AI 工作区</span>
+            <strong>{{ activeConversationId ? '当前会话' : '新会话' }}</strong>
+          </div>
+          <div class="model-toolbar">
+            <NSelect
+              v-model:value="mode"
+              class="model-select"
+              aria-label="工作区模式"
+              :options="[
+                { label: 'Chat 对话', value: 'chat' },
+                { label: 'Agent 执行', value: 'agent' },
+                { label: 'RAG 检索', value: 'rag' },
+              ]"
+            />
+            <NSelect
+              v-if="mode !== 'chat' && runtimeApps.length"
+              v-model:value="selectedAppId"
+              class="model-select"
+              aria-label="AI 应用"
+              :options="
+                runtimeApps.map((app) => ({ label: app.name, value: app.id }))
+              "
+              placeholder="选择已发布应用"
+            />
+            <NSelect
+              v-model:value="selectedPlatformId"
+              class="model-select"
+              :aria-label="$t('ai-tutor.platform')"
+              :disabled="loading"
+              :loading="loadingPlatforms"
+              :options="platformOptions"
+              :placeholder="$t('ai-tutor.selectPlatform')"
+              @update:value="onPlatformChange"
+            />
+            <NSelect
+              v-model:value="selectedModel"
+              class="model-select"
+              :aria-label="$t('ai-tutor.model')"
+              :disabled="loading || !selectedPlatformId"
+              :loading="loadingModels"
+              :options="modelOptions"
+              :placeholder="$t('ai-tutor.selectModel')"
+            />
+          </div>
+          <div class="topbar-actions">
+            <NButton
+              size="small"
+              secondary
+              :disabled="!activeConversationId"
+              @click="showPromptPreview"
+            >
+              Prompt 预览
+            </NButton>
+            <NButton
+              size="small"
+              secondary
+              :disabled="runtimeEvents.length === 0"
+              @click="openMobileContext('trace')"
+            >
+              运行轨迹
+            </NButton>
+            <NButton
+              class="mobile-context-button"
+              size="small"
+              secondary
+              @click="openMobileContext('context')"
+            >
+              上下文
+            </NButton>
+          </div>
         </div>
         <NAlert v-if="catalogError" class="mb-3" type="error">
           {{ $t('ai-tutor.catalogError') }}
@@ -456,8 +506,8 @@ onMounted(async () => {
         <NAlert v-if="mode !== 'chat'" class="mb-3" type="info">
           {{
             mode === 'agent'
-              ? 'Agent mode uses the selected published App and records an AiRun trace.'
-              : 'RAG mode keeps citations and MAGMA relations in the runtime context.'
+              ? 'Agent 模式使用已发布应用，并记录完整运行轨迹。'
+              : 'RAG 模式保留知识引用与 MAGMA 关系路径，便于核验上下文。'
           }}
         </NAlert>
         <div
@@ -487,6 +537,21 @@ onMounted(async () => {
                 <span v-if="msg.status === 'streaming' && !msg.content">
                   {{ $t('ai-tutor.thinking') }}
                 </span>
+                <details
+                  v-if="msg.role === 'assistant' && msg.reasoning"
+                  class="reasoning-block"
+                >
+                  <summary>思考过程</summary>
+                  <p>{{ msg.reasoning }}</p>
+                </details>
+                <div v-if="msg.role === 'system'" class="system-message">
+                  <span class="message-label">SYSTEM</span>
+                  <span class="whitespace-pre-wrap">{{ msg.content }}</span>
+                </div>
+                <div v-else-if="msg.role === 'tool'" class="tool-message">
+                  <span class="message-label">TOOL</span>
+                  <span class="whitespace-pre-wrap">{{ msg.content }}</span>
+                </div>
                 <div
                   v-else-if="msg.role === 'assistant'"
                   class="chat-markdown"
@@ -517,7 +582,7 @@ onMounted(async () => {
                   size="tiny"
                   @click="beginEdit(msg)"
                 >
-                  Edit
+                  编辑
                 </NButton>
                 <NButton
                   v-if="msg.role === 'user' && editingMessageId === msg.id"
@@ -525,7 +590,7 @@ onMounted(async () => {
                   size="tiny"
                   @click="saveEdit"
                 >
-                  Save
+                  保存
                 </NButton>
                 <NButton text size="tiny" @click="copyMessage(msg.content)">
                   {{ $t('ai-tutor.copy') }}
@@ -543,24 +608,6 @@ onMounted(async () => {
           </article>
         </div>
 
-        <div class="workspace-actions">
-          <NButton
-            size="small"
-            secondary
-            :disabled="!activeConversationId"
-            @click="showPromptPreview"
-          >
-            Prompt preview
-          </NButton>
-          <NButton
-            size="small"
-            secondary
-            :disabled="runtimeEvents.length === 0"
-            @click="traceVisible = true"
-          >
-            Run trace
-          </NButton>
-        </div>
         <form class="composer" @submit.prevent="sendMessage()">
           <NInput
             v-model:value="input"
@@ -592,12 +639,145 @@ onMounted(async () => {
           {{ $t('ai-tutor.inputHint') }}
         </p>
       </NCard>
+      <aside
+        class="context-panel"
+        :class="{ 'mobile-visible': mobileContextVisible }"
+      >
+        <div class="context-tabs" role="tablist" aria-label="运行详情">
+          <button
+            :class="{ active: contextTab === 'context' }"
+            type="button"
+            @click="contextTab = 'context'"
+          >
+            上下文
+          </button>
+          <button
+            :class="{ active: contextTab === 'trace' }"
+            type="button"
+            @click="contextTab = 'trace'"
+          >
+            轨迹
+          </button>
+          <button
+            :class="{ active: contextTab === 'details' }"
+            type="button"
+            @click="contextTab = 'details'"
+          >
+            详情
+          </button>
+          <button
+            class="context-close"
+            type="button"
+            aria-label="关闭上下文面板"
+            @click="mobileContextVisible = false"
+          >
+            关闭
+          </button>
+        </div>
+        <div v-if="contextTab === 'context'" class="context-content">
+          <div class="context-title">Prompt 预览</div>
+          <div class="metric-row">
+            <span>预计 Token</span
+            ><strong>{{ promptPreview?.estimatedTokens ?? 0 }}</strong>
+          </div>
+          <NButton
+            block
+            secondary
+            size="small"
+            :disabled="!activeConversationId"
+            @click="showPromptPreview"
+          >
+            刷新上下文
+          </NButton>
+          <NEmpty
+            v-if="!promptPreview"
+            size="small"
+            description="发送消息后查看结构化上下文"
+          />
+          <div v-else class="context-segments">
+            <div
+              v-for="(segment, index) in promptPreview.sources ?? []"
+              :key="`${segment.source}-${index}`"
+              class="context-segment"
+            >
+              <div class="segment-head">
+                <strong>{{ segment.source }}</strong
+                ><span>{{ segment.estimatedTokens }} tokens</span>
+              </div>
+              <p>{{ segment.content }}</p>
+            </div>
+          </div>
+          <NAlert
+            v-if="promptPreview?.truncated"
+            type="warning"
+            :bordered="false"
+          >
+            上下文已截断：{{
+              promptPreview.truncationReason || '达到模型上下文限制'
+            }}
+          </NAlert>
+        </div>
+        <div v-else-if="contextTab === 'trace'" class="context-content">
+          <div class="context-title">运行轨迹</div>
+          <NEmpty
+            v-if="!runtimeEvents.length"
+            size="small"
+            description="暂无运行事件"
+          />
+          <NList v-else class="trace-list" bordered>
+            <NListItem
+              v-for="event in runtimeEvents"
+              :key="`${event.runId}-${event.seq}`"
+            >
+              <div class="trace-event">
+                <strong>{{ event.seq }} · {{ event.type }}</strong
+                ><span v-if="event.createdAt">{{ event.createdAt }}</span>
+              </div>
+            </NListItem>
+          </NList>
+        </div>
+        <div v-else class="context-content">
+          <div class="context-title">会话详情</div>
+          <div class="detail-item">
+            <span>模式</span
+            ><strong>{{
+              mode === 'chat' ? '对话' : mode === 'agent' ? 'Agent' : 'RAG'
+            }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>模型</span><strong>{{ selectedModel || '未选择' }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>运行状态</span
+            ><strong>{{ loading ? '生成中' : '就绪' }}</strong>
+          </div>
+          <div class="detail-item">
+            <span>消息数</span><strong>{{ messages.length }}</strong>
+          </div>
+        </div>
+      </aside>
+      <NDrawer v-model:show="sidebarVisible" placement="left" :width="300">
+        <NDrawerContent title="会话与分支">
+          <NButton block @click="newConversation">新建会话</NButton>
+          <NList v-if="conversations.length" clickable>
+            <NListItem
+              v-for="conversation in conversations"
+              :key="conversation.id"
+              @click="
+                loadConversation(conversation.id);
+                sidebarVisible = false;
+              "
+            >
+              {{ conversation.title || conversation.id }}
+            </NListItem>
+          </NList>
+          <NEmpty v-else size="small" description="暂无会话" />
+        </NDrawerContent>
+      </NDrawer>
       <NDrawer v-model:show="previewVisible" placement="right" :width="360">
-        <NDrawerContent title="Prompt preview">
-          <p>Estimated tokens: {{ promptPreview?.estimatedTokens ?? 0 }}</p>
-          <p v-if="promptPreview?.truncated">
-            Prompt was truncated to model limits.
-          </p>
+        <NDrawerContent title="Prompt 预览">
+          <p>预计 Token：{{ promptPreview?.estimatedTokens ?? 0 }}</p>
+          <p v-if="promptPreview?.truncated">Prompt 已按模型上下文限制截断。</p>
           <p v-if="promptPreview?.truncationReason">
             {{ promptPreview.truncationReason }}
           </p>
@@ -626,7 +806,7 @@ onMounted(async () => {
               </div>
             </NListItem>
           </NList>
-          <NEmpty v-else description="No runtime events" />
+          <NEmpty v-else description="暂无运行事件" />
         </NDrawerContent>
       </NDrawer>
     </div>
@@ -635,15 +815,22 @@ onMounted(async () => {
 
 <style scoped>
 .workspace-shell {
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 15rem minmax(34rem, 1fr) 22.5rem;
+  gap: 0;
   height: 100%;
-  min-height: 32rem;
+  min-height: calc(100vh - 7rem);
+  overflow: hidden;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
 }
 
 .conversation-sidebar {
-  width: 15rem;
-  flex: 0 0 15rem;
+  width: auto;
+  border: 0;
+  border-right: 1px solid hsl(var(--border));
+  border-radius: 0;
 }
 
 .sidebar-content {
@@ -657,9 +844,11 @@ onMounted(async () => {
 }
 
 .chat-shell {
-  flex: 1;
+  min-width: 0;
   height: 100%;
   min-height: 32rem;
+  border: 0;
+  border-radius: 0;
 }
 
 .chat-shell :deep(.chat-card-content) {
@@ -668,22 +857,55 @@ onMounted(async () => {
   height: 100%;
 }
 
-.model-toolbar {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 18rem));
+.workspace-topbar {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
-  padding-bottom: 1rem;
+  align-items: center;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid hsl(var(--border));
 }
 
+.workspace-heading {
+  display: flex;
+  flex-direction: column;
+  min-width: 6rem;
+  margin-right: auto;
+}
+
+.eyebrow {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.model-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  min-width: min(100%, 32rem);
+}
+
 .model-select {
-  width: 100%;
+  width: 8rem;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.mobile-context-button {
+  display: none;
+}
+.mobile-session-button {
+  display: none;
 }
 
 .message-list {
   flex: 1;
   min-height: 20rem;
-  padding: 1rem;
+  padding: 1.25rem clamp(0.75rem, 4vw, 3rem);
   overflow-y: auto;
 }
 
@@ -694,6 +916,11 @@ onMounted(async () => {
 
 .message-row.user {
   justify-content: flex-end;
+}
+
+.message-row.system,
+.message-row.tool {
+  justify-content: center;
 }
 
 .message-column {
@@ -717,18 +944,157 @@ onMounted(async () => {
   border: 1px solid hsl(var(--destructive));
 }
 
+.system .message-bubble,
+.tool .message-bubble {
+  width: min(100%, 48rem);
+  color: hsl(var(--muted-foreground));
+  font-size: 0.8rem;
+  background: color-mix(in srgb, hsl(var(--muted)) 60%, transparent);
+  border: 1px dashed hsl(var(--border));
+}
+
+.tool .message-bubble {
+  color: hsl(var(--foreground));
+  background: color-mix(in srgb, hsl(var(--primary)) 8%, transparent);
+  border-style: solid;
+}
+
+.system-message,
+.tool-message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.message-label {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.reasoning-block {
+  margin-bottom: 0.65rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+}
+
+.reasoning-block summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.reasoning-block p {
+  max-height: 8rem;
+  margin: 0.45rem 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
 .composer {
   display: flex;
   gap: 0.75rem;
   align-items: flex-end;
-  padding-top: 1rem;
+  padding-top: 0.75rem;
   border-top: 1px solid hsl(var(--border));
+}
+
+.composer :deep(.n-input) {
+  flex: 1;
 }
 
 .workspace-actions {
   display: flex;
   justify-content: flex-end;
   padding-top: 0.75rem;
+}
+
+.context-panel {
+  min-width: 0;
+  overflow-y: auto;
+  border-left: 1px solid hsl(var(--border));
+  background: color-mix(in srgb, hsl(var(--muted)) 24%, transparent);
+}
+
+.context-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.context-tabs button {
+  padding: 0.8rem 0.25rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.8rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.context-tabs button.active {
+  color: hsl(var(--primary));
+  font-weight: 600;
+  box-shadow: inset 0 -2px hsl(var(--primary));
+}
+
+.context-close {
+  display: none;
+}
+
+.context-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+.context-title {
+  font-weight: 600;
+}
+.metric-row,
+.detail-item,
+.segment-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+.metric-row,
+.detail-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 0.8rem;
+}
+.context-segments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.context-segment {
+  padding: 0.65rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  background: hsl(var(--background));
+}
+.context-segment p {
+  max-height: 7rem;
+  margin: 0.45rem 0 0;
+  overflow: auto;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+}
+.segment-head span,
+.trace-event span {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.7rem;
+}
+.trace-list {
+  max-height: calc(100vh - 12rem);
+  overflow: auto;
+}
+.trace-event {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .chat-markdown :deep(pre) {
@@ -747,13 +1113,59 @@ onMounted(async () => {
 @media (max-width: 639px) {
   .workspace-shell {
     display: block;
+    min-height: calc(100vh - 5rem);
+    border: 0;
+    border-radius: 0;
   }
   .conversation-sidebar {
-    width: 100%;
-    margin-bottom: 0.75rem;
+    display: none;
+  }
+  .chat-shell {
+    min-height: calc(100vh - 5rem);
+  }
+  .context-panel {
+    display: none;
+  }
+  .context-panel.mobile-visible {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    display: block;
+    max-height: 58vh;
+    overflow-y: auto;
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem 0.75rem 0 0;
+    box-shadow: 0 -0.5rem 2rem rgb(0 0 0 / 18%);
+  }
+  .context-panel.mobile-visible .context-tabs {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .context-close {
+    display: block;
+    color: hsl(var(--muted-foreground));
+  }
+  .mobile-session-button {
+    display: inline-flex;
+  }
+  .mobile-context-button {
+    display: inline-flex;
   }
   .model-toolbar {
-    grid-template-columns: minmax(0, 1fr);
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+  }
+  .model-select {
+    min-width: 8rem;
+  }
+  .topbar-actions {
+    width: 100%;
+  }
+  .topbar-actions :deep(.n-button) {
+    flex: 1;
   }
 
   .message-list {
@@ -766,6 +1178,10 @@ onMounted(async () => {
 
   .composer {
     flex-wrap: wrap;
+    position: sticky;
+    bottom: 0;
+    padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom));
+    background: hsl(var(--background));
   }
 
   .composer :deep(.n-button) {

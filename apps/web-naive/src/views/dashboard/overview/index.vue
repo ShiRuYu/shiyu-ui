@@ -49,7 +49,7 @@ const quickNavItems = [
     color: '#7C3AED',
     icon: 'lucide:message-circle',
     title: $t('dashboard.workbench.aiChat'),
-    url: '/ai-tutor/chat',
+    url: '/workspace/chat',
   },
   {
     color: '#DC2626',

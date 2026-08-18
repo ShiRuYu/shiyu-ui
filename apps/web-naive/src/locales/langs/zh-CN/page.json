@@ -121,7 +121,6 @@
     "adminEdit": "Agent 编辑",
     "platform": "平台管理",
     "model": "模型管理",
-    "chatConfig": "对话调试",
     "intent": "意图管理"
   }
 }

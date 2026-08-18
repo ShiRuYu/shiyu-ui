@@ -170,7 +170,6 @@
   "intentListTitle": "Intent Definition Management",
   "intentListCreate": "New Intent",
   "intentListDeleteSuccess": "Deleted successfully",
-  "chatConfigTitle": "AI Chat Debug",
   "chatConfigPlatform": "Platform",
   "chatConfigModel": "Model",
   "chatConfigSelectPlatform": "Select a platform",

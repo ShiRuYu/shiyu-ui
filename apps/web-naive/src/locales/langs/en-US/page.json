@@ -121,7 +121,6 @@
     "adminEdit": "Agent Edit",
     "platform": "Platform Management",
     "model": "Model Management",
-    "chatConfig": "Chat Debugging",
     "intent": "Intent Management"
   }
 }

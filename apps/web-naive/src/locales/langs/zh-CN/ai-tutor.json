@@ -36,7 +36,7 @@
   "selectionRequired": "请先选择 AI 平台和模型",
   "syncMode": "同步",
   "streamMode": "流式",
-  "directDebug": "AI 对话调试",
+  "modelTest": "模型测试",
   "reply": "回复",
   "requestError": "请求失败：{message}",
   "featureRequestFailed": "请求失败，请确认对应的 Agent 服务可用",

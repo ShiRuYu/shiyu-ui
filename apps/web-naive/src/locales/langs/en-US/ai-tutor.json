@@ -36,7 +36,7 @@
   "selectionRequired": "Select an AI platform and model first",
   "syncMode": "Synchronous",
   "streamMode": "Streaming",
-  "directDebug": "AI Chat Debugger",
+  "modelTest": "Model test",
   "reply": "Response",
   "requestError": "Request failed: {message}",
   "featureRequestFailed": "The request failed. Confirm that the corresponding Agent service is available.",

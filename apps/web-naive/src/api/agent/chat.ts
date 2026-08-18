@@ -11,11 +11,16 @@ export namespace ChatApi {
     conversationId?: string;
     sceneType?: string;
     appId?: string;
+    appVersionId?: string;
   }
 
   export interface ChatResponse {
     content: string;
     success: boolean;
+    type?: string;
+    reasoningContent?: string;
+    payload?: string;
+    errorMessage?: string;
   }
   export interface Conversation {
     id: string;
@@ -70,10 +75,14 @@ async function createConversation(data: {
   systemPrompt?: string;
   title?: string;
 }) {
-  return requestClient.post<ChatApi.Conversation>('/conversations', {
-    ...data,
-    sceneType: data.sceneType ?? 'chat',
-  });
+  return requestClient.post<ChatApi.Conversation>(
+    '/conversations',
+    {
+      ...data,
+      sceneType: data.sceneType ?? 'chat',
+    },
+    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+  );
 }
 
 async function getConversationMessages(id: string) {
@@ -93,7 +102,11 @@ async function cancelGeneration(id: string) {
 }
 
 async function editMessage(messageId: string, content: string) {
-  return requestClient.post(`/messages/${messageId}/edits`, { content });
+  return requestClient.post(
+    `/messages/${messageId}/edits`,
+    { content },
+    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+  );
 }
 
 async function retryGeneration(
@@ -103,6 +116,7 @@ async function retryGeneration(
   return requestClient.post<{ id: string }>(
     `/messages/${messageId}/generations`,
     data,
+    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
   );
 }
 
@@ -129,14 +143,23 @@ async function chat(data: ChatApi.ChatRequest) {
 async function chatStream(
   data: ChatApi.ChatRequest,
   onMessage: (text: string) => void,
-  options: { onRunId?: (runId: string) => void; signal?: AbortSignal } = {},
+  options: {
+    onEvent?: (
+      event: ChatApi.ChatResponse & { payload?: string; type?: string },
+    ) => void;
+    onRunId?: (runId: string) => void;
+    signal?: AbortSignal;
+  } = {},
 ): Promise<string> {
   if (data.appId && data.sceneType === 'agent') {
     const result = await requestClient.post<{
       executionId: string;
       output?: unknown;
       runtimeRunId?: string;
-    }>(`/v1/apps/${data.appId}/execute`, { prompt: data.prompt });
+    }>(`/v1/apps/${data.appId}/execute`, {
+      prompt: data.prompt,
+      appVersionId: data.appVersionId,
+    });
     const output =
       typeof result.output === 'string'
         ? result.output
@@ -148,11 +171,15 @@ async function chatStream(
   }
   const conversation = data.conversationId
     ? { id: data.conversationId }
-    : await requestClient.post<{ id: string }>('/conversations', {
-        platform: data.platform,
-        model: data.model,
-        sceneType: data.sceneType ?? 'chat',
-      });
+    : await requestClient.post<{ id: string }>(
+        '/conversations',
+        {
+          platform: data.platform,
+          model: data.model,
+          sceneType: data.sceneType ?? 'chat',
+        },
+        { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+      );
   const run = await requestClient.post<{ id: string }>(
     `/conversations/${conversation.id}/generations`,
     {
@@ -161,9 +188,10 @@ async function chatStream(
       model: data.model,
       appId: data.appId,
     },
+    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
   );
   options.onRunId?.(run.id);
-  await streamGeneration(run.id, onMessage, options.signal);
+  await streamGeneration(run.id, onMessage, options.signal, options.onEvent);
   return run.id;
 }
 
@@ -171,6 +199,9 @@ async function streamGeneration(
   generationId: string,
   onMessage: (text: string) => void,
   signal?: AbortSignal,
+  onEvent?: (
+    event: ChatApi.ChatResponse & { payload?: string; type?: string },
+  ) => void,
 ): Promise<void> {
   let lastEventId = '-1';
   let terminal = false;
@@ -179,7 +210,7 @@ async function streamGeneration(
     const token = accessStore.accessToken;
     const baseURL = requestClient.getBaseUrl() ?? '';
     const response = await fetch(
-      `${baseURL}/generations/${generationId}/events?afterSeq=${encodeURIComponent(lastEventId)}`,
+      `${baseURL}/generations/${generationId}/events?afterSeq=${encodeURIComponent(lastEventId)}&follow=true&waitMs=30000`,
       {
         headers: {
           Accept: 'text/event-stream',
@@ -202,6 +233,7 @@ async function streamGeneration(
             payload?: string;
             type?: string;
           };
+          onEvent?.(payload);
           if (
             payload.type === 'COMPLETED' ||
             payload.type === 'FAILED' ||
@@ -222,11 +254,11 @@ async function streamGeneration(
     );
     if (!terminal)
       await new Promise<void>((resolve, reject) => {
-        const timer = window.setTimeout(resolve, 250);
+        const timer = globalThis.setTimeout(resolve, 250);
         signal?.addEventListener(
           'abort',
           () => {
-            window.clearTimeout(timer);
+            globalThis.clearTimeout(timer);
             reject(new DOMException('Aborted', 'AbortError'));
           },
           { once: true },
