@@ -60,7 +60,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleLogin(values: Recordable<any>) {
   loading.value = true;
   try {
-    const res = await requestClient.post('/auth/code-login', values);
+    const res = await requestClient.post('/v1/auth/code-login', values);
     if (res) {
       message.success('登录成功');
     }

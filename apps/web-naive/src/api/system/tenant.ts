@@ -72,7 +72,7 @@ function filterTenantTree(
 
 async function getTenantList(params?: Recordable<any>) {
   const data =
-    await requestClient.get<SystemTenantApi.SystemTenant[]>('/tenant/list');
+    await requestClient.get<SystemTenantApi.SystemTenant[]>('/v1/system/tenants/list');
   const list = Array.isArray(data) ? data : [];
   return {
     items: filterTenantTree(buildTenantTree(list), params),
@@ -84,24 +84,24 @@ async function getTenantPage(params?: Recordable<any>) {
   return requestClient.get<{
     items: SystemTenantApi.SystemTenant[];
     total: number;
-  }>('/tenant/page', { params });
+  }>('/v1/system/tenants/page', { params });
 }
 
 async function createTenant(
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.post('/tenant/create', data);
+  return requestClient.post('/v1/system/tenants/create', data);
 }
 
 async function updateTenant(
   id: number,
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.post('/tenant/update', data, { params: { id } });
+  return requestClient.post('/v1/system/tenants/update', data, { params: { id } });
 }
 
 async function deleteTenant(id: number) {
-  return requestClient.post('/tenant/delete', null, { params: { id } });
+  return requestClient.post('/v1/system/tenants/delete', null, { params: { id } });
 }
 
 /** 获取租户选项（构建为树形结构，供 ApiTreeSelect 使用） */

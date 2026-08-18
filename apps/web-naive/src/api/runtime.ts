@@ -65,7 +65,7 @@ export async function listRuntimeRuns(limit = 50) {
 }
 
 export async function listModelProviders() {
-  return requestClient.get<ModelProviderCapability[]>('/admin/model-providers');
+  return requestClient.get<ModelProviderCapability[]>('/v1/admin/model-providers');
 }
 
 export async function listRuntimeAppVersions(appId: string) {

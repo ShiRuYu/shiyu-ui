@@ -23,21 +23,21 @@ interface UploadFileParams {
 }
 
 export async function getFileStorageConfig() {
-  return requestClient.get<FileStorageConfig>('/system/file/config');
+  return requestClient.get<FileStorageConfig>('/v1/system/files/config');
 }
 
 export async function getFileList() {
-  return requestClient.get<StoredFile[]>('/system/file/list');
+  return requestClient.get<StoredFile[]>('/v1/system/files/list');
 }
 
 export async function deleteFile(key: string) {
-  return requestClient.delete<boolean>('/system/file', {
+  return requestClient.delete<boolean>('/v1/system/files', {
     params: { key },
   });
 }
 
 export async function downloadFile(file: StoredFile) {
-  const blob = await requestClient.download<Blob>('/system/file/download', {
+  const blob = await requestClient.download<Blob>('/v1/system/files/download', {
     params: { key: file.key },
   });
   const url = URL.createObjectURL(blob);
@@ -58,7 +58,7 @@ export async function uploadFile({
 }: UploadFileParams) {
   try {
     onProgress?.({ percent: 0 });
-    const data = await requestClient.upload<StoredFile>('/system/file/upload', {
+    const data = await requestClient.upload<StoredFile>('/v1/system/files/upload', {
       file,
     });
     onProgress?.({ percent: 100 });

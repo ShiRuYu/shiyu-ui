@@ -36,7 +36,7 @@ apps/web-naive/src/
 | agent           | `/agent`           |  17   | Agent Management              |
 | ai-tutor        | `/ai-tutor`        |   5   | AI Tutoring                   |
 | analytics       | `/analytics`       |   4   | Analytics                     |
-| dashboard       | `/dashboard`       |   7   | Dashboard                     |
+| workbench       | `/workbench`       |   7   | Workbench                     |
 | education-admin | `/education-admin` |  34   | Education Admin               |
 | exam            | `/exam`            |   4   | Exams                         |
 | knowledge       | `/knowledge`       |   9   | Enterprise Knowledge Platform |

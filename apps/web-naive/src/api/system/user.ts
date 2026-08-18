@@ -45,7 +45,7 @@ async function getUserList(params: Recordable<any>) {
   const data = await requestClient.get<
     | SystemUserApi.PageResult<SystemUserApi.SystemUser>
     | SystemUserApi.SystemUser[]
-  >('/user/list', {
+  >('/v1/system/users/list', {
     params: {
       pageNum: page || 1,
       pageSize: pageSize || 10,
@@ -64,7 +64,7 @@ async function getUserList(params: Recordable<any>) {
  */
 async function getRolesForUserForm() {
   return requestClient.get<Array<{ code: string; id: number; name: string }>>(
-    '/role/all',
+    '/v1/system/roles/all',
   );
 }
 
@@ -75,7 +75,7 @@ async function getRolesForUserForm() {
 async function createUser(
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/user/create', data);
+  return requestClient.post('/v1/system/users/create', data);
 }
 
 /**
@@ -88,7 +88,7 @@ async function updateUser(
   id: number,
   data: Omit<SystemUserApi.SystemUser, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/user/update', data, {
+  return requestClient.post('/v1/system/users/update', data, {
     params: { userId: id },
   });
 }
@@ -98,7 +98,7 @@ async function updateUser(
  * @param id 用户 ID
  */
 async function deleteUser(id: number) {
-  return requestClient.post('/user/delete', null, {
+  return requestClient.post('/v1/system/users/delete', null, {
     params: { userId: id },
   });
 }
@@ -110,7 +110,7 @@ async function deleteUser(id: number) {
  */
 async function resetUserPassword(id: number, password: string) {
   return requestClient.post(
-    '/user/password/reset',
+    '/v1/system/users/password/reset',
     { password },
     { params: { userId: id } },
   );
@@ -128,7 +128,7 @@ async function changePassword(
   newPassword: string,
 ) {
   return requestClient.post(
-    '/user/password/change',
+    '/v1/system/users/password/change',
     {
       oldPassword,
       newPassword,
@@ -147,7 +147,7 @@ async function getUserOptions() {
 
 async function getUserTenantAssignments(userId: number) {
   return requestClient.get<SystemUserApi.UserTenantAssignment[]>(
-    '/user/tenant-assignments',
+    '/v1/system/users/tenant-assignments',
     { params: { userId } },
   );
 }
@@ -156,7 +156,7 @@ async function replaceUserTenantAssignments(
   userId: number,
   assignments: Array<{ roleId: number; tenantId: number }>,
 ) {
-  return requestClient.post('/user/tenant-assignments/replace', assignments, {
+  return requestClient.post('/v1/system/users/tenant-assignments/replace', assignments, {
     params: { userId },
   });
 }

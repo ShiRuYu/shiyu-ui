@@ -181,7 +181,7 @@ describe('generateAccessible - redirect normalization', () => {
     const routes = [
       {
         name: 'Dashboard',
-        path: '/dashboard',
+        path: '/workbench',
         children: [
           {
             name: 'Analytics',

@@ -15,7 +15,7 @@ export namespace EducationChapterApi {
 
 /** 获取章节详情 */
 export async function getChapterById(id: number) {
-  return requestClient.get<EducationChapterApi.Chapter>('/edu/chapter/detail', {
+  return requestClient.get<EducationChapterApi.Chapter>('/v1/education/chapter/detail', {
     params: { id },
   });
 }
@@ -23,14 +23,14 @@ export async function getChapterById(id: number) {
 /** 获取教材所有章节（平铺） */
 export async function getChaptersByTextbook(textbookId: number) {
   return requestClient.get<EducationChapterApi.Chapter[]>(
-    '/edu/chapter/textbook',
+    '/v1/education/chapter/textbook',
     { params: { textbookId } },
   );
 }
 
 /** 获取教材章节树 */
 export async function getChapterTree(textbookId: number) {
-  return requestClient.get<EducationChapterApi.Chapter[]>('/edu/chapter/tree', {
+  return requestClient.get<EducationChapterApi.Chapter[]>('/v1/education/chapter/tree', {
     params: { textbookId },
   });
 }
@@ -39,7 +39,7 @@ export async function getChapterTree(textbookId: number) {
 export async function createChapter(
   data: Omit<EducationChapterApi.Chapter, 'children' | 'id'>,
 ) {
-  return requestClient.post('/edu/chapter/create', data);
+  return requestClient.post('/v1/education/chapter/create', data);
 }
 
 /** 更新章节 */
@@ -47,16 +47,16 @@ export async function updateChapter(
   id: number,
   data: Partial<EducationChapterApi.Chapter>,
 ) {
-  return requestClient.post('/edu/chapter/update', data, { params: { id } });
+  return requestClient.post('/v1/education/chapter/update', data, { params: { id } });
 }
 
 /** 删除章节 */
 export async function deleteChapter(id: number) {
-  return requestClient.post('/edu/chapter/delete', null, { params: { id } });
+  return requestClient.post('/v1/education/chapter/delete', null, { params: { id } });
 }
 
 export async function getChapterKnowledgeIds(chapterId: number) {
-  return requestClient.get<number[]>('/edu/chapter/knowledge/list', {
+  return requestClient.get<number[]>('/v1/education/chapter/knowledge/list', {
     params: { chapterId },
   });
 }
@@ -65,7 +65,7 @@ export async function replaceChapterKnowledgeIds(
   chapterId: number,
   knowledgeIds: number[],
 ) {
-  return requestClient.post('/edu/chapter/knowledge/bind', knowledgeIds, {
+  return requestClient.post('/v1/education/chapter/knowledge/bind', knowledgeIds, {
     params: { chapterId },
   });
 }

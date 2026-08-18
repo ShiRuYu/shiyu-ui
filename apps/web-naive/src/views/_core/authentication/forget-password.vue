@@ -34,7 +34,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(value: Recordable<any>) {
   loading.value = true;
   try {
-    const res = await requestClient.post('/auth/forget-password', value);
+    const res = await requestClient.post('/v1/auth/forget-password', value);
     if (res) {
       message.success('密码重置成功，请使用新密码登录');
     }

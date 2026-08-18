@@ -17,7 +17,7 @@ const redirectPath = computed(() => {
   const value = route.query.redirect;
   return typeof value === 'string' && value.startsWith('/')
     ? value
-    : '/dashboard/overview';
+    : '/workbench/overview';
 });
 
 async function retry() {

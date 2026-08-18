@@ -111,7 +111,7 @@ async function selectChapter(chapter: EducationChapterApi.Chapter) {
   chapterKnowledges.value = [];
   try {
     const res = await fetch(
-      `/edu/chapter/knowledge/list?chapterId=${chapter.id}`,
+      `/v1/education/chapter/knowledge/list?chapterId=${chapter.id}`,
     );
     const json = (await res.json()) as { data?: number[] };
     const kIds = json.data ?? [];
@@ -168,7 +168,7 @@ async function markChapterCompleted(chapter: EducationChapterApi.Chapter) {
     try {
       for (const kid of chapterKnowledges.value.map((k) => k.id)) {
         await fetch(
-          `/edu/course/record-study?studentId=${studentId.value}&courseId=${
+          `/v1/education/course/record-study?studentId=${studentId.value}&courseId=${
             courseId.value
           }&chapterId=${chapter.id}&knowledgeId=${kid}`,
           { method: 'POST' },

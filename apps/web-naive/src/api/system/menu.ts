@@ -100,7 +100,7 @@ export namespace SystemMenuApi {
  * 获取根节点菜单（懒加载初始加载）
  */
 async function getMenuRoots() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/roots');
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/v1/system/menus/roots');
 }
 
 /**
@@ -108,7 +108,7 @@ async function getMenuRoots() {
  * @param parentId 父菜单 ID
  */
 async function getMenuChildren(parentId: number) {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/menu/children', {
+  return requestClient.get<Array<SystemMenuApi.SystemMenu>>('/v1/system/menus/children', {
     params: { parentId },
   });
 }
@@ -117,7 +117,7 @@ async function getMenuChildren(parentId: number) {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  const data = await requestClient.get<Array<Recordable<any>>>('/menu/list');
+  const data = await requestClient.get<Array<Recordable<any>>>('/v1/system/menus/list');
   const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
     ...item,
     id: Number(item.id),
@@ -191,7 +191,7 @@ async function getMenuPage(params?: Recordable<any>) {
   const data = await requestClient.get<{
     items: Recordable<any>[];
     total: number;
-  }>('/menu/page', { params });
+  }>('/v1/system/menus/page', { params });
   const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
     ...item,
     id: Number(item.id),
@@ -221,7 +221,7 @@ async function getMenuPage(params?: Recordable<any>) {
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu/create', toMenuRequest(data));
+  return requestClient.post('/v1/system/menus/create', toMenuRequest(data));
 }
 
 /**
@@ -234,7 +234,7 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/menu/update', toMenuRequest(data), {
+  return requestClient.post('/v1/system/menus/update', toMenuRequest(data), {
     params: { id },
   });
 }
@@ -255,7 +255,7 @@ function toMenuRequest(data: Recordable<any>) {
  * @param id 菜单 ID
  */
 async function deleteMenu(id: number) {
-  return requestClient.post('/menu/delete', null, { params: { id } });
+  return requestClient.post('/v1/system/menus/delete', null, { params: { id } });
 }
 
 export {

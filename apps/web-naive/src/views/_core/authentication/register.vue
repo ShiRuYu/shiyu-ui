@@ -89,7 +89,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 async function handleSubmit(value: Recordable<any>) {
   loading.value = true;
   try {
-    const res = await requestClient.post('/auth/register', value);
+    const res = await requestClient.post('/v1/auth/register', value);
     if (res) {
       message.success('注册成功');
     }

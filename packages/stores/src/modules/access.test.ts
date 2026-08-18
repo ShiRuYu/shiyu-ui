@@ -11,9 +11,9 @@ describe('useAccessStore', () => {
   it('updates accessMenus state', () => {
     const store = useAccessStore();
     expect(store.accessMenus).toEqual([]);
-    store.setAccessMenus([{ name: 'Dashboard', path: '/dashboard' }]);
+    store.setAccessMenus([{ name: 'Workbench', path: '/workbench' }]);
     expect(store.accessMenus).toEqual([
-      { name: 'Dashboard', path: '/dashboard' },
+      { name: 'Workbench', path: '/workbench' },
     ]);
   });
 

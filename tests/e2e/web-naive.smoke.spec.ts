@@ -87,7 +87,7 @@ async function signIn(page: Page): Promise<MenuNode[]> {
   await inputs.nth(0).fill(username);
   await inputs.nth(1).fill(password!);
   const menuResponsePromise = page.waitForResponse(
-    (response) => response.url().endsWith('/menu/all') && response.ok(),
+    (response) => response.url().endsWith('/v1/system/menus/all') && response.ok(),
   );
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(page).not.toHaveURL(/\/auth\/login/, { timeout: 15_000 });
@@ -144,7 +144,7 @@ test.describe('web-naive critical journeys', () => {
   }) => {
     await signIn(page);
     for (const path of [
-      '/dashboard/overview',
+      '/workbench/overview',
       '/app-studio/agents',
       '/knowledge-center/documents',
       '/education-center/learning',
@@ -242,7 +242,7 @@ test.describe('web-naive critical journeys', () => {
     page,
   }) => {
     await signIn(page);
-    await page.route('**/usage/**', async (route) => {
+    await page.route('**/v1/usage/**', async (route) => {
       await route.fulfill({
         body: JSON.stringify({
           code: 401,
@@ -254,7 +254,7 @@ test.describe('web-naive critical journeys', () => {
       });
     });
 
-    await page.goto('/dashboard/overview');
+    await page.goto('/workbench/overview');
     await expect(page).toHaveURL(/\/auth\/login/, { timeout: 15_000 });
     await expect(page.locator('.n-message--error')).toHaveCount(0);
     await expect(

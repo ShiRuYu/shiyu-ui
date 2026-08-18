@@ -27,22 +27,22 @@ export namespace MediaApi {
 async function getMediaPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<MediaApi.PageResult<MediaApi.Media>>(
-    '/record/media/list',
+    '/v1/record/media/list',
     {
       params: { pageNum: page, pageSize, ...rest },
     },
   );
 }
 async function createMedia(data: Omit<MediaApi.Media, 'id'>) {
-  return requestClient.post('/record/media/create', data);
+  return requestClient.post('/v1/record/media/create', data);
 }
 
 async function updateMedia(id: number, data: Partial<MediaApi.Media>) {
-  return requestClient.post('/record/media/update', data, { params: { id } });
+  return requestClient.post('/v1/record/media/update', data, { params: { id } });
 }
 
 async function deleteMedia(id: number) {
-  return requestClient.post('/record/media/delete', null, { params: { id } });
+  return requestClient.post('/v1/record/media/delete', null, { params: { id } });
 }
 
 export { createMedia, deleteMedia, getMediaPage, updateMedia };

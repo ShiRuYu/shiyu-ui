@@ -9,16 +9,16 @@ export namespace TimezoneApi {
 
 async function getTimezoneOptions() {
   return requestClient.get<TimezoneApi.TimezoneOption[]>(
-    '/system/timezone/options',
+    '/v1/system/timezone/options',
   );
 }
 
 async function getTimezone() {
-  return requestClient.get<string>('/system/timezone/current');
+  return requestClient.get<string>('/v1/system/timezone/current');
 }
 
 async function setTimezone(timezone: string) {
-  return requestClient.post('/system/timezone/set', { timezone });
+  return requestClient.post('/v1/system/timezone/set', { timezone });
 }
 
 export { getTimezone, getTimezoneOptions, setTimezone };

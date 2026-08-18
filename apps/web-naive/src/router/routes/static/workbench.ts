@@ -13,9 +13,9 @@ const routes: RouteRecordRaw[] = [
       order: -1,
       title: $t('page.dashboard.title'),
     },
-    name: 'Dashboard',
-    path: '/dashboard',
-    redirect: '/dashboard/overview',
+    name: 'Workbench',
+    path: '/workbench',
+    redirect: '/workbench/overview',
     children: [
       {
         name: 'Overview',

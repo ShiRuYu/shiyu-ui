@@ -4,14 +4,14 @@ import routes from '../routes/static/workbench';
 
 describe('workbench route contract', () => {
   it('uses a reachable parent route with the canonical overview page', () => {
-    const dashboard = routes[0];
+    const workbench = routes[0];
 
-    expect(dashboard).toMatchObject({
-      name: 'Dashboard',
-      path: '/dashboard',
-      redirect: '/dashboard/overview',
+    expect(workbench).toMatchObject({
+      name: 'Workbench',
+      path: '/workbench',
+      redirect: '/workbench/overview',
     });
-    expect(dashboard?.children).toEqual([
+    expect(workbench?.children).toEqual([
       expect.objectContaining({
         name: 'Overview',
         path: 'overview',

@@ -7,7 +7,7 @@
 | `agent` | `/agent` | 17 | Agent 管理（管理、模型、平台、意图） |
 | `ai-tutor` | `/ai-tutor` | 5 | AI 家教（聊天、规划、练习、报告） |
 | `analytics` | `/analytics-center` | 4 | 教育学习分析 |
-| `dashboard` | `/dashboard` | 7 | 平台工作台 |
+| `workbench` | `/workbench` | 7 | 平台工作台 |
 | `education-admin` | `/edu` | 34 | 教育配置后台 |
 | `exam` | `/exam` | 4 | 考试模块 |
 | `knowledge` | `/knowledge` | 9 | 知识引擎 |

@@ -17,22 +17,22 @@ export namespace TagApi {
 
 async function getTagPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get<TagApi.PageResult<TagApi.Tag>>('/record/tag/list', {
+  return requestClient.get<TagApi.PageResult<TagApi.Tag>>('/v1/record/tag/list', {
     params: { pageNum: page, pageSize, ...rest },
   });
 }
 async function createTag(data: Omit<TagApi.Tag, 'id'>) {
-  return requestClient.post('/record/tag/create', data);
+  return requestClient.post('/v1/record/tag/create', data);
 }
 
 async function updateTag(data: TagApi.Tag) {
-  return requestClient.post('/record/tag/update', data, {
+  return requestClient.post('/v1/record/tag/update', data, {
     params: { id: data.id },
   });
 }
 
 async function deleteTag(id: number) {
-  return requestClient.post('/record/tag/delete', null, { params: { id } });
+  return requestClient.post('/v1/record/tag/delete', null, { params: { id } });
 }
 
 export { createTag, deleteTag, getTagPage, updateTag };

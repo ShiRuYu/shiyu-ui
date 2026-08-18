@@ -30,21 +30,21 @@ export interface ModelUsage {
  * 获取用量概览
  */
 export async function getUsageOverviewApi() {
-  return requestClient.get<UsageOverview>('/usage/overview');
+  return requestClient.get<UsageOverview>('/v1/usage/overview');
 }
 
 /**
  * 按日查询聚合用量
  */
 export async function getDailyUsageApi(days = 7) {
-  return requestClient.get<DailyUsage[]>('/usage/daily', { params: { days } });
+  return requestClient.get<DailyUsage[]>('/v1/usage/daily', { params: { days } });
 }
 
 /**
  * 按周查询聚合用量
  */
 export async function getWeeklyUsageApi(weeks = 4) {
-  return requestClient.get<DailyUsage[]>('/usage/weekly', {
+  return requestClient.get<DailyUsage[]>('/v1/usage/weekly', {
     params: { weeks },
   });
 }
@@ -53,7 +53,7 @@ export async function getWeeklyUsageApi(weeks = 4) {
  * 按月查询聚合用量
  */
 export async function getMonthlyUsageApi(months = 6) {
-  return requestClient.get<DailyUsage[]>('/usage/monthly', {
+  return requestClient.get<DailyUsage[]>('/v1/usage/monthly', {
     params: { months },
   });
 }
@@ -62,5 +62,5 @@ export async function getMonthlyUsageApi(months = 6) {
  * 按模型查询聚合用量
  */
 export async function getModelUsageApi() {
-  return requestClient.get<ModelUsage[]>('/usage/by-model');
+  return requestClient.get<ModelUsage[]>('/v1/usage/by-model');
 }

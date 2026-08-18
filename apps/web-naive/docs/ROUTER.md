@@ -10,7 +10,7 @@ app: {
 }
 ```
 
-前端路由与后端菜单按 `name` 合并。业务菜单的层级、标题、顺序和可见性由后端 `/menu/all` 返回，前端负责把 `component` 字符串映射到 `src/views/**/*.vue`。
+前端路由与后端菜单按 `name` 合并。业务菜单的层级、标题、顺序和可见性由后端 `/v1/system/menus/all` 返回，前端负责把 `component` 字符串映射到 `src/views/**/*.vue`。
 
 ## 2. 路由目录
 
@@ -21,7 +21,7 @@ src/router/
 ├─ access.ts                获取后端菜单并生成可访问路由
 └─ routes/
    ├─ core.ts               根路由、认证、个人中心、404
-   ├─ modules/dashboard.ts  工作台路由
+   ├─ modules/workbench.ts  工作台路由
    └─ static/               必要的静态后备路由
 ```
 
@@ -39,9 +39,9 @@ src/router/
 ```ts
 const routes: RouteRecordRaw[] = [
   {
-    name: 'Dashboard',
-    path: '/dashboard',
-    redirect: '/dashboard/overview',
+    name: 'Workbench',
+    path: '/workbench',
+    redirect: '/workbench/overview',
     meta: {
       icon: 'lucide:layout-dashboard',
       order: -1,
@@ -51,13 +51,11 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'Analytics',
         path: 'analytics',
-        alias: '/analytics',
         component: () => import('#/views/dashboard/analytics/index.vue'),
       },
       {
         name: 'Overview',
         path: 'overview',
-        alias: '/overview',
         component: () => import('#/views/dashboard/overview/index.vue'),
       },
     ],
@@ -65,7 +63,7 @@ const routes: RouteRecordRaw[] = [
 ];
 ```
 
-规范地址是 `/dashboard/overview` 和 `/dashboard/analytics`。旧地址 `/overview`、`/analytics` 仅作为兼容别名保留。
+工作台规范地址是 `/workbench/overview`；业务域页面由后端菜单直接注册，不再保留旧工作台别名。
 
 ## 4. 后端菜单契约
 
@@ -103,8 +101,8 @@ pnpm -F @vben/web-naive run build
 
 联调时还应检查：
 
-- `/menu/all` 的一级菜单名称和顺序；
+- `/v1/system/menus/all` 的一级菜单名称和顺序；
 - 教育空间直属可见子目录数量必须为 6；
 - 每个后端 `component` 都能映射到 Vue 文件；
 - 管理员与普通用户的目录授权不同但页面权限不被扩大；
-- `/dashboard` 与旧别名可访问且不会出现空白内容区。
+- `/workbench` 与 `/workbench/overview` 可访问且不会出现空白内容区。

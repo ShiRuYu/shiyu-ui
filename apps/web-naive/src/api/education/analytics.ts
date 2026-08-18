@@ -42,35 +42,35 @@ export namespace EducationAnalyticsApi {
 
 async function getOverview(studentId: number) {
   return requestClient.get<EducationAnalyticsApi.OverviewResponse>(
-    '/edu/analytics/overview',
+    '/v1/education/analytics/overview',
     { params: { studentId } },
   );
 }
 
 async function getAbilityRadar(studentId: number, knowledgeId: number) {
   return requestClient.get<EducationAnalyticsApi.AbilityRadarResponse>(
-    '/edu/analytics/ability-radar',
+    '/v1/education/analytics/ability-radar',
     { params: { studentId, knowledgeId } },
   );
 }
 
 async function getWeakPoints(studentId: number) {
   return requestClient.get<EducationAnalyticsApi.WeakPointResponse[]>(
-    '/edu/analytics/weak-points',
+    '/v1/education/analytics/weak-points',
     { params: { studentId } },
   );
 }
 
 async function getTrend(studentId: number) {
   return requestClient.get<EducationAnalyticsApi.TrendResponse>(
-    '/edu/analytics/trend',
+    '/v1/education/analytics/trend',
     { params: { studentId } },
   );
 }
 
 async function getStudyRecords(studentId: number) {
   return requestClient.get<EducationAnalyticsApi.StudyRecord[]>(
-    '/edu/analytics/records',
+    '/v1/education/analytics/records',
     { params: { studentId } },
   );
 }
@@ -80,7 +80,7 @@ async function getStudyRecordsByKnowledge(
   knowledgeId: number,
 ) {
   return requestClient.get<EducationAnalyticsApi.StudyRecord[]>(
-    '/edu/analytics/records/knowledge',
+    '/v1/education/analytics/records/knowledge',
     { params: { studentId, knowledgeId } },
   );
 }
@@ -88,7 +88,7 @@ async function getStudyRecordsByKnowledge(
 async function createStudyRecord(
   data: Omit<EducationAnalyticsApi.StudyRecord, 'id'>,
 ) {
-  return requestClient.post('/edu/analytics/record-create', data);
+  return requestClient.post('/v1/education/analytics/record-create', data);
 }
 
 export {
