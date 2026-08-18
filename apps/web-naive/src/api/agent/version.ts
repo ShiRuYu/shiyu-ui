@@ -34,12 +34,12 @@ export namespace AgentVersionApi {
   }
 }
 
-// ========== 版本 + Graph 管理 (AgentVersionController: /agent/version) ==========
+// ========== 版本 + Graph 管理 (AgentVersionController: /v1/agent-versions) ==========
 
 /** 获取版本列表 */
 async function getVersionList(agentId: string) {
   return requestClient.get<AgentVersionApi.AgentVersionVO[]>(
-    '/agent/version/list',
+    '/v1/agent-versions/list',
     {
       params: { agentId },
     },
@@ -49,7 +49,7 @@ async function getVersionList(agentId: string) {
 /** 获取版本详情 */
 async function getVersionDetail(agentId: string, versionId: number) {
   return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    '/agent/version/detail',
+    '/v1/agent-versions/detail',
     { params: { agentId, versionId } },
   );
 }
@@ -60,7 +60,7 @@ async function createVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    '/agent/version/create',
+    '/v1/agent-versions/create',
     data,
     { params: { agentId } },
   );
@@ -73,7 +73,7 @@ async function updateVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    '/agent/version/update',
+    '/v1/agent-versions/update',
     data,
     { params: { agentId, versionId } },
   );
@@ -81,28 +81,28 @@ async function updateVersion(
 
 /** 删除版本 */
 async function deleteVersion(agentId: string, versionId: number) {
-  return requestClient.post('/agent/version/delete', null, {
+  return requestClient.post('/v1/agent-versions/delete', null, {
     params: { agentId, versionId },
   });
 }
 
 /** 发布版本 */
 async function publishVersion(agentId: string, versionId: number) {
-  return requestClient.post('/agent/version/publish', null, {
+  return requestClient.post('/v1/agent-versions/publish', null, {
     params: { agentId, versionId },
   });
 }
 
 /** 归档版本 */
 async function archiveVersion(agentId: string, versionId: number) {
-  return requestClient.post('/agent/version/archive', null, {
+  return requestClient.post('/v1/agent-versions/archive', null, {
     params: { agentId, versionId },
   });
 }
 
 /** 激活版本 */
 async function activateVersion(agentId: string, versionId: number) {
-  return requestClient.post('/agent/version/activate', null, {
+  return requestClient.post('/v1/agent-versions/activate', null, {
     params: { agentId, versionId },
   });
 }
@@ -114,7 +114,7 @@ async function copyVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    '/agent/version/copy',
+    '/v1/agent-versions/copy',
     data,
     { params: { agentId, sourceVersionId } },
   );

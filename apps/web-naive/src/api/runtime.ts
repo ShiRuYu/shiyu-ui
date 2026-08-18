@@ -54,6 +54,7 @@ export interface ToolApproval {
   status: string;
   reason?: string;
 }
+export type RuntimeApproval = ToolApproval;
 
 export async function listRuntimeApps() {
   return requestClient.get<AiAppSummary[]>('/v1/apps');
@@ -114,6 +115,10 @@ export async function streamGenerationRuntimeEvents(
 
 export async function listRunApprovals(runId: string) {
   return requestClient.get<ToolApproval[]>(`/v1/runs/${runId}/approvals`);
+}
+
+export async function listRuntimeApprovals() {
+  return requestClient.get<RuntimeApproval[]>('/v1/approvals');
 }
 
 export async function decideApproval(

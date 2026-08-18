@@ -58,7 +58,7 @@ onMounted(async () => {
             type="primary"
             @click="
               router.push({
-                path: '/knowledge/index',
+                path: '/knowledge-center/spaces',
                 query: { spaceId: String(item.id) },
               })
             "
@@ -70,13 +70,13 @@ onMounted(async () => {
     </NList>
     <template #side>
       <h3>快捷操作</h3>
-      <NButton block secondary @click="router.push('/knowledge/search')">
+      <NButton block secondary @click="router.push('/knowledge-center/search')">
         检索实验室
 </NButton
-      ><NButton block secondary @click="router.push('/knowledge/graph')">
+      ><NButton block secondary @click="router.push('/knowledge-center/graph')">
         图谱洞察
 </NButton
-      ><NButton block secondary @click="router.push('/knowledge/documents')">
+      ><NButton block secondary @click="router.push('/knowledge-center/documents')">
         文档与索引
       </NButton>
     </template>

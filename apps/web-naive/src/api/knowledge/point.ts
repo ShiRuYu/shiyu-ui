@@ -29,19 +29,19 @@ export interface KnowledgePointPayload {
 }
 
 export function getKnowledgePoint(pointId: number) {
-  return requestClient.get<KnowledgePoint>(`/knowledge/points/${pointId}`);
+  return requestClient.get<KnowledgePoint>(`/v1/knowledge/points/${pointId}`);
 }
 
 export function getKnowledgePointGraph(pointId: number) {
-  return requestClient.get(`/knowledge/points/${pointId}/graph`);
+  return requestClient.get(`/v1/knowledge/points/${pointId}/graph`);
 }
 
 export function getKnowledgePointPath(pointId: number) {
-  return requestClient.get<number[]>(`/knowledge/points/${pointId}/path`);
+  return requestClient.get<number[]>(`/v1/knowledge/points/${pointId}/path`);
 }
 
 export function findKnowledgePointPath(fromId: number, toId: number) {
-  return requestClient.get<number[]>('/knowledge/points/path', {
+  return requestClient.get<number[]>('/v1/knowledge/points/path', {
     params: { fromId, toId },
   });
 }
@@ -56,7 +56,7 @@ export function getKnowledgePoints(
   },
 ) {
   return requestClient.get<KnowledgePointPage>(
-    `/knowledge/spaces/${spaceId}/points`,
+    `/v1/knowledge/spaces/${spaceId}/points`,
     { params },
   );
 }
@@ -66,7 +66,7 @@ export function createKnowledgePoint(
   data: KnowledgePointPayload,
 ) {
   return requestClient.post<KnowledgePoint>(
-    `/knowledge/spaces/${spaceId}/points`,
+    `/v1/knowledge/spaces/${spaceId}/points`,
     data,
   );
 }
@@ -81,11 +81,11 @@ export function updateKnowledgePoint(
     tags?: string;
   },
 ) {
-  return requestClient.put<KnowledgePoint>(`/knowledge/points/${id}`, data);
+  return requestClient.put<KnowledgePoint>(`/v1/knowledge/points/${id}`, data);
 }
 
 export function deleteKnowledgePoint(id: number) {
-  return requestClient.delete(`/knowledge/points/${id}`);
+  return requestClient.delete(`/v1/knowledge/points/${id}`);
 }
 
 export async function getKnowledgePointOptions(

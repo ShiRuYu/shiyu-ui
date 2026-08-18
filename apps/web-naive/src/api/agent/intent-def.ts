@@ -45,14 +45,14 @@ export namespace IntentDefApi {
 
 async function getIntentDefPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
-  return requestClient.get('/admin/intent/page', {
+  return requestClient.get('/v1/intents/page', {
     params: { pageNum: page, pageSize, ...rest },
   });
 }
 
 async function createIntentDef(data: IntentDefApi.IntentDefRequest) {
   return requestClient.post<IntentDefApi.IntentDefVO>(
-    '/admin/intent/create',
+    '/v1/intents/create',
     data,
   );
 }
@@ -62,18 +62,18 @@ async function updateIntentDef(
   data: IntentDefApi.IntentDefRequest,
 ) {
   return requestClient.post<IntentDefApi.IntentDefVO>(
-    '/admin/intent/update',
+    '/v1/intents/update',
     data,
     { params: { id } },
   );
 }
 
 async function deleteIntentDef(id: number) {
-  return requestClient.post('/admin/intent/delete', null, { params: { id } });
+  return requestClient.post('/v1/intents/delete', null, { params: { id } });
 }
 
 async function batchDeleteIntentDef(ids: number[]) {
-  return requestClient.post('/admin/intent/batch-delete', ids);
+  return requestClient.post('/v1/intents/batch-delete', ids);
 }
 
 export {

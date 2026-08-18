@@ -36,7 +36,7 @@ export function getKnowledgeEvaluations(
   pageNum = 1,
   pageSize = 10,
 ) {
-  return requestClient.get<KnowledgeEvaluationPage>('/knowledge/evaluations', {
+  return requestClient.get<KnowledgeEvaluationPage>('/v1/knowledge/evaluations', {
     params: { pageNum, pageSize, spaceId },
   });
 }
@@ -48,18 +48,18 @@ export function createKnowledgeEvaluation(data: {
   spaceId: number;
 }) {
   return requestClient.post<KnowledgeEvaluationCase>(
-    '/knowledge/evaluations',
+    '/v1/knowledge/evaluations',
     data,
   );
 }
 
 export function deleteKnowledgeEvaluation(id: number) {
-  return requestClient.delete(`/knowledge/evaluations/${id}`);
+  return requestClient.delete(`/v1/knowledge/evaluations/${id}`);
 }
 
 export function runKnowledgeEvaluation(spaceId: number, topK = 5) {
   return requestClient.post<KnowledgeEvaluationRunResult>(
-    '/knowledge/evaluations/run',
+    '/v1/knowledge/evaluations/run',
     {
       spaceId,
       topK,

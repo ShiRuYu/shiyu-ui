@@ -4,8 +4,8 @@ import { normalizeComponentPath, validateMenuContract } from '../menu-contract';
 
 describe('backend menu contract', () => {
   it('maps backend component paths to Vite page registry keys', () => {
-    expect(normalizeComponentPath('/learning/course/list')).toBe(
-      '../views/learning/course/list.vue',
+    expect(normalizeComponentPath('/education-center/learning/index')).toBe(
+      '../views/education-center/learning/index.vue',
     );
     expect(normalizeComponentPath('/workspace/agent/index')).toBe(
       '../views/workspace/agent/index.vue',
@@ -25,14 +25,14 @@ describe('backend menu contract', () => {
             path: '/education',
             children: [
               {
-                component: '/learning/course/list',
-                name: 'CourseList',
-                path: '/learning/course',
+                component: '/education-center/learning/index',
+                name: 'EducationLearning',
+                path: '/education-center/learning',
               },
             ],
           },
         ],
-        ['../views/learning/course/list.vue'],
+        ['../views/education-center/learning/index.vue'],
       ),
     ).not.toThrow();
   });

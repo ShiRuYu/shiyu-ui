@@ -114,7 +114,10 @@ async function loadQuestions() {
 }
 
 function startPractice(row: any) {
-  router.push({ path: `/practice/question/${row.id}` });
+  router.push({
+    path: '/education-center/practice',
+    query: { questionId: String(row.id) },
+  });
 }
 
 onMounted(() => {

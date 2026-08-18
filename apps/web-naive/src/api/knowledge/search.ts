@@ -14,5 +14,5 @@ export function searchKnowledge(data: {
   threshold?: number;
   topK?: number;
 }) {
-  return requestClient.post<SearchResponse>('/knowledge/search', data);
+  return requestClient.post<SearchResponse>('/v1/knowledge/search', data);
 }

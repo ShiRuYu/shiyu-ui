@@ -36,7 +36,7 @@ export namespace AgentAdminApi {
   }
 }
 
-// ========== Agent 定义管理 (AgentDefinitionController: /agent/definition) ==========
+// ========== Agent 定义管理 (AgentDefinitionController: /v1/agents) ==========
 
 /** 分页查询 */
 async function getAgentPage(params: {
@@ -46,7 +46,7 @@ async function getAgentPage(params: {
   status?: number;
 }) {
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
-    '/agent/definition/page',
+    '/v1/agents/page',
     {
       params: {
         name: params.name,
@@ -61,7 +61,7 @@ async function getAgentPage(params: {
 /** 根据 ID 查询详情 */
 async function getAgentById(id: number) {
   return requestClient.get<AgentAdminApi.AgentDetailVO>(
-    '/agent/definition/detail',
+    '/v1/agents/detail',
     {
       params: { id },
     },
@@ -70,13 +70,13 @@ async function getAgentById(id: number) {
 
 /** 查询所有 Agent 列表 */
 async function getAgentListAll() {
-  return requestClient.get('/agent/definition/list');
+  return requestClient.get('/v1/agents/list');
 }
 
 /** 新增 Agent */
 async function createAgent(data: AgentAdminApi.AgentRequest) {
   return requestClient.post<AgentAdminApi.AgentVO>(
-    '/agent/definition/create',
+    '/v1/agents/create',
     data,
   );
 }
@@ -84,7 +84,7 @@ async function createAgent(data: AgentAdminApi.AgentRequest) {
 /** 修改 Agent */
 async function updateAgent(id: number, data: AgentAdminApi.AgentRequest) {
   return requestClient.post<AgentAdminApi.AgentVO>(
-    '/agent/definition/update',
+    '/v1/agents/update',
     data,
     {
       params: { id },
@@ -94,14 +94,14 @@ async function updateAgent(id: number, data: AgentAdminApi.AgentRequest) {
 
 /** 删除 Agent */
 async function deleteAgent(id: number) {
-  return requestClient.post('/agent/definition/delete', null, {
+  return requestClient.post('/v1/agents/delete', null, {
     params: { id },
   });
 }
 
 /** 切换 Agent 状态 */
 async function toggleAgentStatus(id: number, status: number) {
-  return requestClient.post('/agent/definition/status', null, {
+  return requestClient.post('/v1/agents/status', null, {
     params: { id, status },
   });
 }

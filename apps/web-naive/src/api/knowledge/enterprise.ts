@@ -143,7 +143,7 @@ export function getSpaces(params: {
   pageNum: number;
   pageSize: number;
 }) {
-  return requestClient.get<PageData<KnowledgeSpace>>('/knowledge/spaces', {
+  return requestClient.get<PageData<KnowledgeSpace>>('/v1/knowledge/spaces', {
     params,
   });
 }
@@ -163,12 +163,12 @@ export function createSpace(data: {
   rerankProfile?: string;
   reviewMode?: string;
 }) {
-  return requestClient.post<KnowledgeSpace>('/knowledge/spaces', data);
+  return requestClient.post<KnowledgeSpace>('/v1/knowledge/spaces', data);
 }
 
 export function getDifficultyScale(spaceId: number) {
   return requestClient.get<KnowledgeDifficultyScale>(
-    `/knowledge/spaces/${spaceId}/difficulty-scale`,
+    `/v1/knowledge/spaces/${spaceId}/difficulty-scale`,
   );
 }
 
@@ -183,13 +183,13 @@ export function getDocuments(
   },
 ) {
   return requestClient.get<PageData<KnowledgeDocument>>(
-    `/knowledge/spaces/${spaceId}/documents`,
+    `/v1/knowledge/spaces/${spaceId}/documents`,
     { params },
   );
 }
 
 export function getKnowledgeDocument(id: number) {
-  return requestClient.get<KnowledgeDocument>(`/knowledge/documents/${id}`);
+  return requestClient.get<KnowledgeDocument>(`/v1/knowledge/documents/${id}`);
 }
 
 export function uploadDocument(
@@ -214,7 +214,7 @@ function uploadDocumentDirect(
     jobId?: number;
     versionId: number;
   }>(
-    `/knowledge/spaces/${spaceId}/documents`,
+    `/v1/knowledge/spaces/${spaceId}/documents`,
     { file },
     {
       onUploadProgress: (event) => {
@@ -245,14 +245,14 @@ export function beginResumableUpload(
   },
 ) {
   return requestClient.post<ResumableUploadSession>(
-    `/knowledge/spaces/${spaceId}/documents/upload-sessions`,
+    `/v1/knowledge/spaces/${spaceId}/documents/upload-sessions`,
     data,
   );
 }
 
 export function getResumableUploadSession(sessionId: string) {
   return requestClient.get<ResumableUploadSession>(
-    `/knowledge/documents/upload-sessions/${sessionId}`,
+    `/v1/knowledge/documents/upload-sessions/${sessionId}`,
   );
 }
 
@@ -263,7 +263,7 @@ export function uploadResumableChunk(
   chunk: Blob,
 ) {
   return requestClient.upload<ResumableUploadSession>(
-    `/knowledge/documents/upload-sessions/${sessionId}/chunks/${index}?totalChunks=${totalChunks}`,
+    `/v1/knowledge/documents/upload-sessions/${sessionId}/chunks/${index}?totalChunks=${totalChunks}`,
     { file: chunk },
   );
 }
@@ -274,12 +274,12 @@ export function completeResumableUpload(sessionId: string) {
     duplicate: boolean;
     jobId?: number;
     versionId: number;
-  }>(`/knowledge/documents/upload-sessions/${sessionId}/complete`);
+  }>(`/v1/knowledge/documents/upload-sessions/${sessionId}/complete`);
 }
 
 export function cancelResumableUpload(sessionId: string) {
   return requestClient.delete(
-    `/knowledge/documents/upload-sessions/${sessionId}`,
+    `/v1/knowledge/documents/upload-sessions/${sessionId}`,
   );
 }
 
@@ -323,7 +323,7 @@ export function importDocumentFromUrl(
     duplicate: boolean;
     jobId?: number;
     versionId: number;
-  }>(`/knowledge/spaces/${spaceId}/documents/import-url`, { url, title });
+  }>(`/v1/knowledge/spaces/${spaceId}/documents/import-url`, { url, title });
 }
 
 export function transitionDocument(
@@ -331,12 +331,12 @@ export function transitionDocument(
   action: 'approve' | 'archive' | 'publish' | 'reject' | 'submit',
 ) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/${action}`,
+    `/v1/knowledge/documents/${id}/${action}`,
   );
 }
 
 export function deleteDocument(id: number) {
-  return requestClient.delete(`/knowledge/documents/${id}`);
+  return requestClient.delete(`/v1/knowledge/documents/${id}`);
 }
 
 export function getJobs(params: {
@@ -346,17 +346,17 @@ export function getJobs(params: {
   status?: JobStatus;
 }) {
   return requestClient.get<PageData<IngestionJob>>(
-    '/knowledge/ingestion-jobs',
+    '/v1/knowledge/ingestion-jobs',
     { params },
   );
 }
 
 export function retryJob(id: number) {
-  return requestClient.post(`/knowledge/ingestion-jobs/${id}/retry`);
+  return requestClient.post(`/v1/knowledge/ingestion-jobs/${id}/retry`);
 }
 
 export function cancelJob(id: number) {
-  return requestClient.post(`/knowledge/ingestion-jobs/${id}/cancel`);
+  return requestClient.post(`/v1/knowledge/ingestion-jobs/${id}/cancel`);
 }
 
 export function hybridSearch(data: {
@@ -369,17 +369,17 @@ export function hybridSearch(data: {
     hits: HybridHit[];
     mode: string;
     spaceId: number;
-  }>('/knowledge/search', data);
+  }>('/v1/knowledge/search', data);
 }
 
 export function rebuildSpaceIndex(spaceId: number) {
-  return requestClient.post<number>('/knowledge/index-jobs/rebuild', {
+  return requestClient.post<number>('/v1/knowledge/index-jobs/rebuild', {
     spaceId,
   });
 }
 
 export function getEmbeddedRuntimeStatus() {
-  return requestClient.get<EmbeddedRuntimeStatus>('/knowledge/system/status');
+  return requestClient.get<EmbeddedRuntimeStatus>('/v1/knowledge/system/status');
 }
 
 export function getKnowledgeAudits(params: {
@@ -387,13 +387,13 @@ export function getKnowledgeAudits(params: {
   pageSize: number;
   spaceId?: number;
 }) {
-  return requestClient.get<PageData<KnowledgeAuditLog>>('/knowledge/audits', {
+  return requestClient.get<PageData<KnowledgeAuditLog>>('/v1/knowledge/audits', {
     params,
   });
 }
 
 export function createEmbeddedBackup() {
-  return requestClient.post<BackupResult>('/knowledge/system/backup');
+  return requestClient.post<BackupResult>('/v1/knowledge/system/backup');
 }
 
 export function checkEmbeddedBackup(fileName: string) {
@@ -401,7 +401,7 @@ export function checkEmbeddedBackup(fileName: string) {
     entries: number;
     errors: string[];
     valid: boolean;
-  }>('/knowledge/system/restore-check', undefined, {
+  }>('/v1/knowledge/system/restore-check', undefined, {
     params: { fileName },
   });
 }

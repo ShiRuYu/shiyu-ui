@@ -64,7 +64,10 @@ async function loadCourses() {
 }
 
 function goToCourse(course: EducationCourseApi.Course) {
-  router.push({ path: `/learning/course/${course.id}` });
+  router.push({
+    path: '/education-center/learning',
+    query: { courseId: String(course.id) },
+  });
 }
 
 onMounted(() => {

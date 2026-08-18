@@ -31,32 +31,32 @@ export namespace AgentApi {
 
 /**
  * 注册 Agent（缓存版，供 Graph 引擎内部使用）
- * 对应 AgentDefinitionController: POST /agent/definition/register
+ * 对应 AgentDefinitionController: POST /v1/agents/register
  */
 async function registerAgent(data: AgentApi.RegisterAgentRequest) {
   return requestClient.post<{ agentId: string }>(
-    '/agent/definition/register',
+    '/v1/agents/register',
     data,
   );
 }
 
 /**
  * 获取 Agent 列表
- * 对应 AgentDefinitionController: GET /agent/definition/list
+ * 对应 AgentDefinitionController: GET /v1/agents/list
  */
 async function getAgentList() {
   return requestClient.get<AgentApi.AgentDefinition[]>(
-    '/agent/definition/list',
+    '/v1/agents/list',
   );
 }
 
 /**
  * 获取 Agent 定义
- * 对应 AgentDefinitionController: GET /agent/definition/detail/by-agent-id
+ * 对应 AgentDefinitionController: GET /v1/agents/detail/by-agent-id
  */
 async function getAgent(agentId: string) {
   return requestClient.get<AgentApi.AgentDefinition>(
-    '/agent/definition/detail/by-agent-id',
+    '/v1/agents/detail/by-agent-id',
     {
       params: { agentId },
     },
@@ -65,31 +65,31 @@ async function getAgent(agentId: string) {
 
 /**
  * 删除 Agent
- * 对应 AgentDefinitionController: POST /agent/definition/delete/by-agent-id
+ * 对应 AgentDefinitionController: POST /v1/agents/delete/by-agent-id
  */
 async function deleteAgent(agentId: string) {
-  return requestClient.post('/agent/definition/delete/by-agent-id', null, {
+  return requestClient.post('/v1/agents/delete/by-agent-id', null, {
     params: { agentId },
   });
 }
 
 /**
  * 切换 Agent 版本
- * 对应 AgentDefinitionController: POST /agent/definition/version/switch
+ * 对应 AgentDefinitionController: POST /v1/agents/version/switch
  */
 async function switchAgentVersion(agentId: string, version: string) {
-  return requestClient.post('/agent/definition/version/switch', null, {
+  return requestClient.post('/v1/agents/version/switch', null, {
     params: { agentId, version },
   });
 }
 
 /**
  * 同步执行 Agent（走 ExecutionController，带完整生命周期）
- * 对应 ExecutionController: POST /agent/execution/execute
+ * 对应 ExecutionController: POST /v1/agent-executions/execute
  */
 async function executeAgent(agentId: string, data?: Record<string, any>) {
   return requestClient.post<Record<string, any>>(
-    '/agent/execution/execute',
+    '/v1/agent-executions/execute',
     data,
     {
       params: { agentId },
@@ -99,7 +99,7 @@ async function executeAgent(agentId: string, data?: Record<string, any>) {
 
 /**
  * 流式执行 Agent (SSE，走 ExecutionController，带完整生命周期)
- * 对应 ExecutionController: POST /agent/execution/execute-stream
+ * 对应 ExecutionController: POST /v1/agent-executions/execute-stream
  */
 async function executeAgentStream(
   agentId: string,
@@ -112,7 +112,7 @@ async function executeAgentStream(
   const token = accessStore.accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
   const response = await fetch(
-    `${baseURL}/agent/execution/execute-stream?agentId=${encodeURIComponent(agentId)}`,
+    `${baseURL}/v1/agent-executions/execute-stream?agentId=${encodeURIComponent(agentId)}`,
     {
       body: JSON.stringify(data),
       headers: {

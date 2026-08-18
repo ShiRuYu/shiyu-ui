@@ -135,8 +135,8 @@ chore: update dependencies
 
 ```ts
 // 查询
-async function getAgentPage(params) → GET /agent/page
-async function getAgentById(id)    → GET /agent/{id}
+async function getAgentPage(params) → GET /v1/agents
+async function getAgentById(id)    → GET /v1/agents/{id}
 
 // 新增
 async function createAgent(data)   → POST /agent
@@ -145,7 +145,7 @@ async function createAgent(data)   → POST /agent
 async function updateAgent(data)   → PUT /agent
 
 // 删除
-async function deleteAgent(id)     → DELETE /agent/{id}
+async function deleteAgent(id)     → DELETE /v1/agents/{id}
 ```
 
 ### 5.2 统一返回类型

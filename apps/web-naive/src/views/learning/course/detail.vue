@@ -50,7 +50,10 @@ async function loadChapters() {
 
 function handleStartLearning() {
   if (!course.value) return;
-  router.push({ path: `/learning/course/${course.value.id}/learn` });
+  router.push({
+    path: '/education-center/learning',
+    query: { courseId: String(course.value.id), mode: 'learn' },
+  });
 }
 
 onMounted(() => {

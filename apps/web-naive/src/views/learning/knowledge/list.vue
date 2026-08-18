@@ -73,7 +73,10 @@ async function handleSearch() {
 }
 
 function goToKnowledge(row: any) {
-  router.push({ path: `/learning/knowledge/${row.id}` });
+  router.push({
+    path: '/education-center/learning',
+    query: { knowledgeId: String(row.id) },
+  });
 }
 
 onMounted(async () => {

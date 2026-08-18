@@ -30,31 +30,31 @@ async function getModelPage(params?: Recordable<any>) {
     query.platformId = platformId;
   }
   return requestClient.get<ModelApi.PageResult<ModelApi.ModelItem>>(
-    '/agent/model/page',
+    '/v1/platform/models/page',
     { params: query },
   );
 }
 
 async function createModel(data: Omit<ModelApi.ModelItem, 'id'>) {
-  return requestClient.post('/agent/model/create', data);
+  return requestClient.post('/v1/platform/models/create', data);
 }
 
 async function updateModel(id: number, data: Partial<ModelApi.ModelItem>) {
-  return requestClient.post('/agent/model/update', data, { params: { id } });
+  return requestClient.post('/v1/platform/models/update', data, { params: { id } });
 }
 
 async function deleteModel(id: number) {
-  return requestClient.post('/agent/model/delete', null, { params: { id } });
+  return requestClient.post('/v1/platform/models/delete', null, { params: { id } });
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.post('/agent/model/set-default', null, {
+  return requestClient.post('/v1/platform/models/set-default', null, {
     params: { id },
   });
 }
 
 async function batchDeleteModel(ids: number[]) {
-  return requestClient.post('/agent/model/batch-delete', ids);
+  return requestClient.post('/v1/platform/models/batch-delete', ids);
 }
 
 export {

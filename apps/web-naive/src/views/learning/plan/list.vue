@@ -67,7 +67,10 @@ async function loadTodayTasks() {
 }
 
 function goToPlan(plan: EducationPlanApi.StudyPlan) {
-  router.push({ path: `/learning/plan/${plan.id}` });
+  router.push({
+    path: '/education-center/learning',
+    query: { planId: String(plan.id) },
+  });
 }
 
 function onEdit(plan: EducationPlanApi.StudyPlan) {

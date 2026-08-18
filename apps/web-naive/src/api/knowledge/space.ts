@@ -23,25 +23,25 @@ export interface SpaceMember {
   spaceRole: 'ADMIN' | 'EDITOR' | 'REVIEWER' | 'VIEWER';
 }
 export function getSpace(id: number) {
-  return requestClient.get<KnowledgeSpace>(`/knowledge/spaces/${id}`);
+  return requestClient.get<KnowledgeSpace>(`/v1/knowledge/spaces/${id}`);
 }
 
 export function getKnowledgeSpaceOptions() {
-  return requestClient.get<KnowledgeSpace[]>('/knowledge/spaces/options');
+  return requestClient.get<KnowledgeSpace[]>('/v1/knowledge/spaces/options');
 }
 export function getSpaceMembers(id: number) {
-  return requestClient.get<SpaceMember[]>(`/knowledge/spaces/${id}/members`);
+  return requestClient.get<SpaceMember[]>(`/v1/knowledge/spaces/${id}/members`);
 }
 export function updateSpace(id: number, data: Partial<SpacePayload>) {
-  return requestClient.put<KnowledgeSpace>(`/knowledge/spaces/${id}`, data);
+  return requestClient.put<KnowledgeSpace>(`/v1/knowledge/spaces/${id}`, data);
 }
 export function deleteSpace(id: number) {
-  return requestClient.delete(`/knowledge/spaces/${id}`);
+  return requestClient.delete(`/v1/knowledge/spaces/${id}`);
 }
 export function replaceSpaceMembers(id: number, data: SpaceMember[]) {
-  return requestClient.put(`/knowledge/spaces/${id}/members`, data);
+  return requestClient.put(`/v1/knowledge/spaces/${id}/members`, data);
 }
 export function ensureDefaultSpace() {
-  return requestClient.post<KnowledgeSpace>('/knowledge/spaces/default');
+  return requestClient.post<KnowledgeSpace>('/v1/knowledge/spaces/default');
 }
 export type { KnowledgeSpace, PageData };

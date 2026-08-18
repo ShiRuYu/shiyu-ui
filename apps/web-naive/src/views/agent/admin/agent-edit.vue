@@ -843,7 +843,7 @@ async function loadNodeTypes() {
 }
 
 function onBack() {
-  router.push({ path: '/agent/admin/list' });
+  router.push({ path: '/app-studio/agents' });
 }
 
 function openDebug() {

@@ -438,7 +438,7 @@ onMounted(async () => {
           <NButton @click="search">查询</NButton>
         </div>
         <div class="flex gap-2">
-          <NButton @click="router.push('/knowledge/index')">
+          <NButton @click="router.push('/knowledge-center/spaces')">
             查看处理任务
           </NButton>
           <NButton :disabled="!activeSpaceId" @click="urlImportVisible = true">

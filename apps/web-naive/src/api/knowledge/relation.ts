@@ -19,7 +19,7 @@ export interface KnowledgeRelation {
 
 export function getKnowledgeRelations(pointId: number) {
   return requestClient.get<KnowledgeRelation[]>(
-    `/knowledge/points/${pointId}/relations`,
+    `/v1/knowledge/points/${pointId}/relations`,
   );
 }
 
@@ -30,7 +30,7 @@ export function createKnowledgeRelation(data: {
   weight?: number;
 }) {
   return requestClient.post(
-    `/knowledge/points/${data.sourceId}/relations`,
+    `/v1/knowledge/points/${data.sourceId}/relations`,
     data,
   );
 }
@@ -41,7 +41,7 @@ export function deleteKnowledgeRelation(
   type: string,
 ) {
   return requestClient.delete(
-    `/knowledge/points/${pointId}/relations/${targetId}`,
+    `/v1/knowledge/points/${pointId}/relations/${targetId}`,
     { params: { type } },
   );
 }

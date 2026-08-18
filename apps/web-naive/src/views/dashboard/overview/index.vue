@@ -31,19 +31,19 @@ const quickNavItems = [
     color: '#2563EB',
     icon: 'carbon:development',
     title: $t('dashboard.workbench.agentManagement'),
-    url: '/agent/admin/list',
+    url: '/app-studio/agents',
   },
   {
     color: '#059669',
     icon: 'carbon:concept',
     title: $t('dashboard.workbench.knowledgeBase'),
-    url: '/knowledge/list',
+    url: '/knowledge-center/spaces',
   },
   {
     color: '#D97706',
     icon: 'lucide:book',
     title: $t('dashboard.workbench.courseLearning'),
-    url: '/learning/course',
+    url: '/education-center/learning',
   },
   {
     color: '#7C3AED',
@@ -55,13 +55,13 @@ const quickNavItems = [
     color: '#DC2626',
     icon: 'lucide:bar-chart-3',
     title: $t('dashboard.workbench.analytics'),
-    url: '/dashboard/analytics',
+    url: '/observability/runs',
   },
   {
     color: '#0891B2',
     icon: 'carbon:notebook',
     title: $t('dashboard.workbench.records'),
-    url: '/record/profile',
+    url: '/record/profiles',
   },
 ];
 
@@ -119,7 +119,7 @@ async function fetchData() {
       group: m.platform,
       icon: 'carbon:ibm-watson-machine-learning',
       color: '#2563EB',
-      url: '/agent/model',
+    url: '/platform-admin/models',
     }));
   } catch {
     // 静默失败，使用默认空状态

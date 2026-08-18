@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import routes from '../routes/static/workbench';
 
 describe('workbench route contract', () => {
-  it('uses a reachable parent route with relative children and legacy aliases', () => {
+  it('uses a reachable parent route with the canonical overview page', () => {
     const dashboard = routes[0];
 
     expect(dashboard).toMatchObject({
@@ -11,19 +11,11 @@ describe('workbench route contract', () => {
       path: '/dashboard',
       redirect: '/dashboard/overview',
     });
-    expect(dashboard?.children).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          alias: '/analytics',
-          name: 'Analytics',
-          path: 'analytics',
-        }),
-        expect.objectContaining({
-          alias: '/overview',
-          name: 'Overview',
-          path: 'overview',
-        }),
-      ]),
-    );
+    expect(dashboard?.children).toEqual([
+      expect.objectContaining({
+        name: 'Overview',
+        path: 'overview',
+      }),
+    ]);
   });
 });

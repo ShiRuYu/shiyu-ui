@@ -19,6 +19,22 @@ def seed_rows(text: str, table: str) -> list[list[str]]:
     return [sql_values(match.group(1)) for match in pattern.finditer(text)]
 
 
+def canonical_menu_rows(text: str) -> list[list[str]]:
+    """Read the v3 menu rows emitted by the MERGE statement in 05_navigation.sql."""
+    rows = []
+    for line in text.splitlines():
+        value = line.strip()
+        if not re.match(r"^\(20\d{2},", value):
+            continue
+        value = value[1:]
+        if value.endswith(");"):
+            value = value[:-2]
+        elif value.endswith(",") or value.endswith(")"):
+            value = value[:-1]
+        rows.append(sql_values(value))
+    return rows
+
+
 def clean(value: str) -> str:
     return "" if value.upper() == "NULL" else value
 
@@ -39,19 +55,30 @@ def main() -> None:
         "--seed-file",
         default=str(backend / "infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/02_auth.sql"),
     )
+    parser.add_argument(
+        "--navigation-file",
+        default=str(backend / "infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/05_navigation.sql"),
+    )
     args = parser.parse_args()
 
     seed_file = Path(args.seed_file).resolve()
     if not seed_file.is_file():
         raise SystemExit(f"menu seed not found: {seed_file}")
     seed = seed_file.read_text(encoding="utf-8")
+    navigation_file = Path(args.navigation_file).resolve()
+    navigation = navigation_file.read_text(encoding="utf-8")
     roles = {int(row[0]): row[1] for row in seed_rows(seed, "AUTH_ROLE")}
     role_menus: dict[int, set[int]] = defaultdict(set)
     for row in seed_rows(seed, "AUTH_ROLE_SCOPE_MENU"):
         role_menus[int(row[1])].add(int(row[0]))
 
     menus = []
-    for row in seed_rows(seed, "AUTH_MENU"):
+    # 02_auth.sql still contains the pre-v3 rows so an upgrade can remove them.
+    # They must never appear in generated documentation or the published menu.
+    system_menu_ids = {1, 2, 3, 4, 5, 7, 11, 90}
+    menu_rows = [row for row in seed_rows(seed, "AUTH_MENU") if int(row[0]) in system_menu_ids]
+    menu_rows.extend(canonical_menu_rows(navigation))
+    for row in menu_rows:
         menu_id = int(row[0])
         menus.append(
             {
@@ -63,7 +90,13 @@ def main() -> None:
                 "path": clean(row[6]),
                 "component": clean(row[9]),
                 "show": clean(row[15]).upper() == "TRUE",
-                "roles": ", ".join(roles[role_id] for role_id in sorted(role_menus[menu_id]) if role_id in roles),
+                "roles": ", ".join(
+                    roles[role_id]
+                    for role_id in sorted(
+                        role_menus[menu_id] or ({1, 2, 3} if menu_id >= 2000 else set())
+                    )
+                    if role_id in roles
+                ),
             }
         )
 

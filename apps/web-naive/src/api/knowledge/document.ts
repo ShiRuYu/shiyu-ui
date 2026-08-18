@@ -40,7 +40,7 @@ export interface KnowledgeDocumentRelation {
 
 export function getKnowledgeDocumentRelations(documentId: number) {
   return requestClient.get<KnowledgeDocumentRelation[]>(
-    `/knowledge/documents/${documentId}/relations`,
+    `/v1/knowledge/documents/${documentId}/relations`,
   );
 }
 
@@ -48,19 +48,19 @@ export function replaceKnowledgeDocumentRelations(
   documentId: number,
   relations: Array<{ documentId: number; relationType: string }>,
 ) {
-  return requestClient.put(`/knowledge/documents/${documentId}/relations`, {
+  return requestClient.put(`/v1/knowledge/documents/${documentId}/relations`, {
     relations,
   });
 }
 
 export function getKnowledgeDocumentsByPoint(pointId: number) {
   return requestClient.get<KnowledgeDocumentSummary[]>(
-    `/knowledge/points/${pointId}/documents`,
+    `/v1/knowledge/points/${pointId}/documents`,
   );
 }
 export function getKnowledgePointIdsByDocument(documentId: number) {
   return requestClient.get<number[]>(
-    `/knowledge/documents/${documentId}/points`,
+    `/v1/knowledge/documents/${documentId}/points`,
   );
 }
 export function replaceKnowledgeDocumentPoints(
@@ -68,7 +68,7 @@ export function replaceKnowledgeDocumentPoints(
   pointIds: number[],
   relationType = 'RELATED',
 ) {
-  return requestClient.put(`/knowledge/documents/${documentId}/points`, {
+  return requestClient.put(`/v1/knowledge/documents/${documentId}/points`, {
     pointIds,
     relationType,
   });
@@ -78,50 +78,50 @@ export function replaceKnowledgePointDocuments(
   documentIds: number[],
   relationType = 'RELATED',
 ) {
-  return requestClient.put(`/knowledge/points/${pointId}/documents`, {
+  return requestClient.put(`/v1/knowledge/points/${pointId}/documents`, {
     documentIds,
     relationType,
   });
 }
 export function getDocumentVersions(id: number) {
   return requestClient.get<DocumentVersion[]>(
-    `/knowledge/documents/${id}/versions`,
+    `/v1/knowledge/documents/${id}/versions`,
   );
 }
 export function previewDocument(id: number) {
-  return requestClient.get<Blob>(`/knowledge/documents/${id}/preview`, {
+  return requestClient.get<Blob>(`/v1/knowledge/documents/${id}/preview`, {
     responseType: 'blob',
   });
 }
 export function rollbackDocument(id: number, versionId: number) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/versions/${versionId}/rollback`,
+    `/v1/knowledge/documents/${id}/versions/${versionId}/rollback`,
   );
 }
 export function rejectDocument(id: number, comment?: string) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/reject`,
+    `/v1/knowledge/documents/${id}/reject`,
     undefined,
     { params: { comment } },
   );
 }
 export function submitDocument(id: number, comment?: string) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/submit`,
+    `/v1/knowledge/documents/${id}/submit`,
     undefined,
     { params: { comment } },
   );
 }
 export function approveDocument(id: number, comment?: string) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/approve`,
+    `/v1/knowledge/documents/${id}/approve`,
     undefined,
     { params: { comment } },
   );
 }
 export function publishDocument(id: number, comment?: string) {
   return requestClient.post<KnowledgeDocument>(
-    `/knowledge/documents/${id}/publish`,
+    `/v1/knowledge/documents/${id}/publish`,
     undefined,
     { params: { comment } },
   );

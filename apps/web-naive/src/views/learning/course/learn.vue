@@ -281,7 +281,12 @@ onMounted(() => {
                   :bordered="false"
                   type="info"
                   class="cursor-pointer"
-                  @click="router.push(`/learning/knowledge/${kg.id}`)"
+                  @click="
+                    router.push({
+                      path: '/education-center/learning',
+                      query: { knowledgeId: String(kg.id) },
+                    })
+                  "
                 >
                   {{ kg.name }}
                 </NTag>

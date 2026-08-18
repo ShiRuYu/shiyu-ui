@@ -66,14 +66,14 @@ onMounted(loadAgents);
 
 function onView(row: AgentAdminApi.AgentVO) {
   router.push({
-    path: '/agent/admin/edit',
+    path: '/app-studio/agents/edit',
     query: { id: row.id, readonly: 'true' },
   });
 }
 
 function onEdit(row: AgentAdminApi.AgentVO) {
   router.push({
-    path: '/agent/admin/edit',
+    path: '/app-studio/agents/edit',
     query: { id: row.id },
   });
 }
@@ -102,7 +102,7 @@ async function onDelete(row: AgentAdminApi.AgentVO) {
 
 function onNewAgent() {
   router.push({
-    path: '/agent/admin/edit',
+    path: '/app-studio/agents/edit',
     query: { new: 'true' },
   });
 }

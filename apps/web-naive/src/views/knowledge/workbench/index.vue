@@ -41,21 +41,21 @@ const todos = computed(() => [
   {
     count: failedJobCount.value,
     description: '查看错误原因并重试或取消任务',
-    path: '/knowledge/index',
+    path: '/knowledge-center/spaces',
     title: '失败任务',
     type: 'error' as const,
   },
   {
     count: parseFailedDocuments.value,
     description: '检查文件格式或重新导入文档',
-    path: '/knowledge/documents',
+    path: '/knowledge-center/documents',
     title: '解析失败文档',
     type: 'error' as const,
   },
   {
     count: reviewingDocuments.value,
     description: '审核内容并决定发布或驳回',
-    path: '/knowledge/documents',
+    path: '/knowledge-center/documents',
     title: '待审核文档',
     type: 'warning' as const,
   },
@@ -145,21 +145,21 @@ onMounted(async () => {
       :loading="loading"
       show-import
       @refresh="load"
-      @import="router.push('/knowledge/documents')"
+      @import="router.push('/knowledge-center/documents')"
     />
 
     <KnowledgeEmptyState
       v-if="!activeSpaceId"
       description="还没有可用的知识空间，请先创建空间。"
       action-text="创建知识空间"
-      @action="router.push('/knowledge/spaces')"
+      @action="router.push('/knowledge-center/spaces')"
     />
     <div v-else class="space-y-4">
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <NCard
           size="small"
           class="cursor-pointer"
-          @click="router.push('/knowledge/assets')"
+          @click="router.push('/knowledge-center/spaces')"
         >
           <NStatistic label="知识条目总量" :value="pointCount" />
           <div class="mt-2 text-xs text-muted-foreground">进入知识条目管理</div>
@@ -167,7 +167,7 @@ onMounted(async () => {
         <NCard
           size="small"
           class="cursor-pointer"
-          @click="router.push('/knowledge/documents')"
+          @click="router.push('/knowledge-center/documents')"
         >
           <NStatistic label="文档总量" :value="documentTotal" />
           <div class="mt-2 text-xs text-muted-foreground">
@@ -177,7 +177,7 @@ onMounted(async () => {
         <NCard
           size="small"
           class="cursor-pointer"
-          @click="router.push('/knowledge/index')"
+          @click="router.push('/knowledge-center/spaces')"
         >
           <NStatistic label="处理中任务" :value="processingJobs" />
           <div class="mt-2 text-xs text-muted-foreground">查看任务进度</div>
@@ -185,7 +185,7 @@ onMounted(async () => {
         <NCard
           size="small"
           class="cursor-pointer"
-          @click="router.push('/knowledge/index')"
+          @click="router.push('/knowledge-center/spaces')"
         >
           <NStatistic label="异常任务" :value="failedJobCount" />
           <div class="mt-2 text-xs text-error">优先处理失败任务</div>
@@ -200,17 +200,17 @@ onMounted(async () => {
                 {
                   title: '补充知识资产',
                   desc: '新增知识条目或导入业务文档',
-                  path: '/knowledge/assets',
+                  path: '/knowledge-center/spaces',
                 },
                 {
                   title: '整理知识关系',
                   desc: '维护节点方向与关系类型',
-                  path: '/knowledge/graph',
+                  path: '/knowledge-center/graph',
                 },
                 {
                   title: '验证检索效果',
                   desc: '使用真实问题检查召回质量',
-                  path: '/knowledge/search',
+                  path: '/knowledge-center/search',
                 },
               ]"
               :key="item.title"
@@ -272,10 +272,10 @@ onMounted(async () => {
           v-else
           description="当前空间暂无处理任务"
           action-text="导入第一份文档"
-          @action="router.push('/knowledge/documents')"
+          @action="router.push('/knowledge-center/documents')"
         />
         <template #footer>
-          <NButton text type="primary" @click="router.push('/knowledge/index')">
+          <NButton text type="primary" @click="router.push('/knowledge-center/spaces')">
             查看全部任务
           </NButton>
         </template>

@@ -91,12 +91,12 @@ export namespace AgentGraphApi {
   }
 }
 
-// ========== Graph 配置 (AgentVersionController: /agent/version/graph/...) ==========
+// ========== Graph 配置 (AgentVersionController: /v1/agent-versions/graph/...) ==========
 
 /** 获取 Graph 配置 */
 async function getGraphConfig(agentId: string, versionId: number) {
   return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    '/agent/version/graph/detail',
+    '/v1/agent-versions/graph/detail',
     { params: { agentId, versionId } },
   );
 }
@@ -108,7 +108,7 @@ async function updateGraphConfig(
   data: AgentGraphApi.GraphConfigRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionDetailVO>(
-    '/agent/version/graph/update',
+    '/v1/agent-versions/graph/update',
     data,
     { params: { agentId, versionId } },
   );
@@ -121,7 +121,7 @@ async function validateGraphConfig(
   data: AgentGraphApi.GraphConfigRequest,
 ) {
   return requestClient.post<AgentGraphApi.GraphValidationVO>(
-    '/agent/version/graph/validate',
+    '/v1/agent-versions/graph/validate',
     data,
     { params: { agentId, versionId } },
   );
@@ -133,7 +133,7 @@ async function addNode(
   versionId: number,
   data: AgentGraphApi.NodeConfigRequest,
 ) {
-  return requestClient.post('/agent/version/graph/node/create', data, {
+  return requestClient.post('/v1/agent-versions/graph/node/create', data, {
     params: { agentId, versionId },
   });
 }
@@ -145,14 +145,14 @@ async function updateNode(
   nodeId: string,
   data: AgentGraphApi.NodeConfigRequest,
 ) {
-  return requestClient.post('/agent/version/graph/node/update', data, {
+  return requestClient.post('/v1/agent-versions/graph/node/update', data, {
     params: { agentId, versionId, nodeId },
   });
 }
 
 /** 删除节点 */
 async function deleteNode(agentId: string, versionId: number, nodeId: string) {
-  return requestClient.post('/agent/version/graph/node/delete', null, {
+  return requestClient.post('/v1/agent-versions/graph/node/delete', null, {
     params: { agentId, versionId, nodeId },
   });
 }
@@ -163,7 +163,7 @@ async function addEdge(
   versionId: number,
   data: AgentGraphApi.EdgeRequest,
 ) {
-  return requestClient.post('/agent/version/graph/edge/create', data, {
+  return requestClient.post('/v1/agent-versions/graph/edge/create', data, {
     params: { agentId, versionId },
   });
 }
@@ -175,14 +175,14 @@ async function deleteEdge(
   sourceNodeId: string,
   targetNodeId: string,
 ) {
-  return requestClient.post('/agent/version/graph/edge/delete', null, {
+  return requestClient.post('/v1/agent-versions/graph/edge/delete', null, {
     params: { agentId, versionId, sourceNodeId, targetNodeId },
   });
 }
 
 /** 获取画布配置 */
 async function getCanvasConfig(agentId: string, versionId: number) {
-  return requestClient.get<string>('/agent/version/graph/canvas', {
+  return requestClient.get<string>('/v1/agent-versions/graph/canvas', {
     params: { agentId, versionId },
   });
 }
@@ -194,7 +194,7 @@ async function updateCanvasConfig(
   canvasConfig: string,
 ) {
   return requestClient.post(
-    '/agent/version/graph/canvas-update',
+    '/v1/agent-versions/graph/canvas-update',
     canvasConfig,
     {
       headers: { 'Content-Type': 'application/json' },

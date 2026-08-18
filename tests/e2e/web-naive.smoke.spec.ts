@@ -145,17 +145,13 @@ test.describe('web-naive critical journeys', () => {
     await signIn(page);
     for (const path of [
       '/dashboard/overview',
-      '/agent/admin/list',
-      '/knowledge/workbench',
-      '/learning/course',
-      '/practice/question',
-      '/review/today',
-      '/analytics-center/report',
-      '/ai-tutor/teacher',
-      '/ai-tutor/practice',
-      '/ai-tutor/planner',
-      '/ai-tutor/report',
-      '/record/records',
+      '/app-studio/agents',
+      '/knowledge-center/documents',
+      '/education-center/learning',
+      '/education-center/practice',
+      '/education-center/analytics',
+      '/education-center/ai-tutor',
+      '/record/content',
       '/system/user',
     ]) {
       await page.goto(path);
@@ -205,7 +201,7 @@ test.describe('web-naive critical journeys', () => {
     await mockConversationStream(page, (body) => {
       requestBody = body;
     });
-    await page.goto('/ai-tutor/chat');
+    await page.goto('/workspace/chat');
     await page.getByLabel(/AI 平台|AI platform/).click();
     await page.getByText('DeepSeek', { exact: true }).last().click();
     await page.getByLabel(/模型|Model/).click();
