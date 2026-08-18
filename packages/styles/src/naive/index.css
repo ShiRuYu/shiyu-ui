@@ -24,3 +24,29 @@
     font-family: Arial, Roboto, 'Helvetica Neue', sans-serif;
   }
 }
+
+/*
+ * Select menus should be readable even when the trigger is intentionally
+ * compact (for example, the model/provider controls in the AI workspace).
+ * Naive UI normally gives the floating menu the exact width of its trigger,
+ * which makes longer labels look truncated.  Let the menu grow to its
+ * content while keeping it inside the viewport.  The selected value already
+ * receives a native title from Naive UI, so hovering a compact trigger still
+ * exposes the complete label.
+ */
+.v-binder-follower-content:has(> .n-base-select-menu) {
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: min(80vw, 40rem) !important;
+}
+
+.v-binder-follower-content > .n-base-select-menu {
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: 100% !important;
+}
+
+.n-base-select-menu .n-base-select-option__content {
+  overflow: visible;
+  text-overflow: clip;
+}

@@ -1,73 +1,119 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-
-import { NAlert, NEmpty, NList, NListItem, NSpin, NTag } from 'naive-ui';
+import { useRouter } from 'vue-router';
 
 import {
-  listModelProviders,
-  type ModelProviderCapability,
-} from '#/api/runtime';
+  NAlert,
+  NButton,
+  NCard,
+  NEmpty,
+  NList,
+  NListItem,
+  NSpace,
+  NSpin,
+  NStatistic,
+} from 'naive-ui';
+
+import {
+  type DailyUsage,
+  getDailyUsageApi,
+  getUsageOverviewApi,
+  type UsageOverview,
+} from '#/api/dashboard/usage';
 import PlatformWorkspaceShell from '#/views/common/platform-workspace-shell.vue';
-const providers = ref<ModelProviderCapability[]>([]);
+
+const router = useRouter();
 const loading = ref(false);
 const error = ref(false);
-const deepSeek = computed(() =>
-  providers.value.find((item) => item.provider.toUpperCase() === 'DEEPSEEK'),
+const overview = ref<UsageOverview>();
+const dailyUsage = ref<DailyUsage[]>([]);
+
+const totalCost = computed(() =>
+  Number(overview.value?.total_cost ?? 0).toFixed(4),
 );
-onMounted(async () => {
+const averageLatency = computed(() => {
+  const value = overview.value?.avg_latency_ms;
+  return value == null ? '—' : `${Math.round(value)} ms`;
+});
+
+async function loadUsage() {
   loading.value = true;
+  error.value = false;
   try {
-    providers.value = (await listModelProviders()) ?? [];
+    const [summary, daily] = await Promise.all([
+      getUsageOverviewApi(),
+      getDailyUsageApi(14),
+    ]);
+    overview.value = summary;
+    dailyUsage.value = daily ?? [];
   } catch {
     error.value = true;
   } finally {
     loading.value = false;
   }
-});
+}
+
+onMounted(loadUsage);
 </script>
+
 <template>
   <PlatformWorkspaceShell
-    eyebrow="Platform Administration"
-    title="平台管理"
-    description="模型 Provider、路由、插件签名、租户权限、索引和运行基础设施统一入口。"
+    eyebrow="Governance / Quota & Audit"
+    title="配额与审计"
+    description="查看当前租户的模型调用、Token、成本和延迟；完整运行审计请进入运行观测。"
     :metrics="[
-      { label: 'Provider 模型', value: String(providers.length) },
-      {
-        label: 'DeepSeek',
-        value: deepSeek?.model || '未配置',
-        tone: deepSeek ? 'success' : 'warning',
-      },
-      { label: '工具隔离', value: 'Worker RPC' },
-      { label: '密钥暴露', value: '0', tone: 'success' },
+      { label: '调用次数', value: String(overview?.total_calls ?? 0) },
+      { label: 'Token 用量', value: String(overview?.total_tokens ?? 0) },
+      { label: '累计成本', value: totalCost },
+      { label: '平均延迟', value: averageLatency },
     ]"
   >
     <NAlert v-if="error" type="warning" :bordered="false">
-      Provider 目录暂时不可用，请检查管理员权限。
+      配额与用量暂时不可用，请检查当前租户权限或稍后重试。
     </NAlert>
-    <div v-if="loading" class="loading"><NSpin size="small" /></div>
-    <NEmpty
-      v-else-if="!providers.length"
-      description="暂无 Provider 能力目录"
-    />
-    <NList v-else bordered>
-      <NListItem
-        v-for="item in providers"
-        :key="`${item.provider}:${item.model}`"
-      >
-        <span
-          ><strong>{{ item.provider }} · {{ item.model }}</strong
-          ><small>{{ (item.features || []).join(' · ') }}</small></span
-        ><template #suffix>
-          <NTag type="success" size="small">能力已注册</NTag>
-        </template>
-      </NListItem>
-    </NList>
+    <div v-else-if="loading" class="loading"><NSpin size="small" /></div>
+    <template v-else>
+      <NCard title="当前租户用量" :bordered="false">
+        <NSpace :size="32" wrap>
+          <NStatistic label="模型数" :value="overview?.model_count ?? 0" />
+          <NStatistic
+            label="Provider 数"
+            :value="overview?.platform_count ?? 0"
+          />
+          <NStatistic label="累计成本" :value="totalCost" />
+          <NStatistic label="平均延迟" :value="averageLatency" />
+        </NSpace>
+      </NCard>
+
+      <NCard title="近 14 日用量" :bordered="false" class="mt-4">
+        <NEmpty v-if="!dailyUsage.length" description="暂无用量记录" />
+        <NList v-else bordered>
+          <NListItem v-for="item in dailyUsage" :key="item.date">
+            <span class="usage-row">
+              <strong>{{ item.date }}</strong>
+              <small>
+                {{ item.call_count }} 次调用 · {{ item.total_tokens }} Token ·
+                成本 {{ Number(item.total_cost ?? 0).toFixed(4) }} · 延迟
+                {{ Math.round(item.avg_latency_ms ?? 0) }} ms
+              </small>
+            </span>
+          </NListItem>
+        </NList>
+      </NCard>
+    </template>
+
     <template #side>
-      <h3>安全约束</h3>
-      <p>
-        API Key 仅受控配置注入；生产插件仅允许签名 Worker RPC，不进入主进程
-        ClassLoader。
-      </p>
+      <h3>审计入口</h3>
+      <p>Run、Trace、工具审批和取消/失败记录统一在运行观测中查看。</p>
+      <NSpace vertical>
+        <NButton type="primary" @click="router.push('/observability/runs')">
+          查看运行审计
+        </NButton>
+        <NButton @click="router.push('/observability/approvals')">
+          查看工具审批
+        </NButton>
+        <NButton secondary @click="loadUsage">刷新用量</NButton>
+      </NSpace>
     </template>
   </PlatformWorkspaceShell>
 </template>
@@ -75,15 +121,17 @@ onMounted(async () => {
 <style scoped>
 .loading {
   display: grid;
-  place-items: center;
   min-height: 180px;
+  place-items: center;
 }
-.n-list-item span {
+
+.usage-row {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.n-list-item small {
+
+.usage-row small {
   color: #64748b;
 }
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import {
   NAlert,
@@ -27,6 +27,7 @@ import PlatformWorkspaceShell from '#/views/common/platform-workspace-shell.vue'
 
 const notice = useMessage();
 const route = useRoute();
+const router = useRouter();
 const apps = ref<AiAppSummary[]>([]);
 const versions = ref<AiAppVersionSummary[]>([]);
 const selectedAppId = ref<string>();
@@ -35,9 +36,17 @@ const prompt = ref('');
 const output = ref('');
 const running = ref(false);
 const loadError = ref(false);
+const versionError = ref(false);
+const publishedVersions = computed(() =>
+  versions.value.filter((version) => version.status === 'PUBLISHED'),
+);
+const executableAppCount = computed(
+  () => apps.value.filter((app) => app.publishedVersionId).length,
+);
 
 async function loadApps() {
   try {
+    loadError.value = false;
     apps.value =
       (await listRuntimeApps())?.filter((app) => app.status !== 'ARCHIVED') ??
       [];
@@ -53,10 +62,20 @@ async function loadApps() {
 }
 
 async function loadVersions(appId: string) {
-  versions.value = (await listRuntimeAppVersions(appId)).filter(
-    (version) => version.status === 'PUBLISHED',
-  );
-  selectedVersionId.value = versions.value[0]?.id;
+  versionError.value = false;
+  try {
+    // Keep drafts visible so users can understand why an App is not yet
+    // executable. The API still enforces that only the published version runs.
+    versions.value = (await listRuntimeAppVersions(appId)) ?? [];
+    const published = versions.value.find(
+      (version) => version.status === 'PUBLISHED',
+    );
+    selectedVersionId.value = (published ?? versions.value[0])?.id;
+  } catch {
+    versions.value = [];
+    selectedVersionId.value = undefined;
+    versionError.value = true;
+  }
 }
 
 async function execute() {
@@ -64,8 +83,8 @@ async function execute() {
   const version = versions.value.find(
     (item) => item.id === selectedVersionId.value,
   );
-  if (!version) {
-    notice.warning('请选择已发布版本');
+  if (!version || version.status !== 'PUBLISHED') {
+    notice.warning('当前版本尚未发布，请先在 App Studio 发布后再执行');
     return;
   }
   running.value = true;
@@ -98,7 +117,11 @@ onMounted(loadApps);
     description="选择已发布的 AI App，查看执行状态、工具审批和可恢复的运行轨迹。"
     mode="builder"
     :metrics="[
-      { label: '可运行 App', value: String(apps.length), tone: 'success' },
+      {
+        label: '可运行 App',
+        value: String(executableAppCount),
+        tone: executableAppCount ? 'success' : 'warning',
+      },
       {
         label: '运行状态',
         value: running ? '执行中' : '就绪',
@@ -112,6 +135,36 @@ onMounted(loadApps);
       <NAlert v-if="loadError" type="warning" :bordered="false">
         App 列表加载失败，请检查权限或 Runtime 服务。
       </NAlert>
+      <NAlert v-if="versionError" type="warning" :bordered="false">
+        版本列表加载失败，请稍后重试。
+      </NAlert>
+      <NAlert
+        v-else-if="
+          selectedAppId && versions.length && !publishedVersions.length
+        "
+        type="warning"
+        :bordered="false"
+        title="当前 App 还没有可执行版本"
+      >
+        草稿版本已显示在下方，但运行时只接受 Published 版本。请先补充 Agent
+        绑定并发布版本。
+        <NButton
+          text
+          type="primary"
+          @click="
+            router.push({
+              path: '/app-studio/apps/edit',
+              query: { id: selectedAppId },
+            })
+          "
+        >
+          去 App Studio 发布
+        </NButton>
+      </NAlert>
+      <NEmpty
+        v-else-if="selectedAppId && !versions.length"
+        description="该 App 暂无版本，请先在 App Studio 创建版本"
+      />
       <NSelect
         v-model:value="selectedAppId"
         :options="apps.map((app) => ({ label: app.name, value: app.id }))"
@@ -122,11 +175,12 @@ onMounted(loadApps);
         v-model:value="selectedVersionId"
         :options="
           versions.map((version) => ({
-            label: `${version.version} · ${version.status}`,
+            label: `${version.version} · ${version.status === 'PUBLISHED' ? '已发布' : version.status === 'DRAFT' ? '草稿（不可执行）' : '已归档'}`,
             value: version.id,
+            disabled: version.status === 'ARCHIVED',
           }))
         "
-        placeholder="选择 Published Version"
+        placeholder="选择 App Version"
       />
       <NInput
         v-model:value="prompt"
@@ -137,7 +191,12 @@ onMounted(loadApps);
       <NButton
         type="primary"
         :loading="running"
-        :disabled="!selectedAppId || !selectedVersionId || !prompt.trim()"
+        :disabled="
+          !selectedAppId ||
+          !selectedVersionId ||
+          !prompt.trim() ||
+          !publishedVersions.some((version) => version.id === selectedVersionId)
+        "
         @click="execute"
       >
         开始执行
@@ -152,10 +211,10 @@ onMounted(loadApps);
       <NList bordered>
         <NListItem>
           <NTag type="success" size="small">Published</NTag>
-          仅允许已发布版本
-</NListItem
-        ><NListItem>工具调用需要按风险审批</NListItem
-        ><NListItem>所有步骤写入 Runtime Trace</NListItem>
+          只有已发布版本可以执行
+        </NListItem>
+        <NListItem>工具调用需要按风险审批</NListItem>
+        <NListItem>所有步骤写入 Runtime Trace</NListItem>
       </NList>
     </template>
   </PlatformWorkspaceShell>

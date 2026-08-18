@@ -65,6 +65,32 @@ import { fetchApi } from '#/api/module';
 import FormModal from './modules/form.vue';
 ```
 
+## 一点五、全局 UI 交互规范
+
+### 1.5.1 下拉菜单完整文本
+
+所有 `NSelect` 都继承 `packages/styles/src/naive/index.css` 的全局规则：菜单按内容伸展并受视口限制，选中值保留完整 `title`，悬浮可查看全文。不要在单个页面重新设置固定菜单宽度、手工拼接省略号或复制一套 Tooltip 逻辑。
+
+```vue
+<!-- ✅ 选项使用真实完整名称，交给全局规则处理布局 -->
+<NSelect
+  v-model:value="selectedModel"
+  :options="modelOptions"
+  aria-label="模型"
+/>
+```
+
+新增选择器必须验证：长中文/英文标签、加载/禁用状态、键盘操作、桌面宽度和 768px 以下移动端无横向溢出。
+
+### 1.5.2 页面壳
+
+- Standard 用于工作台、知识和管理列表。
+- Immersive 用于 Chat、学习和答题。
+- Builder 用于 App、Agent、Prompt 编辑。
+- Focus 用于考试、危险确认和完整 Trace。
+
+同一能力只保留一个主入口，调试、Prompt Preview、引用、Trace 和审批作为工作区内的面板或抽屉。
+
 ## 二、文件命名规范
 
 | 文件类型   | 规范       | 示例                  |

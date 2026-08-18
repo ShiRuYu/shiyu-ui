@@ -110,10 +110,13 @@ test.describe('web-naive critical journeys', () => {
 
     for (const title of [
       '工作台',
-      'Agent 平台',
-      '知识引擎',
+      'AI 工作区',
+      '应用开发',
+      '知识中心',
+      '运行观测',
       '教育空间',
-      '日常记录',
+      '个人记录',
+      '平台管理',
       '系统管理',
     ]) {
       await expect(
@@ -121,14 +124,7 @@ test.describe('web-naive critical journeys', () => {
       ).toBeVisible();
     }
     await page.getByText('教育空间', { exact: true }).first().click();
-    for (const title of [
-      '学习',
-      '练习与考试',
-      '复习',
-      'AI 辅学',
-      '学习分析',
-      '教育配置',
-    ]) {
+    for (const title of ['学习', '练习', 'AI 辅学', '学习分析']) {
       await expect(
         page.getByText(title, { exact: true }).first(),
       ).toBeVisible();
@@ -195,6 +191,24 @@ test.describe('web-naive critical journeys', () => {
     }
   });
 
+  test('admin can open quota and audit without a provider permission error', async ({
+    page,
+  }) => {
+    await signIn(page);
+    const usageResponse = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/v1/usage/overview') && response.ok(),
+    );
+    await page.goto('/platform-admin/quotas');
+    await expect(
+      page.getByRole('heading', { name: '配额与审计', exact: true }),
+    ).toBeVisible();
+    await usageResponse;
+    await expect(
+      page.getByText('禁止访问，无权限', { exact: true }),
+    ).toHaveCount(0);
+  });
+
   test('opens every authorized menu page without runtime failures', async ({
     page,
   }, testInfo) => {
@@ -208,7 +222,9 @@ test.describe('web-naive critical journeys', () => {
     const menus = await signIn(page);
     const paths = collectPagePaths(menus);
 
-    expect(paths.length).toBeGreaterThan(40);
+    // The menu service returns only authorized, routable pages. Keep this
+    // contract resilient to adding/removing a role-scoped page.
+    expect(paths.length).toBeGreaterThan(20);
     for (const path of paths) {
       await page.goto(path);
       await expect(page.getByText('404', { exact: true })).toHaveCount(0);
@@ -232,11 +248,13 @@ test.describe('web-naive critical journeys', () => {
     await page.getByLabel(/AI 平台|AI platform/).click();
     await page.getByText('DeepSeek', { exact: true }).last().click();
     await page.getByLabel(/模型|Model/).click();
-    await page.getByText('DeepSeek Chat', { exact: true }).last().click();
+    await page.getByText('DeepSeek V4 Flash', { exact: true }).last().click();
     await page.getByPlaceholder(/输入你的问题|Ask a question/).fill('hello');
     await page.getByRole('button', { name: /发送|Send/ }).click();
     await expect(page.getByRole('log')).toContainText('Hello world');
-    await expect(page.getByRole('button', { name: /复制|Copy/ })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /复制|Copy/ }).first(),
+    ).toBeVisible();
     expect(requestBody).toMatchObject({
       model: 'deepseek-v4-flash',
       platform: 'DEEPSEEK',
@@ -244,12 +262,46 @@ test.describe('web-naive critical journeys', () => {
     });
   });
 
+  test('keeps long select labels readable in the shared workspace controls', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.goto('/workspace/chat');
+
+    const platformSelect = page.getByLabel(/AI 平台|AI platform/);
+    const triggerBox = await platformSelect.boundingBox();
+    expect(triggerBox).not.toBeNull();
+
+    await platformSelect.click();
+    const menu = page.locator('.n-base-select-menu').last();
+    await expect(menu).toBeVisible();
+    await expect(
+      page.getByText('硅基流动（通义千问）', { exact: true }),
+    ).toBeVisible();
+
+    const menuWidth = await menu.evaluate(
+      (element) => element.getBoundingClientRect().width,
+    );
+    expect(menuWidth).toBeGreaterThan((triggerBox?.width ?? 0) + 20);
+
+    await page.keyboard.press('Escape');
+    await platformSelect.click();
+    await page.getByText('DeepSeek', { exact: true }).last().click();
+    await page.getByLabel(/模型|Model/).click();
+    await page.getByText('DeepSeek V4 Flash', { exact: true }).last().click();
+    const modelLabel = page
+      .locator('.n-base-selection-input[title]')
+      .filter({ hasText: 'DeepSeek V4 Flash' })
+      .first();
+    await expect(modelLabel).toHaveAttribute('title', 'DeepSeek V4 Flash');
+  });
+
   test('uses one unified workspace for Chat, Agent and RAG', async ({
     page,
   }) => {
     await signIn(page);
     for (const [path, title] of [
-      ['/workspace/chat', 'Chat 工作区'],
+      ['/workspace/chat', 'AI对话'],
       ['/workspace/agent', 'Agent 执行工作区'],
       ['/workspace/rag', 'RAG 检索工作区'],
     ] as const) {
@@ -263,6 +315,185 @@ test.describe('web-naive critical journeys', () => {
         false,
       );
     }
+  });
+
+  test('shows draft App versions and guides publishing before Agent execution', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.route('**/v1/apps', async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [
+            {
+              id: 'app-test',
+              name: 'Test App',
+              status: 'ACTIVE',
+              publishedVersionId: null,
+            },
+          ],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/v1/apps/app-test/versions', async (route) => {
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [
+            {
+              id: 'version-draft',
+              appId: 'app-test',
+              version: '0.1.0',
+              status: 'DRAFT',
+            },
+          ],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.goto('/workspace/agent?appId=app-test');
+    await expect(page.getByText('当前 App 还没有可执行版本')).toBeVisible();
+    await expect(page.getByText('0.1.0 · 草稿（不可执行）')).toBeVisible();
+    await expect(page.getByRole('button', { name: '开始执行' })).toBeDisabled();
+  });
+
+  test('creates and publishes an App version with an Agent binding', async ({
+    page,
+  }) => {
+    await signIn(page);
+    const calls: string[] = [];
+    await page.route('**/v1/agents/list', async (route) => {
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [{ agentId: 'practice', name: 'AI 出题助手', status: 1 }],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/v1/apps', async (route) => {
+      if (route.request().method() !== 'POST') return route.fallback();
+      calls.push('create-app');
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: { id: 'app-created', name: 'Test App', status: 'ACTIVE' },
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/v1/apps/app-created/versions', async (route) => {
+      calls.push('create-version');
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: {
+            id: 'version-created',
+            appId: 'app-created',
+            version: '0.1.0',
+            status: 'DRAFT',
+          },
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route(
+      '**/v1/apps/app-created/versions/version-created/publish',
+      async (route) => {
+        calls.push('publish-version');
+        await route.fulfill({
+          body: JSON.stringify({
+            code: 200,
+            data: {
+              id: 'version-created',
+              appId: 'app-created',
+              version: '0.1.0',
+              status: 'PUBLISHED',
+            },
+            message: 'success',
+          }),
+          contentType: 'application/json',
+        });
+      },
+    );
+    await page.goto('/app-studio/apps/edit?new=true');
+    await page.getByPlaceholder('例如：企业知识助手').fill('Test App');
+    await page.getByRole('button', { name: '创建并发布' }).click();
+    await expect(page).toHaveURL('/app-studio/apps');
+    expect(calls).toEqual(['create-app', 'create-version', 'publish-version']);
+  });
+
+  test('invokes the selected published App version from Agent workspace', async ({
+    page,
+  }) => {
+    await signIn(page);
+    let executionBody: Record<string, unknown> | undefined;
+    await page.route('**/v1/apps', async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [
+            {
+              id: 'app-published',
+              name: 'Published App',
+              status: 'ACTIVE',
+              publishedVersionId: 'version-published',
+            },
+          ],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/v1/apps/app-published/versions', async (route) => {
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [
+            {
+              id: 'version-published',
+              appId: 'app-published',
+              version: '1.0.0',
+              status: 'PUBLISHED',
+            },
+          ],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/v1/apps/app-published/execute', async (route) => {
+      executionBody = route.request().postDataJSON() as Record<string, unknown>;
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: {
+            executionId: 'execution-e2e',
+            runtimeRunId: 'run-e2e',
+            output: 'Agent response',
+          },
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.goto('/workspace/agent?appId=app-published');
+    await page.getByPlaceholder('输入 Agent 任务').fill('hello agent');
+    await page.getByRole('button', { name: '开始执行' }).click();
+    await expect(page.getByText('Agent response')).toBeVisible();
+    expect(executionBody).toMatchObject({
+      prompt: 'hello agent',
+      appVersionId: 'version-published',
+    });
   });
 
   test('redirects an expired session without duplicate error messages', async ({

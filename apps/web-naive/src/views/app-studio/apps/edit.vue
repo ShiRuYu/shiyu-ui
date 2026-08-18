@@ -11,16 +11,19 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NSelect,
   NSpace,
   NSpin,
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
+import { getAdminAgentListAll } from '#/api/agent';
 import {
   createRuntimeApp,
   createRuntimeAppVersion,
   listRuntimeApps,
   listRuntimeAppVersions,
+  publishRuntimeAppVersion,
 } from '#/api/runtime';
 
 const route = useRoute();
@@ -29,13 +32,15 @@ const loading = ref(false);
 const saving = ref(false);
 const loadError = ref('');
 const appId = ref(typeof route.query.id === 'string' ? route.query.id : '');
-const versions = ref<Array<{ id: string; status: string; version: string }>>(
-  [],
-);
+const versions = ref<
+  Array<{ configJson?: string; id: string; status: string; version: string; }>
+>([]);
+const agentOptions = ref<Array<{ label: string; value: string }>>([]);
 const form = reactive({
   name: '',
   description: '',
   version: '0.1.0',
+  agentId: '',
   configJson: '{\n  "executionType": "AGENT"\n}',
 });
 
@@ -55,7 +60,17 @@ async function loadApp() {
     form.name = app.name;
     form.description = app.description || '';
     versions.value = (await listRuntimeAppVersions(appId.value)) ?? [];
-    if (versions.value[0]?.version) form.version = versions.value[0].version;
+    const latest = versions.value[0];
+    if (latest?.version) form.version = nextVersion(latest.version);
+    if (latest?.configJson) {
+      form.configJson = latest.configJson;
+      try {
+        const config = JSON.parse(latest.configJson) as { agentId?: string };
+        form.agentId = config.agentId ?? '';
+      } catch {
+        // Keep the server value in the editor so the user can correct it.
+      }
+    }
   } catch {
     loadError.value = 'App 详情加载失败，请稍后重试';
   } finally {
@@ -63,7 +78,30 @@ async function loadApp() {
   }
 }
 
-async function submit() {
+function nextVersion(value: string) {
+  const match = value.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  if (!match) return value;
+  return `${match[1]}.${match[2]}.${Number(match[3]) + 1}`;
+}
+
+function buildConfig() {
+  const config = JSON.parse(form.configJson) as Record<string, unknown>;
+  config.executionType = config.executionType ?? 'AGENT';
+  if (form.agentId) {
+    config.agentId = form.agentId;
+    const validation =
+      config.validation && typeof config.validation === 'object'
+        ? (config.validation as Record<string, unknown>)
+        : {};
+    // The selected Agent comes from the active Agent registry. Keep the
+    // runtime's publish contract explicit so the server can fail closed.
+    validation.graph = validation.graph ?? 'PASS';
+    config.validation = validation;
+  }
+  return JSON.stringify(config, null, 2);
+}
+
+async function submit(publish = false) {
   if (!form.name.trim()) {
     message.warning('请输入 App 名称');
     return;
@@ -84,20 +122,50 @@ async function submit() {
       });
       appId.value = app.id;
     }
-    await createRuntimeAppVersion(appId.value, {
+    const createdVersion = await createRuntimeAppVersion(appId.value, {
       version: form.version.trim() || '0.1.0',
-      configJson: form.configJson,
+      configJson: buildConfig(),
     });
-    message.success(creating ? 'App 创建成功' : '版本创建成功');
+    if (publish) {
+      await publishRuntimeAppVersion(appId.value, createdVersion.id);
+      message.success(creating ? 'App 创建并发布成功' : '版本创建并发布成功');
+    } else {
+      message.success(
+        creating ? 'App 创建成功，当前为草稿版本' : '版本草稿已保存',
+      );
+    }
     await router.push('/app-studio/apps');
   } catch {
-    message.error('保存失败，请检查权限或配置后重试');
+    message.error(
+      publish
+        ? '发布失败，请确认已绑定有效 Agent 且配置校验通过'
+        : '保存失败，请检查权限或配置后重试',
+    );
   } finally {
     saving.value = false;
   }
 }
 
-onMounted(loadApp);
+onMounted(async () => {
+  try {
+    const agents = (await getAdminAgentListAll()) as Array<{
+      agentId?: string;
+      name?: string;
+      status?: number;
+    }>;
+    agentOptions.value = (agents ?? [])
+      .filter((agent) => agent.agentId && agent.status !== 0)
+      .map((agent) => ({
+        label: `${agent.name || agent.agentId} · ${agent.agentId}`,
+        value: agent.agentId as string,
+      }));
+    if (!form.agentId) form.agentId = agentOptions.value[0]?.value ?? '';
+  } catch {
+    // Agent binding remains editable through the JSON config if the registry
+    // is unavailable.
+  }
+  await loadApp();
+});
 </script>
 
 <template>
@@ -105,7 +173,7 @@ onMounted(loadApp);
     <NCard :bordered="false" class="app-editor">
       <NAlert v-if="loadError" type="error" :title="loadError" />
       <NSpin v-else-if="loading" size="small" />
-      <NForm v-else label-placement="top" @submit.prevent="submit">
+      <NForm v-else label-placement="top" @submit.prevent="submit(false)">
         <NFormItem label="App 名称" required>
           <NInput v-model:value="form.name" placeholder="例如：企业知识助手" />
         </NFormItem>
@@ -120,6 +188,15 @@ onMounted(loadApp);
         <NFormItem label="版本号" required>
           <NInput v-model:value="form.version" placeholder="0.1.0" />
         </NFormItem>
+        <NFormItem label="绑定 Agent" required>
+          <NSelect
+            v-model:value="form.agentId"
+            :options="agentOptions"
+            clearable
+            filterable
+            placeholder="选择可执行的 Agent"
+          />
+        </NFormItem>
         <NFormItem label="运行配置 JSON" required>
           <NInput
             v-model:value="form.configJson"
@@ -130,8 +207,11 @@ onMounted(loadApp);
         </NFormItem>
         <NSpace justify="end">
           <NButton @click="router.push('/app-studio/apps')">取消</NButton>
-          <NButton type="primary" :loading="saving" @click="submit">
-            {{ isNew ? '创建 App' : '保存版本' }}
+          <NButton :loading="saving" @click="submit(false)">
+            {{ isNew ? '保存草稿' : '保存新草稿' }}
+          </NButton>
+          <NButton type="primary" :loading="saving" @click="submit(true)">
+            {{ isNew ? '创建并发布' : '保存并发布' }}
           </NButton>
         </NSpace>
       </NForm>

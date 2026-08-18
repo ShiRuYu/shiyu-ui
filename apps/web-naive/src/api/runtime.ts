@@ -10,6 +10,7 @@ export interface AiAppSummary {
   name: string;
   description?: string;
   status?: string;
+  publishedVersionId?: null | string;
 }
 
 export interface AiAppVersionSummary {
@@ -17,6 +18,8 @@ export interface AiAppVersionSummary {
   appId: string;
   version: string;
   status: string;
+  configJson?: string;
+  publishedAt?: null | string;
 }
 
 export interface AiRunEvent {
@@ -88,6 +91,24 @@ export async function createRuntimeAppVersion(
   return requestClient.post<AiAppVersionSummary>(
     `/v1/apps/${appId}/versions`,
     data,
+  );
+}
+
+export async function publishRuntimeAppVersion(
+  appId: string,
+  versionId: string,
+) {
+  return requestClient.post<AiAppVersionSummary>(
+    `/v1/apps/${appId}/versions/${versionId}/publish`,
+  );
+}
+
+export async function archiveRuntimeAppVersion(
+  appId: string,
+  versionId: string,
+) {
+  return requestClient.post<AiAppVersionSummary>(
+    `/v1/apps/${appId}/versions/${versionId}/archive`,
   );
 }
 

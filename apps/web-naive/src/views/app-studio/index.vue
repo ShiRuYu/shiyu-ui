@@ -2,26 +2,64 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { NButton, NEmpty, NList, NListItem, NProgress, NSpin } from 'naive-ui';
+import {
+  NButton,
+  NEmpty,
+  NList,
+  NListItem,
+  NProgress,
+  NSpin,
+  NTag,
+} from 'naive-ui';
 
-import { type AiAppSummary, listRuntimeApps } from '#/api/runtime';
+import {
+  type AiAppSummary,
+  type AiAppVersionSummary,
+  listRuntimeApps,
+  listRuntimeAppVersions,
+} from '#/api/runtime';
 import PlatformWorkspaceShell from '#/views/common/platform-workspace-shell.vue';
 
 const router = useRouter();
 const apps = ref<AiAppSummary[]>([]);
+const appVersions = ref<Record<string, AiAppVersionSummary[]>>({});
 const loading = ref(false);
 const loadError = ref(false);
 const draftCount = computed(
-  () => apps.value.filter((app) => app.status === 'DRAFT').length,
+  () =>
+    apps.value.filter(
+      (app) =>
+        !(appVersions.value[app.id] ?? []).some(
+          (version) => version.status === 'PUBLISHED',
+        ),
+    ).length,
 );
 const publishedCount = computed(
-  () => apps.value.filter((app) => app.status === 'PUBLISHED').length,
+  () =>
+    apps.value.filter((app) =>
+      (appVersions.value[app.id] ?? []).some(
+        (version) => version.status === 'PUBLISHED',
+      ),
+    ).length,
 );
 
 onMounted(async () => {
   loading.value = true;
   try {
     apps.value = (await listRuntimeApps()) ?? [];
+    const versionEntries = await Promise.all(
+      apps.value.map(async (app) => {
+        try {
+          return [
+            app.id,
+            (await listRuntimeAppVersions(app.id)) ?? [],
+          ] as const;
+        } catch {
+          return [app.id, []] as const;
+        }
+      }),
+    );
+    appVersions.value = Object.fromEntries(versionEntries);
   } catch {
     loadError.value = true;
   } finally {
@@ -67,8 +105,21 @@ function openApp(app: AiAppSummary) {
           ><strong>{{ app.name }}</strong
           ><small
             >{{ app.description || '未填写描述' }} ·
-            {{ app.status || 'DRAFT' }}</small
-          ></span
+            {{ app.status || 'ACTIVE' }}</small
+          ><small>
+            <NTag
+              v-if="
+                (appVersions[app.id] || []).some(
+                  (version) => version.status === 'PUBLISHED',
+                )
+              "
+              type="success"
+              size="small"
+              >已发布</NTag
+            >
+            <NTag v-else type="warning" size="small">待发布</NTag>
+            · {{ (appVersions[app.id] || []).length }} 个版本
+          </small></span
         ><template #suffix>
           <NButton text type="primary" @click="openApp(app)">
             打开工作区
