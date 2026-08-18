@@ -64,7 +64,7 @@ async function loadExams() {
 }
 
 function startExam(exam: any) {
-  router.push({ path: `/exam/take/${exam.id}` });
+  router.push({ path: `/education-center/practice/exams/take/${exam.id}` });
 }
 
 onMounted(() => {

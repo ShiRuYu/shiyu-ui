@@ -60,6 +60,13 @@ export async function listRuntimeApps() {
   return requestClient.get<AiAppSummary[]>('/v1/apps');
 }
 
+export async function createRuntimeApp(data: {
+  name: string;
+  description?: string;
+}) {
+  return requestClient.post<AiAppSummary>('/v1/apps', data);
+}
+
 export async function listRuntimeRuns(limit = 50) {
   return requestClient.get<AiRunSummary[]>('/v1/runs', { params: { limit } });
 }
@@ -72,6 +79,16 @@ export async function listModelProviders() {
 
 export async function listRuntimeAppVersions(appId: string) {
   return requestClient.get<AiAppVersionSummary[]>(`/v1/apps/${appId}/versions`);
+}
+
+export async function createRuntimeAppVersion(
+  appId: string,
+  data: { configJson?: string; version: string },
+) {
+  return requestClient.post<AiAppVersionSummary>(
+    `/v1/apps/${appId}/versions`,
+    data,
+  );
 }
 
 export async function getRuntimeRunEvents(runId: string, afterSeq = 0) {

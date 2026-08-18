@@ -15,7 +15,10 @@ const router = useRouter();
     <NCard>
       <NResult status="success" title="交卷成功" description="考试已完成提交">
         <template #footer>
-          <NButton type="primary" @click="router.push('/exam/list')">
+          <NButton
+            type="primary"
+            @click="router.push('/education-center/practice/exams')"
+          >
             返回考试列表
           </NButton>
         </template>

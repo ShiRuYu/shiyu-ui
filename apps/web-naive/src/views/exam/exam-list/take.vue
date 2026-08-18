@@ -57,7 +57,9 @@ async function handleSubmit() {
   // TODO: 提交答卷 - 后端暂未实现 submitExam 接口
   try {
     message.success($t('education.exam.submitSuccess'));
-    router.push({ path: `/exam/result/${exam.value.id}` });
+    router.push({
+      path: `/education-center/practice/exams/result/${exam.value.id}`,
+    });
   } catch (error) {
     console.error('Failed to submit exam:', error);
     message.error($t('education.exam.submitFailed'));
