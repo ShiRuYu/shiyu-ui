@@ -5,8933 +5,7139 @@
 
 export interface paths {
   '/api/knowledge/spaces/{id}': {
+    delete: operations['delete'];
+    get: operations['get'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['get'];
-    put: operations['update'];
-    post?: never;
-    delete: operations['delete'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['update'];
     trace?: never;
   };
   '/api/knowledge/spaces/{id}/members': {
+    delete?: never;
+    get: operations['members'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['members'];
-    put: operations['replaceMembers'];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['replaceMembers'];
     trace?: never;
   };
   '/api/knowledge/points/{pointId}/documents': {
+    delete?: never;
+    get: operations['list'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list'];
-    put: operations['replace'];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['replace'];
     trace?: never;
   };
   '/api/knowledge/points/{id}': {
+    delete: operations['delete_1'];
+    get: operations['get_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['get_1'];
-    put: operations['update_1'];
-    post?: never;
-    delete: operations['delete_1'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['update_1'];
     trace?: never;
   };
   '/api/knowledge/documents/{documentId}/relations': {
+    delete?: never;
+    get: operations['listDocumentRelations'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listDocumentRelations'];
-    put: operations['replaceDocumentRelations'];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['replaceDocumentRelations'];
     trace?: never;
   };
   '/api/knowledge/documents/{documentId}/points': {
+    delete?: never;
+    get: operations['listPoints'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listPoints'];
-    put: operations['replacePoints'];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put: operations['replacePoints'];
     trace?: never;
   };
   '/api/tooling/tools/mcp/tools/execute': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 执行工具 */
     post: operations['executeTool'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/uninstall': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 卸载插件 */
     post: operations['uninstallPlugin'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/stop': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 停止插件 */
     post: operations['stopPlugin'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/start': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 启动插件 */
     post: operations['startPlugin'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/scan': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 重新扫描插件目录 */
     post: operations['rescan'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/market/{pluginId}/disable': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['disable'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['disable'];
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/market/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['publish'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['publish'];
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_2'];
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_2'];
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create'];
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_3'];
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_3'];
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_1'];
+    put?: never;
     trace?: never;
   };
   '/api/record/record/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_4'];
+    put?: never;
     trace?: never;
   };
   '/api/record/record/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_4'];
+    put?: never;
     trace?: never;
   };
   '/api/record/record/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_2'];
+    put?: never;
     trace?: never;
   };
   '/api/record/profile/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_5'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_5'];
+    put?: never;
     trace?: never;
   };
   '/api/record/profile/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_5'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_5'];
+    put?: never;
     trace?: never;
   };
   '/api/record/profile/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_3'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_6'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_6'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/tts': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['tts'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['tts'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/translate': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['translate'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['translate'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/image/understand': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['understand'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['understand'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/image/generate': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['generate'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['generate'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_6'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_6'];
+    put?: never;
     trace?: never;
   };
   '/api/record/media/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_4'];
+    put?: never;
     trace?: never;
   };
   '/api/model/routes': {
+    delete?: never;
+    get: operations['routes'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['routes'];
-    put?: never;
-    post: operations['save'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['save'];
+    put?: never;
     trace?: never;
   };
   '/api/model/routes/{id}/test': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['test'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['test'];
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update */
     post: operations['update_7'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/set-default': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Set Default */
     post: operations['setDefault'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/reload': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Reload */
     post: operations['reload'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete */
     post: operations['delete_7'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create */
     post: operations['create_5'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update */
     post: operations['update_8'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/set-default': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Set Default */
     post: operations['setDefault_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete */
     post: operations['delete_8'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create */
     post: operations['create_6'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/batch-delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Batch */
     post: operations['deleteBatch'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/memory/query': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['query'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['query'];
+    put?: never;
     trace?: never;
   };
   '/api/memory/events': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['ingest'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['ingest'];
+    put?: never;
     trace?: never;
   };
   '/api/memory/events/{id}/supersede': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['supersede'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['supersede'];
+    put?: never;
     trace?: never;
   };
   '/api/memory/events/{id}/revoke': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['revoke'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['revoke'];
+    put?: never;
     trace?: never;
   };
   '/api/memory/events/{id}/confirm': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['confirm'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['confirm'];
+    put?: never;
     trace?: never;
   };
   '/api/memory/admin/indexes/rebuild': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['rebuild'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['rebuild'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/system/restore-check': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['restoreCheck'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['restoreCheck'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/system/backup': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['backup'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['backup'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces': {
+    delete?: never;
+    get: operations['page'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page'];
-    put?: never;
-    post: operations['create_7'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_7'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/{spaceId}/points': {
+    delete?: never;
+    get: operations['page_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_1'];
-    put?: never;
-    post: operations['create_8'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_8'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/{spaceId}/documents': {
+    delete?: never;
+    get: operations['page_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_2'];
-    put?: never;
-    post: operations['upload'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['upload'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/{spaceId}/documents/upload-sessions': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['beginUpload'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['beginUpload'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/{spaceId}/documents/import-url': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['importUrl'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['importUrl'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/default': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['ensureDefault'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['ensureDefault'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/search': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['search'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['search'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/{pointId}/relations': {
+    delete?: never;
+    get: operations['list_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_1'];
-    put?: never;
-    post: operations['create_9'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_9'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/ingestion-jobs/{id}/retry': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['retry'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['retry'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/ingestion-jobs/{id}/cancel': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['cancel'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['cancel'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/index-jobs/rebuild': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['rebuild_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['rebuild_1'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/evaluations': {
+    delete?: never;
+    get: operations['page_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_3'];
-    put?: never;
-    post: operations['create_10'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_10'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/evaluations/run': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['run'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['run'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/versions/{versionId}/rollback': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['rollback'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['rollback'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/submit': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['submit'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['submit'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/reject': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['reject'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['reject'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['publish_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['publish_1'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/archive': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['archive'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['archive'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/approve': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['approve'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['approve'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/upload-sessions/{sessionId}/complete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['completeUpload'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['completeUpload'];
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/upload-sessions/{sessionId}/chunks/{index}': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['uploadChunk'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['uploadChunk'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['updateUser'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['updateUser'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/tenant-assignments/replace': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['replaceTenantAssignments'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['replaceTenantAssignments'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/password/reset': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['resetPassword'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['resetPassword'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/password/change': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['changePassword'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['changePassword'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['deleteUser'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['deleteUser'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['createUser'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createUser'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/timezone/set': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['setTimezone'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['setTimezone'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['updateTenant'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['updateTenant'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['deleteTenant'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['deleteTenant'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['createTenant'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createTenant'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/users/remove': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['removeUserRoles'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['removeUserRoles'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/users/add': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['assignUserRoles'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['assignUserRoles'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['updateRole'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['updateRole'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/menus/replace': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['replaceRoleMenus'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['replaceRoleMenus'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['deleteRole'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['deleteRole'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['createRole'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createRole'];
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Menu */
     post: operations['updateMenu'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Menu */
     post: operations['deleteMenu'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create Menu */
     post: operations['createMenu'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/files/upload': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** 上传文件 */
     post: operations['upload_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Dict */
     post: operations['updateDict'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Dict */
     post: operations['deleteDict'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create Dict */
     post: operations['createDict'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/batch-delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Dicts */
     post: operations['deleteDicts'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/switch-tenant': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Switch Tenant */
     post: operations['switchTenant'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/register': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Register */
     post: operations['register'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/refresh': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Refresh Token */
     post: operations['refreshToken'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/logout': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Logout */
     post: operations['logout'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/login': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Login */
     post: operations['login'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/forget-password': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Forget Password */
     post: operations['forgetPassword'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/current-role': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Switch Current Role */
     post: operations['switchCurrentRole'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/code-login': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Code Login */
     post: operations['codeLogin'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/captcha/validate': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Validate Captcha */
     post: operations['validateCaptcha'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Auth Code */
     post: operations['update_9'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/roles/revoke': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Revoke role auth code */
     post: operations['revoke_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/roles/replace': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Replace role auth codes */
     post: operations['replace_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/roles/grant': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Grant role auth codes */
     post: operations['grant'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Auth Code */
     post: operations['delete_9'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create Auth Code */
     post: operations['create_11'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/wrong-question/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_10'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_10'];
+    put?: never;
     trace?: never;
   };
   '/api/education/wrong-question/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_10'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_10'];
+    put?: never;
     trace?: never;
   };
   '/api/education/wrong-question/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_12'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_12'];
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_11'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_11'];
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_11'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_11'];
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_13'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_13'];
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_12'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_12'];
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_12'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_12'];
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_14'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_14'];
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_13'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_13'];
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_13'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_13'];
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_15'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_15'];
+    put?: never;
     trace?: never;
   };
   '/api/education/students/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_14'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_14'];
+    put?: never;
     trace?: never;
   };
   '/api/education/students/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_14'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_14'];
+    put?: never;
     trace?: never;
   };
   '/api/education/students/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_16'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_16'];
+    put?: never;
     trace?: never;
   };
   '/api/education/review/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_15'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_15'];
+    put?: never;
     trace?: never;
   };
   '/api/education/review/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_15'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_15'];
+    put?: never;
     trace?: never;
   };
   '/api/education/review/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_17'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_17'];
+    put?: never;
     trace?: never;
   };
   '/api/education/review/complete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['complete'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['complete'];
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_16'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_16'];
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_16'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_16'];
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_18'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_18'];
+    put?: never;
     trace?: never;
   };
   '/api/education/question/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_17'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_17'];
+    put?: never;
     trace?: never;
   };
   '/api/education/question/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_17'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_17'];
+    put?: never;
     trace?: never;
   };
   '/api/education/question/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_19'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_19'];
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_18'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_18'];
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_18'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_18'];
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_20'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_20'];
+    put?: never;
     trace?: never;
   };
   '/api/education/course/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_19'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_19'];
+    put?: never;
     trace?: never;
   };
   '/api/education/course/learn': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['startLearning'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['startLearning'];
+    put?: never;
     trace?: never;
   };
   '/api/education/course/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_19'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_19'];
+    put?: never;
     trace?: never;
   };
   '/api/education/course/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_21'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_21'];
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_20'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_20'];
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/knowledge/bind': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['replaceKnowledgeIds'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['replaceKnowledgeIds'];
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_20'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_20'];
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_22'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_22'];
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/record-create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['createRecord'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createRecord'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/responses': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['responses'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['responses'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/prompts': {
+    delete?: never;
+    get: operations['list_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_2'];
-    put?: never;
-    post: operations['create_23'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_23'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/prompts/{id}/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['publish_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['publish_2'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/prompts/preview': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['preview'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['preview'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/messages/{messageId}/generations': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['retry_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['retry_1'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/messages/{messageId}/edits': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['edit'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['edit'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/generations/{id}/cancel': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['cancel_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['cancel_1'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations': {
+    delete?: never;
+    get: operations['list_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_3'];
-    put?: never;
-    post: operations['create_24'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_24'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/messages': {
+    delete?: never;
+    get: operations['messages'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['messages'];
-    put?: never;
-    post: operations['message'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['message'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/generations': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['generation'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['generation'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/branches': {
+    delete?: never;
+    get: operations['branches'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['branches'];
-    put?: never;
-    post: operations['branch'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['branch'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/active-leaf': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['activeLeaf'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['activeLeaf'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/import': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['importConversation'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['importConversation'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/import/preview': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['importPreview'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['importPreview'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat/completions': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['chatCompletions'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['chatCompletions'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/prompt-studio/templates': {
+    delete?: never;
+    get: operations['prompts'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['prompts'];
-    put?: never;
-    post: operations['createPrompt'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createPrompt'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/prompt-studio/templates/{templateId}/test': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['testPrompt'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['testPrompt'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/prompt-studio/templates/{templateId}/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['publishPrompt'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['publishPrompt'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/prompt-studio/templates/{templateId}/diff': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['diffPrompt'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['diffPrompt'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/prompt-studio/preview': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['preview_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['preview_1'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/personas': {
+    delete?: never;
+    get: operations['personas'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['personas'];
-    put?: never;
-    post: operations['createPersona'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createPersona'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/lorebooks': {
+    delete?: never;
+    get: operations['lorebooks'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['lorebooks'];
-    put?: never;
-    post: operations['createLorebook'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createLorebook'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/groups': {
+    delete?: never;
+    get: operations['groups'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['groups'];
-    put?: never;
-    post: operations['createGroup'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createGroup'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/groups/{id}/turn': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['runTurn'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['runTurn'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/groups/{id}/next-speaker': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['nextSpeaker'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['nextSpeaker'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/characters': {
+    delete?: never;
+    get: operations['characters'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['characters'];
-    put?: never;
-    post: operations['createCharacter'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createCharacter'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/characters/import': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['importCharacter'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['importCharacter'];
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/characters/import/preview': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['previewCharacterImport'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['previewCharacterImport'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Version */
     post: operations['updateVersion'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Publish */
     post: operations['publish_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/validate': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Validate Graph */
     post: operations['validate'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Graph */
     post: operations['updateGraph'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/node/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Node */
     post: operations['updateNode'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/node/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Node */
     post: operations['deleteNode'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/node/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Add Node */
     post: operations['addNode'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/edge/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Edge */
     post: operations['deleteEdge'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/edge/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Add Edge */
     post: operations['addEdge'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/canvas-update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Canvas */
     post: operations['updateCanvas'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Version */
     post: operations['deleteVersion'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create Version */
     post: operations['createVersion'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/copy': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Copy */
     post: operations['copy'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/archive': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Archive */
     post: operations['archive_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/activate': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Activate */
     post: operations['activate'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs': {
+    delete?: never;
+    get: operations['runs'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['runs'];
-    put?: never;
-    post: operations['startRun'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['startRun'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{runId}/approvals': {
+    delete?: never;
+    get: operations['list_4'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_4'];
-    put?: never;
-    post: operations['request'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['request'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}/cancel': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['cancel_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['cancel_2'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['update_21'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['update_21'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['delete_21'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['delete_21'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_25'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_25'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/batch-delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['deleteBatch_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['deleteBatch_1'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/resume': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Resume Execution */
     post: operations['resume'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/pause': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Pause Execution */
     post: operations['pause'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/execute': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Execute Agent */
     post: operations['execute'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/execute-stream': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Execute Agent Stream */
     post: operations['executeStream'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/cancel': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Cancel Execution */
     post: operations['cancel_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/evaluations/runs': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['run_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['run_1'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/evaluations/datasets': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['create_26'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['create_26'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/evaluations/datasets/{id}/cases': {
+    delete?: never;
+    get: operations['cases'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['cases'];
-    put?: never;
-    post: operations['addCase'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['addCase'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps': {
+    delete?: never;
+    get: operations['apps'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['apps'];
-    put?: never;
-    post: operations['createApp'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['createApp'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps/{id}/versions': {
+    delete?: never;
+    get: operations['versions'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['versions'];
-    put?: never;
-    post: operations['version'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['version'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps/{id}/versions/{versionId}/publish': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['publish_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['publish_4'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps/{id}/versions/{versionId}/archive': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['archive_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['archive_2'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps/{id}/preview': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['preview_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['preview_2'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/apps/{id}/execute': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['executeApp'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['executeApp'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/approvals/{id}/reject': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['reject_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['reject_1'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/approvals/{id}/approve': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post: operations['approve_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post: operations['approve_1'];
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/version/switch': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Switch Version */
     post: operations['switchVersion'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/update': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update */
     post: operations['update_22'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/status': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Update Status */
     post: operations['updateStatus'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/register': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Register Agent */
     post: operations['registerAgent'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/delete': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete */
     post: operations['delete_22'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/delete/by-agent-id': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Delete Agent */
     post: operations['deleteAgent'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/create': {
+    delete?: never;
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
+    patch?: never;
     /** Create */
     post: operations['create_27'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}': {
+    delete: operations['delete_23'];
+    get: operations['detail'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['detail'];
-    put?: never;
-    post?: never;
-    delete: operations['delete_23'];
-    options?: never;
-    head?: never;
     patch: operations['update_23'];
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/tools/mcp/tools': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 列出所有工具 */
     get: operations['listTools'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/tools/mcp/tools/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 获取工具详情 */
     get: operations['getTool'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/tools/mcp/stats': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 获取工具统计 */
     get: operations['getStats'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/tools/mcp/categories': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 获取工具分类 */
     get: operations['getCategories'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 列出所有插件 */
     get: operations['listPlugins'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/tooling/plugins/market': {
+    delete?: never;
+    get: operations['market'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['market'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/profile': {
+    delete?: never;
+    get: operations['getTimelineByProfileId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTimelineByProfileId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/list': {
+    delete?: never;
+    get: operations['getPage'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getPage'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/timeline/detail': {
+    delete?: never;
+    get: operations['getById'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/list': {
+    delete?: never;
+    get: operations['getPage_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getPage_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/detail': {
+    delete?: never;
+    get: operations['getById_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/tag/all': {
+    delete?: never;
+    get: operations['getAll'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getAll'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/record/list': {
+    delete?: never;
+    get: operations['getPage_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getPage_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/record/detail': {
+    delete?: never;
+    get: operations['getById_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/profile/list': {
+    delete?: never;
+    get: operations['getPage_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getPage_3'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/profile/detail': {
+    delete?: never;
+    get: operations['getById_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_3'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/media/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 分页查询附件列表 */
     get: operations['getPage_4'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/record/media/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 查询附件 */
     get: operations['getById_4'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers': {
+    delete?: never;
+    get: operations['models'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['models'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/{provider}/{model}/health': {
+    delete?: never;
+    get: operations['health'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['health'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/{id}/health': {
+    delete?: never;
+    get: operations['healthById'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['healthById'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/page': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Page */
     get: operations['getPage_5'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/options': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Options */
     get: operations['getOptions'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/enabled': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get All Enabled */
     get: operations['getAllEnabled'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Id */
     get: operations['getById_5'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/default': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Default */
     get: operations['getDefault'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/providers/code': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Code */
     get: operations['getByCode'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models': {
+    delete?: never;
+    get: operations['models_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['models_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/platform': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Platform Id */
     get: operations['getByPlatformId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/platform/default': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Default By Platform Id */
     get: operations['getDefaultByPlatformId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/platform/by-code': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Platform Code */
     get: operations['getByPlatformCode'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/page': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Page */
     get: operations['getPage_6'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/options': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Options */
     get: operations['getOptions_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/model/models/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Id */
     get: operations['getById_6'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/memory/retrieval-traces/{traceId}': {
+    delete?: never;
+    get: operations['trace'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['trace'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/memory/events/{id}/relations': {
+    delete?: never;
+    get: operations['relations'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['relations'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/system/status': {
+    delete?: never;
+    get: operations['status'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['status'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/{id}/difficulty-scale': {
+    delete?: never;
+    get: operations['difficultyScale'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['difficultyScale'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/spaces/options': {
+    delete?: never;
+    get: operations['options'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['options'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/{pointId}/prerequisites': {
+    delete?: never;
+    get: operations['prerequisites'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['prerequisites'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/{pointId}/path': {
+    delete?: never;
+    get: operations['path'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['path'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/{id}/graph': {
+    delete?: never;
+    get: operations['graph'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['graph'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/path': {
+    delete?: never;
+    get: operations['findPath'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['findPath'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/ingestion-jobs': {
+    delete?: never;
+    get: operations['page_4'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_4'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/ingestion-jobs/{id}': {
+    delete?: never;
+    get: operations['get_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['get_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}': {
+    delete: operations['delete_24'];
+    get: operations['get_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['get_3'];
-    put?: never;
-    post?: never;
-    delete: operations['delete_24'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/versions': {
+    delete?: never;
+    get: operations['versions_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['versions_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/{id}/preview': {
+    delete?: never;
+    get: operations['preview_3'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['preview_3'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/documents/upload-sessions/{sessionId}': {
+    delete: operations['cancelUpload'];
+    get: operations['uploadStatus'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['uploadStatus'];
-    put?: never;
-    post?: never;
-    delete: operations['cancelUpload'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/audits': {
+    delete?: never;
+    get: operations['page_5'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_5'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/tenant-assignments': {
+    delete?: never;
+    get: operations['getTenantAssignments'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTenantAssignments'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/list': {
+    delete?: never;
+    get: operations['getUserList'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getUserList'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/users/detail': {
+    delete?: never;
+    get: operations['getUserInfo'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getUserInfo'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/timezone/options': {
+    delete?: never;
+    get: operations['getTimezoneOptions'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTimezoneOptions'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/timezone/current': {
+    delete?: never;
+    get: operations['getTimezone'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTimezone'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/page': {
+    delete?: never;
+    get: operations['getTenantPage'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTenantPage'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/list': {
+    delete?: never;
+    get: operations['getAllTenants'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getAllTenants'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/tenants/detail': {
+    delete?: never;
+    get: operations['getTenantById'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTenantById'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/list': {
+    delete?: never;
+    get: operations['getRoleList'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getRoleList'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/detail': {
+    delete?: never;
+    get: operations['getRoleDetail'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getRoleDetail'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/roles/all': {
+    delete?: never;
+    get: operations['getAllRoles'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getAllRoles'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/tree': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get All Tree */
     get: operations['getAllTree'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/roots': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Menu Roots */
     get: operations['getMenuRoots'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/permissions': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Menu Permissions Tree */
     get: operations['getMenuPermissionsTree'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/path-exists': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Is Menu Path Exists */
     get: operations['isMenuPathExists'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/page': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get System Menu Page */
     get: operations['getMenuPage'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/name-exists': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Is Menu Name Exists */
     get: operations['isMenuNameExists'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get System Menu List */
     get: operations['getSystemMenuList'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/children': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Menu Children */
     get: operations['getMenuChildren'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/menus/all': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get All Menus */
     get: operations['getAllMenus'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/files/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 获取文件列表 */
     get: operations['list_5'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/files/download': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 下载文件 */
     get: operations['download'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/files/config': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 获取文件存储配置 */
     get: operations['config'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/type': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Dict By Type */
     get: operations['getDictByType'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/dicts/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Dict List */
     get: operations['getDictList'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/tenants': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get User Tenants */
     get: operations['getUserTenants'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/codes': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Auth Codes */
     get: operations['getAuthCodes'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth/captcha': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Captcha */
     get: operations['getCaptcha'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/roles/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** List role auth codes */
     get: operations['listRoleAuthCodes'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/page': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Page Auth Codes */
     get: operations['page_6'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/options': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Auth code options */
     get: operations['options_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/auth-codes/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** List Auth Codes */
     get: operations['list_6'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/weekly': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 按周聚合（所有类型，按 usage_type 分组） */
     get: operations['aggregateByWeek'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/overview': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 用量概览（所有类型） */
     get: operations['getOverview'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/monthly': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 按月聚合（所有类型，按 usage_type 分组） */
     get: operations['aggregateByMonth'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/llm/weekly': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** LLM 按周聚合（含 token/cost） */
     get: operations['aggregateLlmByWeek'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/llm/monthly': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** LLM 按月聚合（含 token/cost） */
     get: operations['aggregateLlmByMonth'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/llm/daily': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** LLM 按日聚合（含 token/cost） */
     get: operations['aggregateLlmByDay'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/embedding/overview': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Embedding 用量概览 */
     get: operations['getEmbeddingOverview'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/daily': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 按日聚合（所有类型，按 usage_type 分组） */
     get: operations['aggregateByDay'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/governance/usage/by-model': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** LLM 按模型聚合 */
     get: operations['aggregateByModel'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/wrong-question/student': {
+    delete?: never;
+    get: operations['listByStudentId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByStudentId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/wrong-question/detail': {
+    delete?: never;
+    get: operations['getById_7'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_7'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/subject-grade': {
+    delete?: never;
+    get: operations['listBySubjectAndGrade'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listBySubjectAndGrade'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/list': {
+    delete?: never;
+    get: operations['list_7'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_7'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/textbook/detail': {
+    delete?: never;
+    get: operations['getById_8'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_8'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/list': {
+    delete?: never;
+    get: operations['list_8'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_8'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/grade-level': {
+    delete?: never;
+    get: operations['listByGradeLevel'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByGradeLevel'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/detail': {
+    delete?: never;
+    get: operations['getById_9'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_9'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/subject/code': {
+    delete?: never;
+    get: operations['getByCode_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getByCode_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/today-tasks': {
+    delete?: never;
+    get: operations['getTodayTasks'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTodayTasks'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/student': {
+    delete?: never;
+    get: operations['listByStudentId_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByStudentId_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/detail': {
+    delete?: never;
+    get: operations['getById_10'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_10'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/study-plan/active': {
+    delete?: never;
+    get: operations['listActiveByStudent'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listActiveByStudent'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/students/user': {
+    delete?: never;
+    get: operations['getByUserId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getByUserId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/students/list': {
+    delete?: never;
+    get: operations['list_9'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_9'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/students/detail': {
+    delete?: never;
+    get: operations['getById_11'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_11'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/review/today': {
+    delete?: never;
+    get: operations['listTodayTasks'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listTodayTasks'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/review/list': {
+    delete?: never;
+    get: operations['list_10'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_10'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/review/detail': {
+    delete?: never;
+    get: operations['getById_12'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_12'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/type': {
+    delete?: never;
+    get: operations['listByType'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByType'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/subject': {
+    delete?: never;
+    get: operations['listBySubjectCode'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listBySubjectCode'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/list': {
+    delete?: never;
+    get: operations['list_11'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_11'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/resource/detail': {
+    delete?: never;
+    get: operations['getById_13'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_13'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/recommend/review': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 推荐复习任务 — 基于遗忘曲线的到期/即将到期复习 */
     get: operations['recommendReview'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/recommend/resources': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 推荐学习资源 — 基于薄弱点 + 最近学习知识点 */
     get: operations['recommendResources'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/recommend/questions': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 推荐题目 — 基于薄弱知识点 + 难度匹配 + 能力维度 */
     get: operations['recommendQuestions'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/recommend/knowledge': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 推荐薄弱知识点 — 基于能力差距 + 遗忘紧迫度 */
     get: operations['recommendKnowledge'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/recommend/hybrid': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** 混合推荐 — 聚合知识点/题目/资源/复习 + AI 综合学习建议 */
     get: operations['hybridRecommend'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/question/type': {
+    delete?: never;
+    get: operations['listByType_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByType_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/question/subject-grade': {
+    delete?: never;
+    get: operations['listBySubjectAndGrade_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listBySubjectAndGrade_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/question/list': {
+    delete?: never;
+    get: operations['list_12'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_12'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/question/difficulty': {
+    delete?: never;
+    get: operations['listByDifficulty'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByDifficulty'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/question/detail': {
+    delete?: never;
+    get: operations['getById_14'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_14'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/teacher': {
+    delete?: never;
+    get: operations['listByTeacherId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByTeacherId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/subject': {
+    delete?: never;
+    get: operations['listBySubjectCode_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listBySubjectCode_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/list': {
+    delete?: never;
+    get: operations['list_13'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_13'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/exam/detail': {
+    delete?: never;
+    get: operations['getById_15'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_15'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/education-resources/{fileName}': {
+    delete?: never;
+    get: operations['open'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['open'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/course/subject': {
+    delete?: never;
+    get: operations['listBySubjectCode_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listBySubjectCode_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/course/list': {
+    delete?: never;
+    get: operations['list_14'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['list_14'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/course/grade': {
+    delete?: never;
+    get: operations['listByGrade'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByGrade'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/course/detail': {
+    delete?: never;
+    get: operations['getById_16'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_16'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/tree': {
+    delete?: never;
+    get: operations['getChapterTree'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getChapterTree'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/textbook': {
+    delete?: never;
+    get: operations['listByTextbookId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByTextbookId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/knowledge/list': {
+    delete?: never;
+    get: operations['listKnowledgeIds'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listKnowledgeIds'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/detail': {
+    delete?: never;
+    get: operations['getById_17'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getById_17'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/chapter/children': {
+    delete?: never;
+    get: operations['listByParentId'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listByParentId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/weak-points': {
+    delete?: never;
+    get: operations['getWeakPoints'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getWeakPoints'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/trend': {
+    delete?: never;
+    get: operations['getTrend'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getTrend'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/records': {
+    delete?: never;
+    get: operations['listRecordsByStudent'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listRecordsByStudent'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/records/knowledge': {
+    delete?: never;
+    get: operations['listRecordsByStudentAndKnowledge'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listRecordsByStudentAndKnowledge'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/overview': {
+    delete?: never;
+    get: operations['getOverview_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getOverview_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/education/analytics/ability-radar': {
+    delete?: never;
+    get: operations['getAbilityRadar'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['getAbilityRadar'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/generations/{id}/events': {
+    delete?: never;
+    get: operations['stream'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['stream'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/prompt-preview': {
+    delete?: never;
+    get: operations['promptPreview'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['promptPreview'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/conversations/{id}/export': {
+    delete?: never;
+    get: operations['export'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['export'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/personas/{id}': {
+    delete: operations['deletePersona'];
+    get: operations['persona'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['persona'];
-    put?: never;
-    post?: never;
-    delete: operations['deletePersona'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/lorebooks/{id}': {
+    delete: operations['deleteLorebook'];
+    get: operations['lorebook'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['lorebook'];
-    put?: never;
-    post?: never;
-    delete: operations['deleteLorebook'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/groups/{id}': {
+    delete: operations['deleteGroup'];
+    get: operations['group'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['group'];
-    put?: never;
-    post?: never;
-    delete: operations['deleteGroup'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/characters/{id}': {
+    delete: operations['deleteCharacter'];
+    get: operations['character'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['character'];
-    put?: never;
-    post?: never;
-    delete: operations['deleteCharacter'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/conversation/chat-products/characters/{id}/png': {
+    delete?: never;
+    get: operations['exportCharacter'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['exportCharacter'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Versions */
     get: operations['getVersions'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Graph */
     get: operations['getGraph'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/graph/canvas': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Canvas */
     get: operations['getCanvas'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/versions/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Version Detail */
     get: operations['getVersionDetail'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}': {
+    delete?: never;
+    get: operations['run_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['run_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}/trajectory': {
+    delete?: never;
+    get: operations['trajectory'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['trajectory'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}/prompt-snapshot': {
+    delete?: never;
+    get: operations['promptSnapshot'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['promptSnapshot'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}/events': {
+    delete?: never;
+    get: operations['events'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['events'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/runs/{id}/event-history': {
+    delete?: never;
+    get: operations['eventHistory'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['eventHistory'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/page': {
+    delete?: never;
+    get: operations['page_7'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['page_7'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/options': {
+    delete?: never;
+    get: operations['options_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['options_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/intents/detail': {
+    delete?: never;
+    get: operations['detail_1'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['detail_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/generations/{generationId}/runtime-events': {
+    delete?: never;
+    get: operations['generationEvents'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['generationEvents'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/status': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Execution Status */
     get: operations['getStatus'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/history': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Execution History */
     get: operations['getHistory'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/executions/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Execution Details */
     get: operations['getExecution'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/evaluations/runs/{id}': {
+    delete?: never;
+    get: operations['detail_2'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['detail_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/evaluations/runs/{id}/results': {
+    delete?: never;
+    get: operations['results'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['results'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/approvals': {
+    delete?: never;
+    get: operations['listAll'];
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get: operations['listAll'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/page': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Page */
     get: operations['getPage_7'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/options': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** List All Options */
     get: operations['listAllOptions'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/node-types': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Node Types */
     get: operations['getNodeTypes'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/node-types/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Node Type */
     get: operations['getNodeType'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** List Agents */
     get: operations['listAgents'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get by Id */
     get: operations['getById_18'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/agent/agents/detail/by-agent-id': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
+    delete?: never;
     /** Get Agent */
     get: operations['getAgent'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/points/{pointId}/relations/{targetId}': {
+    delete: operations['delete_25'];
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete: operations['delete_25'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/knowledge/evaluations/{id}': {
+    delete: operations['delete_26'];
+    get?: never;
+    head?: never;
+    options?: never;
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete: operations['delete_26'];
-    options?: never;
-    head?: never;
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
   '/api/iam/files': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
     /** 删除文件 */
     delete: operations['delete_27'];
-    options?: never;
+    get?: never;
     head?: never;
+    options?: never;
+    parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
+      query?: never;
+    };
     patch?: never;
+    post?: never;
+    put?: never;
     trace?: never;
   };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    UpdateSpaceRequest: {
-      name?: string;
-      description?: string;
-      domainCode?: string;
-      accessMode?: string;
-      reviewMode?: string;
-      bindingMode?: string;
-      /** Format: int64 */
-      difficultyScaleId?: number;
-      embeddingProfile?: string;
-      rerankProfile?: string;
-      chunkStrategy?: string;
-      /** Format: int32 */
-      chunkSize?: number;
-      /** Format: int32 */
-      chunkOverlap?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultSpaceView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['SpaceView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    SpaceView: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      domainCode?: string;
-      name?: string;
-      description?: string;
-      accessMode?: string;
-      reviewMode?: string;
-      bindingMode?: string;
-      /** Format: int64 */
-      difficultyScaleId?: number;
-      embeddingProfile?: string;
-      rerankProfile?: string;
-      chunkStrategy?: string;
-      /** Format: int32 */
-      chunkSize?: number;
-      /** Format: int32 */
-      chunkOverlap?: number;
-      /** Format: int64 */
-      activeIndexVersion?: number;
-      /** Format: int32 */
-      status?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    MemberRequest: {
-      principalType: string;
-      /** Format: int64 */
-      principalId: number;
-      spaceRole: string;
-    };
-    ResultVoid: {
-      /** Format: int32 */
-      code?: number;
-      data?: unknown;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ReplaceRequest: {
-      documentIds: number[];
-      relationType?: string;
-    };
-    UpdatePointRequest: {
-      name?: string;
-      description?: string;
-      /** Format: int32 */
-      difficultyLevel?: number;
-      category?: string;
-      tags?: string;
-    };
-    PointView: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      spaceId?: number;
-      code?: string;
-      name?: string;
-      description?: string;
-      /** Format: int32 */
-      difficultyLevel?: number;
-      category?: string;
-      tags?: string;
-    };
-    ResultPointView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PointView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DocumentRelationRequest: {
-      /** Format: int64 */
-      documentId?: number;
-      relationType?: string;
-    };
-    ReplaceDocumentRelationsRequest: {
-      relations: components['schemas']['DocumentRelationRequest'][];
-    };
-    ReplacePointsRequest: {
-      pointIds: number[];
-      relationType?: string;
-    };
-    ResultObject: {
-      /** Format: int32 */
-      code?: number;
-      data?: unknown;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PluginMarketEntry: {
-      id?: string;
-      version?: string;
-      source?: string;
-      manifest?: string;
-      signature?: string;
-      publisherKey?: string;
-      permissions?: string[];
-      checksum?: string;
-      updatePolicy?: string;
-      /** Format: date-time */
-      publishedAt?: string;
-      enabled?: boolean;
-    };
-    ResultPluginMarketEntry: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PluginMarketEntry'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TimelineEventRequest: {
-      /** Format: int64 */
-      profileId: number;
-      title: string;
-      /** Format: date-time */
-      eventTime?: string;
-      /** Format: date-time */
-      eventDate?: string;
-      eventType?: string;
-    };
-    ResultBoolean: {
-      /** Format: int32 */
-      code?: number;
-      data?: boolean;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MediaVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      recordId?: number;
-      url?: string;
-      type?: string;
-      /** Format: int64 */
-      size?: number;
-      /** Format: int32 */
-      duration?: number;
-      /** Format: int32 */
-      width?: number;
-      /** Format: int32 */
-      height?: number;
-      /** Format: int32 */
-      sort?: number;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    RecordVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      eventId?: number;
-      content?: string;
-      mood?: string;
-      location?: string;
-      weather?: string;
-      /** Format: date-time */
-      createTime?: string;
-      mediaList?: components['schemas']['MediaVO'][];
-      tags?: components['schemas']['TagVO'][];
-    };
-    ResultTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TimelineEventVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TagVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    TimelineEventVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      profileId?: number;
-      title?: string;
-      /** Format: date-time */
-      eventTime?: string;
-      type?: string;
-      visibility?: string;
-      /** Format: int64 */
-      createdBy?: number;
-      /** Format: date-time */
-      createTime?: string;
-      record?: components['schemas']['RecordVO'];
-      mediaList?: components['schemas']['MediaVO'][];
-    };
-    TagRequest: {
-      name: string;
-    };
-    ResultTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TagVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RecordRequest: {
-      /** Format: int64 */
-      eventId: number;
-      content?: string;
-    };
-    ResultRecordVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RecordVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ProfileRequest: {
-      name: string;
-      avatar?: string;
-    };
-    ProfileVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      gender?: string;
-      /** Format: date-time */
-      birthDate?: string;
-      avatar?: string;
-      /** Format: int32 */
-      status?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultProfileVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ProfileVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MediaRequest: {
-      /** Format: int64 */
-      recordId: number;
-      url: string;
-      mediaType?: string;
-    };
-    TtsRequest: {
-      provider?: string;
-      text?: string;
-      voice?: string;
-      format?: string;
-    };
-    ResultMapStringString: {
-      /** Format: int32 */
-      code?: number;
-      data?: {
-        [key: string]: string;
+    AbilityRadarResponse: {
+      abilities?: {
+        [key: string]: number;
       };
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TranslateRequest: {
-      provider?: string;
-      text?: string;
-      sourceLanguage?: string;
-      targetLanguage?: string;
-    };
-    ResultString: {
-      /** Format: int32 */
-      code?: number;
-      data?: string;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ImageRequest: {
-      provider?: string;
-      imageBase64?: string;
-      mimeType?: string;
-      instruction?: string;
-    };
-    ResultVisionResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['VisionResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    VisionResult: {
-      text?: string;
-      labels?: string[];
-    };
-    GenerateRequest: {
-      provider?: string;
-      prompt?: string;
-      format?: string;
-    };
-    ImageResult: {
-      objectKey?: string;
-      mimeType?: string;
-      /** Format: int32 */
-      width?: number;
-      /** Format: int32 */
-      height?: number;
-    };
-    ResultImageResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ImageResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultMediaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MediaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RouteRequest: {
-      name?: string;
-      orderedModels?: string[];
-      /** Format: int32 */
-      timeoutMs?: number;
-      fallbackOnError?: boolean;
       /** Format: int64 */
-      maxTokens?: number;
-    };
-    ModelRoutePolicy: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      name?: string;
-      orderedModels?: string[];
-      /** Format: int32 */
-      timeoutMs?: number;
-      fallbackOnError?: boolean;
-      /** Format: int64 */
-      maxTokens?: number;
-    };
-    ResultModelRoutePolicy: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ModelRoutePolicy'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TestRequest: {
-      requiredFeatures?: string[];
-    };
-    ModelProviderCapabilities: {
-      provider?: string;
-      model?: string;
-      features?: string[];
-      /** Format: int32 */
-      contextWindow?: number;
-      streaming?: boolean;
-      tools?: boolean;
-      parallelTools?: boolean;
-      multimodal?: boolean;
-      jsonSchema?: boolean;
-      reasoningLevels?: string[];
-      /** Format: int32 */
-      maxOutputTokens?: number;
-      streamUsage?: boolean;
-      cacheUsage?: boolean;
-      cancellation?: boolean;
-    };
-    ResultModelProviderCapabilities: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ModelProviderCapabilities'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiPlatformRequest: {
-      name: string;
-      code: string;
-      baseUrl?: string;
-      apiKey?: string;
+      knowledgeId?: number;
       /** Format: double */
-      temperature?: number;
-      /** Format: int32 */
-      maxTokens?: number;
-      /** Format: int32 */
-      maxRetries?: number;
-      availableModels?: string;
-      extraConfig?: string;
-      isDefault?: string;
-      status?: string;
-      /** Format: int32 */
-      sort?: number;
-      remark?: string;
-    };
-    AiPlatformVO: {
+      overallMastery?: number;
       /** Format: int64 */
-      id?: number;
-      name?: string;
-      code?: string;
-      baseUrl?: string;
-      /** Format: double */
-      temperature?: number;
-      /** Format: int32 */
-      maxTokens?: number;
-      /** Format: int32 */
-      maxRetries?: number;
-      availableModels?: string;
-      extraConfig?: string;
-      isDefault?: string;
-      status?: string;
-      /** Format: int32 */
-      sort?: number;
-      remark?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
+      studentId?: number;
     };
-    ResultAiPlatformVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiPlatformVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
+    ActiveLeafRequest: {
+      messageId?: string;
     };
-    AiModelRequest: {
+    AgentDefinition: {
+      agentId?: string;
       /** Format: int64 */
-      platformId?: number;
-      modelName: string;
-      displayName?: string;
+      createdAt?: number;
+      currentVersion?: string;
       description?: string;
-      modelConfig?: string;
-      isDefault?: string;
-      /** Format: int32 */
-      sort?: number;
-      status?: string;
-    };
-    AiModelVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      platformId?: number;
-      modelName?: string;
-      displayName?: string;
-      description?: string;
-      modelConfig?: string;
-      platformName?: string;
-      isDefault?: string;
-      /** Format: int32 */
-      sort?: number;
-      status?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultAiModelVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiModelVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    QueryRequest: {
-      namespace?: string;
-      subjectType?: string;
-      subjectId?: string;
-      text?: string;
-      graphTypes?: ('TEMPORAL' | 'SEMANTIC' | 'CAUSAL' | 'ENTITY')[];
-      /** Format: date-time */
-      from?: string;
-      /** Format: date-time */
-      to?: string;
-      /** Format: int32 */
-      maxDepth?: number;
-      /** Format: int32 */
-      maxNodes?: number;
-      /** Format: int32 */
-      maxTokens?: number;
-      /** @enum {string} */
-      intent?: 'SEMANTIC' | 'TEMPORAL' | 'CAUSAL' | 'ENTITY' | 'HYBRID';
-    };
-    MemoryEdge: {
-      id?: string;
-      tenantId?: components['schemas']['TenantId'];
-      sourceNodeId?: string;
-      targetNodeId?: string;
-      /** @enum {string} */
-      graphType?: 'TEMPORAL' | 'SEMANTIC' | 'CAUSAL' | 'ENTITY';
-      relationType?: string;
-      directed?: boolean;
-      /** Format: double */
-      weight?: number;
-      /** Format: double */
-      confidence?: number;
-      /** @enum {string} */
-      origin?: 'RULE' | 'DOMAIN' | 'MODEL';
-      evidenceSource?: string;
-      active?: boolean;
-      /** Format: date-time */
-      createdAt?: string;
-    };
-    MemoryEvent: {
-      id?: string;
-      tenantId?: components['schemas']['TenantId'];
-      namespace?: string;
-      subjectType?: string;
-      subjectId?: string;
-      eventType?: string;
-      content?: string;
-      /** Format: date-time */
-      occurredAt?: string;
-      sourceType?: string;
-      sourceId?: string;
-      attributes?: {
+      extInfo?: {
         [key: string]: unknown;
       };
-      /** Format: double */
-      confidence?: number;
-      /** Format: double */
-      importance?: number;
-      /** @enum {string} */
-      status?: 'CANDIDATE' | 'ACTIVE' | 'SUPERSEDED' | 'REVOKED';
-      /** @enum {string} */
-      confirmationPolicy?: 'AUTO' | 'REQUIRED' | 'DISABLED';
+      name?: string;
+      startNodeId?: string;
+      /** Format: int64 */
+      updatedAt?: number;
+      versions?: {
+        [key: string]: components['schemas']['AgentVersion'];
+      };
+    };
+    AgentDetailVO: {
+      agentId?: string;
+      /** Format: date-time */
+      createTime?: string;
+      currentVersion?: string;
+      description?: string;
+      extInfo?: {
+        [key: string]: unknown;
+      };
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: date-time */
+      updateTime?: string;
+      versions?: components['schemas']['AgentVersionVO'][];
+    };
+    AgentRequest: {
+      agentId: string;
+      description?: string;
+      name: string;
+      /** Format: int32 */
+      status?: number;
+    };
+    AgentStateFactoryAgentState: unknown;
+    AgentVersion: {
+      /** Format: int64 */
+      createdAt?: number;
+      description?: string;
+      versionNumber?: string;
+    };
+    AgentVersionDetailVO: {
+      agentId?: string;
+      canvasConfig?: string;
+      /** Format: date-time */
+      createTime?: string;
+      description?: string;
+      graphConfig?: components['schemas']['GraphConfigVO'];
+      /** Format: int64 */
+      id?: number;
+      /** Format: int32 */
+      status?: number;
+      statusDesc?: string;
+      /** Format: date-time */
+      updateTime?: string;
+      versionNumber?: string;
+    };
+    AgentVersionVO: {
+      agentId?: string;
+      /** Format: date-time */
+      createTime?: string;
+      description?: string;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int32 */
+      status?: number;
+      statusDesc?: string;
+      /** Format: date-time */
+      updateTime?: string;
+      versionNumber?: string;
+    };
+    AgentVO: {
+      agentId?: string;
+      /** Format: date-time */
+      createTime?: string;
+      currentVersion?: string;
+      description?: string;
+      extInfo?: {
+        [key: string]: unknown;
+      };
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    AiApp: {
       /** Format: date-time */
       createdAt?: string;
+      description?: string;
+      id?: string;
+      name?: string;
+      ownerUserId?: components['schemas']['UserId'];
+      publishedVersionId?: string;
+      status?: string;
+      tenantId?: components['schemas']['TenantId'];
       /** Format: date-time */
       updatedAt?: string;
     };
-    MemoryPath: {
-      event?: components['schemas']['MemoryEvent'];
-      /** Format: double */
-      score?: number;
-      edges?: components['schemas']['MemoryEdge'][];
-    };
-    MemoryRetrievalResult: {
-      paths?: components['schemas']['MemoryPath'][];
-      traceId?: string;
-    };
-    ResultMemoryRetrievalResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MemoryRetrievalResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TenantId: {
-      /** Format: int64 */
-      value?: number;
-    };
-    EventRequest: {
-      namespace?: string;
-      subjectType?: string;
-      subjectId?: string;
-      eventType?: string;
-      content?: string;
-      /** Format: date-time */
-      occurredAt?: string;
-      sourceType?: string;
-      sourceId?: string;
-      attributes?: {
+    AiAppPreview: {
+      appId?: string;
+      appVersionId?: string;
+      configuration?: {
         [key: string]: unknown;
       };
-      /** Format: double */
-      confidence?: number;
-      /** Format: double */
-      importance?: number;
-      /** @enum {string} */
-      confirmationPolicy?: 'AUTO' | 'REQUIRED' | 'DISABLED';
+      executable?: boolean;
+      model?: string;
+      promptHash?: string;
+      status?: string;
     };
-    ResultMemoryEvent: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MemoryEvent'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RestoreCheckResult: {
-      valid?: boolean;
-      /** Format: int64 */
-      entries?: number;
-      errors?: string[];
-    };
-    ResultRestoreCheckResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RestoreCheckResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    BackupResult: {
-      fileName?: string;
-      /** Format: int64 */
-      size?: number;
+    AiAppVersion: {
+      appId?: string;
+      configJson?: string;
+      /** Format: date-time */
       createdAt?: string;
+      id?: string;
+      /** Format: date-time */
+      publishedAt?: string;
+      status?: string;
+      tenantId?: components['schemas']['TenantId'];
+      version?: string;
     };
-    ResultBackupResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['BackupResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CreateSpaceRequest: {
-      code: string;
-      name: string;
-      domainCode?: string;
+    AiModelRequest: {
       description?: string;
-      accessMode?: string;
-      reviewMode?: string;
-      bindingMode?: string;
+      displayName?: string;
+      isDefault?: string;
+      modelConfig?: string;
+      modelName: string;
       /** Format: int64 */
-      difficultyScaleId?: number;
-      embeddingProfile?: string;
-      rerankProfile?: string;
-      chunkStrategy?: string;
+      platformId?: number;
       /** Format: int32 */
-      chunkSize?: number;
-      /** Format: int32 */
-      chunkOverlap?: number;
+      sort?: number;
+      status?: string;
     };
-    CreatePointRequest: {
-      code: string;
-      name: string;
-      description?: string;
-      /** Format: int32 */
-      difficultyLevel?: number;
-      category?: string;
-      tags?: string;
-    };
-    DocumentView: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      spaceId?: number;
-      /** Format: int64 */
-      currentVersionId?: number;
-      title?: string;
-      docType?: string;
-      source?: string;
-      lifecycleStatus?: string;
-      parseStatus?: string;
-      objectKey?: string;
-      mimeType?: string;
-      /** Format: int64 */
-      fileSize?: number;
-      checksum?: string;
+    AiModelResponse: {
       /** Format: date-time */
       createTime?: string;
+      description?: string;
+      displayName?: string;
+      /** Format: int64 */
+      id?: number;
+      isDefault?: string;
+      modelConfig?: string;
+      modelName?: string;
+      /** Format: int64 */
+      platformId?: number;
+      platformName?: string;
+      /** Format: int32 */
+      sort?: number;
+      status?: string;
       /** Format: date-time */
       updateTime?: string;
     };
-    ResultUploadResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['UploadResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    UploadResult: {
-      document?: components['schemas']['DocumentView'];
-      /** Format: int64 */
-      versionId?: number;
-      /** Format: int64 */
-      jobId?: number;
-      duplicate?: boolean;
-    };
-    BeginRequest: {
-      fileName: string;
-      contentType?: string;
-      /** Format: int64 */
-      size?: number;
-      checksum?: string;
-      title?: string;
-    };
-    ResultUploadSession: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['UploadSession'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    UploadSession: {
-      sessionId?: string;
-      /** Format: int64 */
-      spaceId?: number;
-      fileName?: string;
-      /** Format: int64 */
-      size?: number;
-      /** Format: int32 */
-      totalChunks?: number;
-      uploadedChunks?: number[];
-      /** Format: int32 */
-      chunkSize?: number;
-    };
-    ImportUrlRequest: {
-      url: string;
-      title?: string;
-    };
-    SearchRequest: {
-      /** Format: int64 */
-      spaceId: number;
-      query: string;
-      mode?: string;
-      /** Format: int32 */
-      topK?: number;
-      /** Format: double */
-      threshold?: number;
-      rerank?: boolean;
-    };
-    HybridHit: {
-      /** Format: int64 */
-      chunkId?: number;
-      /** Format: int64 */
-      documentId?: number;
-      content?: string;
-      highlight?: string;
-      /** Format: double */
-      bm25Score?: number;
-      /** Format: double */
-      vectorScore?: number;
-      /** Format: double */
-      rrfScore?: number;
-      /** Format: double */
-      rerankScore?: number;
-    };
-    ResultSearchResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['SearchResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    SearchResponse: {
-      /** Format: int64 */
-      spaceId?: number;
-      mode?: string;
-      hits?: components['schemas']['HybridHit'][];
-    };
-    RelationRequest: {
-      /** Format: int64 */
-      sourceId: number;
-      /** Format: int64 */
-      targetId: number;
-      /** @enum {string} */
-      type: 'PRE' | 'NEXT' | 'INCLUDE' | 'RELATED' | 'SIMILAR' | 'BELONG';
-      /** Format: double */
-      weight?: number;
-    };
-    RebuildRequest: {
-      /** Format: int64 */
-      spaceId: number;
-    };
-    ResultLong: {
-      /** Format: int32 */
-      code?: number;
-      /** Format: int64 */
-      data?: number;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CreateCaseRequest: {
-      /** Format: int64 */
-      spaceId?: number;
-      question: string;
-      expectedDocIds?: string;
-      expectedAnswer?: string;
-    };
-    CaseView: {
+    AiModelVO: {
+      /** Format: date-time */
+      createTime?: string;
+      description?: string;
+      displayName?: string;
       /** Format: int64 */
       id?: number;
+      isDefault?: string;
+      modelConfig?: string;
+      modelName?: string;
       /** Format: int64 */
-      spaceId?: number;
-      question?: string;
-      expectedDocIds?: string;
-      expectedAnswer?: string;
-    };
-    ResultCaseView: {
+      platformId?: number;
+      platformName?: string;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['CaseView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RunRequest: {
-      /** Format: int64 */
-      spaceId?: number;
-      /** Format: int32 */
-      topK?: number;
-    };
-    CaseResult: {
-      /** Format: int64 */
-      caseId?: number;
-      question?: string;
-      /** Format: double */
-      recallAtK?: number;
-      /** Format: double */
-      reciprocalRank?: number;
-      /** Format: double */
-      citationAccuracy?: number;
-      expectedDocumentIds?: number[];
-      returnedDocumentIds?: number[];
-    };
-    ResultRunResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RunResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RunResult: {
-      /** Format: int64 */
-      spaceId?: number;
-      /** Format: int32 */
-      caseCount?: number;
-      /** Format: int32 */
-      topK?: number;
-      /** Format: double */
-      recallAtK?: number;
-      /** Format: double */
-      mrr?: number;
-      /** Format: double */
-      citationAccuracy?: number;
-      cases?: components['schemas']['CaseResult'][];
-    };
-    ResultDocumentView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DocumentView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    /** @description 用户创建/更新请求 */
-    UserRequest: {
-      /** @description 用户名 */
-      username: string;
-      /** @description 密码 */
-      password?: string;
-      /** @description 昵称 */
-      nickName?: string;
-      /** @description 邮箱 */
-      email?: string;
-      /** @description 手机号 */
-      phone?: string;
-      /** @description 性别 */
-      gender?: string;
-      /** @description 头像URL */
-      avatar?: string;
-      /** @description 地址 */
-      address?: string;
-      /** @description 状态（0停用 1正常） */
+      sort?: number;
       status?: string;
-      /** @description 备注 */
-      remark?: string;
-      /** @description 角色ID数组 */
-      roleIds?: number[];
-      /**
-       * Format: int64
-       * @description 目标租户ID
-       */
-      tenantId: number;
-      /** @description 岗位ID数组 */
-      postIds?: number[];
+      /** Format: date-time */
+      updateTime?: string;
     };
-    /** @description 用户租户角色分配项 */
-    UserTenantRoleRequest: {
-      /**
-       * Format: int64
-       * @description 租户 ID
-       */
-      tenantId: number;
-      /**
-       * Format: int64
-       * @description 角色 ID
-       */
-      roleId: number;
-    };
-    /** @description 重置密码请求 */
-    ResetPasswordRequest: {
-      /** @description 新密码（为空则自动生成随机密码） */
-      password?: string;
-    };
-    /** @description 修改密码请求 */
-    ChangePasswordRequest: {
-      /** @description 旧密码（需与当前密码匹配） */
-      oldPassword: string;
-      /** @description 新密码 */
-      newPassword: string;
-    };
-    ResultMapStringObject: {
+    AiPlatformRequest: {
+      apiKey?: string;
+      availableModels?: string;
+      baseUrl?: string;
+      code: string;
+      extraConfig?: string;
+      isDefault?: string;
       /** Format: int32 */
-      code?: number;
-      data?: {
+      maxRetries?: number;
+      /** Format: int32 */
+      maxTokens?: number;
+      name: string;
+      remark?: string;
+      /** Format: int32 */
+      sort?: number;
+      status?: string;
+      /** Format: double */
+      temperature?: number;
+    };
+    AiPlatformResponse: {
+      availableModels?: string;
+      baseUrl?: string;
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
+      extraConfig?: string;
+      /** Format: int64 */
+      id?: number;
+      isDefault?: string;
+      /** Format: int32 */
+      maxRetries?: number;
+      /** Format: int32 */
+      maxTokens?: number;
+      name?: string;
+      remark?: string;
+      /** Format: int32 */
+      sort?: number;
+      status?: string;
+      /** Format: double */
+      temperature?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    AiPlatformVO: {
+      availableModels?: string;
+      baseUrl?: string;
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
+      extraConfig?: string;
+      /** Format: int64 */
+      id?: number;
+      isDefault?: string;
+      /** Format: int32 */
+      maxRetries?: number;
+      /** Format: int32 */
+      maxTokens?: number;
+      name?: string;
+      remark?: string;
+      /** Format: int32 */
+      sort?: number;
+      status?: string;
+      /** Format: double */
+      temperature?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    AiRun: {
+      appId?: string;
+      appVersionId?: string;
+      /** Format: date-time */
+      completedAt?: string;
+      /** Format: int64 */
+      completionTokens?: number;
+      conversationId?: string;
+      costSnapshot?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      errorCode?: string;
+      estimatedUsage?: boolean;
+      executionId?: string;
+      generationId?: string;
+      id?: string;
+      /** Format: int64 */
+      lastEventSeq?: number;
+      model?: string;
+      ownerUserId?: components['schemas']['UserId'];
+      parentRunId?: string;
+      promptHash?: string;
+      /** Format: int64 */
+      promptTokens?: number;
+      sourceId?: string;
+      /** @enum {string} */
+      sourceType?:
+        | 'AGENT'
+        | 'API'
+        | 'CONVERSATION'
+        | 'GENERATION'
+        | 'KNOWLEDGE'
+        | 'MEMORY'
+        | 'TOOL';
+      /** @enum {string} */
+      status?: 'CANCELLED' | 'COMPLETED' | 'CREATED' | 'FAILED' | 'RUNNING';
+      tenantId?: components['schemas']['TenantId'];
+      traceId?: string;
+      /** Format: int64 */
+      version?: number;
+    };
+    AiRunEvent: {
+      appId?: string;
+      appVersionId?: string;
+      conversationId?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      executionId?: string;
+      generationId?: string;
+      /** Format: int64 */
+      parentEventSeq?: number;
+      payload?: string;
+      providerRequestId?: string;
+      redacted?: boolean;
+      runId?: string;
+      /** Format: int32 */
+      schemaVersion?: number;
+      /** Format: int64 */
+      seq?: number;
+      stepId?: string;
+      tenantId?: components['schemas']['TenantId'];
+      traceId?: string;
+      turnId?: string;
+      /** @enum {string} */
+      type?:
+        | 'MEMORY_READ'
+        | 'MEMORY_WRITE'
+        | 'MODEL_BLOCK_COMPLETED'
+        | 'MODEL_BLOCK_STARTED'
+        | 'MODEL_COMPLETED'
+        | 'MODEL_DELTA'
+        | 'MODEL_REASONING_DELTA'
+        | 'MODEL_STARTED'
+        | 'MODEL_TOOL_CALL_DELTA'
+        | 'MODEL_USAGE'
+        | 'PROMPT_ASSEMBLED'
+        | 'RETRIEVAL_COMPLETED'
+        | 'RETRIEVAL_STARTED'
+        | 'RUN_CANCELLED'
+        | 'RUN_COMPLETED'
+        | 'RUN_FAILED'
+        | 'RUN_STARTED'
+        | 'STEP_COMPLETED'
+        | 'STEP_STARTED'
+        | 'TOOL_APPROVAL_DECIDED'
+        | 'TOOL_APPROVAL_REQUIRED'
+        | 'TOOL_COMPLETED'
+        | 'TOOL_REQUESTED'
+        | 'TURN_COMPLETED'
+        | 'TURN_STARTED';
+    };
+    AppExecutionRequest: {
+      appVersionId?: string;
+      input?: {
         [key: string]: unknown;
       };
-      message?: string;
-      error?: string;
-      success?: boolean;
+      prompt?: string;
     };
-    /** @description 设置时区请求 */
-    SetTimezoneRequest: {
-      /** @description 时区名称，如 Asia/Shanghai */
-      timezone: string;
-    };
-    /** @description 租户创建/更新请求 */
-    TenantRequest: {
-      /**
-       * Format: int64
-       * @description 父租户ID（null=根租户）
-       */
-      parentId?: number;
-      /** @description 租户编码（唯一） */
-      code: string;
-      /** @description 租户名称 */
-      name: string;
-      /** @description 联系人 */
-      contactName?: string;
-      /** @description 联系电话 */
-      contactPhone?: string;
-      /** @description 地址 */
-      address?: string;
-      /** @description 域名 */
-      domain?: string;
-      /** @description 简介 */
-      intro?: string;
-      /**
-       * Format: int32
-       * @description 排序
-       */
-      order?: number;
-      /** @description 负责人 */
-      leader?: string;
-      /** @description 邮箱 */
-      email?: string;
-      /** @description 备注 */
-      remark?: string;
-      /** @description 状态（0停用 1正常） */
-      status?: string;
-      menuIds?: number[];
-      authCodeIds?: number[];
-      /** @description 租户超级管理员角色名称 */
-      adminRoleName?: string;
-      /** @description 租户管理员用户名 */
-      adminUsername?: string;
-      /** @description 租户管理员初始密码 */
-      adminPassword?: string;
+    AppRequest: {
+      description?: string;
+      name?: string;
     };
     /** @description 分配/移除用户角色请求 */
     AssignUserRolesRequest: {
-      /** @description 需分配/移除角色的用户ID列表 */
-      userIds?: number[];
       /**
        * Format: int64
        * @description 角色生效的目标租户ID
        */
       tenantId: number;
+      /** @description 需分配/移除角色的用户ID列表 */
+      userIds?: number[];
     };
-    /** @description 角色创建/更新请求 */
-    RoleRequest: {
-      /** @description 角色编码 */
-      code: string;
-      /**
-       * Format: int64
-       * @description 角色归属租户ID
-       */
-      tenantId: number;
-      /** @description 角色名称 */
-      name: string;
-      /** @description 状态（0停用 1正常） */
-      status?: string;
-      /** @description 备注 */
-      remark?: string;
-      /** @description 菜单/权限ID列表 */
-      permissions?: number[];
-    };
-    /** @description 菜单创建/更新请求 */
-    MenuRequest: {
-      /** @description 菜单名称 */
-      name: string;
-      /** @description 菜单编码（唯一标识） */
+    AuthCodeOptionVO: {
+      action?: string;
       code?: string;
-      /** @description 菜单类型：CATALOG（目录）/ MENU（路由菜单）/ LINK（外链）/ EMBEDDED（内嵌） */
-      type: string;
-      /** @description 路由路径 */
-      path?: string;
-      /** @description 重定向地址 */
-      redirect?: string;
-      /** @description 菜单图标 */
-      icon?: string;
-      /** @description 组件路径 */
-      component?: string;
-      /** @description 布局 */
-      layout?: string;
-      /** @description 是否缓存 */
-      keepAlive?: boolean;
-      /** @description 请求方法 */
-      method?: string;
-      /** @description 菜单描述 */
-      description?: string;
-      /** @description 是否显示 */
-      show?: boolean;
-      /** @description 状态（0停用 1正常） */
-      status?: string;
-      /**
-       * Format: int32
-       * @description 排序号
-       */
-      order?: number;
-      /**
-       * Format: int64
-       * @description 父菜单ID（null表示为根节点）
-       */
-      pid?: number;
-    };
-    FileView: {
-      key?: string;
-      name?: string;
-      /** Format: int64 */
-      size?: number;
-      contentType?: string;
       /** Format: date-time */
-      lastModified?: string;
-      url?: string;
-      storageType?: string;
-    };
-    ResultFileView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['FileView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DictRequest: {
-      dictType?: string;
-      dictLabel?: string;
-      dictValue?: string;
-      /** Format: int32 */
-      dictSort?: number;
-      cssClass?: string;
-      listClass?: string;
-      isDefault?: string;
-      remark?: string;
+      createTime?: string;
+      /** Format: int64 */
+      id?: number;
+      module?: string;
+      name?: string;
+      resource?: string;
       /** Format: int32 */
       status?: number;
     };
-    DictVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      tenantId?: number;
-      dictType?: string;
-      dictLabel?: string;
-      dictValue?: string;
-      /** Format: int32 */
-      dictSort?: number;
-      cssClass?: string;
-      listClass?: string;
-      isDefault?: string;
-      status?: string;
-      remark?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultDictVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DictVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    /** @description 切换租户请求 */
-    SwitchTenantRequest: {
-      /**
-       * Format: int64
-       * @description 目标租户ID
-       */
-      tenantId: number;
-    };
-    ResultSwitchContextResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['SwitchContextResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RoleVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      tenantId?: number;
+    AuthCodePageRequest: {
       code?: string;
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
       name?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
       /** Format: int32 */
-      status?: number;
-      remark?: string;
+      pageNum?: number;
       /** Format: int32 */
-      delFlag?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-      permissions?: number[];
-    };
-    SwitchContextResponse: {
-      userInfo?: components['schemas']['UserVO'];
-      tenants?: components['schemas']['TenantInfoVO'][];
-    };
-    TenantContextVO: {
-      /** Format: int64 */
-      tenantId?: number;
-      tenantName?: string;
-      roleCode?: string;
-    };
-    TenantInfoVO: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      name?: string;
-      pathName?: string;
-    };
-    UserVO: {
-      /** Format: int64 */
-      id?: number;
-      username?: string;
-      status?: string;
-      /** Format: int32 */
-      delFlag?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-      nickName?: string;
-      gender?: string;
-      avatar?: string;
-      address?: string;
-      email?: string;
-      phone?: string;
-      remark?: string;
-      roles?: components['schemas']['RoleVO'][];
-      roleIds?: number[];
-      currentRole?: components['schemas']['RoleVO'];
-      extInfo?: string;
-      tenants?: components['schemas']['TenantInfoVO'][];
-      subTenants?: components['schemas']['TenantContextVO'][];
-      /** Format: int64 */
-      currentTenantId?: number;
-      /** Format: int64 */
-      homeTenantId?: number;
-      switchMode?: string;
-    };
-    /** @description 登录/注册请求 */
-    LoginRequest: {
-      /** @description 用户名 */
-      username: string;
-      /** @description 密码 */
-      password: string;
-      /** @description 验证码 */
-      captcha?: string;
-      /** @description 验证码Key（从 /captcha 接口获取） */
-      captchaKey?: string;
-      /**
-       * Format: int64
-       * @description 登录后默认角色ID（可选）
-       */
-      roleId?: number;
-      /** @description 邮箱（注册时必填） */
-      email?: string;
-      /** @description 手机号 */
-      phone?: string;
-    };
-    LoginResponseVO: {
-      /** Format: int64 */
-      id?: number;
-      realName?: string;
-      roles?: string[];
-      username?: string;
-      homePath?: string;
-      accessToken?: string;
-      tokenType?: string;
-      /** Format: int64 */
-      expiresIn?: number;
-      /** Format: int64 */
-      currentTenantId?: number;
-      /** Format: int64 */
-      homeTenantId?: number;
-      switchMode?: string;
-      tenantName?: string;
-      tenants?: components['schemas']['TenantInfoVO'][];
-      subTenants?: components['schemas']['TenantContextVO'][];
-    };
-    ResultLoginResponseVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['LoginResponseVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    /** @description 刷新令牌请求 */
-    RefreshTokenRequest: {
-      /** @description 当前有效的访问令牌 */
-      accessToken: string;
-    };
-    /** @description 忘记密码请求 */
-    ForgetPasswordRequest: {
-      /**
-       * Format: email
-       * @description 注册邮箱
-       */
-      email: string;
-      /** @description 新密码 */
-      newPassword: string;
-      /** @description 邮箱验证码 */
-      code: string;
-      /** @description 验证码Key（从 /captcha 接口获取） */
-      captchaKey: string;
-    };
-    /** @description 切换角色请求 */
-    SwitchRoleRequest: {
-      /**
-       * Format: int64
-       * @description 目标角色ID
-       */
-      roleId: number;
-    };
-    /** @description 验证码登录请求 */
-    CodeLoginRequest: {
-      /** @description 手机号 */
-      phone: string;
-      /** @description 短信验证码 */
-      code: string;
-      /** @description 验证码Key（从 /captcha 接口获取） */
-      captchaKey: string;
-    };
-    ValidateCaptchaRequest: {
-      key?: string;
-      code?: string;
-    };
-    ResultValidateCaptchaResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ValidateCaptchaResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ValidateCaptchaResponse: {
-      success?: boolean;
-      message?: string;
+      pageSize?: number;
     };
     AuthCodeRequest: {
       code: string;
       name?: string;
     };
     AuthCodeResponse: {
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
       /** Format: int64 */
       id?: number;
-      code?: string;
       name?: string;
       /** Format: int32 */
       status?: number;
-      /** Format: date-time */
-      createTime?: string;
       /** Format: date-time */
       updateTime?: string;
     };
-    ResultAuthCodeResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AuthCodeResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
+    BackupResult: {
+      createdAt?: string;
+      fileName?: string;
+      /** Format: int64 */
+      size?: number;
     };
-    WrongQuestionRequest: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId: number;
-      /** Format: int64 */
-      questionId: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      studentAnswer?: string;
-      /** Format: int32 */
-      correctTimes?: number;
-      /** Format: int32 */
-      status?: number;
+    BaseNode: {
+      config?: components['schemas']['NodeConfig'];
+      executionHistoryService?: components['schemas']['ExecutionHistoryService'];
+      requiredInputs?: components['schemas']['NodeInputParam'][];
     };
-    ResultWrongQuestionResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['WrongQuestionResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    WrongQuestionResponse: {
+    BeginRequest: {
+      checksum?: string;
+      contentType?: string;
+      fileName: string;
       /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId?: number;
-      /** Format: int64 */
-      questionId?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      questionTitle?: string;
-      studentAnswer?: string;
-      correctAnswer?: string;
-      /** Format: int32 */
-      correctTimes?: number;
-    };
-    TextbookRequest: {
-      /** Format: int64 */
-      id?: number;
-      name: string;
-      subjectCode: string;
-      /** Format: int32 */
-      grade: number;
-      publisher: string;
-      author?: string;
-      edition?: string;
-      isbn?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultTextbookResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TextbookResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TextbookResponse: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      publisher?: string;
-      isbn?: string;
-    };
-    SubjectRequest: {
-      /** Format: int64 */
-      id?: number;
-      code: string;
-      name: string;
-      gradeLevel?: string;
-      description?: string;
-      icon?: string;
-      /** Format: int32 */
-      sortOrder?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultSubjectResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['SubjectResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    SubjectResponse: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      name?: string;
-      gradeLevel?: string;
-      icon?: string;
-      /** Format: int32 */
-      sortOrder?: number;
-    };
-    StudyPlanRequest: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId: number;
-      name?: string;
-      /** Format: date */
-      startDate?: string;
-      /** Format: date */
-      endDate?: string;
-      status?: string;
-    };
-    DailyTaskResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      knowledgeName?: string;
-      planDate?: string;
-      /** Format: int32 */
-      status?: number;
-      statusDesc?: string;
-      /** Format: int32 */
-      orderNo?: number;
-    };
-    ResultStudyPlanResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['StudyPlanResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    StudyPlanResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId?: number;
-      name?: string;
-      startDate?: string;
-      endDate?: string;
-      /** Format: int32 */
-      status?: number;
-      statusDesc?: string;
-      /** Format: int32 */
-      totalItems?: number;
-      /** Format: int32 */
-      completedItems?: number;
-      items?: components['schemas']['DailyTaskResponse'][];
-    };
-    StudentRequest: {
-      /** Format: int64 */
-      id?: number;
-      name: string;
-      /** Format: int64 */
-      userId: number;
-      studentNo?: string;
-      /** Format: int32 */
-      grade: number;
-      gradeLevel?: string;
-      school?: string;
-      className?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultStudentResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['StudentResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    StudentResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      userId?: number;
-      studentNo?: string;
-      name?: string;
-      /** Format: int32 */
-      gender?: number;
-      /** Format: int32 */
-      grade?: number;
-      gradeLevel?: string;
-      school?: string;
-      className?: string;
-    };
-    ReviewRequest: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId: number;
-      /** Format: int64 */
-      knowledgeId: number;
-      /** Format: int32 */
-      status?: number;
-      /** Format: date */
-      reviewDate?: string;
-      /** Format: int32 */
-      reviewRound?: number;
-      /** Format: double */
-      resultScore?: number;
-      /** Format: date-time */
-      completedAt?: string;
-    };
-    ResultReviewTaskResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ReviewTaskResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ReviewTaskResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      knowledgeName?: string;
-      /** Format: int32 */
-      reviewRound?: number;
-      reviewDate?: string;
-      /** Format: int32 */
-      status?: number;
-      statusDesc?: string;
-      /** Format: double */
-      resultScore?: number;
-      /** Format: date-time */
-      completedAt?: string;
-    };
-    CompleteReviewRequest: {
-      /** Format: int64 */
-      studentId?: number;
-      /** Format: double */
-      resultScore?: number;
-    };
-    ResourceRequest: {
-      /** Format: int64 */
-      id?: number;
-      name: string;
-      type: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      /** Format: int32 */
-      difficulty?: number;
-      coverUrl?: string;
-      url: string;
-      description?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResourceResponse: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      type?: string;
-      url?: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      /** Format: int32 */
-      difficulty?: number;
-      coverUrl?: string;
-      description?: string;
-      /** Format: int64 */
-      viewCount?: number;
-    };
-    ResultResourceResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ResourceResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    QuestionRequest: {
-      /** Format: int64 */
-      id?: number;
-      title: string;
-      type: string;
-      code?: string;
-      subjectCode: string;
-      /** Format: int32 */
-      grade: number;
-      /** Format: int32 */
-      difficulty: number;
-      abilityDimension?: string;
-      options?: string;
-      answer: string;
-      analysis?: string;
-      tags?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    QuestionResponse: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      type?: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      /** Format: int32 */
-      difficulty?: number;
-      abilityDimension?: string;
+      size?: number;
       title?: string;
-      options?: string;
-      answer?: string;
-      analysis?: string;
-      tags?: string;
-      /** Format: int64 */
-      usedCount?: number;
     };
-    ResultQuestionResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['QuestionResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
+    CaptchaVO: {
+      /** Format: int64 */
+      expireTime?: number;
+      image?: string;
+      key?: string;
     };
-    ExamRequest: {
-      /** Format: int64 */
-      id?: number;
-      name: string;
-      type: string;
-      subjectCode: string;
-      /** Format: int32 */
-      grade: number;
-      /** Format: int64 */
-      teacherId?: number;
-      /** Format: int32 */
-      durationMin: number;
-      /** Format: int32 */
-      totalScore: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ExamResponse: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      type?: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      /** Format: int64 */
-      teacherId?: number;
-      /** Format: int32 */
-      durationMin?: number;
-      /** Format: int32 */
-      totalScore?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultExamResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ExamResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CourseRequest: {
-      /** Format: int64 */
-      id?: number;
-      name: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      description?: string;
-      coverUrl?: string;
-      /** Format: int64 */
-      textbookId?: number;
-      /** Format: int64 */
-      teacherId?: number;
-      /** Format: int32 */
-      totalHours?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    CourseResponse: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      description?: string;
-      subjectCode?: string;
-      /** Format: int32 */
-      grade?: number;
-      /** Format: int64 */
-      textbookId?: number;
-      /** Format: int64 */
-      teacherId?: number;
-      coverUrl?: string;
-      /** Format: int32 */
-      totalHours?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ResultCourseResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['CourseResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ChapterRequest: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      textbookId: number;
-      name: string;
-      /** Format: int64 */
-      parentId?: number;
-      /** Format: int32 */
-      chapterOrder?: number;
-      /** Format: int32 */
-      status?: number;
-    };
-    ChapterResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      textbookId?: number;
-      /** Format: int64 */
-      parentId?: number;
-      name?: string;
-      /** Format: int32 */
-      chapterOrder?: number;
-      children?: components['schemas']['ChapterResponse'][];
-    };
-    ResultChapterResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ChapterResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    StudyRecordRequest: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId: number;
-      /** Format: int64 */
-      knowledgeId: number;
-      recordType: string;
-      /** Format: int64 */
-      questionId?: number;
-      /** Format: double */
-      score?: number;
-      /** Format: double */
-      accuracy?: number;
-      /** Format: int32 */
-      durationSec?: number;
-    };
-    ResultStudyRecordResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['StudyRecordResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    StudyRecordResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      studentId?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      recordType?: string;
-      /** Format: int64 */
-      questionId?: number;
-      /** Format: double */
-      score?: number;
-      /** Format: double */
-      accuracy?: number;
-      /** Format: int32 */
-      durationSec?: number;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    ResponsesRequest: {
-      model?: string;
-      platform?: string;
-      input?: unknown;
-      stream?: boolean;
-      store?: boolean;
-      /** Format: double */
-      temperature?: number;
-      /** Format: int32 */
-      maxOutputTokens?: number;
-      tools?: {
-        [key: string]: unknown;
-      }[];
-      conversationId?: string;
-      reasoningEffort?: string;
-    };
-    CreateRequest: {
-      name?: string;
-      template?: string;
-      variables?: string[];
-    };
-    PromptTemplate: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      name?: string;
-      template?: string;
-      variables?: string[];
-      status?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultPromptTemplate: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptTemplate'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PreviewRequest: {
-      template?: string;
-      variables?: {
-        [key: string]: unknown;
-      };
-    };
-    PromptPreview: {
-      content?: string;
-      /** Format: int64 */
-      estimatedTokens?: number;
-      variables?: string[];
-    };
-    ResultPromptPreview: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptPreview'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RetryRequest: {
-      platform?: string;
-      model?: string;
-    };
-    GenerationRun: {
-      id?: string;
-      conversationId?: string;
-      inputMessageId?: string;
-      assistantMessageId?: string;
-      speakerId?: string;
-      platform?: string;
-      model?: string;
-      /** @enum {string} */
-      status?: 'CREATED' | 'RUNNING' | 'COMPLETED' | 'CANCELLED' | 'FAILED';
-      /** Format: int64 */
-      promptTokens?: number;
-      /** Format: int64 */
-      completionTokens?: number;
-      /** Format: int64 */
-      latencyMs?: number;
-      errorCode?: string;
-      /** Format: int32 */
-      lastEventSequence?: number;
-      cancelRequested?: boolean;
-      /** Format: int64 */
-      version?: number;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      runtimeRunId?: string;
-    };
-    ResultGenerationRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['GenerationRun'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    EditRequest: {
-      content?: string;
-    };
-    ContentPart: {
-      type?: string;
-      text?: string;
-      mediaUri?: string;
-      mimeType?: string;
+    CaseRequest: {
+      expected?: string;
+      input?: string;
       metadata?: {
         [key: string]: unknown;
       };
     };
-    ConversationMessage: {
-      id?: string;
-      conversationId?: string;
-      parentMessageId?: string;
-      sourceMessageId?: string;
-      /** @enum {string} */
-      role?: 'SYSTEM' | 'USER' | 'ASSISTANT' | 'TOOL';
-      contentParts?: components['schemas']['ContentPart'][];
-      toolCall?: {
-        [key: string]: unknown;
-      };
-      /** @enum {string} */
-      status?:
-        | 'PENDING'
-        | 'STREAMING'
-        | 'COMPLETED'
-        | 'CANCELLED'
-        | 'FAILED'
-        | 'DELETED';
-      /** Format: int32 */
-      sequence?: number;
-      generationId?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultConversationMessage: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ConversationMessage'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CreateConversationRequest: {
-      sceneType?: string;
-      title?: string;
-      platform?: string;
-      model?: string;
-      systemPrompt?: string;
-    };
-    Conversation: {
-      id?: string;
+    CaseResult: {
       /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      sceneType?: string;
-      title?: string;
-      /** @enum {string} */
-      status?: 'ACTIVE' | 'ARCHIVED' | 'DELETED';
-      parentConversationId?: string;
-      branchFromMessageId?: string;
-      activeLeafMessageId?: string;
-      rollingSummary?: string;
-      platform?: string;
-      model?: string;
-      /** Format: int64 */
-      version?: number;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultConversation: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['Conversation'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MessageRequest: {
-      content?: string;
-      platform?: string;
-      model?: string;
-    };
-    ActiveLeafRequest: {
-      messageId?: string;
-    };
-    ImportRequest: {
-      format?: string;
-      previewToken?: string;
-      title?: string;
-      sceneType?: string;
-      platform?: string;
-      model?: string;
-      systemPrompt?: string;
-      content?: string;
-    };
-    ImportedMessage: {
-      role?: string;
-      content?: string;
-    };
-    Preview: {
-      token?: string;
-      /** Format: date-time */
-      expiresAt?: string;
-      messages?: components['schemas']['ImportedMessage'][];
-    };
-    ResultPreview: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['Preview'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ChatCompletionRequest: {
-      model?: string;
-      platform?: string;
-      messages?: {
-        [key: string]: unknown;
-      }[];
-      stream?: boolean;
-      store?: boolean;
+      caseId?: number;
       /** Format: double */
-      temperature?: number;
-      /** Format: int32 */
-      maxOutputTokens?: number;
-      tools?: {
-        [key: string]: unknown;
-      }[];
-      conversationId?: string;
-      reasoningEffort?: string;
+      citationAccuracy?: number;
+      expectedDocumentIds?: number[];
+      question?: string;
+      /** Format: double */
+      recallAtK?: number;
+      /** Format: double */
+      reciprocalRank?: number;
+      returnedDocumentIds?: number[];
     };
-    PromptRequest: {
-      templateId?: string;
-      /** Format: int32 */
-      version?: number;
-      status?: string;
-      body?: string;
-      variableSchema?: {
-        [key: string]: string;
-      };
-      testCases?: string[];
+    CaseView: {
+      expectedAnswer?: string;
+      expectedDocIds?: string;
+      /** Format: int64 */
+      id?: number;
+      question?: string;
+      /** Format: int64 */
+      spaceId?: number;
     };
-    PromptTemplateVersion: {
-      id?: string;
-      templateId?: string;
+    /** @description 修改密码请求 */
+    ChangePasswordRequest: {
+      /** @description 新密码 */
+      newPassword: string;
+      /** @description 旧密码（需与当前密码匹配） */
+      oldPassword: string;
+    };
+    ChannelObject: {
+      default?: unknown;
+      reducer?: components['schemas']['ReducerObject'];
+    };
+    ChapterRequest: {
       /** Format: int32 */
-      version?: number;
-      status?: string;
-      body?: string;
-      variableSchema?: {
-        [key: string]: string;
-      };
-      testCases?: string[];
+      chapterOrder?: number;
+      /** Format: int64 */
+      id?: number;
+      name: string;
+      /** Format: int64 */
+      parentId?: number;
+      /** Format: int32 */
+      status?: number;
+      /** Format: int64 */
+      textbookId: number;
+    };
+    ChapterResponse: {
+      /** Format: int32 */
+      chapterOrder?: number;
+      children?: components['schemas']['ChapterResponse'][];
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int64 */
+      parentId?: number;
+      /** Format: int64 */
+      textbookId?: number;
+    };
+    CharacterAsset: {
+      card?: components['schemas']['CharacterCardV2'];
       /** Format: date-time */
       createdAt?: string;
-      /** Format: date-time */
-      publishedAt?: string;
-    };
-    ResultPromptTemplateVersion: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptTemplateVersion'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PromptTestRequest: {
-      /** Format: int32 */
-      version?: number;
-      variables?: {
-        [key: string]: unknown;
-      };
-    };
-    PromptTestRun: {
-      templateId?: string;
-      /** Format: int32 */
-      version?: number;
-      renderedCases?: string[];
-      /** Format: int32 */
-      estimatedTokens?: number;
-    };
-    ResultPromptTestRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptTestRun'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PublishRequest: {
-      /** Format: int32 */
-      version?: number;
-    };
-    DiffRequest: {
-      /** Format: int32 */
-      fromVersion?: number;
-      /** Format: int32 */
-      toVersion?: number;
-    };
-    PromptDiff: {
-      templateId?: string;
-      /** Format: int32 */
-      fromVersion?: number;
-      /** Format: int32 */
-      toVersion?: number;
-      changes?: string[];
-    };
-    ResultPromptDiff: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptDiff'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PromptPreviewRequest: {
-      body?: string;
-      variables?: {
-        [key: string]: unknown;
-      };
-    };
-    Persona: {
       id?: string;
       /** Format: int64 */
       ownerUserId?: number;
-      name?: string;
-      identity?: string;
-      tone?: string;
+      /** Format: byte */
+      pngData?: string;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updatedAt?: string;
       visibility?: string;
-      attributes?: {
-        [key: string]: unknown;
-      };
-    };
-    PersonaAsset: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      persona?: components['schemas']['Persona'];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultPersonaAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PersonaAsset'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    LorebookEntry: {
-      id?: string;
-      keys?: string[];
-      content?: string;
-      /** Format: int32 */
-      priority?: number;
-      insertionPosition?: string;
-      /** Format: int32 */
-      tokenBudget?: number;
-      enabled?: boolean;
-    };
-    LorebookAsset: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      entry?: components['schemas']['LorebookEntry'];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultLorebookAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['LorebookAsset'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    GroupRequest: {
-      name?: string;
-      participants?: components['schemas']['Participant'][];
-      /** @enum {string} */
-      speakerPolicy?: 'MANUAL' | 'ROUND_ROBIN' | 'MODEL_ROUTED';
-      /** Format: int32 */
-      maxTurns?: number;
-      /** Format: int32 */
-      tokenBudget?: number;
-    };
-    Participant: {
-      id?: string;
-      displayName?: string;
-      characterId?: string;
-    };
-    GroupChat: {
-      id?: string;
-      name?: string;
-      participants?: components['schemas']['Participant'][];
-      /** @enum {string} */
-      speakerPolicy?: 'MANUAL' | 'ROUND_ROBIN' | 'MODEL_ROUTED';
-      /** Format: int32 */
-      maxTurns?: number;
-      /** Format: int32 */
-      tokenBudget?: number;
-    };
-    GroupChatAsset: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      group?: components['schemas']['GroupChat'];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultGroupChatAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['GroupChatAsset'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TurnRunRequest: {
-      conversationId?: string;
-      content?: string;
-      platform?: string;
-      model?: string;
-      completedSpeakerIds?: string[];
-      requestedSpeakerId?: string;
-      /** Format: int32 */
-      consumedTokens?: number;
-    };
-    GroupTurnRun: {
-      decision?: components['schemas']['TurnDecision'];
-      generationId?: string;
-      speakerId?: string;
-    };
-    ResultGroupTurnRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['GroupTurnRun'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TurnDecision: {
-      exhausted?: boolean;
-      reason?: string;
-      participant?: components['schemas']['Participant'];
-      /** Format: int32 */
-      remainingTurns?: number;
-      /** Format: int32 */
-      remainingTokens?: number;
-    };
-    TurnRequest: {
-      completedSpeakerIds?: string[];
-      requestedSpeakerId?: string;
-      /** Format: int32 */
-      consumedTokens?: number;
-    };
-    ResultTurnDecision: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TurnDecision'];
-      message?: string;
-      error?: string;
-      success?: boolean;
     };
     CharacterCardV2: {
-      spec?: string;
-      name?: string;
       description?: string;
-      scenario?: string;
-      firstMessage?: string;
       exampleDialogues?: string[];
-      systemPrompt?: string;
       extensions?: {
         [key: string]: unknown;
       };
+      firstMessage?: string;
+      name?: string;
+      scenario?: string;
+      spec?: string;
+      systemPrompt?: string;
       /** Format: int32 */
       version?: number;
     };
@@ -8939,1487 +7145,1124 @@ export interface components {
       card?: components['schemas']['CharacterCardV2'];
       visibility?: string;
     };
-    CharacterAsset: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      card?: components['schemas']['CharacterCardV2'];
-      visibility?: string;
-      /** Format: byte */
-      pngData?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultCharacterAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['CharacterAsset'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    VersionRequest: {
-      versionNumber: string;
-      description?: string;
-      /** Format: int64 */
-      copyFromVersionId?: number;
-    };
-    AgentVersionVO: {
-      /** Format: int64 */
-      id?: number;
-      agentId?: string;
-      versionNumber?: string;
-      description?: string;
-      /** Format: int32 */
-      status?: number;
-      statusDesc?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultAgentVersionVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentVersionVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ConditionalEdgeDTO: {
-      defaultTarget?: string;
-      nodeMappings?: {
-        [key: string]: string;
-      };
-      conditionType?: string;
-    };
-    GraphConfigRequest: {
-      name?: string;
-      description?: string;
-      startNode?: string;
-      endNode?: string;
-      nodes?: {
-        [key: string]: components['schemas']['NodeConfigDTO'];
-      };
-      edges?: {
-        [key: string]: string[];
-      };
-      conditionalEdges?: {
-        [key: string]: components['schemas']['ConditionalEdgeDTO'];
-      };
-    };
-    NodeConfigDTO: {
-      nodeName?: string;
-      description?: string;
-      nodeType?: string;
-      enabled?: boolean;
-      /** Format: int64 */
-      timeout?: number;
-      /** Format: int32 */
-      retryCount?: number;
-      /** Format: int64 */
-      retryInterval?: number;
-      errorStrategy?: string;
-      logLevel?: string;
-      properties?: {
-        [key: string]: unknown;
-      };
-      config?: {
-        [key: string]: unknown;
-      };
-    };
-    GraphValidationVO: {
-      valid?: boolean;
-      errors?: string[];
-      warnings?: string[];
-    };
-    ResultGraphValidationVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['GraphValidationVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AgentVersionDetailVO: {
-      /** Format: int64 */
-      id?: number;
-      agentId?: string;
-      versionNumber?: string;
-      description?: string;
-      /** Format: int32 */
-      status?: number;
-      statusDesc?: string;
-      graphConfig?: components['schemas']['GraphConfigVO'];
-      canvasConfig?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    GraphConfigVO: {
-      name?: string;
-      description?: string;
-      startNode?: string;
-      endNode?: string;
-      nodes?: {
-        [key: string]: unknown;
-      };
-      edges?: {
-        [key: string]: unknown;
-      };
-      conditionalEdges?: {
-        [key: string]: unknown;
-      };
-    };
-    ResultAgentVersionDetailVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentVersionDetailVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    NodeConfigRequest: {
-      nodeId: string;
-      nodeName: string;
-      nodeType: string;
-      description?: string;
-      enabled?: boolean;
-      /** Format: int64 */
-      timeout?: number;
-      /** Format: int32 */
-      retryCount?: number;
-      /** Format: int64 */
-      retryInterval?: number;
-      errorStrategy?: string;
-      logLevel?: string;
-      properties?: {
-        [key: string]: unknown;
-      };
-      config?: {
-        [key: string]: unknown;
-      };
-    };
-    EdgeRequest: {
-      sourceNodeId: string;
-      targetNodeId: string;
-      edgeType?: string;
-      conditionMappings?: {
-        [key: string]: string;
-      };
-      defaultTarget?: string;
-      conditionType?: string;
-    };
-    AiRun: {
-      id?: string;
-      tenantId?: components['schemas']['TenantId'];
-      ownerUserId?: components['schemas']['UserId'];
-      appId?: string;
-      appVersionId?: string;
-      /** @enum {string} */
-      sourceType?:
-        | 'CONVERSATION'
-        | 'GENERATION'
-        | 'AGENT'
-        | 'KNOWLEDGE'
-        | 'MEMORY'
-        | 'TOOL'
-        | 'API';
-      sourceId?: string;
-      parentRunId?: string;
-      traceId?: string;
+    ChatCompletionRequest: {
       conversationId?: string;
-      generationId?: string;
-      executionId?: string;
+      /** Format: int32 */
+      maxOutputTokens?: number;
+      messages?: {
+        [key: string]: unknown;
+      }[];
       model?: string;
-      promptHash?: string;
-      /** @enum {string} */
-      status?: 'CREATED' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-      /** Format: int64 */
-      promptTokens?: number;
-      /** Format: int64 */
-      completionTokens?: number;
-      estimatedUsage?: boolean;
-      costSnapshot?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      completedAt?: string;
-      errorCode?: string;
-      /** Format: int64 */
-      version?: number;
-      /** Format: int64 */
-      lastEventSeq?: number;
+      platform?: string;
+      reasoningEffort?: string;
+      store?: boolean;
+      stream?: boolean;
+      /** Format: double */
+      temperature?: number;
+      tools?: {
+        [key: string]: unknown;
+      }[];
     };
-    ResultAiRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiRun'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    UserId: {
-      /** Format: int64 */
-      value?: number;
-    };
-    Request: {
-      toolName?: string;
-      argumentsRedacted?: string;
-    };
-    ResultToolApproval: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ToolApproval'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ToolApproval: {
-      id?: string;
-      runId?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      toolName?: string;
-      argumentsRedacted?: string;
-      /** @enum {string} */
-      status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      decidedAt?: string;
-      /** Format: date-time */
-      expiresAt?: string;
-    };
-    IntentDefRequest: {
-      agentId: string;
+    /** @description 验证码登录请求 */
+    CodeLoginRequest: {
+      /** @description 验证码Key（从 /captcha 接口获取） */
+      captchaKey: string;
+      /** @description 短信验证码 */
       code: string;
-      name: string;
-      description?: string;
-      category?: string;
-      /** Format: int32 */
-      priority?: number;
-      /** Format: double */
-      confidenceThreshold?: number;
-      targetNode?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    IntentDefVO: {
-      /** Format: int64 */
-      id?: number;
-      agentId?: string;
-      name?: string;
-      code?: string;
-      category?: string;
-      description?: string;
-      status?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultIntentDefVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['IntentDefVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    EvalResult: {
-      caseId?: string;
-      /** @enum {string} */
-      metric?:
-        | 'EXACT_MATCH'
-        | 'CONTAINS'
-        | 'JSON_SCHEMA'
-        | 'TOOL_CALL_SCHEMA'
-        | 'CITATION_COVERAGE'
-        | 'RETRIEVAL_HIT'
-        | 'TOKEN_BUDGET'
-        | 'COST_BUDGET';
-      /** Format: double */
-      score?: number;
-      passed?: boolean;
-      detail?: string;
-    };
-    EvalRun: {
-      id?: string;
-      datasetId?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      appVersionId?: string;
-      /** @enum {string} */
-      metric?:
-        | 'EXACT_MATCH'
-        | 'CONTAINS'
-        | 'JSON_SCHEMA'
-        | 'TOOL_CALL_SCHEMA'
-        | 'CITATION_COVERAGE'
-        | 'RETRIEVAL_HIT'
-        | 'TOKEN_BUDGET'
-        | 'COST_BUDGET';
-      status?: string;
-      /** Format: double */
-      passRate?: number;
-      results?: components['schemas']['EvalResult'][];
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      completedAt?: string;
-    };
-    ResultEvalRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['EvalRun'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DatasetRequest: {
-      name?: string;
-      description?: string;
-    };
-    EvalDataset: {
-      id?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      ownerUserId?: number;
-      name?: string;
-      description?: string;
-      /** Format: date-time */
-      createdAt?: string;
-    };
-    ResultEvalDataset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['EvalDataset'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CaseRequest: {
-      input?: string;
-      expected?: string;
-      metadata?: {
-        [key: string]: unknown;
-      };
-    };
-    EvalCase: {
-      id?: string;
-      datasetId?: string;
-      /** Format: int64 */
-      tenantId?: number;
-      input?: string;
-      expected?: string;
-      metadata?: {
-        [key: string]: unknown;
-      };
-      /** Format: date-time */
-      createdAt?: string;
-    };
-    ResultEvalCase: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['EvalCase'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AppRequest: {
-      name?: string;
-      description?: string;
-    };
-    AiApp: {
-      id?: string;
-      tenantId?: components['schemas']['TenantId'];
-      ownerUserId?: components['schemas']['UserId'];
-      name?: string;
-      description?: string;
-      status?: string;
-      publishedVersionId?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-    };
-    ResultAiApp: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiApp'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiAppVersion: {
-      id?: string;
-      appId?: string;
-      tenantId?: components['schemas']['TenantId'];
-      version?: string;
-      configJson?: string;
-      status?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      /** Format: date-time */
-      publishedAt?: string;
-    };
-    ResultAiAppVersion: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiAppVersion'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiAppPreview: {
-      appId?: string;
-      appVersionId?: string;
-      status?: string;
-      promptHash?: string;
-      model?: string;
-      configuration?: {
-        [key: string]: unknown;
-      };
-      executable?: boolean;
-    };
-    ResultAiAppPreview: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiAppPreview'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AppExecutionRequest: {
-      prompt?: string;
-      appVersionId?: string;
-      input?: {
-        [key: string]: unknown;
-      };
-    };
-    AgentRequest: {
-      agentId: string;
-      name: string;
-      description?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    AgentVO: {
-      /** Format: int64 */
-      id?: number;
-      agentId?: string;
-      name?: string;
-      description?: string;
-      currentVersion?: string;
-      /** Format: int32 */
-      status?: number;
-      extInfo?: {
-        [key: string]: unknown;
-      };
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultAgentVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AgentStateFactoryAgentState: unknown;
-    BaseNode: {
-      config?: components['schemas']['NodeConfig'];
-      executionHistoryService?: components['schemas']['ExecutionHistoryService'];
-      requiredInputs?: components['schemas']['NodeInputParam'][];
-    };
-    ChannelObject: {
-      default?: unknown;
-      reducer?: components['schemas']['ReducerObject'];
+      /** @description 手机号 */
+      phone: string;
     };
     CompileConfig: unknown;
     CompiledGraphAgentState: {
-      stateGraph?: components['schemas']['StateGraphAgentState'];
+      compileConfig?: components['schemas']['CompileConfig'];
       /**
        * Format: int32
        * @deprecated
        */
       maxIterations?: number;
-      compileConfig?: components['schemas']['CompileConfig'];
+      stateGraph?: components['schemas']['StateGraphAgentState'];
+    };
+    CompleteReviewRequest: {
+      /** Format: double */
+      resultScore?: number;
+      /** Format: int64 */
+      studentId?: number;
+    };
+    ConditionalEdgeDTO: {
+      conditionType?: string;
+      defaultTarget?: string;
+      nodeMappings?: {
+        [key: string]: string;
+      };
     };
     ConditionEdge: {
-      from?: string;
       defaultTarget?: string;
+      from?: string;
       functionCondition?: unknown;
       nodeMappings?: {
         [key: string]: string;
       };
       predicateConditions?: components['schemas']['PredicateCondition'][];
     };
-    ExecutionHistoryService: unknown;
-    Graph: {
-      name?: string;
-      description?: string;
-      nodes?: {
-        [key: string]: components['schemas']['BaseNode'];
-      };
-      edges?: {
-        [key: string]: string[];
-      };
-      conditionalEdges?: {
-        [key: string]: components['schemas']['ConditionEdge'];
-      };
-      channels?: {
-        [key: string]: components['schemas']['ChannelObject'];
-      };
-      startNode?: string;
-      endNode?: string;
-      compiledGraph?: components['schemas']['CompiledGraphAgentState'];
-      compiled?: boolean;
-    };
-    NodeConfig: {
-      nodeId?: string;
-      nodeName?: string;
-      description?: string;
-      /** @enum {string} */
-      nodeType?:
-        | 'DEFAULT'
-        | 'INTENT'
-        | 'RAG_RETRIEVAL'
-        | 'RAG_ENHANCEMENT'
-        | 'MEMORY_SHORT_TERM'
-        | 'MEMORY_LONG_TERM'
-        | 'MEMORY_RETRIEVAL'
-        | 'LLM_CALL'
-        | 'TOOL_CALL'
-        | 'CONDITION'
-        | 'TRANSFORM'
-        | 'OUTPUT_FORMAT'
-        | 'AGENT_CALL'
-        | 'ABILITY_QUERY'
-        | 'EDUCATION_TEACH'
-        | 'EDUCATION_PRACTICE'
-        | 'SCORE_ANALYSIS'
-        | 'REVIEW_SCHEDULE'
-        | 'PREREQ_CHECK';
-      enabled?: boolean;
-      /** Format: int64 */
-      timeout?: number;
-      /** Format: int32 */
-      retryCount?: number;
-      /** Format: int64 */
-      retryInterval?: number;
-      properties?: {
+    ContentPart: {
+      mediaUri?: string;
+      metadata?: {
         [key: string]: unknown;
       };
-      errorStrategy?: string;
-      logLevel?: string;
-    };
-    NodeInputParam: {
-      name?: string;
+      mimeType?: string;
+      text?: string;
       type?: string;
-      /** @enum {string} */
-      source?:
-        | 'API_REQUEST'
-        | 'CONFIG_VALUE'
-        | 'PREVIOUS_NODE'
-        | 'DEFAULT_VALUE';
-      required?: boolean;
-      description?: string;
-      defaultValue?: unknown;
     };
-    PredicateCondition: {
-      predicate?: unknown;
-      target?: string;
-    };
-    ReducerObject: unknown;
-    RegisterAgentRequest: {
-      agentId?: string;
-      name?: string;
-      description?: string;
-      versionNumber?: string;
-      versionDescription?: string;
-      graph?: components['schemas']['Graph'];
-    };
-    StateGraphAgentState: {
-      channels?: {
-        [key: string]: components['schemas']['ChannelObject'];
-      };
-      stateSerializer?: components['schemas']['StateSerializerAgentState'];
-      stateFactory?: components['schemas']['AgentStateFactoryAgentState'];
-    };
-    StateSerializerAgentState: unknown;
-    UpdateConversationRequest: {
-      title?: string;
-      status?: string;
-    };
-    McpToolDescriptor: {
-      name?: string;
-      description?: string;
-      serverId?: string;
-      parameters?: {
-        [key: string]: components['schemas']['ParameterInfo'];
-      };
-      tags?: string[];
-      category?: string;
-      builtin?: boolean;
+    Conversation: {
+      activeLeafMessageId?: string;
+      branchFromMessageId?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      id?: string;
+      model?: string;
       /** Format: int64 */
-      registeredAt?: number;
+      ownerUserId?: number;
+      parentConversationId?: string;
+      platform?: string;
+      rollingSummary?: string;
+      sceneType?: string;
+      /** @enum {string} */
+      status?: 'ACTIVE' | 'ARCHIVED' | 'DELETED';
+      /** Format: int64 */
+      tenantId?: number;
+      title?: string;
+      /** Format: date-time */
+      updatedAt?: string;
+      /** Format: int64 */
+      version?: number;
     };
-    ParameterInfo: {
-      type?: string;
+    ConversationMessage: {
+      contentParts?: components['schemas']['ContentPart'][];
+      conversationId?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      generationId?: string;
+      id?: string;
+      parentMessageId?: string;
+      /** @enum {string} */
+      role?: 'ASSISTANT' | 'SYSTEM' | 'TOOL' | 'USER';
+      /** Format: int32 */
+      sequence?: number;
+      sourceMessageId?: string;
+      /** @enum {string} */
+      status?:
+        | 'CANCELLED'
+        | 'COMPLETED'
+        | 'DELETED'
+        | 'FAILED'
+        | 'PENDING'
+        | 'STREAMING';
+      toolCall?: {
+        [key: string]: unknown;
+      };
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    CourseRequest: {
+      coverUrl?: string;
       description?: string;
-      required?: boolean;
-      defaultValue?: unknown;
-    };
-    ResultListMcpToolDescriptor: {
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['McpToolDescriptor'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultMcpToolDescriptor: {
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      name: string;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['McpToolDescriptor'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultSetString: {
+      status?: number;
+      subjectCode?: string;
+      /** Format: int64 */
+      teacherId?: number;
+      /** Format: int64 */
+      textbookId?: number;
       /** Format: int32 */
-      code?: number;
-      data?: string[];
-      message?: string;
-      error?: string;
-      success?: boolean;
+      totalHours?: number;
     };
-    PluginInfoVO: {
+    CourseResponse: {
+      coverUrl?: string;
+      description?: string;
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode?: string;
+      /** Format: int64 */
+      teacherId?: number;
+      /** Format: int64 */
+      textbookId?: number;
+      /** Format: int32 */
+      totalHours?: number;
+    };
+    CreateCaseRequest: {
+      expectedAnswer?: string;
+      expectedDocIds?: string;
+      question: string;
+      /** Format: int64 */
+      spaceId?: number;
+    };
+    CreateConversationRequest: {
+      model?: string;
+      platform?: string;
+      sceneType?: string;
+      systemPrompt?: string;
+      title?: string;
+    };
+    CreatePointRequest: {
+      category?: string;
+      code: string;
+      description?: string;
+      /** Format: int32 */
+      difficultyLevel?: number;
+      name: string;
+      tags?: string;
+    };
+    CreateRequest: {
+      name?: string;
+      template?: string;
+      variables?: string[];
+    };
+    CreateSpaceRequest: {
+      accessMode?: string;
+      bindingMode?: string;
+      /** Format: int32 */
+      chunkOverlap?: number;
+      /** Format: int32 */
+      chunkSize?: number;
+      chunkStrategy?: string;
+      code: string;
+      description?: string;
+      /** Format: int64 */
+      difficultyScaleId?: number;
+      domainCode?: string;
+      embeddingProfile?: string;
+      name: string;
+      rerankProfile?: string;
+      reviewMode?: string;
+    };
+    DailyTaskResponse: {
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      /** Format: int32 */
+      orderNo?: number;
+      planDate?: string;
+      /** Format: int32 */
+      status?: number;
+      statusDesc?: string;
+    };
+    DatasetRequest: {
+      description?: string;
+      name?: string;
+    };
+    DataSourceConfig: {
+      dependsOn?: string;
+      dictType?: string;
+      labelKey?: string;
+      type?: string;
+      url?: string;
+      valueKey?: string;
+    };
+    /** @description 字典分页查询请求 */
+    DictPageRequest: {
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
+      /** Format: int32 */
+      pageNum?: number;
+      /** Format: int32 */
+      pageSize?: number;
+    };
+    DictRequest: {
+      cssClass?: string;
+      dictLabel?: string;
+      /** Format: int32 */
+      dictSort?: number;
+      dictType?: string;
+      dictValue?: string;
+      isDefault?: string;
+      listClass?: string;
+      remark?: string;
+      /** Format: int32 */
+      status?: number;
+    };
+    DictVO: {
+      /** Format: date-time */
+      createTime?: string;
+      cssClass?: string;
+      dictLabel?: string;
+      /** Format: int32 */
+      dictSort?: number;
+      dictType?: string;
+      dictValue?: string;
+      /** Format: int64 */
+      id?: number;
+      isDefault?: string;
+      listClass?: string;
+      remark?: string;
+      status?: string;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    DifficultyLevelView: {
+      description?: string;
+      label?: string;
+      /** Format: int32 */
+      level?: number;
+    };
+    DifficultyScaleView: {
+      code?: string;
+      description?: string;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int32 */
+      levelCount?: number;
+      levels?: components['schemas']['DifficultyLevelView'][];
+      name?: string;
+    };
+    DiffRequest: {
+      /** Format: int32 */
+      fromVersion?: number;
+      /** Format: int32 */
+      toVersion?: number;
+    };
+    DocumentRelationRequest: {
+      /** Format: int64 */
+      documentId?: number;
+      relationType?: string;
+    };
+    DocumentRelationView: {
+      /** Format: int64 */
+      id?: number;
+      relationType?: string;
+      /** Format: int64 */
+      sourceDocumentId?: number;
+      /** Format: int64 */
+      targetDocumentId?: number;
+      targetTitle?: string;
+    };
+    DocumentSummary: {
+      docType?: string;
+      /** Format: int64 */
+      id?: number;
+      lifecycleStatus?: string;
+      parseStatus?: string;
+      /** Format: int64 */
+      spaceId?: number;
+      title?: string;
+    };
+    DocumentView: {
+      checksum?: string;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int64 */
+      currentVersionId?: number;
+      docType?: string;
+      /** Format: int64 */
+      fileSize?: number;
+      /** Format: int64 */
+      id?: number;
+      lifecycleStatus?: string;
+      mimeType?: string;
+      objectKey?: string;
+      parseStatus?: string;
+      source?: string;
+      /** Format: int64 */
+      spaceId?: number;
+      title?: string;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    EdgeRequest: {
+      conditionMappings?: {
+        [key: string]: string;
+      };
+      conditionType?: string;
+      defaultTarget?: string;
+      edgeType?: string;
+      sourceNodeId: string;
+      targetNodeId: string;
+    };
+    EditRequest: {
+      content?: string;
+    };
+    EvalCase: {
+      /** Format: date-time */
+      createdAt?: string;
+      datasetId?: string;
+      expected?: string;
+      id?: string;
+      input?: string;
+      metadata?: {
+        [key: string]: unknown;
+      };
+      /** Format: int64 */
+      tenantId?: number;
+    };
+    EvalDataset: {
+      /** Format: date-time */
+      createdAt?: string;
+      description?: string;
       id?: string;
       name?: string;
-      version?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      /** Format: int64 */
+      tenantId?: number;
+    };
+    EvalResult: {
+      caseId?: string;
+      detail?: string;
+      /** @enum {string} */
+      metric?:
+        | 'CITATION_COVERAGE'
+        | 'CONTAINS'
+        | 'COST_BUDGET'
+        | 'EXACT_MATCH'
+        | 'JSON_SCHEMA'
+        | 'RETRIEVAL_HIT'
+        | 'TOKEN_BUDGET'
+        | 'TOOL_CALL_SCHEMA';
+      passed?: boolean;
+      /** Format: double */
+      score?: number;
+    };
+    EvalRun: {
+      appVersionId?: string;
+      /** Format: date-time */
+      completedAt?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      datasetId?: string;
+      id?: string;
+      /** @enum {string} */
+      metric?:
+        | 'CITATION_COVERAGE'
+        | 'CONTAINS'
+        | 'COST_BUDGET'
+        | 'EXACT_MATCH'
+        | 'JSON_SCHEMA'
+        | 'RETRIEVAL_HIT'
+        | 'TOKEN_BUDGET'
+        | 'TOOL_CALL_SCHEMA';
+      /** Format: int64 */
+      ownerUserId?: number;
+      /** Format: double */
+      passRate?: number;
+      results?: components['schemas']['EvalResult'][];
+      status?: string;
+      /** Format: int64 */
+      tenantId?: number;
+    };
+    EventRequest: {
+      attributes?: {
+        [key: string]: unknown;
+      };
+      /** Format: double */
+      confidence?: number;
+      /** @enum {string} */
+      confirmationPolicy?: 'AUTO' | 'DISABLED' | 'REQUIRED';
+      content?: string;
+      eventType?: string;
+      /** Format: double */
+      importance?: number;
+      namespace?: string;
+      /** Format: date-time */
+      occurredAt?: string;
+      sourceId?: string;
+      sourceType?: string;
+      subjectId?: string;
+      subjectType?: string;
+    };
+    ExamRequest: {
+      /** Format: int32 */
+      durationMin: number;
+      /** Format: int32 */
+      grade: number;
+      /** Format: int64 */
+      id?: number;
+      name: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode: string;
+      /** Format: int64 */
+      teacherId?: number;
+      /** Format: int32 */
+      totalScore: number;
+      type: string;
+    };
+    ExamResponse: {
+      /** Format: int32 */
+      durationMin?: number;
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode?: string;
+      /** Format: int64 */
+      teacherId?: number;
+      /** Format: int32 */
+      totalScore?: number;
+      type?: string;
+    };
+    ExecutionHistoryService: unknown;
+    FieldMeta: {
+      defaultValue?: unknown;
       description?: string;
-      state?: string;
-      loadedAt?: string;
+      key?: string;
+      label?: string;
+      options?: {
+        [key: string]: unknown;
+      };
+      required?: boolean;
+      source?: components['schemas']['DataSourceConfig'];
+      type?: string;
     };
-    ResultListPluginInfoVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PluginInfoVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListPluginMarketEntry: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PluginMarketEntry'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TimelineEventVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
+    FileView: {
+      contentType?: string;
+      key?: string;
+      /** Format: date-time */
+      lastModified?: string;
+      name?: string;
+      /** Format: int64 */
+      size?: number;
+      storageType?: string;
+      url?: string;
     };
     FilterCondition: {
       field?: string;
       /** @enum {string} */
       operator?:
         | 'EQ'
-        | 'NE'
-        | 'GT'
         | 'GE'
-        | 'LT'
+        | 'GT'
+        | 'IN'
+        | 'IS_NOT_NULL'
+        | 'IS_NULL'
         | 'LE'
         | 'LIKE'
-        | 'IN'
-        | 'NOT_IN'
-        | 'IS_NULL'
-        | 'IS_NOT_NULL';
+        | 'LT'
+        | 'NE'
+        | 'NOT_IN';
       value?: unknown;
     };
-    OrderField: {
-      column?: string;
-      /** @enum {string} */
-      direction?: 'ASC' | 'DESC';
+    /** @description 忘记密码请求 */
+    ForgetPasswordRequest: {
+      /** @description 验证码Key（从 /captcha 接口获取） */
+      captchaKey: string;
+      /** @description 邮箱验证码 */
+      code: string;
+      /**
+       * Format: email
+       * @description 注册邮箱
+       */
+      email: string;
+      /** @description 新密码 */
+      newPassword: string;
     };
-    PageQuery: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-    };
-    PageDataTimelineEventVO: {
-      items?: components['schemas']['TimelineEventVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataTimelineEventVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataTagVO: {
-      items?: components['schemas']['TagVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataTagVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TagVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataRecordVO: {
-      items?: components['schemas']['RecordVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataRecordVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataRecordVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataProfileVO: {
-      items?: components['schemas']['ProfileVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataProfileVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataProfileVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataMediaVO: {
-      items?: components['schemas']['MediaVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataMediaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataMediaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListModelRoutePolicy: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ModelRoutePolicy'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListModelProviderCapabilities: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ModelProviderCapabilities'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ProviderHealth: {
+    GenerateRequest: {
+      format?: string;
+      prompt?: string;
       provider?: string;
-      model?: string;
-      healthy?: boolean;
-      /** Format: int32 */
-      consecutiveFailures?: number;
-      /** Format: date-time */
-      checkedAt?: string;
-      message?: string;
     };
-    ResultProviderHealth: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ProviderHealth'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataAiPlatformVO: {
-      items?: components['schemas']['AiPlatformVO'][];
+    GenerationRun: {
+      assistantMessageId?: string;
+      cancelRequested?: boolean;
       /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataAiPlatformVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataAiPlatformVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    IdNameOptionVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      code?: string;
-      value?: string;
-    };
-    ResultListIdNameOptionVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['IdNameOptionVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAiPlatformVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiPlatformVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiPlatformResponse: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      code?: string;
-      baseUrl?: string;
-      /** Format: double */
-      temperature?: number;
-      /** Format: int32 */
-      maxTokens?: number;
-      /** Format: int32 */
-      maxRetries?: number;
-      availableModels?: string;
-      extraConfig?: string;
-      isDefault?: string;
-      status?: string;
-      /** Format: int32 */
-      sort?: number;
-      remark?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultAiPlatformResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiPlatformResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAiModelVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiModelVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiModelResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      platformId?: number;
-      modelName?: string;
-      displayName?: string;
-      description?: string;
-      modelConfig?: string;
-      platformName?: string;
-      isDefault?: string;
-      /** Format: int32 */
-      sort?: number;
-      status?: string;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultListAiModelResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiModelResponse'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataAiModelVO: {
-      items?: components['schemas']['AiModelVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataAiModelVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataAiModelVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MemoryRetrievalTrace: {
-      id?: string;
-      tenantId?: components['schemas']['TenantId'];
-      namespace?: string;
-      queryText?: string;
-      anchorEventIds?: string[];
-      graphWeights?: {
-        [key: string]: number;
-      };
-      relationPaths?: string[][];
-      filteredEventIds?: string[];
-      resultEventIds?: string[];
+      completionTokens?: number;
+      conversationId?: string;
       /** Format: date-time */
       createdAt?: string;
-    };
-    ResultMemoryRetrievalTrace: {
+      errorCode?: string;
+      id?: string;
+      inputMessageId?: string;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MemoryRetrievalTrace'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListMemoryEdge: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MemoryEdge'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataSpaceView: {
-      items?: components['schemas']['SpaceView'][];
+      lastEventSequence?: number;
       /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataSpaceView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataSpaceView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataPointView: {
-      items?: components['schemas']['PointView'][];
+      latencyMs?: number;
+      model?: string;
+      platform?: string;
       /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataPointView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataPointView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataDocumentView: {
-      items?: components['schemas']['DocumentView'][];
+      promptTokens?: number;
+      runtimeRunId?: string;
+      speakerId?: string;
+      /** @enum {string} */
+      status?: 'CANCELLED' | 'COMPLETED' | 'CREATED' | 'FAILED' | 'RUNNING';
+      /** Format: date-time */
+      updatedAt?: string;
       /** Format: int64 */
-      total?: number;
+      version?: number;
     };
-    ResultPageDataDocumentView: {
+    Graph: {
+      channels?: {
+        [key: string]: components['schemas']['ChannelObject'];
+      };
+      compiled?: boolean;
+      compiledGraph?: components['schemas']['CompiledGraphAgentState'];
+      conditionalEdges?: {
+        [key: string]: components['schemas']['ConditionEdge'];
+      };
+      description?: string;
+      edges?: {
+        [key: string]: string[];
+      };
+      endNode?: string;
+      name?: string;
+      nodes?: {
+        [key: string]: components['schemas']['BaseNode'];
+      };
+      startNode?: string;
+    };
+    GraphConfigRequest: {
+      conditionalEdges?: {
+        [key: string]: components['schemas']['ConditionalEdgeDTO'];
+      };
+      description?: string;
+      edges?: {
+        [key: string]: string[];
+      };
+      endNode?: string;
+      name?: string;
+      nodes?: {
+        [key: string]: components['schemas']['NodeConfigDTO'];
+      };
+      startNode?: string;
+    };
+    GraphConfigVO: {
+      conditionalEdges?: {
+        [key: string]: unknown;
+      };
+      description?: string;
+      edges?: {
+        [key: string]: unknown;
+      };
+      endNode?: string;
+      name?: string;
+      nodes?: {
+        [key: string]: unknown;
+      };
+      startNode?: string;
+    };
+    GraphValidationVO: {
+      errors?: string[];
+      valid?: boolean;
+      warnings?: string[];
+    };
+    GroupChat: {
+      id?: string;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataDocumentView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
+      maxTurns?: number;
+      name?: string;
+      participants?: components['schemas']['Participant'][];
+      /** @enum {string} */
+      speakerPolicy?: 'MANUAL' | 'MODEL_ROUTED' | 'ROUND_ROBIN';
+      /** Format: int32 */
+      tokenBudget?: number;
+    };
+    GroupChatAsset: {
+      /** Format: date-time */
+      createdAt?: string;
+      group?: components['schemas']['GroupChat'];
+      id?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    GroupRequest: {
+      /** Format: int32 */
+      maxTurns?: number;
+      name?: string;
+      participants?: components['schemas']['Participant'][];
+      /** @enum {string} */
+      speakerPolicy?: 'MANUAL' | 'MODEL_ROUTED' | 'ROUND_ROBIN';
+      /** Format: int32 */
+      tokenBudget?: number;
+    };
+    GroupTurnRun: {
+      decision?: components['schemas']['TurnDecision'];
+      generationId?: string;
+      speakerId?: string;
+    };
+    HybridHit: {
+      /** Format: double */
+      bm25Score?: number;
+      /** Format: int64 */
+      chunkId?: number;
+      content?: string;
+      /** Format: int64 */
+      documentId?: number;
+      highlight?: string;
+      /** Format: double */
+      rerankScore?: number;
+      /** Format: double */
+      rrfScore?: number;
+      /** Format: double */
+      vectorScore?: number;
+    };
+    HybridRecommendResponse: {
+      /** Format: int64 */
+      generateTime?: number;
+      knowledgeTop?: components['schemas']['KnowledgeRecommendResponse'][];
+      overallAdvice?: string;
+      questionTop?: components['schemas']['QuestionRecommendResponse'][];
+      resourceTop?: components['schemas']['ResourceRecommendResponse'][];
+      reviewTop?: components['schemas']['QuestionRecommendResponse'][];
+      /** Format: int64 */
+      studentId?: number;
+    };
+    IdNameOptionVO: {
+      code?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      value?: string;
+    };
+    ImageRequest: {
+      imageBase64?: string;
+      instruction?: string;
+      mimeType?: string;
+      provider?: string;
+    };
+    ImageResult: {
+      /** Format: int32 */
+      height?: number;
+      mimeType?: string;
+      objectKey?: string;
+      /** Format: int32 */
+      width?: number;
+    };
+    ImportedMessage: {
+      content?: string;
+      role?: string;
+    };
+    ImportRequest: {
+      content?: string;
+      format?: string;
+      model?: string;
+      platform?: string;
+      previewToken?: string;
+      sceneType?: string;
+      systemPrompt?: string;
+      title?: string;
+    };
+    ImportUrlRequest: {
+      title?: string;
+      url: string;
+    };
+    IntentDefRequest: {
+      agentId: string;
+      category?: string;
+      code: string;
+      /** Format: double */
+      confidenceThreshold?: number;
+      description?: string;
+      name: string;
+      /** Format: int32 */
+      priority?: number;
+      /** Format: int32 */
+      status?: number;
+      targetNode?: string;
+    };
+    IntentDefVO: {
+      agentId?: string;
+      category?: string;
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
+      description?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      status?: string;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    JobView: {
+      /** Format: int32 */
+      attempts?: number;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int64 */
+      documentId?: number;
+      errorMessage?: string;
+      /** Format: date-time */
+      finishedTime?: string;
+      /** Format: date-time */
+      heartbeatTime?: string;
+      /** Format: int64 */
+      id?: number;
+      jobKey?: string;
+      jobType?: string;
+      /** Format: int32 */
+      maxAttempts?: number;
+      /** Format: int32 */
+      progress?: number;
+      /** Format: int64 */
+      spaceId?: number;
+      stage?: string;
+      /** Format: date-time */
+      startedTime?: string;
+      status?: string;
+      /** Format: int64 */
+      versionId?: number;
+    };
+    KnowledgeAuditResponse: {
+      action?: string;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int32 */
+      delFlag?: number;
+      detailJson?: string;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      resourceId?: number;
+      resourceType?: string;
+      /** Format: int64 */
+      spaceId?: number;
+      /** Format: int32 */
+      status?: number;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    KnowledgeDocumentDTO: {
+      content?: string;
+      docType?: string;
+      /** Format: int64 */
+      id?: number;
+      knowledgeIds?: number[];
+      source?: string;
+      title?: string;
+    };
+    KnowledgeGraphResponse: {
+      childNodes?: components['schemas']['KnowledgeResponse'][];
+      node?: components['schemas']['KnowledgeResponse'];
+      parentNodes?: components['schemas']['KnowledgeResponse'][];
+      relatedNodes?: components['schemas']['KnowledgeResponse'][];
+    };
+    KnowledgeRecommendResponse: {
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      /** Format: double */
+      mastery?: number;
+      reason?: string;
+      recommendType?: string;
+      /** Format: int32 */
+      score?: number;
+    };
+    KnowledgeResponse: {
+      category?: string;
+      childIds?: number[];
+      code?: string;
+      description?: string;
+      /** Format: int32 */
+      difficulty?: number;
+      documents?: components['schemas']['KnowledgeDocumentDTO'][];
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      parentIds?: number[];
+      tags?: string;
+    };
+    /** @description 登录/注册请求 */
+    LoginRequest: {
+      /** @description 验证码 */
+      captcha?: string;
+      /** @description 验证码Key（从 /captcha 接口获取） */
+      captchaKey?: string;
+      /** @description 邮箱（注册时必填） */
+      email?: string;
+      /** @description 密码 */
+      password: string;
+      /** @description 手机号 */
+      phone?: string;
+      /**
+       * Format: int64
+       * @description 登录后默认角色ID（可选）
+       */
+      roleId?: number;
+      /** @description 用户名 */
+      username: string;
+    };
+    LoginResponseVO: {
+      accessToken?: string;
+      /** Format: int64 */
+      currentTenantId?: number;
+      /** Format: int64 */
+      expiresIn?: number;
+      homePath?: string;
+      /** Format: int64 */
+      homeTenantId?: number;
+      /** Format: int64 */
+      id?: number;
+      realName?: string;
+      roles?: string[];
+      subTenants?: components['schemas']['TenantContextVO'][];
+      switchMode?: string;
+      tenantName?: string;
+      tenants?: components['schemas']['TenantInfoVO'][];
+      tokenType?: string;
+      username?: string;
+    };
+    LorebookAsset: {
+      /** Format: date-time */
+      createdAt?: string;
+      entry?: components['schemas']['LorebookEntry'];
+      id?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    LorebookEntry: {
+      content?: string;
+      enabled?: boolean;
+      id?: string;
+      insertionPosition?: string;
+      keys?: string[];
+      /** Format: int32 */
+      priority?: number;
+      /** Format: int32 */
+      tokenBudget?: number;
+    };
+    McpToolDescriptor: {
+      builtin?: boolean;
+      category?: string;
+      description?: string;
+      name?: string;
+      parameters?: {
+        [key: string]: components['schemas']['ParameterInfo'];
+      };
+      /** Format: int64 */
+      registeredAt?: number;
+      serverId?: string;
+      tags?: string[];
+    };
+    MediaRequest: {
+      mediaType?: string;
+      /** Format: int64 */
+      recordId: number;
+      url: string;
+    };
+    MediaVO: {
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int32 */
+      duration?: number;
+      /** Format: int32 */
+      height?: number;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      recordId?: number;
+      /** Format: int64 */
+      size?: number;
+      /** Format: int32 */
+      sort?: number;
+      type?: string;
+      url?: string;
+      /** Format: int32 */
+      width?: number;
+    };
+    MemberRequest: {
+      /** Format: int64 */
+      principalId: number;
+      principalType: string;
+      spaceRole: string;
     };
     MemberView: {
       /** Format: int64 */
       id?: number;
       /** Format: int64 */
-      spaceId?: number;
+      principalId?: number;
       principalType?: string;
       /** Format: int64 */
-      principalId?: number;
+      spaceId?: number;
       spaceRole?: string;
     };
-    ResultListMemberView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MemberView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DifficultyLevelView: {
-      /** Format: int32 */
-      level?: number;
-      label?: string;
-      description?: string;
-    };
-    DifficultyScaleView: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      name?: string;
-      description?: string;
-      /** Format: int32 */
-      levelCount?: number;
-      levels?: components['schemas']['DifficultyLevelView'][];
-    };
-    ResultDifficultyScaleView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DifficultyScaleView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListSpaceView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['SpaceView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    KnowledgeDocumentDTO: {
-      /** Format: int64 */
-      id?: number;
-      title?: string;
-      content?: string;
-      docType?: string;
-      source?: string;
-      knowledgeIds?: number[];
-    };
-    KnowledgeResponse: {
-      /** Format: int64 */
-      id?: number;
-      code?: string;
-      name?: string;
-      description?: string;
-      /** Format: int32 */
-      difficulty?: number;
-      category?: string;
-      tags?: string;
-      parentIds?: number[];
-      childIds?: number[];
-      documents?: components['schemas']['KnowledgeDocumentDTO'][];
-    };
-    RelationView: {
-      /** Format: int64 */
-      sourceId?: number;
-      /** Format: int64 */
-      targetId?: number;
+    MemoryEdge: {
+      active?: boolean;
+      /** Format: double */
+      confidence?: number;
+      /** Format: date-time */
+      createdAt?: string;
+      directed?: boolean;
+      evidenceSource?: string;
+      /** @enum {string} */
+      graphType?: 'CAUSAL' | 'ENTITY' | 'SEMANTIC' | 'TEMPORAL';
+      id?: string;
+      /** @enum {string} */
+      origin?: 'DOMAIN' | 'MODEL' | 'RULE';
       relationType?: string;
+      sourceNodeId?: string;
+      targetNodeId?: string;
+      tenantId?: components['schemas']['TenantId'];
       /** Format: double */
       weight?: number;
-      source?: components['schemas']['KnowledgeResponse'];
-      target?: components['schemas']['KnowledgeResponse'];
     };
-    ResultListRelationView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RelationView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListLong: {
-      /** Format: int32 */
-      code?: number;
-      data?: number[];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DocumentSummary: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      spaceId?: number;
-      title?: string;
-      docType?: string;
-      lifecycleStatus?: string;
-      parseStatus?: string;
-    };
-    ResultListDocumentSummary: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DocumentSummary'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    KnowledgeGraphResponse: {
-      node?: components['schemas']['KnowledgeResponse'];
-      parentNodes?: components['schemas']['KnowledgeResponse'][];
-      childNodes?: components['schemas']['KnowledgeResponse'][];
-      relatedNodes?: components['schemas']['KnowledgeResponse'][];
-    };
-    ResultKnowledgeGraphResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['KnowledgeGraphResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    JobView: {
-      /** Format: int64 */
-      id?: number;
-      jobKey?: string;
-      jobType?: string;
-      /** Format: int64 */
-      spaceId?: number;
-      /** Format: int64 */
-      documentId?: number;
-      /** Format: int64 */
-      versionId?: number;
-      status?: string;
-      stage?: string;
-      /** Format: int32 */
-      progress?: number;
-      /** Format: int32 */
-      attempts?: number;
-      /** Format: int32 */
-      maxAttempts?: number;
-      errorMessage?: string;
+    MemoryEvent: {
+      attributes?: {
+        [key: string]: unknown;
+      };
+      /** Format: double */
+      confidence?: number;
+      /** @enum {string} */
+      confirmationPolicy?: 'AUTO' | 'DISABLED' | 'REQUIRED';
+      content?: string;
       /** Format: date-time */
-      heartbeatTime?: string;
+      createdAt?: string;
+      eventType?: string;
+      id?: string;
+      /** Format: double */
+      importance?: number;
+      namespace?: string;
       /** Format: date-time */
-      startedTime?: string;
+      occurredAt?: string;
+      sourceId?: string;
+      sourceType?: string;
+      /** @enum {string} */
+      status?: 'ACTIVE' | 'CANDIDATE' | 'REVOKED' | 'SUPERSEDED';
+      subjectId?: string;
+      subjectType?: string;
+      tenantId?: components['schemas']['TenantId'];
       /** Format: date-time */
-      finishedTime?: string;
+      updatedAt?: string;
+    };
+    MemoryPath: {
+      edges?: components['schemas']['MemoryEdge'][];
+      event?: components['schemas']['MemoryEvent'];
+      /** Format: double */
+      score?: number;
+    };
+    MemoryRetrievalResult: {
+      paths?: components['schemas']['MemoryPath'][];
+      traceId?: string;
+    };
+    MemoryRetrievalTrace: {
+      anchorEventIds?: string[];
       /** Format: date-time */
-      createTime?: string;
+      createdAt?: string;
+      filteredEventIds?: string[];
+      graphWeights?: {
+        [key: string]: number;
+      };
+      id?: string;
+      namespace?: string;
+      queryText?: string;
+      relationPaths?: string[][];
+      resultEventIds?: string[];
+      tenantId?: components['schemas']['TenantId'];
     };
-    PageDataJobView: {
-      items?: components['schemas']['JobView'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataJobView: {
+    MenuPageRequest: {
+      code?: string;
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      name?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataJobView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultJobView: {
+      pageNum?: number;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['JobView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataCaseView: {
-      items?: components['schemas']['CaseView'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataCaseView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataCaseView'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListVersionView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['VersionView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    VersionView: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      documentId?: number;
-      /** Format: int64 */
-      spaceId?: number;
-      /** Format: int32 */
-      versionNo?: number;
-      title?: string;
-      lifecycleStatus?: string;
-      parseStatus?: string;
-      objectKey?: string;
-      mimeType?: string;
-      /** Format: int64 */
-      fileSize?: number;
-      checksum?: string;
-      modelProfile?: string;
-      /** Format: date-time */
-      publishedAt?: string;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    DocumentRelationView: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      sourceDocumentId?: number;
-      /** Format: int64 */
-      targetDocumentId?: number;
-      relationType?: string;
-      targetTitle?: string;
-    };
-    ResultListDocumentRelationView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DocumentRelationView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    KnowledgeAuditResponse: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      tenantId?: number;
-      /** Format: int64 */
-      spaceId?: number;
-      resourceType?: string;
-      /** Format: int64 */
-      resourceId?: number;
-      action?: string;
-      detailJson?: string;
+      pageSize?: number;
       /** Format: int32 */
       status?: number;
+      type?: string;
+    };
+    /** @description 菜单创建/更新请求 */
+    MenuRequest: {
+      /** @description 菜单编码（唯一标识） */
+      code?: string;
+      /** @description 组件路径 */
+      component?: string;
+      /** @description 菜单描述 */
+      description?: string;
+      /** @description 菜单图标 */
+      icon?: string;
+      /** @description 是否缓存 */
+      keepAlive?: boolean;
+      /** @description 布局 */
+      layout?: string;
+      /** @description 请求方法 */
+      method?: string;
+      /** @description 菜单名称 */
+      name: string;
+      /**
+       * Format: int32
+       * @description 排序号
+       */
+      order?: number;
+      /** @description 路由路径 */
+      path?: string;
+      /**
+       * Format: int64
+       * @description 父菜单ID（null表示为根节点）
+       */
+      pid?: number;
+      /** @description 重定向地址 */
+      redirect?: string;
+      /** @description 是否显示 */
+      show?: boolean;
+      /** @description 状态（0停用 1正常） */
+      status?: string;
+      /** @description 菜单类型：CATALOG（目录）/ MENU（路由菜单）/ LINK（外链）/ EMBEDDED（内嵌） */
+      type: string;
+    };
+    MenuVO: {
+      children?: components['schemas']['MenuVO'][];
+      code?: string;
+      component?: string;
+      /** Format: date-time */
+      createTime?: string;
       /** Format: int32 */
       delFlag?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    PageDataKnowledgeAuditResponse: {
-      items?: components['schemas']['KnowledgeAuditResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataKnowledgeAuditResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataKnowledgeAuditResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListUserTenantAssignmentVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['UserTenantAssignmentVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    UserTenantAssignmentVO: {
-      /** Format: int64 */
-      tenantId?: number;
-      tenantName?: string;
-      /** Format: int64 */
-      roleId?: number;
-      roleName?: string;
-      roleCode?: string;
-    };
-    /** @description 用户分页查询请求 */
-    UserPageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-      /** @description 用户名（模糊查询） */
-      username?: string;
-    };
-    PageDataUserVO: {
-      items?: components['schemas']['UserVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataUserVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataUserVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultUserVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['UserVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListTimezoneOptionVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TimezoneOptionVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TimezoneOptionVO: {
-      label?: string;
-      value?: string;
-    };
-    TenantPageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-      name?: string;
-      code?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    PageDataTenantVO: {
-      items?: components['schemas']['TenantVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTenantVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataTenantVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TenantVO: {
+      description?: string;
+      icon?: string;
       /** Format: int64 */
       id?: number;
-      /** Format: int64 */
-      parentId?: number;
-      code?: string;
+      keepAlive?: boolean;
+      layout?: string;
+      method?: string;
       name?: string;
-      contactName?: string;
-      contactPhone?: string;
-      address?: string;
-      domain?: string;
-      intro?: string;
       /** Format: int32 */
       order?: number;
-      leader?: string;
-      phone?: string;
-      email?: string;
-      remark?: string;
+      path?: string;
+      /** Format: int64 */
+      pid?: number;
+      redirect?: string;
+      show?: boolean;
       /** Format: int32 */
       status?: number;
-      /** Format: date-time */
-      createTime?: string;
+      type?: string;
       /** Format: date-time */
       updateTime?: string;
-      children?: components['schemas']['TenantVO'][];
     };
-    ResultListTenantVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TenantVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultTenantVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TenantVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    /** @description 角色分页查询请求 */
-    RolePageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-      /** @description 角色名称（模糊查询） */
-      name?: string;
-    };
-    PageDataRoleVO: {
-      items?: components['schemas']['RoleVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataRoleVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataRoleVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultRoleVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RoleVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListRoleVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RoleVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
+    MessageRequest: {
+      content?: string;
+      model?: string;
+      platform?: string;
     };
     MetaVO: {
-      title?: string;
       activeIcon?: string;
       activePath?: string;
       affixTab?: boolean;
@@ -10448,210 +8291,1264 @@ export interface components {
       /** Format: int32 */
       order?: number;
       query?: unknown;
+      title?: string;
     };
-    ResultListRouteMenuVO: {
+    ModelProviderCapabilities: {
+      cacheUsage?: boolean;
+      cancellation?: boolean;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RouteMenuVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
+      contextWindow?: number;
+      features?: string[];
+      jsonSchema?: boolean;
+      /** Format: int32 */
+      maxOutputTokens?: number;
+      model?: string;
+      multimodal?: boolean;
+      parallelTools?: boolean;
+      provider?: string;
+      reasoningLevels?: string[];
+      streaming?: boolean;
+      streamUsage?: boolean;
+      tools?: boolean;
     };
-    RouteMenuVO: {
+    ModelRoutePolicy: {
+      fallbackOnError?: boolean;
+      id?: string;
       /** Format: int64 */
-      id?: number;
+      maxTokens?: number;
+      name?: string;
+      orderedModels?: string[];
       /** Format: int64 */
-      pid?: number;
-      name?: string;
-      path?: string;
-      component?: string;
-      type?: string;
+      tenantId?: number;
       /** Format: int32 */
-      status?: number;
-      icon?: string;
-      redirect?: string;
-      meta?: components['schemas']['MetaVO'];
-      children?: components['schemas']['RouteMenuVO'][];
+      timeoutMs?: number;
     };
-    MenuPageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-      name?: string;
-      code?: string;
-      type?: string;
-      /** Format: int32 */
-      status?: number;
-    };
-    MenuVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      code?: string;
-      type?: string;
-      path?: string;
-      redirect?: string;
-      icon?: string;
-      component?: string;
-      layout?: string;
-      keepAlive?: boolean;
-      method?: string;
+    NodeConfig: {
       description?: string;
-      show?: boolean;
+      enabled?: boolean;
+      errorStrategy?: string;
+      logLevel?: string;
+      nodeId?: string;
+      nodeName?: string;
+      /** @enum {string} */
+      nodeType?:
+        | 'ABILITY_QUERY'
+        | 'AGENT_CALL'
+        | 'CONDITION'
+        | 'DEFAULT'
+        | 'EDUCATION_PRACTICE'
+        | 'EDUCATION_TEACH'
+        | 'INTENT'
+        | 'LLM_CALL'
+        | 'MEMORY_LONG_TERM'
+        | 'MEMORY_RETRIEVAL'
+        | 'MEMORY_SHORT_TERM'
+        | 'OUTPUT_FORMAT'
+        | 'PREREQ_CHECK'
+        | 'RAG_ENHANCEMENT'
+        | 'RAG_RETRIEVAL'
+        | 'REVIEW_SCHEDULE'
+        | 'SCORE_ANALYSIS'
+        | 'TOOL_CALL'
+        | 'TRANSFORM';
+      properties?: {
+        [key: string]: unknown;
+      };
       /** Format: int32 */
-      status?: number;
-      /** Format: int32 */
-      order?: number;
-      /** Format: int32 */
-      delFlag?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-      children?: components['schemas']['MenuVO'][];
+      retryCount?: number;
       /** Format: int64 */
-      pid?: number;
+      retryInterval?: number;
+      /** Format: int64 */
+      timeout?: number;
     };
-    PageDataMenuVO: {
-      items?: components['schemas']['MenuVO'][];
+    NodeConfigDTO: {
+      config?: {
+        [key: string]: unknown;
+      };
+      description?: string;
+      enabled?: boolean;
+      errorStrategy?: string;
+      logLevel?: string;
+      nodeName?: string;
+      nodeType?: string;
+      properties?: {
+        [key: string]: unknown;
+      };
+      /** Format: int32 */
+      retryCount?: number;
+      /** Format: int64 */
+      retryInterval?: number;
+      /** Format: int64 */
+      timeout?: number;
+    };
+    NodeConfigRequest: {
+      config?: {
+        [key: string]: unknown;
+      };
+      description?: string;
+      enabled?: boolean;
+      errorStrategy?: string;
+      logLevel?: string;
+      nodeId: string;
+      nodeName: string;
+      nodeType: string;
+      properties?: {
+        [key: string]: unknown;
+      };
+      /** Format: int32 */
+      retryCount?: number;
+      /** Format: int64 */
+      retryInterval?: number;
+      /** Format: int64 */
+      timeout?: number;
+    };
+    NodeInputParam: {
+      defaultValue?: unknown;
+      description?: string;
+      name?: string;
+      required?: boolean;
+      /** @enum {string} */
+      source?:
+        | 'API_REQUEST'
+        | 'CONFIG_VALUE'
+        | 'DEFAULT_VALUE'
+        | 'PREVIOUS_NODE';
+      type?: string;
+    };
+    NodeTypeMetaVO: {
+      code?: string;
+      color?: string;
+      description?: string;
+      fields?: components['schemas']['FieldMeta'][];
+      icon?: string;
+      name?: string;
+    };
+    OrderField: {
+      column?: string;
+      /** @enum {string} */
+      direction?: 'ASC' | 'DESC';
+    };
+    OverviewResponse: {
+      /** Format: double */
+      accuracy?: number;
+      /** Format: int32 */
+      masteredKnowledge?: number;
+      /** Format: int32 */
+      streakDays?: number;
+      /** Format: int32 */
+      totalKnowledge?: number;
+      /** Format: int32 */
+      totalQuestions?: number;
+      /** Format: int32 */
+      totalStudyDays?: number;
+      /** Format: double */
+      weeklyHours?: number;
+    };
+    PageDataAgentVO: {
+      items?: components['schemas']['AgentVO'][];
       /** Format: int64 */
       total?: number;
     };
-    ResultPageDataMenuVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataMenuVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListMenuVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MenuVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListFileView: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['FileView'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListDictVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['DictVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    /** @description 字典分页查询请求 */
-    DictPageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-    };
-    PageDataDictVO: {
-      items?: components['schemas']['DictVO'][];
+    PageDataAiModelVO: {
+      items?: components['schemas']['AiModelVO'][];
       /** Format: int64 */
       total?: number;
     };
-    ResultPageDataDictVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataDictVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListTenantInfoVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TenantInfoVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListString: {
-      /** Format: int32 */
-      code?: number;
-      data?: string[];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    CaptchaVO: {
-      key?: string;
-      image?: string;
+    PageDataAiPlatformVO: {
+      items?: components['schemas']['AiPlatformVO'][];
       /** Format: int64 */
-      expireTime?: number;
-    };
-    ResultCaptchaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['CaptchaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AuthCodePageRequest: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-      code?: string;
-      name?: string;
-    };
-    AuthCodeOptionVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      code?: string;
-      module?: string;
-      resource?: string;
-      action?: string;
-      /** Format: int32 */
-      status?: number;
-      /** Format: date-time */
-      createTime?: string;
+      total?: number;
     };
     PageDataAuthCodeOptionVO: {
       items?: components['schemas']['AuthCodeOptionVO'][];
       /** Format: int64 */
       total?: number;
     };
-    ResultPageDataAuthCodeOptionVO: {
+    PageDataCaseView: {
+      items?: components['schemas']['CaseView'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataCourseResponse: {
+      items?: components['schemas']['CourseResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataDictVO: {
+      items?: components['schemas']['DictVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataDocumentView: {
+      items?: components['schemas']['DocumentView'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataExamResponse: {
+      items?: components['schemas']['ExamResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataIntentDefVO: {
+      items?: components['schemas']['IntentDefVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataJobView: {
+      items?: components['schemas']['JobView'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataKnowledgeAuditResponse: {
+      items?: components['schemas']['KnowledgeAuditResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataMediaVO: {
+      items?: components['schemas']['MediaVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataMenuVO: {
+      items?: components['schemas']['MenuVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataPointView: {
+      items?: components['schemas']['PointView'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataProfileVO: {
+      items?: components['schemas']['ProfileVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataQuestionResponse: {
+      items?: components['schemas']['QuestionResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataRecordVO: {
+      items?: components['schemas']['RecordVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataResourceResponse: {
+      items?: components['schemas']['ResourceResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataRoleVO: {
+      items?: components['schemas']['RoleVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataSpaceView: {
+      items?: components['schemas']['SpaceView'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataStudentResponse: {
+      items?: components['schemas']['StudentResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataSubjectResponse: {
+      items?: components['schemas']['SubjectResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataTagVO: {
+      items?: components['schemas']['TagVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataTenantVO: {
+      items?: components['schemas']['TenantVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataTextbookResponse: {
+      items?: components['schemas']['TextbookResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataTimelineEventVO: {
+      items?: components['schemas']['TimelineEventVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageDataUserVO: {
+      items?: components['schemas']['UserVO'][];
+      /** Format: int64 */
+      total?: number;
+    };
+    PageQuery: {
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
+      /** Format: int32 */
+      pageNum?: number;
+      /** Format: int32 */
+      pageSize?: number;
+    };
+    ParameterInfo: {
+      defaultValue?: unknown;
+      description?: string;
+      required?: boolean;
+      type?: string;
+    };
+    Participant: {
+      characterId?: string;
+      displayName?: string;
+      id?: string;
+    };
+    Persona: {
+      attributes?: {
+        [key: string]: unknown;
+      };
+      id?: string;
+      identity?: string;
+      name?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      tone?: string;
+      visibility?: string;
+    };
+    PersonaAsset: {
+      /** Format: date-time */
+      createdAt?: string;
+      id?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      persona?: components['schemas']['Persona'];
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+    };
+    PluginInfoVO: {
+      description?: string;
+      id?: string;
+      loadedAt?: string;
+      name?: string;
+      state?: string;
+      version?: string;
+    };
+    PluginMarketEntry: {
+      checksum?: string;
+      enabled?: boolean;
+      id?: string;
+      manifest?: string;
+      permissions?: string[];
+      /** Format: date-time */
+      publishedAt?: string;
+      publisherKey?: string;
+      signature?: string;
+      source?: string;
+      updatePolicy?: string;
+      version?: string;
+    };
+    PointView: {
+      category?: string;
+      code?: string;
+      description?: string;
+      /** Format: int32 */
+      difficultyLevel?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int64 */
+      spaceId?: number;
+      tags?: string;
+    };
+    PredicateCondition: {
+      predicate?: unknown;
+      target?: string;
+    };
+    Preview: {
+      /** Format: date-time */
+      expiresAt?: string;
+      messages?: components['schemas']['ImportedMessage'][];
+      token?: string;
+    };
+    PreviewRequest: {
+      template?: string;
+      variables?: {
+        [key: string]: unknown;
+      };
+    };
+    ProfileRequest: {
+      avatar?: string;
+      name: string;
+    };
+    ProfileVO: {
+      avatar?: string;
+      /** Format: date-time */
+      birthDate?: string;
+      /** Format: date-time */
+      createTime?: string;
+      gender?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    PromptDiff: {
+      changes?: string[];
+      /** Format: int32 */
+      fromVersion?: number;
+      templateId?: string;
+      /** Format: int32 */
+      toVersion?: number;
+    };
+    PromptPreview: {
+      content?: string;
+      /** Format: int64 */
+      estimatedTokens?: number;
+      variables?: string[];
+    };
+    PromptPreviewRequest: {
+      body?: string;
+      variables?: {
+        [key: string]: unknown;
+      };
+    };
+    PromptRequest: {
+      body?: string;
+      status?: string;
+      templateId?: string;
+      testCases?: string[];
+      variableSchema?: {
+        [key: string]: string;
+      };
+      /** Format: int32 */
+      version?: number;
+    };
+    PromptTemplate: {
+      /** Format: date-time */
+      createdAt?: string;
+      id?: string;
+      name?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      status?: string;
+      template?: string;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updatedAt?: string;
+      variables?: string[];
+    };
+    PromptTemplateVersion: {
+      body?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      id?: string;
+      /** Format: date-time */
+      publishedAt?: string;
+      status?: string;
+      templateId?: string;
+      testCases?: string[];
+      variableSchema?: {
+        [key: string]: string;
+      };
+      /** Format: int32 */
+      version?: number;
+    };
+    PromptTestRequest: {
+      variables?: {
+        [key: string]: unknown;
+      };
+      /** Format: int32 */
+      version?: number;
+    };
+    PromptTestRun: {
+      /** Format: int32 */
+      estimatedTokens?: number;
+      renderedCases?: string[];
+      templateId?: string;
+      /** Format: int32 */
+      version?: number;
+    };
+    ProviderHealth: {
+      /** Format: date-time */
+      checkedAt?: string;
+      /** Format: int32 */
+      consecutiveFailures?: number;
+      healthy?: boolean;
+      message?: string;
+      model?: string;
+      provider?: string;
+    };
+    PublishRequest: {
+      /** Format: int32 */
+      version?: number;
+    };
+    QueryRequest: {
+      /** Format: date-time */
+      from?: string;
+      graphTypes?: ('CAUSAL' | 'ENTITY' | 'SEMANTIC' | 'TEMPORAL')[];
+      /** @enum {string} */
+      intent?: 'CAUSAL' | 'ENTITY' | 'HYBRID' | 'SEMANTIC' | 'TEMPORAL';
+      /** Format: int32 */
+      maxDepth?: number;
+      /** Format: int32 */
+      maxNodes?: number;
+      /** Format: int32 */
+      maxTokens?: number;
+      namespace?: string;
+      subjectId?: string;
+      subjectType?: string;
+      text?: string;
+      /** Format: date-time */
+      to?: string;
+    };
+    QuestionRecommendResponse: {
+      /** Format: int32 */
+      difficulty?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      /** Format: int64 */
+      questionId?: number;
+      reason?: string;
+      recommendType?: string;
+      /** Format: int32 */
+      score?: number;
+      title?: string;
+      type?: string;
+    };
+    QuestionRequest: {
+      abilityDimension?: string;
+      analysis?: string;
+      answer: string;
+      code?: string;
+      /** Format: int32 */
+      difficulty: number;
+      /** Format: int32 */
+      grade: number;
+      /** Format: int64 */
+      id?: number;
+      options?: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode: string;
+      tags?: string;
+      title: string;
+      type: string;
+    };
+    QuestionResponse: {
+      abilityDimension?: string;
+      analysis?: string;
+      answer?: string;
+      code?: string;
+      /** Format: int32 */
+      difficulty?: number;
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      options?: string;
+      subjectCode?: string;
+      tags?: string;
+      title?: string;
+      type?: string;
+      /** Format: int64 */
+      usedCount?: number;
+    };
+    RebuildRequest: {
+      /** Format: int64 */
+      spaceId: number;
+    };
+    RecordRequest: {
+      content?: string;
+      /** Format: int64 */
+      eventId: number;
+    };
+    RecordVO: {
+      content?: string;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int64 */
+      eventId?: number;
+      /** Format: int64 */
+      id?: number;
+      location?: string;
+      mediaList?: components['schemas']['MediaVO'][];
+      mood?: string;
+      tags?: components['schemas']['TagVO'][];
+      weather?: string;
+    };
+    ReducerObject: unknown;
+    /** @description 刷新令牌请求 */
+    RefreshTokenRequest: {
+      /** @description 当前有效的访问令牌 */
+      accessToken: string;
+    };
+    RegisterAgentRequest: {
+      agentId?: string;
+      description?: string;
+      graph?: components['schemas']['Graph'];
+      name?: string;
+      versionDescription?: string;
+      versionNumber?: string;
+    };
+    RelationRequest: {
+      /** Format: int64 */
+      sourceId: number;
+      /** Format: int64 */
+      targetId: number;
+      /** @enum {string} */
+      type: 'BELONG' | 'INCLUDE' | 'NEXT' | 'PRE' | 'RELATED' | 'SIMILAR';
+      /** Format: double */
+      weight?: number;
+    };
+    RelationView: {
+      relationType?: string;
+      source?: components['schemas']['KnowledgeResponse'];
+      /** Format: int64 */
+      sourceId?: number;
+      target?: components['schemas']['KnowledgeResponse'];
+      /** Format: int64 */
+      targetId?: number;
+      /** Format: double */
+      weight?: number;
+    };
+    ReplaceDocumentRelationsRequest: {
+      relations: components['schemas']['DocumentRelationRequest'][];
+    };
+    ReplacePointsRequest: {
+      pointIds: number[];
+      relationType?: string;
+    };
+    ReplaceRequest: {
+      documentIds: number[];
+      relationType?: string;
+    };
+    Request: {
+      argumentsRedacted?: string;
+      toolName?: string;
+    };
+    /** @description 重置密码请求 */
+    ResetPasswordRequest: {
+      /** @description 新密码（为空则自动生成随机密码） */
+      password?: string;
+    };
+    ResourceRecommendResponse: {
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      reason?: string;
+      recommendType?: string;
+      /** Format: int64 */
+      resourceId?: number;
+      /** Format: int32 */
+      score?: number;
+      title?: string;
+      type?: string;
+    };
+    ResourceRequest: {
+      coverUrl?: string;
+      description?: string;
+      /** Format: int32 */
+      difficulty?: number;
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      name: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode?: string;
+      type: string;
+      url: string;
+    };
+    ResourceResponse: {
+      coverUrl?: string;
+      description?: string;
+      /** Format: int32 */
+      difficulty?: number;
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      subjectCode?: string;
+      type?: string;
+      url?: string;
+      /** Format: int64 */
+      viewCount?: number;
+    };
+    ResponsesRequest: {
+      conversationId?: string;
+      input?: unknown;
+      /** Format: int32 */
+      maxOutputTokens?: number;
+      model?: string;
+      platform?: string;
+      reasoningEffort?: string;
+      store?: boolean;
+      stream?: boolean;
+      /** Format: double */
+      temperature?: number;
+      tools?: {
+        [key: string]: unknown;
+      }[];
+    };
+    RestoreCheckResult: {
+      /** Format: int64 */
+      entries?: number;
+      errors?: string[];
+      valid?: boolean;
+    };
+    ResultAbilityRadarResponse: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataAuthCodeOptionVO'];
-      message?: string;
+      data?: components['schemas']['AbilityRadarResponse'];
       error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAgentDefinition: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentDefinition'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAgentDetailVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentDetailVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAgentVersionDetailVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentVersionDetailVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAgentVersionVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentVersionVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAgentVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiApp: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiApp'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiAppPreview: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiAppPreview'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiAppVersion: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiAppVersion'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiModelVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiModelVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiPlatformResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiPlatformResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiPlatformVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiPlatformVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAiRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiRun'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultAuthCodeResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AuthCodeResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultBackupResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['BackupResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultBoolean: {
+      /** Format: int32 */
+      code?: number;
+      data?: boolean;
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultCaptchaVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CaptchaVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultCaseView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CaseView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultChapterResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ChapterResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultCharacterAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CharacterAsset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultConversation: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['Conversation'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultConversationMessage: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ConversationMessage'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultCourseResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CourseResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultDictVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DictVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultDifficultyScaleView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DifficultyScaleView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultDocumentView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DocumentView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultEvalCase: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['EvalCase'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultEvalDataset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['EvalDataset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultEvalRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['EvalRun'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultExamResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ExamResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultFileView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['FileView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultGenerationRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['GenerationRun'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultGraphValidationVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['GraphValidationVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultGroupChatAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['GroupChatAsset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultGroupTurnRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['GroupTurnRun'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultHybridRecommendResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['HybridRecommendResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultImageResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ImageResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultIntentDefVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['IntentDefVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultJobView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['JobView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultKnowledgeGraphResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['KnowledgeGraphResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAgentDefinition: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentDefinition'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAgentVersionVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AgentVersionVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiApp: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiApp'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiAppVersion: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiAppVersion'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiModelResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiModelResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiModelVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiModelVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiPlatformVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiPlatformVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiRun'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListAiRunEvent: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['AiRunEvent'][];
+      error?: string;
+      message?: string;
       success?: boolean;
     };
     ResultListAuthCodeOptionVO: {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['AuthCodeOptionVO'][];
-      message?: string;
       error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListChapterResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ChapterResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListCharacterAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CharacterAsset'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListConversation: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['Conversation'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListConversationMessage: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ConversationMessage'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListCourseResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CourseResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListDailyTaskResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DailyTaskResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListDictVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DictVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListDocumentRelationView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DocumentRelationView'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListDocumentSummary: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['DocumentSummary'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListEvalCase: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['EvalCase'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListEvalResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['EvalResult'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListExamResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ExamResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListFileView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['FileView'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListGroupChatAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['GroupChatAsset'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListIdNameOptionVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['IdNameOptionVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListKnowledgeRecommendResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['KnowledgeRecommendResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListLong: {
+      /** Format: int32 */
+      code?: number;
+      data?: number[];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListLorebookAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['LorebookAsset'][];
+      error?: string;
+      message?: string;
       success?: boolean;
     };
     ResultListMapStringObject: {
@@ -10660,278 +9557,1729 @@ export interface components {
       data?: {
         [key: string]: unknown;
       }[];
-      message?: string;
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListWrongQuestionResponse: {
+    ResultListMcpToolDescriptor: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['WrongQuestionResponse'][];
-      message?: string;
+      data?: components['schemas']['McpToolDescriptor'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListTextbookResponse: {
+    ResultListMemberView: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['TextbookResponse'][];
-      message?: string;
+      data?: components['schemas']['MemberView'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataTextbookResponse: {
-      items?: components['schemas']['TextbookResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTextbookResponse: {
+    ResultListMemoryEdge: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataTextbookResponse'];
-      message?: string;
+      data?: components['schemas']['MemoryEdge'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataSubjectResponse: {
-      items?: components['schemas']['SubjectResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataSubjectResponse: {
+    ResultListMenuVO: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataSubjectResponse'];
-      message?: string;
+      data?: components['schemas']['MenuVO'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListSubjectResponse: {
+    ResultListModelProviderCapabilities: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['SubjectResponse'][];
-      message?: string;
+      data?: components['schemas']['ModelProviderCapabilities'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListDailyTaskResponse: {
+    ResultListModelRoutePolicy: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['DailyTaskResponse'][];
-      message?: string;
+      data?: components['schemas']['ModelRoutePolicy'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListStudyPlanResponse: {
+    ResultListNodeTypeMetaVO: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['StudyPlanResponse'][];
-      message?: string;
+      data?: components['schemas']['NodeTypeMetaVO'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataStudentResponse: {
-      items?: components['schemas']['StudentResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataStudentResponse: {
+    ResultListPersonaAsset: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataStudentResponse'];
-      message?: string;
+      data?: components['schemas']['PersonaAsset'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListReviewTaskResponse: {
+    ResultListPluginInfoVO: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['ReviewTaskResponse'][];
-      message?: string;
+      data?: components['schemas']['PluginInfoVO'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListResourceResponse: {
+    ResultListPluginMarketEntry: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['ResourceResponse'][];
-      message?: string;
+      data?: components['schemas']['PluginMarketEntry'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataResourceResponse: {
-      items?: components['schemas']['ResourceResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataResourceResponse: {
+    ResultListPromptTemplate: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataResourceResponse'];
-      message?: string;
+      data?: components['schemas']['PromptTemplate'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    QuestionRecommendResponse: {
-      /** Format: int64 */
-      questionId?: number;
-      title?: string;
-      type?: string;
+    ResultListPromptTemplateVersion: {
       /** Format: int32 */
-      difficulty?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      knowledgeName?: string;
-      recommendType?: string;
-      reason?: string;
-      /** Format: int32 */
-      score?: number;
+      code?: number;
+      data?: components['schemas']['PromptTemplateVersion'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
     };
     ResultListQuestionRecommendResponse: {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['QuestionRecommendResponse'][];
-      message?: string;
       error?: string;
-      success?: boolean;
-    };
-    ResourceRecommendResponse: {
-      /** Format: int64 */
-      resourceId?: number;
-      title?: string;
-      type?: string;
-      /** Format: int64 */
-      knowledgeId?: number;
-      knowledgeName?: string;
-      recommendType?: string;
-      reason?: string;
-      /** Format: int32 */
-      score?: number;
-    };
-    ResultListResourceRecommendResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ResourceRecommendResponse'][];
       message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    KnowledgeRecommendResponse: {
-      /** Format: int64 */
-      knowledgeId?: number;
-      knowledgeName?: string;
-      /** Format: double */
-      mastery?: number;
-      recommendType?: string;
-      reason?: string;
-      /** Format: int32 */
-      score?: number;
-    };
-    ResultListKnowledgeRecommendResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['KnowledgeRecommendResponse'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    HybridRecommendResponse: {
-      /** Format: int64 */
-      studentId?: number;
-      knowledgeTop?: components['schemas']['KnowledgeRecommendResponse'][];
-      questionTop?: components['schemas']['QuestionRecommendResponse'][];
-      resourceTop?: components['schemas']['ResourceRecommendResponse'][];
-      reviewTop?: components['schemas']['QuestionRecommendResponse'][];
-      overallAdvice?: string;
-      /** Format: int64 */
-      generateTime?: number;
-    };
-    ResultHybridRecommendResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['HybridRecommendResponse'];
-      message?: string;
-      error?: string;
       success?: boolean;
     };
     ResultListQuestionResponse: {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['QuestionResponse'][];
-      message?: string;
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataQuestionResponse: {
-      items?: components['schemas']['QuestionResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataQuestionResponse: {
+    ResultListRelationView: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataQuestionResponse'];
-      message?: string;
+      data?: components['schemas']['RelationView'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListExamResponse: {
+    ResultListResourceRecommendResponse: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['ExamResponse'][];
-      message?: string;
+      data?: components['schemas']['ResourceRecommendResponse'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataExamResponse: {
-      items?: components['schemas']['ExamResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataExamResponse: {
+    ResultListResourceResponse: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataExamResponse'];
-      message?: string;
+      data?: components['schemas']['ResourceResponse'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListCourseResponse: {
+    ResultListReviewTaskResponse: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['CourseResponse'][];
-      message?: string;
+      data?: components['schemas']['ReviewTaskResponse'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    PageDataCourseResponse: {
-      items?: components['schemas']['CourseResponse'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataCourseResponse: {
+    ResultListRoleVO: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['PageDataCourseResponse'];
-      message?: string;
+      data?: components['schemas']['RoleVO'][];
       error?: string;
+      message?: string;
       success?: boolean;
     };
-    ResultListChapterResponse: {
+    ResultListRouteMenuVO: {
       /** Format: int32 */
       code?: number;
-      data?: components['schemas']['ChapterResponse'][];
-      message?: string;
+      data?: components['schemas']['RouteMenuVO'][];
       error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListSpaceView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SpaceView'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListString: {
+      /** Format: int32 */
+      code?: number;
+      data?: string[];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListStudyPlanResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudyPlanResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListStudyRecordResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudyRecordResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListSubjectResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SubjectResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTagVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TagVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTenantInfoVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TenantInfoVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTenantVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TenantVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTextbookResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TextbookResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTimelineEventVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TimelineEventVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListTimezoneOptionVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TimezoneOptionVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListToolApproval: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ToolApproval'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListUserTenantAssignmentVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['UserTenantAssignmentVO'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListVersionView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['VersionView'][];
+      error?: string;
+      message?: string;
       success?: boolean;
     };
     ResultListWeakPointResponse: {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['WeakPointResponse'][];
-      message?: string;
       error?: string;
+      message?: string;
       success?: boolean;
+    };
+    ResultListWrongQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['WrongQuestionResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultLoginResponseVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['LoginResponseVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultLong: {
+      /** Format: int32 */
+      code?: number;
+      /** Format: int64 */
+      data?: number;
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultLorebookAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['LorebookAsset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMapStringObject: {
+      /** Format: int32 */
+      code?: number;
+      data?: {
+        [key: string]: unknown;
+      };
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMapStringString: {
+      /** Format: int32 */
+      code?: number;
+      data?: {
+        [key: string]: string;
+      };
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMcpToolDescriptor: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['McpToolDescriptor'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMediaVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['MediaVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMemoryEvent: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['MemoryEvent'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMemoryRetrievalResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['MemoryRetrievalResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMemoryRetrievalTrace: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['MemoryRetrievalTrace'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultModelProviderCapabilities: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ModelProviderCapabilities'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultModelRoutePolicy: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ModelRoutePolicy'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultNodeTypeMetaVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['NodeTypeMetaVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultObject: {
+      /** Format: int32 */
+      code?: number;
+      data?: unknown;
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultOverviewResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['OverviewResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataAgentVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataAgentVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataAiModelVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataAiModelVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataAiPlatformVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataAiPlatformVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataAuthCodeOptionVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataAuthCodeOptionVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataCaseView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataCaseView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataCourseResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataCourseResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataDictVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataDictVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataDocumentView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataDocumentView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataExamResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataExamResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataIntentDefVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataIntentDefVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataJobView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataJobView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataKnowledgeAuditResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataKnowledgeAuditResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataMediaVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataMediaVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataMenuVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataMenuVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataPointView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataPointView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataProfileVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataProfileVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataQuestionResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataRecordVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataRecordVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataResourceResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataResourceResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataRoleVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataRoleVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataSpaceView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataSpaceView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataStudentResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataStudentResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataSubjectResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataSubjectResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataTagVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataTagVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataTenantVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataTenantVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataTextbookResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataTextbookResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataTimelineEventVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataTimelineEventVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPageDataUserVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataUserVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPersonaAsset: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PersonaAsset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPluginMarketEntry: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PluginMarketEntry'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPointView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PointView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPreview: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['Preview'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultProfileVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ProfileVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPromptDiff: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PromptDiff'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPromptPreview: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PromptPreview'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPromptTemplate: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PromptTemplate'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPromptTemplateVersion: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PromptTemplateVersion'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPromptTestRun: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PromptTestRun'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultProviderHealth: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ProviderHealth'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['QuestionResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultRecordVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['RecordVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultResourceResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ResourceResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultRestoreCheckResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['RestoreCheckResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultReviewTaskResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ReviewTaskResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultRoleVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['RoleVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultRunResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['RunResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultSearchResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SearchResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultSetString: {
+      /** Format: int32 */
+      code?: number;
+      data?: string[];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultSpaceView: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SpaceView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultString: {
+      /** Format: int32 */
+      code?: number;
+      data?: string;
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultStudentResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudentResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultStudyPlanResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudyPlanResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultStudyRecordResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudyRecordResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultSubjectResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SubjectResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultSwitchContextResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['SwitchContextResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTagVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TagVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTenantVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TenantVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTextbookResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TextbookResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTimelineEventVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TimelineEventVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultToolApproval: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ToolApproval'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTrendResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TrendResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultTurnDecision: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['TurnDecision'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultUploadResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['UploadResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultUploadSession: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['UploadSession'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultUserVO: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['UserVO'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultValidateCaptchaResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ValidateCaptchaResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultVisionResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['VisionResult'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultVoid: {
+      /** Format: int32 */
+      code?: number;
+      data?: unknown;
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultWrongQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['WrongQuestionResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    RetryRequest: {
+      model?: string;
+      platform?: string;
+    };
+    ReviewRequest: {
+      /** Format: date-time */
+      completedAt?: string;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId: number;
+      /** Format: double */
+      resultScore?: number;
+      /** Format: date */
+      reviewDate?: string;
+      /** Format: int32 */
+      reviewRound?: number;
+      /** Format: int32 */
+      status?: number;
+      /** Format: int64 */
+      studentId: number;
+    };
+    ReviewTaskResponse: {
+      /** Format: date-time */
+      completedAt?: string;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      /** Format: double */
+      resultScore?: number;
+      reviewDate?: string;
+      /** Format: int32 */
+      reviewRound?: number;
+      /** Format: int32 */
+      status?: number;
+      statusDesc?: string;
+      /** Format: int64 */
+      studentId?: number;
+    };
+    /** @description 角色分页查询请求 */
+    RolePageRequest: {
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      /** @description 角色名称（模糊查询） */
+      name?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
+      /** Format: int32 */
+      pageNum?: number;
+      /** Format: int32 */
+      pageSize?: number;
+    };
+    /** @description 角色创建/更新请求 */
+    RoleRequest: {
+      /** @description 角色编码 */
+      code: string;
+      /** @description 角色名称 */
+      name: string;
+      /** @description 菜单/权限ID列表 */
+      permissions?: number[];
+      /** @description 备注 */
+      remark?: string;
+      /** @description 状态（0停用 1正常） */
+      status?: string;
+      /**
+       * Format: int64
+       * @description 角色归属租户ID
+       */
+      tenantId: number;
+    };
+    RoleVO: {
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int32 */
+      delFlag?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      permissions?: number[];
+      remark?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: int64 */
+      tenantId?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    RouteMenuVO: {
+      children?: components['schemas']['RouteMenuVO'][];
+      component?: string;
+      icon?: string;
+      /** Format: int64 */
+      id?: number;
+      meta?: components['schemas']['MetaVO'];
+      name?: string;
+      path?: string;
+      /** Format: int64 */
+      pid?: number;
+      redirect?: string;
+      /** Format: int32 */
+      status?: number;
+      type?: string;
+    };
+    RouteRequest: {
+      fallbackOnError?: boolean;
+      /** Format: int64 */
+      maxTokens?: number;
+      name?: string;
+      orderedModels?: string[];
+      /** Format: int32 */
+      timeoutMs?: number;
+    };
+    RunRequest: {
+      /** Format: int64 */
+      spaceId?: number;
+      /** Format: int32 */
+      topK?: number;
+    };
+    RunResult: {
+      /** Format: int32 */
+      caseCount?: number;
+      cases?: components['schemas']['CaseResult'][];
+      /** Format: double */
+      citationAccuracy?: number;
+      /** Format: double */
+      mrr?: number;
+      /** Format: double */
+      recallAtK?: number;
+      /** Format: int64 */
+      spaceId?: number;
+      /** Format: int32 */
+      topK?: number;
+    };
+    SearchRequest: {
+      mode?: string;
+      query: string;
+      rerank?: boolean;
+      /** Format: int64 */
+      spaceId: number;
+      /** Format: double */
+      threshold?: number;
+      /** Format: int32 */
+      topK?: number;
+    };
+    SearchResponse: {
+      hits?: components['schemas']['HybridHit'][];
+      mode?: string;
+      /** Format: int64 */
+      spaceId?: number;
+    };
+    ServerSentEventAiRunEvent: unknown;
+    ServerSentEventGenerationEvent: unknown;
+    /** @description 设置时区请求 */
+    SetTimezoneRequest: {
+      /** @description 时区名称，如 Asia/Shanghai */
+      timezone: string;
+    };
+    SpaceView: {
+      accessMode?: string;
+      /** Format: int64 */
+      activeIndexVersion?: number;
+      bindingMode?: string;
+      /** Format: int32 */
+      chunkOverlap?: number;
+      /** Format: int32 */
+      chunkSize?: number;
+      chunkStrategy?: string;
+      code?: string;
+      /** Format: date-time */
+      createTime?: string;
+      description?: string;
+      /** Format: int64 */
+      difficultyScaleId?: number;
+      domainCode?: string;
+      embeddingProfile?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      rerankProfile?: string;
+      reviewMode?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    StateGraphAgentState: {
+      channels?: {
+        [key: string]: components['schemas']['ChannelObject'];
+      };
+      stateFactory?: components['schemas']['AgentStateFactoryAgentState'];
+      stateSerializer?: components['schemas']['StateSerializerAgentState'];
+    };
+    StateSerializerAgentState: unknown;
+    StudentRequest: {
+      className?: string;
+      /** Format: int32 */
+      grade: number;
+      gradeLevel?: string;
+      /** Format: int64 */
+      id?: number;
+      name: string;
+      school?: string;
+      /** Format: int32 */
+      status?: number;
+      studentNo?: string;
+      /** Format: int64 */
+      userId: number;
+    };
+    StudentResponse: {
+      className?: string;
+      /** Format: int32 */
+      gender?: number;
+      /** Format: int32 */
+      grade?: number;
+      gradeLevel?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      school?: string;
+      studentNo?: string;
+      /** Format: int64 */
+      userId?: number;
+    };
+    StudyPlanRequest: {
+      /** Format: date */
+      endDate?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: date */
+      startDate?: string;
+      status?: string;
+      /** Format: int64 */
+      studentId: number;
+    };
+    StudyPlanResponse: {
+      /** Format: int32 */
+      completedItems?: number;
+      endDate?: string;
+      /** Format: int64 */
+      id?: number;
+      items?: components['schemas']['DailyTaskResponse'][];
+      name?: string;
+      startDate?: string;
+      /** Format: int32 */
+      status?: number;
+      statusDesc?: string;
+      /** Format: int64 */
+      studentId?: number;
+      /** Format: int32 */
+      totalItems?: number;
+    };
+    StudyRecordRequest: {
+      /** Format: double */
+      accuracy?: number;
+      /** Format: int32 */
+      durationSec?: number;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId: number;
+      /** Format: int64 */
+      questionId?: number;
+      recordType: string;
+      /** Format: double */
+      score?: number;
+      /** Format: int64 */
+      studentId: number;
+    };
+    StudyRecordResponse: {
+      /** Format: double */
+      accuracy?: number;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int32 */
+      durationSec?: number;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      /** Format: int64 */
+      questionId?: number;
+      recordType?: string;
+      /** Format: double */
+      score?: number;
+      /** Format: int64 */
+      studentId?: number;
+    };
+    SubjectRequest: {
+      code: string;
+      description?: string;
+      gradeLevel?: string;
+      icon?: string;
+      /** Format: int64 */
+      id?: number;
+      name: string;
+      /** Format: int32 */
+      sortOrder?: number;
+      /** Format: int32 */
+      status?: number;
+    };
+    SubjectResponse: {
+      code?: string;
+      gradeLevel?: string;
+      icon?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      sortOrder?: number;
+    };
+    SwitchContextResponse: {
+      tenants?: components['schemas']['TenantInfoVO'][];
+      userInfo?: components['schemas']['UserVO'];
+    };
+    /** @description 切换角色请求 */
+    SwitchRoleRequest: {
+      /**
+       * Format: int64
+       * @description 目标角色ID
+       */
+      roleId: number;
+    };
+    /** @description 切换租户请求 */
+    SwitchTenantRequest: {
+      /**
+       * Format: int64
+       * @description 目标租户ID
+       */
+      tenantId: number;
+    };
+    TagRequest: {
+      name: string;
+    };
+    TagVO: {
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+    };
+    TenantContextVO: {
+      roleCode?: string;
+      /** Format: int64 */
+      tenantId?: number;
+      tenantName?: string;
+    };
+    TenantId: {
+      /** Format: int64 */
+      value?: number;
+    };
+    TenantInfoVO: {
+      code?: string;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      pathName?: string;
+    };
+    TenantPageRequest: {
+      code?: string;
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      name?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
+      /** Format: int32 */
+      pageNum?: number;
+      /** Format: int32 */
+      pageSize?: number;
+      /** Format: int32 */
+      status?: number;
+    };
+    /** @description 租户创建/更新请求 */
+    TenantRequest: {
+      /** @description 地址 */
+      address?: string;
+      /** @description 租户管理员初始密码 */
+      adminPassword?: string;
+      /** @description 租户超级管理员角色名称 */
+      adminRoleName?: string;
+      /** @description 租户管理员用户名 */
+      adminUsername?: string;
+      authCodeIds?: number[];
+      /** @description 租户编码（唯一） */
+      code: string;
+      /** @description 联系人 */
+      contactName?: string;
+      /** @description 联系电话 */
+      contactPhone?: string;
+      /** @description 域名 */
+      domain?: string;
+      /** @description 邮箱 */
+      email?: string;
+      /** @description 简介 */
+      intro?: string;
+      /** @description 负责人 */
+      leader?: string;
+      menuIds?: number[];
+      /** @description 租户名称 */
+      name: string;
+      /**
+       * Format: int32
+       * @description 排序
+       */
+      order?: number;
+      /**
+       * Format: int64
+       * @description 父租户ID（null=根租户）
+       */
+      parentId?: number;
+      /** @description 备注 */
+      remark?: string;
+      /** @description 状态（0停用 1正常） */
+      status?: string;
+    };
+    TenantVO: {
+      address?: string;
+      children?: components['schemas']['TenantVO'][];
+      code?: string;
+      contactName?: string;
+      contactPhone?: string;
+      /** Format: date-time */
+      createTime?: string;
+      domain?: string;
+      email?: string;
+      /** Format: int64 */
+      id?: number;
+      intro?: string;
+      leader?: string;
+      name?: string;
+      /** Format: int32 */
+      order?: number;
+      /** Format: int64 */
+      parentId?: number;
+      phone?: string;
+      remark?: string;
+      /** Format: int32 */
+      status?: number;
+      /** Format: date-time */
+      updateTime?: string;
+    };
+    TestRequest: {
+      requiredFeatures?: string[];
+    };
+    TextbookRequest: {
+      author?: string;
+      edition?: string;
+      /** Format: int32 */
+      grade: number;
+      /** Format: int64 */
+      id?: number;
+      isbn?: string;
+      name: string;
+      publisher: string;
+      /** Format: int32 */
+      status?: number;
+      subjectCode: string;
+    };
+    TextbookResponse: {
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      isbn?: string;
+      name?: string;
+      publisher?: string;
+      subjectCode?: string;
+    };
+    TimelineEventRequest: {
+      /** Format: date-time */
+      eventDate?: string;
+      /** Format: date-time */
+      eventTime?: string;
+      eventType?: string;
+      /** Format: int64 */
+      profileId: number;
+      title: string;
+    };
+    TimelineEventVO: {
+      /** Format: int64 */
+      createdBy?: number;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: date-time */
+      eventTime?: string;
+      /** Format: int64 */
+      id?: number;
+      mediaList?: components['schemas']['MediaVO'][];
+      /** Format: int64 */
+      profileId?: number;
+      record?: components['schemas']['RecordVO'];
+      title?: string;
+      type?: string;
+      visibility?: string;
+    };
+    TimezoneOptionVO: {
+      label?: string;
+      value?: string;
+    };
+    ToolApproval: {
+      argumentsRedacted?: string;
+      /** Format: date-time */
+      createdAt?: string;
+      /** Format: date-time */
+      decidedAt?: string;
+      /** Format: date-time */
+      expiresAt?: string;
+      id?: string;
+      /** Format: int64 */
+      ownerUserId?: number;
+      runId?: string;
+      /** @enum {string} */
+      status?: 'APPROVED' | 'EXPIRED' | 'PENDING' | 'REJECTED';
+      /** Format: int64 */
+      tenantId?: number;
+      toolName?: string;
+    };
+    TranslateRequest: {
+      provider?: string;
+      sourceLanguage?: string;
+      targetLanguage?: string;
+      text?: string;
+    };
+    TrendResponse: {
+      dates?: string[];
+      values?: number[];
+    };
+    TtsRequest: {
+      format?: string;
+      provider?: string;
+      text?: string;
+      voice?: string;
+    };
+    TurnDecision: {
+      exhausted?: boolean;
+      participant?: components['schemas']['Participant'];
+      reason?: string;
+      /** Format: int32 */
+      remainingTokens?: number;
+      /** Format: int32 */
+      remainingTurns?: number;
+    };
+    TurnRequest: {
+      completedSpeakerIds?: string[];
+      /** Format: int32 */
+      consumedTokens?: number;
+      requestedSpeakerId?: string;
+    };
+    TurnRunRequest: {
+      completedSpeakerIds?: string[];
+      /** Format: int32 */
+      consumedTokens?: number;
+      content?: string;
+      conversationId?: string;
+      model?: string;
+      platform?: string;
+      requestedSpeakerId?: string;
+    };
+    UpdateConversationRequest: {
+      status?: string;
+      title?: string;
+    };
+    UpdatePointRequest: {
+      category?: string;
+      description?: string;
+      /** Format: int32 */
+      difficultyLevel?: number;
+      name?: string;
+      tags?: string;
+    };
+    UpdateSpaceRequest: {
+      accessMode?: string;
+      bindingMode?: string;
+      /** Format: int32 */
+      chunkOverlap?: number;
+      /** Format: int32 */
+      chunkSize?: number;
+      chunkStrategy?: string;
+      description?: string;
+      /** Format: int64 */
+      difficultyScaleId?: number;
+      domainCode?: string;
+      embeddingProfile?: string;
+      name?: string;
+      rerankProfile?: string;
+      reviewMode?: string;
+      /** Format: int32 */
+      status?: number;
+    };
+    UploadResult: {
+      document?: components['schemas']['DocumentView'];
+      duplicate?: boolean;
+      /** Format: int64 */
+      jobId?: number;
+      /** Format: int64 */
+      versionId?: number;
+    };
+    UploadSession: {
+      /** Format: int32 */
+      chunkSize?: number;
+      fileName?: string;
+      sessionId?: string;
+      /** Format: int64 */
+      size?: number;
+      /** Format: int64 */
+      spaceId?: number;
+      /** Format: int32 */
+      totalChunks?: number;
+      uploadedChunks?: number[];
+    };
+    UserId: {
+      /** Format: int64 */
+      value?: number;
+    };
+    /** @description 用户分页查询请求 */
+    UserPageRequest: {
+      filterConditions?: components['schemas']['FilterCondition'][];
+      isAsc?: string;
+      orderByColumn?: string;
+      orderFields?: components['schemas']['OrderField'][];
+      /** Format: int32 */
+      pageNum?: number;
+      /** Format: int32 */
+      pageSize?: number;
+      /** @description 用户名（模糊查询） */
+      username?: string;
+    };
+    /** @description 用户创建/更新请求 */
+    UserRequest: {
+      /** @description 地址 */
+      address?: string;
+      /** @description 头像URL */
+      avatar?: string;
+      /** @description 邮箱 */
+      email?: string;
+      /** @description 性别 */
+      gender?: string;
+      /** @description 昵称 */
+      nickName?: string;
+      /** @description 密码 */
+      password?: string;
+      /** @description 手机号 */
+      phone?: string;
+      /** @description 岗位ID数组 */
+      postIds?: number[];
+      /** @description 备注 */
+      remark?: string;
+      /** @description 角色ID数组 */
+      roleIds?: number[];
+      /** @description 状态（0停用 1正常） */
+      status?: string;
+      /**
+       * Format: int64
+       * @description 目标租户ID
+       */
+      tenantId: number;
+      /** @description 用户名 */
+      username: string;
+    };
+    UserTenantAssignmentVO: {
+      roleCode?: string;
+      /** Format: int64 */
+      roleId?: number;
+      roleName?: string;
+      /** Format: int64 */
+      tenantId?: number;
+      tenantName?: string;
+    };
+    /** @description 用户租户角色分配项 */
+    UserTenantRoleRequest: {
+      /**
+       * Format: int64
+       * @description 角色 ID
+       */
+      roleId: number;
+      /**
+       * Format: int64
+       * @description 租户 ID
+       */
+      tenantId: number;
+    };
+    UserVO: {
+      address?: string;
+      avatar?: string;
+      /** Format: date-time */
+      createTime?: string;
+      currentRole?: components['schemas']['RoleVO'];
+      /** Format: int64 */
+      currentTenantId?: number;
+      /** Format: int32 */
+      delFlag?: number;
+      email?: string;
+      extInfo?: string;
+      gender?: string;
+      /** Format: int64 */
+      homeTenantId?: number;
+      /** Format: int64 */
+      id?: number;
+      nickName?: string;
+      phone?: string;
+      remark?: string;
+      roleIds?: number[];
+      roles?: components['schemas']['RoleVO'][];
+      status?: string;
+      subTenants?: components['schemas']['TenantContextVO'][];
+      switchMode?: string;
+      tenants?: components['schemas']['TenantInfoVO'][];
+      /** Format: date-time */
+      updateTime?: string;
+      username?: string;
+    };
+    ValidateCaptchaRequest: {
+      code?: string;
+      key?: string;
+    };
+    ValidateCaptchaResponse: {
+      message?: string;
+      success?: boolean;
+    };
+    VersionRequest: {
+      /** Format: int64 */
+      copyFromVersionId?: number;
+      description?: string;
+      versionNumber: string;
+    };
+    VersionView: {
+      checksum?: string;
+      /** Format: date-time */
+      createTime?: string;
+      /** Format: int64 */
+      documentId?: number;
+      /** Format: int64 */
+      fileSize?: number;
+      /** Format: int64 */
+      id?: number;
+      lifecycleStatus?: string;
+      mimeType?: string;
+      modelProfile?: string;
+      objectKey?: string;
+      parseStatus?: string;
+      /** Format: date-time */
+      publishedAt?: string;
+      /** Format: int64 */
+      spaceId?: number;
+      title?: string;
+      /** Format: int32 */
+      versionNo?: number;
+    };
+    VisionResult: {
+      labels?: string[];
+      text?: string;
     };
     WeakPointResponse: {
       /** Format: int64 */
@@ -10940,383 +11288,35 @@ export interface components {
       /** Format: double */
       mastery?: number;
     };
-    ResultTrendResponse: {
+    WrongQuestionRequest: {
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TrendResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TrendResponse: {
-      dates?: string[];
-      values?: number[];
-    };
-    ResultListStudyRecordResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['StudyRecordResponse'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    OverviewResponse: {
-      /** Format: int32 */
-      totalStudyDays?: number;
-      /** Format: int32 */
-      totalKnowledge?: number;
-      /** Format: int32 */
-      masteredKnowledge?: number;
-      /** Format: int32 */
-      totalQuestions?: number;
-      /** Format: double */
-      accuracy?: number;
-      /** Format: double */
-      weeklyHours?: number;
-      /** Format: int32 */
-      streakDays?: number;
-    };
-    ResultOverviewResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['OverviewResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AbilityRadarResponse: {
-      /** Format: int64 */
-      studentId?: number;
-      /** Format: int64 */
-      knowledgeId?: number;
-      abilities?: {
-        [key: string]: number;
-      };
-      /** Format: double */
-      overallMastery?: number;
-    };
-    ResultAbilityRadarResponse: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AbilityRadarResponse'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListPromptTemplate: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptTemplate'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ServerSentEventGenerationEvent: unknown;
-    ResultListConversation: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['Conversation'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListConversationMessage: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ConversationMessage'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListPromptTemplateVersion: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PromptTemplateVersion'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListPersonaAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PersonaAsset'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListLorebookAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['LorebookAsset'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListGroupChatAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['GroupChatAsset'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListCharacterAsset: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['CharacterAsset'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAgentVersionVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentVersionVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAiRun: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiRun'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListToolApproval: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ToolApproval'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AiRunEvent: {
-      runId?: string;
-      tenantId?: components['schemas']['TenantId'];
-      /** Format: int64 */
-      seq?: number;
-      /** @enum {string} */
-      type?:
-        | 'RUN_STARTED'
-        | 'TURN_STARTED'
-        | 'TURN_COMPLETED'
-        | 'STEP_STARTED'
-        | 'STEP_COMPLETED'
-        | 'PROMPT_ASSEMBLED'
-        | 'RETRIEVAL_STARTED'
-        | 'RETRIEVAL_COMPLETED'
-        | 'MODEL_STARTED'
-        | 'MODEL_BLOCK_STARTED'
-        | 'MODEL_DELTA'
-        | 'MODEL_REASONING_DELTA'
-        | 'MODEL_TOOL_CALL_DELTA'
-        | 'MODEL_BLOCK_COMPLETED'
-        | 'TOOL_REQUESTED'
-        | 'TOOL_APPROVAL_REQUIRED'
-        | 'TOOL_APPROVAL_DECIDED'
-        | 'TOOL_COMPLETED'
-        | 'MEMORY_READ'
-        | 'MEMORY_WRITE'
-        | 'MODEL_USAGE'
-        | 'MODEL_COMPLETED'
-        | 'RUN_COMPLETED'
-        | 'RUN_FAILED'
-        | 'RUN_CANCELLED';
-      /** Format: int32 */
-      schemaVersion?: number;
-      turnId?: string;
-      stepId?: string;
-      /** Format: int64 */
-      parentEventSeq?: number;
-      conversationId?: string;
-      generationId?: string;
-      executionId?: string;
-      appId?: string;
-      appVersionId?: string;
-      providerRequestId?: string;
-      traceId?: string;
-      payload?: string;
-      redacted?: boolean;
-      /** Format: date-time */
-      createdAt?: string;
-    };
-    ResultListAiRunEvent: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiRunEvent'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ServerSentEventAiRunEvent: unknown;
-    PageDataIntentDefVO: {
-      items?: components['schemas']['IntentDefVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataIntentDefVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataIntentDefVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListEvalResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['EvalResult'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListEvalCase: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['EvalCase'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAiApp: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiApp'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListAiAppVersion: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AiAppVersion'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataAgentVO: {
-      items?: components['schemas']['AgentVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataAgentVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataAgentVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    DataSourceConfig: {
-      type?: string;
-      url?: string;
-      dictType?: string;
-      labelKey?: string;
-      valueKey?: string;
-      dependsOn?: string;
-    };
-    FieldMeta: {
-      key?: string;
-      label?: string;
-      type?: string;
-      defaultValue?: unknown;
-      required?: boolean;
-      options?: {
-        [key: string]: unknown;
-      };
-      description?: string;
-      source?: components['schemas']['DataSourceConfig'];
-    };
-    NodeTypeMetaVO: {
-      code?: string;
-      name?: string;
-      description?: string;
-      icon?: string;
-      color?: string;
-      fields?: components['schemas']['FieldMeta'][];
-    };
-    ResultListNodeTypeMetaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['NodeTypeMetaVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultNodeTypeMetaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['NodeTypeMetaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AgentDefinition: {
-      agentId?: string;
-      name?: string;
-      description?: string;
-      extInfo?: {
-        [key: string]: unknown;
-      };
-      currentVersion?: string;
-      /** Format: int64 */
-      createdAt?: number;
-      /** Format: int64 */
-      updatedAt?: number;
-      startNodeId?: string;
-      versions?: {
-        [key: string]: components['schemas']['AgentVersion'];
-      };
-    };
-    AgentVersion: {
-      versionNumber?: string;
-      description?: string;
-      /** Format: int64 */
-      createdAt?: number;
-    };
-    ResultListAgentDefinition: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentDefinition'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    AgentDetailVO: {
+      correctTimes?: number;
       /** Format: int64 */
       id?: number;
-      agentId?: string;
-      name?: string;
-      description?: string;
-      currentVersion?: string;
+      /** Format: int64 */
+      knowledgeId?: number;
+      /** Format: int64 */
+      questionId: number;
       /** Format: int32 */
       status?: number;
-      extInfo?: {
-        [key: string]: unknown;
-      };
-      versions?: components['schemas']['AgentVersionVO'][];
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
+      studentAnswer?: string;
+      /** Format: int64 */
+      studentId: number;
     };
-    ResultAgentDetailVO: {
+    WrongQuestionResponse: {
+      correctAnswer?: string;
       /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentDetailVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultAgentDefinition: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['AgentDefinition'];
-      message?: string;
-      error?: string;
-      success?: boolean;
+      correctTimes?: number;
+      /** Format: int64 */
+      id?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      /** Format: int64 */
+      questionId?: number;
+      questionTitle?: string;
+      studentAnswer?: string;
+      /** Format: int64 */
+      studentId?: number;
     };
   };
   responses: never;
@@ -11329,38 +11329,38 @@ export type $defs = Record<string, never>;
 export interface operations {
   get: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11370,73 +11370,73 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   members: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMemberView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replaceMembers: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11446,49 +11446,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListDocumentSummary'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replace: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11498,49 +11498,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   get_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPointView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11550,73 +11550,73 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPointView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listDocumentRelations: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         documentId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListDocumentRelationView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replaceDocumentRelations: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         documentId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11626,49 +11626,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listPoints: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         documentId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replacePoints: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         documentId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11678,23 +11678,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   executeTool: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         name: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -11706,131 +11706,131 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   uninstallPlugin: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         pluginId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   stopPlugin: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         pluginId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   startPlugin: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         pluginId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   rescan: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   disable: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         pluginId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publish: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         developmentMode?: boolean;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -11840,23 +11840,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPluginMarketEntry'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_2: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -11866,43 +11866,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_2: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11912,23 +11912,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTimelineEventVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -11938,43 +11938,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -11984,23 +11984,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTagVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_4: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -12010,43 +12010,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_4: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12056,23 +12056,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultRecordVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_5: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -12082,43 +12082,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_5: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_3: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12128,23 +12128,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultProfileVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_6: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -12154,21 +12154,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   tts: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12178,21 +12178,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   translate: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12202,21 +12202,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   understand: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12226,21 +12226,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVisionResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   generate: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12250,43 +12250,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultImageResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_6: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_4: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12296,41 +12296,41 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMediaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   routes: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListModelRoutePolicy'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   save: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12340,23 +12340,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultModelRoutePolicy'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   test: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: {
       content: {
@@ -12366,23 +12366,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultModelProviderCapabilities'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_7: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -12392,85 +12392,85 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   setDefault: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   reload: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_7: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_5: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12480,23 +12480,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_8: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -12506,65 +12506,65 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   setDefault_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_8: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_6: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12574,21 +12574,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteBatch: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12598,21 +12598,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   query: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12622,21 +12622,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMemoryRetrievalResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   ingest: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12646,23 +12646,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMemoryEvent'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   supersede: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12672,162 +12672,162 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMemoryEvent'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   revoke: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   confirm: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   rebuild: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         namespace: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   restoreCheck: {
     parameters: {
-      query: {
-        fileName: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query: {
+        fileName: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultRestoreCheckResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   backup: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBackupResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page: {
     parameters: {
-      query?: {
-        pageNum?: number;
-        pageSize?: number;
-        keyword?: string;
-        domainCode?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: {
+        domainCode?: string;
+        keyword?: string;
+        pageNum?: number;
+        pageSize?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_7: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12837,54 +12837,54 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_1: {
     parameters: {
-      query?: {
-        pageNum?: number;
-        pageSize?: number;
-        keyword?: string;
-        category?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: {
+        category?: string;
+        keyword?: string;
+        pageNum?: number;
+        pageSize?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataPointView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_8: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12894,57 +12894,57 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPointView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_2: {
     parameters: {
-      query?: {
-        pageNum?: number;
-        pageSize?: number;
-        keyword?: string;
-        lifecycleStatus?: string;
-        parseStatus?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: {
+        keyword?: string;
+        lifecycleStatus?: string;
+        pageNum?: number;
+        pageSize?: number;
+        parseStatus?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   upload: {
     parameters: {
-      query?: {
-        title?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: {
+        title?: string;
+      };
     };
     requestBody?: {
       content: {
@@ -12957,25 +12957,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   beginUpload: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -12985,25 +12985,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadSession'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   importUrl: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         spaceId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13013,45 +13013,45 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   ensureDefault: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   search: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13061,49 +13061,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSearchResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRelationView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_9: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13113,71 +13113,71 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   retry: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cancel: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   rebuild_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13187,49 +13187,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_3: {
     parameters: {
-      query: {
-        spaceId: number;
-        pageNum?: number;
-        pageSize?: number;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query: {
+        pageNum?: number;
+        pageSize?: number;
+        spaceId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataCaseView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_10: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13239,23 +13239,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCaseView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   run: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13265,18 +13265,18 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultRunResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   rollback: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
@@ -13284,188 +13284,188 @@ export interface operations {
         id: number;
         versionId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   submit: {
     parameters: {
-      query?: {
-        comment?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: {
+        comment?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   reject: {
     parameters: {
-      query?: {
-        comment?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: {
+        comment?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publish_1: {
     parameters: {
-      query?: {
-        comment?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: {
+        comment?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   archive: {
     parameters: {
-      query?: {
-        comment?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: {
+        comment?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   approve: {
     parameters: {
-      query?: {
-        comment?: string;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: {
+        comment?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   completeUpload: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         sessionId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   uploadChunk: {
     parameters: {
-      query: {
-        totalChunks: number;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
-        sessionId: string;
         index: number;
+        sessionId: string;
       };
-      cookie?: never;
+      query: {
+        totalChunks: number;
+      };
     };
     requestBody?: {
       content: {
@@ -13478,23 +13478,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadSession'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateUser: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13504,23 +13504,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replaceTenantAssignments: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13530,23 +13530,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   resetPassword: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13556,23 +13556,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   changePassword: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13582,43 +13582,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteUser: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createUser: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13628,21 +13628,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   setTimezone: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13652,23 +13652,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateTenant: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13678,43 +13678,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteTenant: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createTenant: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13724,23 +13724,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   removeUserRoles: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13750,23 +13750,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   assignUserRoles: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13776,23 +13776,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateRole: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13802,24 +13802,24 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replaceRoleMenus: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13829,43 +13829,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteRole: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createRole: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13875,23 +13875,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateMenu: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -13901,43 +13901,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteMenu: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createMenu: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -13947,21 +13947,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   upload_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: {
       content: {
@@ -13974,23 +13974,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultFileView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateDict: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14000,43 +14000,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDictVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteDict: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createDict: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14046,21 +14046,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDictVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteDicts: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14070,21 +14070,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   switchTenant: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14094,21 +14094,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSwitchContextResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   register: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14118,21 +14118,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLoginResponseVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   refreshToken: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14142,43 +14142,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   logout: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         Authorization?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   login: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14188,21 +14188,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLoginResponseVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   forgetPassword: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14212,21 +14212,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   switchCurrentRole: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14236,21 +14236,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSwitchContextResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   codeLogin: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14260,21 +14260,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLoginResponseVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   validateCaptcha: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14284,23 +14284,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultValidateCaptchaResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_9: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14310,48 +14310,48 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   revoke_1: {
     parameters: {
-      query: {
-        roleId: number;
-        tenantId: number;
-        authCodeId: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        authCodeId: number;
+        roleId: number;
+        tenantId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replace_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         roleId: number;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14361,24 +14361,24 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   grant: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         roleId: number;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14388,43 +14388,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_9: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_11: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14434,23 +14434,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAuthCodeResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_10: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14460,43 +14460,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_10: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_12: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14506,23 +14506,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultWrongQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_11: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14532,43 +14532,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_11: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_13: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14578,23 +14578,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTextbookResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_12: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14604,43 +14604,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_12: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_14: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14650,23 +14650,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSubjectResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_13: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14676,43 +14676,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_13: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_15: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14722,23 +14722,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudyPlanResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_14: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14748,43 +14748,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_14: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_16: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14794,23 +14794,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudentResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_15: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14820,43 +14820,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_15: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_17: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14866,23 +14866,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultReviewTaskResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   complete: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14892,23 +14892,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_16: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14918,43 +14918,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_16: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_18: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -14964,23 +14964,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultResourceResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_17: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -14990,43 +14990,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_17: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_19: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15036,23 +15036,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_18: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -15062,43 +15062,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_18: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_20: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15108,23 +15108,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultExamResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_19: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -15134,66 +15134,66 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   startLearning: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         courseId: number;
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_19: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_21: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15203,23 +15203,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_20: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -15229,23 +15229,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   replaceKnowledgeIds: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         chapterId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -15255,43 +15255,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_20: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_22: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15301,21 +15301,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultChapterResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createRecord: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15325,21 +15325,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudyRecordResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   responses: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15349,42 +15349,42 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'application/json': Record<string, never>;
           'text/event-stream': Record<string, never>;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListPromptTemplate'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_23: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15394,43 +15394,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptTemplate'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publish_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptTemplate'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   preview: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15440,25 +15440,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   retry_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         'Idempotency-Key'?: string;
       };
       path: {
         messageId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: {
       content: {
@@ -15468,25 +15468,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGenerationRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   edit: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         'Idempotency-Key'?: string;
       };
       path: {
         messageId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15496,68 +15496,68 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversationMessage'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cancel_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         limit?: number;
         offset?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_24: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         'Idempotency-Key'?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15567,49 +15567,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   messages: {
     parameters: {
-      query?: {
-        limit?: number;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        limit?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListConversationMessage'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   message: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         'Idempotency-Key'?: string;
       };
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15619,25 +15619,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGenerationRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   generation: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         'Idempotency-Key'?: string;
       };
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15647,71 +15647,71 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGenerationRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   branches: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   branch: {
     parameters: {
-      query: {
-        messageId: string;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query: {
+        messageId: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   activeLeaf: {
     parameters: {
-      query?: {
-        messageId?: string;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        messageId?: string;
+      };
     };
     requestBody?: {
       content: {
@@ -15721,21 +15721,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   importConversation: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15746,21 +15746,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   importPreview: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15770,21 +15770,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   chatCompletions: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15794,44 +15794,44 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'application/json': Record<string, never>;
           'text/event-stream': Record<string, never>;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   prompts: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         templateId?: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListPromptTemplateVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createPrompt: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15841,23 +15841,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptTemplateVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   testPrompt: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         templateId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15867,23 +15867,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptTestRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publishPrompt: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         templateId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15893,23 +15893,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptTemplateVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   diffPrompt: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         templateId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15919,21 +15919,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptDiff'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   preview_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15943,41 +15943,41 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   personas: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListPersonaAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createPersona: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -15987,41 +15987,41 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPersonaAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   lorebooks: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLorebookAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createLorebook: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16031,41 +16031,41 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLorebookAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   groups: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListGroupChatAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createGroup: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16075,23 +16075,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGroupChatAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   runTurn: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16101,23 +16101,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGroupTurnRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   nextSpeaker: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: {
       content: {
@@ -16127,41 +16127,41 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTurnDecision'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   characters: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListCharacterAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createCharacter: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16171,23 +16171,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCharacterAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   importCharacter: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         previewToken: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -16200,21 +16200,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCharacterAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   previewCharacterImport: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: {
       content: {
@@ -16227,24 +16227,24 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateVersion: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16254,47 +16254,47 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publish_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   validate: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16304,24 +16304,24 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGraphValidationVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateGraph: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16331,25 +16331,25 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionDetailVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateNode: {
     parameters: {
-      query: {
-        agentId: string;
-        versionId: number;
-        nodeId: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        agentId: string;
+        nodeId: string;
+        versionId: number;
+      };
     };
     requestBody: {
       content: {
@@ -16359,48 +16359,48 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteNode: {
     parameters: {
-      query: {
-        agentId: string;
-        versionId: number;
-        nodeId: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        agentId: string;
+        nodeId: string;
+        versionId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   addNode: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16410,49 +16410,49 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteEdge: {
     parameters: {
-      query: {
-        agentId: string;
-        versionId: number;
-        sourceNodeId: string;
-        targetNodeId: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        agentId: string;
+        sourceNodeId: string;
+        targetNodeId: string;
+        versionId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   addEdge: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16462,24 +16462,24 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateCanvas: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16489,46 +16489,46 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteVersion: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createVersion: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16538,23 +16538,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   copy: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16564,89 +16564,89 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   archive_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   activate: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   runs: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         limit?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   startRun: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16656,45 +16656,45 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_4: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         runId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListToolApproval'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   request: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         runId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16704,45 +16704,45 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultToolApproval'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cancel_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_21: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -16752,43 +16752,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultIntentDefVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_21: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_25: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16798,21 +16798,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultIntentDefVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteBatch_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16822,67 +16822,67 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   resume: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         executionId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   pause: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         executionId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   execute: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -16894,23 +16894,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   executeStream: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -16922,43 +16922,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'text/event-stream': components['schemas']['ResultMapStringObject'][];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cancel_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         executionId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   run_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16968,21 +16968,21 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultEvalRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_26: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -16992,45 +16992,45 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultEvalDataset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cases: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListEvalCase'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   addCase: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17040,43 +17040,43 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultEvalCase'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   apps: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         limit?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiApp'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   createApp: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17086,45 +17086,45 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiApp'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   versions: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiAppVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   version: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17134,69 +17134,69 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiAppVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   publish_4: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
         versionId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiAppVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   archive_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
         versionId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiAppVersion'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   preview_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17206,23 +17206,23 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiAppPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   executeApp: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17232,90 +17232,90 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   reject_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultToolApproval'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   approve_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultToolApproval'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   switchVersion: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         version: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_22: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody: {
       content: {
@@ -17325,44 +17325,44 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   updateStatus: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
         status: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   registerAgent: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17372,65 +17372,65 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_22: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteAgent: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   create_27: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17440,67 +17440,67 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   detail: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_23: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   update_23: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody: {
       content: {
@@ -17510,4109 +17510,4107 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultConversation'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listTools: {
     parameters: {
-      query?: {
-        category?: string;
-        tag?: string;
-        keyword?: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: {
+        category?: string;
+        keyword?: string;
+        tag?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMcpToolDescriptor'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTool: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         name: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMcpToolDescriptor'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getStats: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getCategories: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSetString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listPlugins: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListPluginInfoVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   market: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListPluginMarketEntry'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTimelineByProfileId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         profileId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTimelineEventVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage: {
     parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        profileId?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        profileId?: number;
+        query: components['schemas']['PageQuery'];
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataTimelineEventVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTimelineEventVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_1: {
     parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        name?: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        name?: string;
+        query: components['schemas']['PageQuery'];
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataTagVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTagVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAll: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTagVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_2: {
     parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        eventId?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        eventId?: number;
+        query: components['schemas']['PageQuery'];
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataRecordVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_2: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultRecordVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_3: {
     parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        createBy?: string;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        createBy?: string;
+        query: components['schemas']['PageQuery'];
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataProfileVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_3: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultProfileVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_4: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         query: components['schemas']['PageQuery'];
         recordId?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataMediaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_4: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMediaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   models: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListModelProviderCapabilities'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   health: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
-        provider: string;
         model: string;
+        provider: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultProviderHealth'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   healthById: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultProviderHealth'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_5: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
-        name?: string;
         code?: string;
+        name?: string;
         pageNo?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataAiPlatformVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getOptions: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListIdNameOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAllEnabled: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiPlatformVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_5: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getDefault: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getByCode: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         code: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiPlatformResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   models_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': {
             [key: string]: unknown;
           };
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getByPlatformId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         platformId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getDefaultByPlatformId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         platformId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getByPlatformCode: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         platformCode: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiModelResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_6: {
     parameters: {
-      query?: {
-        platformId?: number;
-        pageNo?: number;
-        pageSize?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: {
+        pageNo?: number;
+        pageSize?: number;
+        platformId?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getOptions_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         platformId?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListIdNameOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_6: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiModelVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   trace: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         traceId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMemoryRetrievalTrace'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   relations: {
     parameters: {
-      query: {
-        graphType: 'TEMPORAL' | 'SEMANTIC' | 'CAUSAL' | 'ENTITY';
-        limit?: number;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query: {
+        graphType: 'CAUSAL' | 'ENTITY' | 'SEMANTIC' | 'TEMPORAL';
+        limit?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMemoryEdge'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   status: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   difficultyScale: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDifficultyScaleView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   options: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListSpaceView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   prerequisites: {
     parameters: {
-      query?: {
-        masteredIds?: number[];
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: {
+        masteredIds?: number[];
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   path: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         pointId: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   graph: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultKnowledgeGraphResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   findPath: {
     parameters: {
-      query: {
-        fromId: number;
-        toId: number;
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
       path?: never;
-      cookie?: never;
+      query: {
+        fromId: number;
+        toId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_4: {
     parameters: {
+      cookie?: never;
+      header?: {
+        version?: string;
+      };
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
         spaceId?: number;
         status?: string;
       };
-      header?: {
-        version?: string;
-      };
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataJobView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   get_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultJobView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   get_3: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultDocumentView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_24: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   versions_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListVersionView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   preview_3: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': string;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   uploadStatus: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         sessionId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUploadSession'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   cancelUpload: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         sessionId: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_5: {
     parameters: {
+      cookie?: never;
+      header?: {
+        version?: string;
+      };
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
         spaceId?: number;
       };
-      header?: {
-        version?: string;
-      };
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataKnowledgeAuditResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTenantAssignments: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListUserTenantAssignmentVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getUserList: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         r: components['schemas']['UserPageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataUserVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getUserInfo: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultUserVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTimezoneOptions: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTimezoneOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTimezone: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTenantPage: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         r: components['schemas']['TenantPageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataTenantVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAllTenants: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTenantVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTenantById: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTenantVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getRoleList: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         r: components['schemas']['RolePageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataRoleVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getRoleDetail: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultRoleVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAllRoles: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         status?: string;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRoleVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAllTree: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRouteMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getMenuRoots: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRouteMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getMenuPermissionsTree: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRouteMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   isMenuPathExists: {
     parameters: {
-      query: {
-        path: string;
-        id?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        id?: number;
+        path: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getMenuPage: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         request: components['schemas']['MenuPageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   isMenuNameExists: {
     parameters: {
-      query: {
-        name: string;
-        id?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        id?: number;
+        name: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getSystemMenuList: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getMenuChildren: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         parentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRouteMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAllMenus: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListRouteMenuVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_5: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListFileView'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   download: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         key: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': string;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   config: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getDictByType: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         dictType: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListDictVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getDictList: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         request: components['schemas']['DictPageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataDictVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getUserTenants: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTenantInfoVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAuthCodes: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getCaptcha: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCaptchaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listRoleAuthCodes: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         roleId: number;
         tenantId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_6: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         request: components['schemas']['AuthCodePageRequest'];
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataAuthCodeOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   options_1: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAuthCodeOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_6: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAuthCodeOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateByWeek: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         weeks?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getOverview: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateByMonth: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         months?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateLlmByWeek: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         weeks?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateLlmByMonth: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         months?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateLlmByDay: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         days?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getEmbeddingOverview: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateByDay: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         days?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   aggregateByModel: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByStudentId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListWrongQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_7: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultWrongQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listBySubjectAndGrade: {
     parameters: {
-      query: {
-        subjectCode: string;
-        grade: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        grade: number;
+        subjectCode: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListTextbookResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_7: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataTextbookResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_8: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTextbookResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_8: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataSubjectResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByGradeLevel: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         gradeLevel: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListSubjectResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_9: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSubjectResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getByCode_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         code: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultSubjectResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTodayTasks: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListDailyTaskResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByStudentId_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListStudyPlanResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_10: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudyPlanResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listActiveByStudent: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListStudyPlanResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getByUserId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         userId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudentResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_9: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataStudentResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_11: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultStudentResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listTodayTasks: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListReviewTaskResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_10: {
     parameters: {
-      query: {
-        studentId: number;
-        status: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        status: number;
+        studentId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListReviewTaskResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_12: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultReviewTaskResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByType: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         type: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListResourceResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listBySubjectCode: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         subjectCode: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListResourceResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_11: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataResourceResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_13: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultResourceResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   recommendReview: {
     parameters: {
-      query: {
-        studentId: number;
-        count?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        count?: number;
+        studentId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListQuestionRecommendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   recommendResources: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
         topK?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListResourceRecommendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   recommendQuestions: {
     parameters: {
-      query: {
-        studentId: number;
-        count?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        count?: number;
+        studentId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListQuestionRecommendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   recommendKnowledge: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
         topK?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListKnowledgeRecommendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   hybridRecommend: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultHybridRecommendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByType_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         type: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listBySubjectAndGrade_1: {
     parameters: {
-      query: {
-        subjectCode: string;
-        grade: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        grade: number;
+        subjectCode: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_12: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByDifficulty: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         difficulty: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_14: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultQuestionResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByTeacherId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         teacherId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListExamResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listBySubjectCode_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         subjectCode: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListExamResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_13: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataExamResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_15: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultExamResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   open: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         fileName: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': string;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listBySubjectCode_2: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         subjectCode: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   list_14: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         pageNum?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByGrade: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         grade: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_16: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCourseResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getChapterTree: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         textbookId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListChapterResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByTextbookId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         textbookId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListChapterResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listKnowledgeIds: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         chapterId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListLong'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_17: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultChapterResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listByParentId: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         parentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListChapterResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getWeakPoints: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListWeakPointResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getTrend: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultTrendResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listRecordsByStudent: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListStudyRecordResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listRecordsByStudentAndKnowledge: {
     parameters: {
-      query: {
-        studentId: number;
-        knowledgeId: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        knowledgeId: number;
+        studentId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListStudyRecordResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getOverview_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         studentId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultOverviewResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAbilityRadar: {
     parameters: {
-      query: {
-        studentId: number;
-        knowledgeId: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query: {
+        knowledgeId: number;
+        studentId: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAbilityRadarResponse'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   stream: {
     parameters: {
-      query?: {
-        afterSeq?: number;
-        follow?: boolean;
-        waitMs?: number;
-      };
+      cookie?: never;
       header?: {
         'Last-Event-ID'?: string;
       };
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        afterSeq?: number;
+        follow?: boolean;
+        waitMs?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'text/event-stream': components['schemas']['ServerSentEventGenerationEvent'][];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   promptPreview: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPromptPreview'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   export: {
     parameters: {
-      query?: {
-        format?: string;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        format?: string;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'application/json': Record<string, never>;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   persona: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPersonaAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deletePersona: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   lorebook: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultLorebookAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteLorebook: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   group: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultGroupChatAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteGroup: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   character: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultCharacterAsset'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   deleteCharacter: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   exportCharacter: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'image/png': string;
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getVersions: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAgentVersionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getGraph: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionDetailVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getCanvas: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultString'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getVersionDetail: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         versionId: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentVersionDetailVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   run_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAiRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   trajectory: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAiRunEvent'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   promptSnapshot: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   events: {
     parameters: {
-      query?: {
-        afterSeq?: number;
-        limit?: number;
-        follow?: boolean;
-        waitMs?: number;
-      };
+      cookie?: never;
       header?: {
         'Last-Event-ID'?: string;
       };
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        afterSeq?: number;
+        follow?: boolean;
+        limit?: number;
+        waitMs?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'text/event-stream': components['schemas']['ServerSentEventAiRunEvent'][];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   eventHistory: {
     parameters: {
-      query?: {
-        afterSeq?: number;
-        limit?: number;
-      };
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: {
+        afterSeq?: number;
+        limit?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'application/json': components['schemas']['ResultListAiRunEvent'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   page_7: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query?: {
         agentId?: string;
-        name?: string;
-        code?: string;
         category?: string;
+        code?: string;
+        name?: string;
         pageNo?: number;
         pageSize?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataIntentDefVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   options_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListIdNameOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   detail_1: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultIntentDefVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   generationEvents: {
     parameters: {
-      query?: {
-        afterSeq?: number;
-        follow?: boolean;
-        waitMs?: number;
-      };
+      cookie?: never;
       header?: {
         'Last-Event-ID'?: string;
       };
       path: {
         generationId: string;
       };
-      cookie?: never;
+      query?: {
+        afterSeq?: number;
+        follow?: boolean;
+        waitMs?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           'text/event-stream': components['schemas']['ServerSentEventAiRunEvent'][];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getStatus: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         executionId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getHistory: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
         limit?: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getExecution: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         executionId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultMapStringObject'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   detail_2: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultEvalRun'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   results: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path: {
         id: string;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListEvalResult'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listAll: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListToolApproval'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getPage_7: {
     parameters: {
-      query?: {
-        pageNo?: number;
-        pageSize?: number;
-        name?: string;
-        status?: number;
-      };
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: {
+        name?: string;
+        pageNo?: number;
+        pageSize?: number;
+        status?: number;
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultPageDataAgentVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listAllOptions: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListIdNameOptionVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getNodeTypes: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListNodeTypeMetaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getNodeType: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         nodeType: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultNodeTypeMetaVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   listAgents: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: never;
       path?: never;
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultListAgentDefinition'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getById_18: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         id: number;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentDetailVO'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   getAgent: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         agentId: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultAgentDefinition'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_25: {
     parameters: {
-      query: {
-        type: 'PRE' | 'NEXT' | 'INCLUDE' | 'RELATED' | 'SIMILAR' | 'BELONG';
-      };
+      cookie?: never;
       header?: {
         version?: string;
       };
@@ -21620,63 +21618,65 @@ export interface operations {
         pointId: number;
         targetId: number;
       };
-      cookie?: never;
+      query: {
+        type: 'BELONG' | 'INCLUDE' | 'NEXT' | 'PRE' | 'RELATED' | 'SIMILAR';
+      };
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_26: {
     parameters: {
-      query?: never;
+      cookie?: never;
       header?: {
         version?: string;
       };
       path: {
         id: number;
       };
-      cookie?: never;
+      query?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultVoid'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
   };
   delete_27: {
     parameters: {
+      cookie?: never;
+      header?: never;
+      path?: never;
       query: {
         key: string;
       };
-      header?: never;
-      path?: never;
-      cookie?: never;
     };
     requestBody?: never;
     responses: {
       /** @description OK */
       200: {
-        headers: {
-          [name: string]: unknown;
-        };
         content: {
           '*/*': components['schemas']['ResultBoolean'];
+        };
+        headers: {
+          [name: string]: unknown;
         };
       };
     };
