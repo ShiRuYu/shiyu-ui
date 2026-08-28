@@ -63,7 +63,7 @@ src/
 ├── locales/          # 国际化配置
 ├── router/           # 路由配置
 ├── store/            # 状态管理
-└── views/            # 页面视图
+└── features/         # 领域 Feature Slice 页面
 ```
 
 ## 编码风格

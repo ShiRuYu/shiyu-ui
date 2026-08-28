@@ -3,7 +3,7 @@
 ## 一、接口层架构
 
 ```
-src/api/
+src/features/<domain>/api/
 ├── index.ts           # 统一导出
 ├── request.ts         # Axios 请求客户端
 ├── types.ts           # 通用类型定义
@@ -23,7 +23,7 @@ src/api/
 使用 Vben Admin 封装的 `requestClient`：
 
 ```ts
-import { requestClient } from '#/api/request';
+import { requestClient } from '#/shared/api/request';
 
 // GET 请求
 requestClient.get<T>('/url', { params });
@@ -52,11 +52,11 @@ export namespace KnowledgeApi {
 }
 
 async function getKnowledgePage(params) {
-  return requestClient.get<KnowledgeApi.KnowledgeVO[]>(`/v1/knowledge/spaces/${params.spaceId}/points`, { params });
+  return requestClient.get<KnowledgeApi.KnowledgeVO[]>(`/api/knowledge/spaces/${params.spaceId}/points`, { params });
 }
 
 async function createKnowledge(data: KnowledgeApi.KnowledgeCreateReq) {
-  return requestClient.post(`/v1/knowledge/spaces/${data.spaceId}/points`, data);
+  return requestClient.post(`/api/knowledge/spaces/${data.spaceId}/points`, data);
 }
 
 export { getKnowledgePage, createKnowledge };

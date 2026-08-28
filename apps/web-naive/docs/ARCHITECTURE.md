@@ -99,7 +99,7 @@ src/
 ├── store/                     # 状态管理 ────────── 详请见 STATE-MANAGEMENT.md
 │   └── auth.ts                # 认证 Store（用户/登录/登出）
 │
-└── views/                     # 视图页面 ────────── 详请见 MODULES.md
+└── features/                  # 领域 Feature Slice 页面 ── 详请见 MODULES.md
     ├── agent/                 # Agent 管理
     ├── ai-tutor/              # AI 家教
     ├── analytics/             # 数据分析

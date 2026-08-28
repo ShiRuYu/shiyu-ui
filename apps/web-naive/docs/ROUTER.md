@@ -10,7 +10,7 @@ app: {
 }
 ```
 
-前端路由与后端菜单按 `name` 合并。业务菜单的层级、标题、顺序和可见性由后端 `/v1/system/menus/all` 返回，前端负责把 `component` 字符串映射到 `src/views/**/*.vue`。
+前端路由与后端菜单按 `name` 合并。业务菜单的层级、标题、顺序和可见性由后端 `/api/iam/menus/all` 返回，前端负责把 `component` 语义键映射到 feature 公共入口。
 
 ## 2. 路由目录
 
@@ -27,7 +27,7 @@ src/router/
 
 业务页面不应再重复创建一套完整的前端菜单树。新增业务页面时：
 
-1. 在 `src/views` 创建组件；
+1. 在 `src/features/<domain>/pages` 创建页面；
 2. 在后端菜单中登记唯一 `name`、URL 和组件路径；
 3. 为租户和角色分配菜单；
 4. 验证组件路径与真实 Vue 文件一致。
@@ -51,12 +51,13 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'Analytics',
         path: 'analytics',
-        component: () => import('#/views/dashboard/analytics/index.vue'),
+        component: () =>
+          import('#/features/governance/pages/observability/index.vue'),
       },
       {
         name: 'Overview',
         path: 'overview',
-        component: () => import('#/views/dashboard/overview/index.vue'),
+        component: () => import('#/features/core/pages/overview.vue'),
       },
     ],
   },
@@ -101,7 +102,7 @@ pnpm -F @vben/web-naive run build
 
 联调时还应检查：
 
-- `/v1/system/menus/all` 的一级菜单名称和顺序；
+- `/api/iam/menus/all` 的一级菜单名称和顺序；
 - 教育空间直属可见子目录数量必须为 6；
 - 每个后端 `component` 都能映射到 Vue 文件；
 - 管理员与普通用户的目录授权不同但页面权限不被扩大；

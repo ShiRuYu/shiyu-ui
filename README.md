@@ -59,7 +59,7 @@ apps/web-naive/src/
 ├─ locales/         中英文业务文案
 ├─ router/          核心路由、动态菜单契约与失败恢复
 ├─ store/           认证及业务状态
-└─ views/           页面与模块组件
+└─ features/        领域 Feature Slice 页面与模块组件
 ```
 
 模块边界见 [MODULES.md](./apps/web-naive/docs/MODULES.md)，本轮工程优化、契约和联调结果见后端仓库的 [质量与联调报告](../shiyu-ai/docs/质量与联调报告.md)。
@@ -67,7 +67,7 @@ apps/web-naive/src/
 ## 动态菜单契约
 
 - 后端 `AUTH_MENU` 决定业务菜单的标题、层级、顺序和可见权限。
-- 前端 `src/views/**/*.vue` 是页面组件注册表。
+- 前端按 `src/features/<domain>` 组织 Feature Slice，页面从 feature 公共入口装配。
 - 运行时会校验菜单节点、路由名称唯一性及组件路径；契约失败会进入可重试错误页，不会留下空白侧栏。
 - 工作台、认证、个人中心、菜单失败页和 404 是前端核心路由。
 

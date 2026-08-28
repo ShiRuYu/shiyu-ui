@@ -26,7 +26,7 @@ apps/web-naive/src/
 ├── locales/       # i18n
 ├── router/        # Router Configuration
 ├── store/         # Pinia Stores
-└── views/         # View Pages
+└── features/      # Domain Feature Slices
 ```
 
 ## Module Overview

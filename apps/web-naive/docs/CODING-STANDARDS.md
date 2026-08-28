@@ -45,7 +45,7 @@ import AgentEditForm from './components/AgentEditForm.vue';
 
 ```ts
 // 1. 类型导入
-import type { ApiType } from '#/api/module';
+import type { ApiType } from '#/features/agent/api/module';
 
 // 2. 外部库
 import { ref, computed } from 'vue';
@@ -59,7 +59,7 @@ import { NButton, NDataTable } from 'naive-ui';
 
 // 5. 项目内部模块
 import { $t } from '#/locales';
-import { fetchApi } from '#/api/module';
+import { fetchApi } from '#/features/agent/api/module';
 
 // 6. 本地组件
 import FormModal from './modules/form.vue';
@@ -161,8 +161,8 @@ chore: update dependencies
 
 ```ts
 // 查询
-async function getAgentPage(params) → GET /v1/agents
-async function getAgentById(id)    → GET /v1/agents/{id}
+async function getAgentPage(params) → GET /api/agent/agents/list
+async function getAgentById(id)    → GET /api/agent/agents/detail/by-agent-id
 
 // 新增
 async function createAgent(data)   → POST /agent
@@ -171,7 +171,7 @@ async function createAgent(data)   → POST /agent
 async function updateAgent(data)   → PUT /agent
 
 // 删除
-async function deleteAgent(id)     → DELETE /v1/agents/{id}
+async function deleteAgent(id)     → POST /api/agent/agents/delete/by-agent-id
 ```
 
 ### 5.2 统一返回类型

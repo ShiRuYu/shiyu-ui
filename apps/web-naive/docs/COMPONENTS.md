@@ -7,7 +7,7 @@
 ```vue
 <script lang="ts" setup>
 // 1. 类型导入
-import type { ApiType } from '#/api/module';
+import type { ApiType } from '#/features/agent/api/module';
 
 // 2. Vue 核心 API
 import { computed, onMounted, ref } from 'vue';
@@ -21,7 +21,7 @@ import { NButton, NDataTable, NInput } from 'naive-ui';
 
 // 5. 项目内部
 import { $t } from '#/locales';
-import { fetchData } from '#/api/module';
+import { fetchData } from '#/features/agent/api/module';
 import { useDeleteConfirm } from '#/composables';
 
 // 6. 本地子组件

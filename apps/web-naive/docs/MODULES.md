@@ -24,7 +24,7 @@
 
 ## 二、模块详情
 
-### 2.1 Agent 模块 `views/agent/`
+### 2.1 Agent 模块 `features/agent/`
 
 ```
 agent/
@@ -76,7 +76,7 @@ agent/
 
 ---
 
-### 2.2 企业知识平台模块 `views/knowledge/`
+### 2.2 企业知识平台模块 `features/knowledge/`
 
 ```
 knowledge/
@@ -103,7 +103,7 @@ knowledge/
 
 ---
 
-### 2.3 教育管理模块 `views/education-admin/`
+### 2.3 教育管理模块 `features/education/`
 
 ```
 education-admin/
@@ -133,7 +133,7 @@ xxx/
 
 ---
 
-### 2.4 系统管理模块 `views/system/`
+### 2.4 系统管理模块 `features/iam/`
 
 ```
 system/
@@ -151,7 +151,7 @@ system/
 
 ---
 
-### 2.5 学习模块 `views/learning/`
+### 2.5 学习模块 `features/education/`
 
 ```
 learning/
@@ -169,7 +169,7 @@ learning/
     └── list.vue        (111 行)
 ```
 
-### 2.6 成长记录模块 `views/record/`
+### 2.6 成长记录模块 `features/record/`
 
 ```
 record/

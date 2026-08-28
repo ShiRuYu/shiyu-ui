@@ -54,5 +54,5 @@ apps/web-naive/src/
 ├── locales/       # 国际化
 ├── router/        # 路由
 ├── store/         # Pinia 状态
-└── views/         # 视图页面
+└── features/      # 领域 Feature Slice 页面
 ```
