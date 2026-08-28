@@ -10,7 +10,6 @@ export default defineConfig(async () => {
         proxy: {
           '/api': {
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
             target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:9000',
             ws: true,
           },

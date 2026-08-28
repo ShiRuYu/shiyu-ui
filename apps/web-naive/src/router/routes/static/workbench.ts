@@ -20,7 +20,8 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'Overview',
         path: 'overview',
-        component: () => import('#/views/dashboard/overview/index.vue'),
+        component: () =>
+          import('#/app/pages/workbench/dashboard/overview/index.vue'),
         meta: {
           icon: 'lucide:layout-dashboard',
           title: $t('page.dashboard.overview'),

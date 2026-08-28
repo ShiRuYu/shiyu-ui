@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const apiRoot = join(root, 'apps/web-naive/src/api');
+const apiRoot = join(root, 'apps/web-naive/src/features');
 const snapshotPath = join(root, 'tests/contracts/shiyu-ai-openapi.json');
 const httpMethods = new Set([
   'delete',
@@ -188,8 +188,6 @@ const { calls, unresolved } = await collectFrontendCalls();
 const failures = [];
 const backendOperations = [];
 for (const [path, pathItem] of Object.entries(spec.paths ?? {})) {
-  if (path.startsWith('/api/'))
-    failures.push(`后端路径不应包含前端代理前缀: ${path}`);
   for (const method of Object.keys(pathItem)) {
     if (httpMethods.has(method)) backendOperations.push({ method, path });
   }

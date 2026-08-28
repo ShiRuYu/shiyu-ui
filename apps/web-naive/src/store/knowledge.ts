@@ -2,7 +2,7 @@ import type {
   KnowledgeDifficultyScale,
   KnowledgeDomainCode,
   KnowledgeSpace,
-} from '#/api/knowledge/enterprise';
+} from '#/features/knowledge/api/enterprise';
 
 import { computed, ref, shallowRef } from 'vue';
 
@@ -12,7 +12,7 @@ import {
   getDifficultyScale,
   getKnowledgeDomainLabel,
   getSpaces,
-} from '#/api/knowledge/enterprise';
+} from '#/features/knowledge/api/enterprise';
 
 const ACTIVE_SPACE_KEY = 'shiyu-knowledge-active-space';
 const ACTIVE_SPACE_MANUAL_KEY = 'shiyu-knowledge-active-space-manual';

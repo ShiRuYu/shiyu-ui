@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'AiAppEdit',
         path: 'apps/edit',
-        component: () => import('#/views/app-studio/apps/edit.vue'),
+        component: () => import('#/features/agent/pages/app-edit.vue'),
         meta: {
           hideInBreadcrumb: true,
           hideInMenu: true,
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'AgentStudioEdit',
         path: 'agents/edit',
-        component: () => import('#/views/app-studio/agents/edit.vue'),
+        component: () => import('#/features/agent/pages/admin/agent-edit.vue'),
         meta: {
           hideInBreadcrumb: true,
           hideInMenu: true,
@@ -47,7 +47,8 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'EducationExamList',
             path: 'exams',
-            component: () => import('#/views/exam/exam-list/list.vue'),
+            component: () =>
+              import('#/features/education/pages/student/exams/list.vue'),
             meta: {
               hideInBreadcrumb: true,
               hideInMenu: true,
@@ -58,7 +59,8 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'EducationExamTake',
             path: 'exams/take/:id',
-            component: () => import('#/views/exam/exam-list/take.vue'),
+            component: () =>
+              import('#/features/education/pages/student/exams/take.vue'),
             meta: {
               hideInBreadcrumb: true,
               hideInMenu: true,
@@ -69,7 +71,8 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'EducationExamResult',
             path: 'exams/result/:id',
-            component: () => import('#/views/exam/exam-list/result.vue'),
+            component: () =>
+              import('#/features/education/pages/student/exams/result.vue'),
             meta: {
               hideInBreadcrumb: true,
               hideInMenu: true,

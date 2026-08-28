@@ -12,7 +12,7 @@ import { parseExtInfo } from '@vben/utils';
 import { $t } from '#/locales';
 import { resetRoutes } from '#/router';
 import { useAuthStore } from '#/store';
-import LoginForm from '#/views/_core/authentication/login.vue';
+import LoginForm from '#/app/pages/core/authentication/login.vue';
 
 const router = useRouter();
 const userStore = useUserStore();

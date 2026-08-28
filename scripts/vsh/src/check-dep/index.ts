@@ -48,6 +48,17 @@ interface KnipResult {
   issues: KnipFileIssue[];
 }
 
+function assertNoUnusedDependencies(result: KnipResult): void {
+  const count = result.issues.reduce(
+    (total, issue) =>
+      total + issue.dependencies.length + issue.devDependencies.length,
+    0,
+  );
+  if (count > 0) {
+    throw new Error(`${count} unused dependencies detected`);
+  }
+}
+
 /**
  * 格式化依赖检查结果
  * @param result - 依赖检查结果
@@ -119,6 +130,7 @@ async function runKnipCheck(): Promise<void> {
     if (execaError.exitCode === 1 && execaError.stdout) {
       const result: KnipResult = JSON.parse(execaError.stdout);
       formatResult(result);
+      assertNoUnusedDependencies(result);
       return;
     }
 
@@ -144,4 +156,4 @@ function defineCheckDepCommand(cac: CAC): void {
     });
 }
 
-export { defineCheckDepCommand };
+export { assertNoUnusedDependencies, defineCheckDepCommand };

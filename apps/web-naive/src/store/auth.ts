@@ -18,7 +18,7 @@ import {
   logoutApi,
   switchCurrentRoleApi,
   switchTenantApi,
-} from '#/api';
+} from '#/features/iam';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();

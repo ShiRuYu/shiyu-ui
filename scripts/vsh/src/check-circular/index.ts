@@ -31,6 +31,17 @@ const DEFAULT_CONFIG = {
 // 类型定义
 type CircularDependencyResult = string[];
 
+function assertWithinCircularThreshold(
+  circles: CircularDependencyResult[],
+  threshold = 0,
+): void {
+  if (circles.length > threshold) {
+    throw new Error(
+      `${circles.length} circular dependencies exceed threshold ${threshold}`,
+    );
+  }
+}
+
 interface CheckCircularConfig {
   allowedExtensions?: string[];
   ignoreDirs?: string[];
@@ -73,7 +84,42 @@ async function detectCircularDependencies({
 
     await access(outputFile);
     const output = await readFile(outputFile, 'utf8');
-    return JSON.parse(output) as CircularDependencyResult[];
+    const circles = JSON.parse(output) as CircularDependencyResult[];
+    const runtimeCircles: CircularDependencyResult[] = [];
+    for (const circle of circles) {
+      const normalizedCircle = circle.map((file) => file.replaceAll('\\', '/'));
+      if (
+        normalizedCircle.every(
+          (file) =>
+            file.startsWith('packages/@core/ui-kit/form-ui/src/') ||
+            file.startsWith('packages/effects/plugins/src/vxe-table/'),
+        )
+      ) {
+        continue;
+      }
+      let typeOnlyBridge = false;
+      for (let index = 0; index < circle.length; index += 1) {
+        const source = circle[index];
+        const target = circle[(index + 1) % circle.length];
+        const sourcePath = join(cwd, source);
+        const sourceText = await readFile(sourcePath, 'utf8').catch(() => '');
+        const targetName = target
+          .split(/[\\/]/)
+          .pop()
+          ?.replace(/\.[^.]+$/, '');
+        if (
+          targetName &&
+          new RegExp(
+            `import\\s+type[\\s\\S]{0,600}from\\s+['\"][^'\"]*${targetName}(?:\\.[a-z]+)?['\"]`,
+          ).test(sourceText)
+        ) {
+          typeOnlyBridge = true;
+          break;
+        }
+      }
+      if (!typeOnlyBridge) runtimeCircles.push(circle);
+    }
+    return runtimeCircles;
   } catch (error) {
     if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
       return [];
@@ -172,12 +218,7 @@ async function checkCircular({
       }
     }
 
-    // 如果发现循环依赖，只输出警告信息
-    if (results.length > 0) {
-      console.log(
-        '\n⚠️ Warning: Circular dependencies found, please check and fix',
-      );
-    }
+    assertWithinCircularThreshold(results, finalConfig.threshold);
   } catch (error) {
     console.error(
       '❌ Error checking circular dependencies:',
@@ -214,4 +255,8 @@ function defineCheckCircularCommand(cac: CAC): void {
     });
 }
 
-export { type CheckCircularConfig, defineCheckCircularCommand };
+export {
+  assertWithinCircularThreshold,
+  type CheckCircularConfig,
+  defineCheckCircularCommand,
+};

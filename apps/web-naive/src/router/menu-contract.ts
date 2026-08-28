@@ -1,19 +1,24 @@
 import type { RouteRecordStringComponent } from '@vben/types';
 
-function normalizeComponentPath(component: string): string {
-  const clean = component.replace(/^\//, '').replace(/\.vue$/, '');
-  return `../views/${clean}.vue`;
+const FEATURE_COMPONENT_PATTERN = /^feature:[a-z][a-z0-9-]*\.[a-z][a-z0-9-]*$/;
+
+function normalizeComponentKey(component: string): string {
+  if (!FEATURE_COMPONENT_PATTERN.test(component)) {
+    throw new TypeError(
+      `Menu component must use a semantic feature key: ${component}`,
+    );
+  }
+  return component;
 }
 
 function validateMenuContract(
   menus: RouteRecordStringComponent[],
-  availablePagePaths: string[],
+  availablePageKeys: string[],
 ): void {
   if (!Array.isArray(menus)) {
     throw new TypeError('Menu response must be an array');
   }
-
-  const pagePaths = new Set(availablePagePaths);
+  const pageKeys = new Set(availablePageKeys);
   const routeNames = new Set<string>();
 
   const visit = (route: RouteRecordStringComponent, ancestry: string[]) => {
@@ -27,20 +32,19 @@ function validateMenuContract(
       throw new TypeError(`Duplicate menu route name: ${route.name}`);
     }
     routeNames.add(route.name);
-
     if (typeof route.path !== 'string' || route.path.trim() === '') {
       throw new TypeError(`Menu route ${route.name} has no path`);
     }
 
     if (route.component && typeof route.component === 'string') {
       const component = route.component;
-      if (
-        !['BasicLayout', 'IFrameView'].includes(component) &&
-        !pagePaths.has(normalizeComponentPath(component))
-      ) {
-        throw new TypeError(
-          `Menu route ${route.name} references missing component ${component}`,
-        );
+      if (component !== 'BasicLayout' && component !== 'IFrameView') {
+        const key = normalizeComponentKey(component);
+        if (!pageKeys.has(key)) {
+          throw new TypeError(
+            `Menu route ${route.name} references missing component ${component}`,
+          );
+        }
       }
     }
 
@@ -55,4 +59,4 @@ function validateMenuContract(
   menus.forEach((route) => visit(route, []));
 }
 
-export { normalizeComponentPath, validateMenuContract };
+export { normalizeComponentKey, validateMenuContract };

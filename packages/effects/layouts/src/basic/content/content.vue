@@ -44,9 +44,7 @@ const showComponent = (route: RouteLocationNormalizedLoadedGeneric) => {
         v-if="getEnabledTransition"
         :name="getTransitionName(route)"
         appear
-
         :leave-active-class="`${getTransitionName(route)}-leave-active page-route-leave-active`"
-
       >
         <KeepAlive
           v-if="keepAlive"

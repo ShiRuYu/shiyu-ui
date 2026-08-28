@@ -1,21 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeComponentPath, validateMenuContract } from '../menu-contract';
+import { normalizeComponentKey, validateMenuContract } from '../menu-contract';
 
 describe('backend menu contract', () => {
-  it('maps backend component paths to Vite page registry keys', () => {
-    expect(normalizeComponentPath('/education-center/learning/index')).toBe(
-      '../views/education-center/learning/index.vue',
-    );
-    expect(normalizeComponentPath('/workspace/agent/index')).toBe(
-      '../views/workspace/agent/index.vue',
-    );
-    expect(normalizeComponentPath('/workspace/chat/index')).toBe(
-      '../views/workspace/chat/index.vue',
+  it('accepts semantic feature component keys', () => {
+    expect(normalizeComponentKey('feature:education.learning')).toBe(
+      'feature:education.learning',
     );
   });
 
-  it('accepts nested menus with registered components', () => {
+  it('rejects legacy component paths', () => {
+    expect(() => normalizeComponentKey('/workspace/chat/index')).toThrow(
+      /semantic feature key/,
+    );
+  });
+
+  it('accepts nested menus with registered feature components', () => {
     expect(() =>
       validateMenuContract(
         [
@@ -25,31 +25,36 @@ describe('backend menu contract', () => {
             path: '/education',
             children: [
               {
-                component: '/education-center/learning/index',
+                component: 'feature:education.learning',
                 name: 'EducationLearning',
                 path: '/education-center/learning',
               },
             ],
           },
         ],
-        ['../views/education-center/learning/index.vue'],
+        ['feature:education.learning'],
       ),
     ).not.toThrow();
   });
 
-  it('rejects duplicate names and missing page components', () => {
+  it('rejects invalid and missing page components', () => {
     expect(() =>
       validateMenuContract(
         [
           {
-            component: '/missing/page',
-            name: 'Duplicate',
-            path: '/one',
+            component: 'feature:education.missing',
+            name: 'Missing',
+            path: '/missing',
           },
-          { component: '', name: 'Duplicate', path: '/two' },
         ],
         [],
       ),
     ).toThrow(/missing component/);
+    expect(() =>
+      validateMenuContract(
+        [{ component: '/missing/page', name: 'Legacy', path: '/legacy' }],
+        [],
+      ),
+    ).toThrow(/semantic feature key/);
   });
 });

@@ -135,7 +135,7 @@ export async function streamGenerationRuntimeEvents(
   const token = useAccessStore().accessToken;
   const baseURL = requestClient.getBaseUrl() ?? '';
   const response = await fetch(
-    `${baseURL}/api/conversation/generations/${encodeURIComponent(generationId)}/runtime-events?follow=true&waitMs=30000`,
+    `${baseURL}/api/agent/generations/${encodeURIComponent(generationId)}/runtime-events?follow=true&waitMs=30000`,
     {
       headers: {
         Accept: 'text/event-stream',
