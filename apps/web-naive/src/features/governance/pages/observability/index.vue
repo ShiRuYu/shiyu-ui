@@ -100,8 +100,7 @@ async function inspectRun(run: AiRunSummary) {
         </div>
         <template #suffix>
           <NButton text type="primary" @click.stop="inspectRun(run)">
-            查看 Trace
-</NButton
+            查看 Trace </NButton
           ><NTag
             size="small"
             :type="
@@ -138,8 +137,7 @@ async function inspectRun(run: AiRunSummary) {
               ><NTag size="tiny">#{{ event.seq }}</NTag
               >{{ event.type }}</span
             >
-          </NListItem>
-</NList
+          </NListItem> </NList
         ><NEmpty v-else description="暂无事件" /><NButton
           text
           type="primary"

@@ -1,7 +1,13 @@
 import { expect, type Page, test } from 'playwright/test';
 
-const username = process.env.E2E_USERNAME ?? 'admin';
+const username = process.env.E2E_USERNAME;
 const password = process.env.E2E_PASSWORD;
+
+if (!username || !password) {
+  throw new Error(
+    'E2E_USERNAME and E2E_PASSWORD must be provided; authenticated Playwright acceptance is blocked without CI credentials.',
+  );
+}
 
 interface MenuNode {
   children?: MenuNode[];
@@ -67,7 +73,7 @@ async function mockConversationStream(
     });
   });
   await page.route(
-    '**/v1/generations/generation-e2e/runtime-events',
+    '**/api/agent/generations/generation-e2e/runtime-events',
     async (route) => {
       await route.fulfill({
         body:
@@ -81,14 +87,13 @@ async function mockConversationStream(
 }
 
 async function signIn(page: Page): Promise<MenuNode[]> {
-  test.skip(!password, 'Set E2E_PASSWORD to run authenticated smoke tests.');
   await page.goto('/auth/login');
   const inputs = page.locator('input');
   await inputs.nth(0).fill(username);
-  await inputs.nth(1).fill(password!);
+  await inputs.nth(1).fill(password);
   const menuResponsePromise = page.waitForResponse(
     (response) =>
-      response.url().endsWith('/v1/system/menus/all') && response.ok(),
+      response.url().endsWith('/api/iam/menus/all') && response.ok(),
   );
   await page.getByRole('button', { name: 'login', exact: true }).click();
   await expect(page).not.toHaveURL(/\/auth\/login/, { timeout: 15_000 });
@@ -197,7 +202,8 @@ test.describe('web-naive critical journeys', () => {
     await signIn(page);
     const usageResponse = page.waitForResponse(
       (response) =>
-        response.url().endsWith('/v1/usage/overview') && response.ok(),
+        response.url().endsWith('/api/governance/usage/overview') &&
+        response.ok(),
     );
     await page.goto('/platform-admin/quotas');
     await expect(
@@ -321,7 +327,7 @@ test.describe('web-naive critical journeys', () => {
     page,
   }) => {
     await signIn(page);
-    await page.route('**/v1/apps', async (route) => {
+    await page.route('**/api/agent/apps', async (route) => {
       if (route.request().method() !== 'GET') return route.fallback();
       await route.fulfill({
         body: JSON.stringify({
@@ -339,7 +345,7 @@ test.describe('web-naive critical journeys', () => {
         contentType: 'application/json',
       });
     });
-    await page.route('**/v1/apps/app-test/versions', async (route) => {
+    await page.route('**/api/agent/apps/app-test/versions', async (route) => {
       await route.fulfill({
         body: JSON.stringify({
           code: 200,
@@ -367,7 +373,7 @@ test.describe('web-naive critical journeys', () => {
   }) => {
     await signIn(page);
     const calls: string[] = [];
-    await page.route('**/v1/agents/list', async (route) => {
+    await page.route('**/api/agent/agents/list', async (route) => {
       await route.fulfill({
         body: JSON.stringify({
           code: 200,
@@ -377,7 +383,7 @@ test.describe('web-naive critical journeys', () => {
         contentType: 'application/json',
       });
     });
-    await page.route('**/v1/apps', async (route) => {
+    await page.route('**/api/agent/apps', async (route) => {
       if (route.request().method() !== 'POST') return route.fallback();
       calls.push('create-app');
       await route.fulfill({
@@ -389,24 +395,27 @@ test.describe('web-naive critical journeys', () => {
         contentType: 'application/json',
       });
     });
-    await page.route('**/v1/apps/app-created/versions', async (route) => {
-      calls.push('create-version');
-      await route.fulfill({
-        body: JSON.stringify({
-          code: 200,
-          data: {
-            id: 'version-created',
-            appId: 'app-created',
-            version: '0.1.0',
-            status: 'DRAFT',
-          },
-          message: 'success',
-        }),
-        contentType: 'application/json',
-      });
-    });
     await page.route(
-      '**/v1/apps/app-created/versions/version-created/publish',
+      '**/api/agent/apps/app-created/versions',
+      async (route) => {
+        calls.push('create-version');
+        await route.fulfill({
+          body: JSON.stringify({
+            code: 200,
+            data: {
+              id: 'version-created',
+              appId: 'app-created',
+              version: '0.1.0',
+              status: 'DRAFT',
+            },
+            message: 'success',
+          }),
+          contentType: 'application/json',
+        });
+      },
+    );
+    await page.route(
+      '**/api/agent/apps/app-created/versions/version-created/publish',
       async (route) => {
         calls.push('publish-version');
         await route.fulfill({
@@ -436,7 +445,7 @@ test.describe('web-naive critical journeys', () => {
   }) => {
     await signIn(page);
     let executionBody: Record<string, unknown> | undefined;
-    await page.route('**/v1/apps', async (route) => {
+    await page.route('**/api/agent/apps', async (route) => {
       if (route.request().method() !== 'GET') return route.fallback();
       await route.fulfill({
         body: JSON.stringify({
@@ -454,38 +463,47 @@ test.describe('web-naive critical journeys', () => {
         contentType: 'application/json',
       });
     });
-    await page.route('**/v1/apps/app-published/versions', async (route) => {
-      await route.fulfill({
-        body: JSON.stringify({
-          code: 200,
-          data: [
-            {
-              id: 'version-published',
-              appId: 'app-published',
-              version: '1.0.0',
-              status: 'PUBLISHED',
+    await page.route(
+      '**/api/agent/apps/app-published/versions',
+      async (route) => {
+        await route.fulfill({
+          body: JSON.stringify({
+            code: 200,
+            data: [
+              {
+                id: 'version-published',
+                appId: 'app-published',
+                version: '1.0.0',
+                status: 'PUBLISHED',
+              },
+            ],
+            message: 'success',
+          }),
+          contentType: 'application/json',
+        });
+      },
+    );
+    await page.route(
+      '**/api/agent/apps/app-published/execute',
+      async (route) => {
+        executionBody = route.request().postDataJSON() as Record<
+          string,
+          unknown
+        >;
+        await route.fulfill({
+          body: JSON.stringify({
+            code: 200,
+            data: {
+              executionId: 'execution-e2e',
+              runtimeRunId: 'run-e2e',
+              output: 'Agent response',
             },
-          ],
-          message: 'success',
-        }),
-        contentType: 'application/json',
-      });
-    });
-    await page.route('**/v1/apps/app-published/execute', async (route) => {
-      executionBody = route.request().postDataJSON() as Record<string, unknown>;
-      await route.fulfill({
-        body: JSON.stringify({
-          code: 200,
-          data: {
-            executionId: 'execution-e2e',
-            runtimeRunId: 'run-e2e',
-            output: 'Agent response',
-          },
-          message: 'success',
-        }),
-        contentType: 'application/json',
-      });
-    });
+            message: 'success',
+          }),
+          contentType: 'application/json',
+        });
+      },
+    );
     await page.goto('/workspace/agent?appId=app-published');
     await page.getByPlaceholder('输入 Agent 任务').fill('hello agent');
     await page.getByRole('button', { name: '开始执行' }).click();
@@ -500,7 +518,7 @@ test.describe('web-naive critical journeys', () => {
     page,
   }) => {
     await signIn(page);
-    await page.route('**/v1/usage/**', async (route) => {
+    await page.route('**/api/governance/usage/**', async (route) => {
       await route.fulfill({
         body: JSON.stringify({
           code: 401,

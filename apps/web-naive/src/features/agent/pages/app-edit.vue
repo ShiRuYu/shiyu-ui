@@ -202,7 +202,7 @@ onMounted(async () => {
             v-model:value="form.configJson"
             type="textarea"
             :rows="12"
-            placeholder="{&quot;executionType&quot;:&quot;AGENT&quot;,&quot;agentId&quot;:&quot;...&quot;}"
+            placeholder='{"executionType":"AGENT","agentId":"..."}'
           />
         </NFormItem>
         <NSpace justify="end">
