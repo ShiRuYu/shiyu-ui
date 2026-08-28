@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { AiAppSummary, AiRunEvent, RuntimeMode } from '#/features/agent';
+
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
@@ -18,6 +20,7 @@ import {
   useMessage,
 } from 'naive-ui';
 
+import { listRuntimeApps } from '#/features/agent';
 import {
   createConversation,
   editMessage,
@@ -29,8 +32,6 @@ import {
   useGenerationStream,
 } from '#/features/conversation';
 import { getPlatformOptions } from '#/features/model';
-import { listRuntimeApps } from '#/features/agent';
-import type { AiAppSummary, AiRunEvent, RuntimeMode } from '#/features/agent';
 import { $t } from '#/locales';
 import { renderSafeMarkdown } from '#/utils/markdown';
 

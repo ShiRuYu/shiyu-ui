@@ -48,14 +48,14 @@ import {
   getVersionList,
   publishVersion,
 } from '#/features/agent/api';
-import { getDictByType } from '#/features/iam';
 import {
-  buildGraphConfig as serializeGraphConfig,
   parseGraphConfig,
+  buildGraphConfig as serializeGraphConfig,
 } from '#/features/agent/composables';
+import { AgentChatModal as AgentChat } from '#/features/agent/ui';
+import { getDictByType } from '#/features/iam';
 import { $t } from '#/locales';
 
-import { AgentChatModal as AgentChat } from '#/features/agent/ui';
 import AgentBasicInfo from './modules/agent-basic-info.vue';
 import AgentFlowCanvas from './modules/agent-flow-canvas.vue';
 import AgentVersionManager from './modules/agent-version-manager.vue';

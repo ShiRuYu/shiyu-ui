@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import type { KnowledgePoint } from '#/features/knowledge/api';
+import type { KnowledgeRelation } from '#/features/knowledge/api';
 import type {
   KnowledgeGraphEdge,
   KnowledgeGraphNode,
 } from '#/features/knowledge/ui/knowledge-graph-canvas.vue';
-
-import type { KnowledgePoint } from '#/features/knowledge/api';
-import type { KnowledgeRelation } from '#/features/knowledge/api';
 
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -36,11 +35,10 @@ import {
   deleteKnowledgeRelation,
   getKnowledgeRelations,
 } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
 import KnowledgeGraphCanvas from '#/features/knowledge/ui/knowledge-graph-canvas.vue';
 import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
+import { useKnowledgeStore } from '#/store';
 
 interface PointGraph {
   childNodes?: KnowledgePoint[];

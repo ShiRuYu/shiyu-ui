@@ -20,8 +20,8 @@ import {
 
 import { getQuestionBySubjectGrade } from '#/features/education';
 import { getSubjectOptions } from '#/features/education';
-import { $t } from '#/locales';
 import { EducationAdminQuestionPage as AdminQuestionList } from '#/features/education';
+import { $t } from '#/locales';
 
 const accessStore = useAccessStore();
 const router = useRouter();

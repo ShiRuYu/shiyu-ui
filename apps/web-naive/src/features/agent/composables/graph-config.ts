@@ -9,7 +9,7 @@ export interface ParsedGraphConfig {
 
 /** Convert the persisted graph shape into the editor's node/edge model. */
 export function parseGraphConfig(
-  config: Partial<AgentGraphApi.GraphConfigRequest> | null | undefined,
+  config: null | Partial<AgentGraphApi.GraphConfigRequest> | undefined,
 ): ParsedGraphConfig {
   const formNodes: AgentGraphApi.FormNode[] = [];
   const formEdges: AgentGraphApi.FormEdge[] = [];

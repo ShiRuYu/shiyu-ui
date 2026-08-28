@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { NEmpty, NList, NListItem, NTag, NSpace } from 'naive-ui';
-import { PlatformWorkspaceShell } from '#/shared';
-import { listRuntimeApprovals } from '#/features/agent';
 import type { RuntimeApproval } from '#/features/agent';
+
+import { onMounted, ref } from 'vue';
+
+import { NEmpty, NList, NListItem, NSpace, NTag } from 'naive-ui';
+
+import { listRuntimeApprovals } from '#/features/agent';
+import { PlatformWorkspaceShell } from '#/shared';
 
 const approvals = ref<RuntimeApproval[]>([]);
 onMounted(async () => {
@@ -19,10 +22,14 @@ onMounted(async () => {
     <NEmpty v-if="!approvals.length" description="暂无待审批工具调用" />
     <NList v-else bordered>
       <NListItem v-for="item in approvals" :key="item.id"
-        ><NSpace justify="space-between" style="width: 100%"
-          ><span>{{ item.toolName || item.id }}</span
-          ><NTag>{{ item.status }}</NTag></NSpace
-        ></NListItem
+        >
+<NSpace justify="space-between" style="width: 100%"
+          >
+<span>{{ item.toolName || item.id }}</span
+          ><NTag>{{ item.status }}</NTag>
+</NSpace
+        >
+</NListItem
       >
     </NList>
   </PlatformWorkspaceShell>

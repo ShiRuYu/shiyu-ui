@@ -36,10 +36,9 @@ import {
   replaceSpaceMembers,
   updateSpace,
 } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
 import KnowledgeStatusTag from '#/features/knowledge/ui/knowledge-status-tag.vue';
+import { useKnowledgeStore } from '#/store';
 
 const message = useMessage();
 const store = useKnowledgeStore();

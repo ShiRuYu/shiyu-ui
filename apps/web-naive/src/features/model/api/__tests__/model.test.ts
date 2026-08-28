@@ -12,16 +12,16 @@ vi.mock('#/shared/api/request', () => ({
 import {
   batchDeleteModel,
   createModel,
+  createPlatform,
   deleteModel,
+  deletePlatform,
   getModelPage,
-  updateModel,
   getPlatformOptions,
   getPlatformPage,
-  createPlatform,
-  deletePlatform,
   reloadPlatforms,
   setDefaultModel,
   setDefaultPlatform,
+  updateModel,
   updatePlatform,
 } from '../index';
 

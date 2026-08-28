@@ -8,7 +8,7 @@ const requestMock = vi.hoisted(() => ({
   upload: vi.fn(),
 }));
 const knowledgeStoreMock = vi.hoisted(() => ({
-  activeSpaceId: null as number | null,
+  activeSpaceId: null as null | number,
   loadSpaces: vi.fn(),
   spaces: [] as Array<{ domainCode: string }>,
 }));
@@ -19,11 +19,6 @@ vi.mock('#/store', () => ({ useKnowledgeStore: () => knowledgeStoreMock }));
 import * as documentApi from '../document';
 import * as enterpriseApi from '../enterprise';
 import * as evaluationApi from '../evaluation';
-import * as pointApi from '../point';
-import * as relationApi from '../relation';
-import * as searchApi from '../search';
-import * as spaceApi from '../space';
-
 import {
   createKnowledgeEvaluation,
   createSpace,
@@ -35,6 +30,10 @@ import {
   searchKnowledge,
   uploadDocument,
 } from '../index';
+import * as pointApi from '../point';
+import * as relationApi from '../relation';
+import * as searchApi from '../search';
+import * as spaceApi from '../space';
 
 describe('knowledge feature transport facades', () => {
   beforeEach(() => {

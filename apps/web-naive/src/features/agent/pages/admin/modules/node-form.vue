@@ -6,9 +6,9 @@ import { computed, ref, watch } from 'vue';
 
 import { NButton, NCheckbox, NInput, NInputNumber, NSelect } from 'naive-ui';
 
-import { requestClient } from '#/shared';
 import { getDictByType } from '#/features/iam';
 import { $t } from '#/locales';
+import { requestClient } from '#/shared';
 
 const props = defineProps<{
   nodeData: AgentGraphApi.FormNode;

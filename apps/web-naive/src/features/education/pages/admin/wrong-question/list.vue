@@ -12,11 +12,11 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import {
   deleteWrongQuestion,
   getWrongQuestionsByStudent,
 } from '#/features/education/api';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

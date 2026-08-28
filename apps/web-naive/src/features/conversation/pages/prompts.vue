@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import type { PromptSummary } from '#/features/conversation';
+
 import { onMounted, ref } from 'vue';
+
 import {
   NAlert,
   NButton,
@@ -12,13 +15,13 @@ import {
   NTag,
   useMessage,
 } from 'naive-ui';
-import { PlatformWorkspaceShell } from '#/shared';
+
 import {
   createPrompt,
   listPrompts,
   previewPrompt,
 } from '#/features/conversation';
-import type { PromptSummary } from '#/features/conversation';
+import { PlatformWorkspaceShell } from '#/shared';
 
 const notice = useMessage();
 const prompts = ref<PromptSummary[]>([]);
@@ -83,24 +86,34 @@ onMounted(load);
             placeholder="输入结构化 Prompt 模板，例如：{{question}}"
           />
           <NSpace
-            ><NButton type="primary" @click="save">保存草稿</NButton
+            >
+<NButton type="primary" @click="save">保存草稿</NButton
             ><NButton :loading="previewing" @click="previewTemplate"
-              >预览</NButton
-            ></NSpace
+              >
+预览
+</NButton
+            >
+</NSpace
           >
-          <NAlert v-if="preview" type="info" :bordered="false">{{
+          <NAlert v-if="preview" type="info" :bordered="false">
+{{
             preview
-          }}</NAlert>
+          }}
+</NAlert>
         </NSpace>
       </NCard>
       <NCard title="模板版本">
         <NEmpty v-if="!prompts.length" description="暂无 Prompt 模板" />
         <NList v-else :loading="loading" bordered>
           <NListItem v-for="item in prompts" :key="item.id"
-            ><NSpace justify="space-between" align="center" style="width: 100%"
-              ><span>{{ item.name }}</span
-              ><NTag size="small">{{ item.status || 'DRAFT' }}</NTag></NSpace
-            ></NListItem
+            >
+<NSpace justify="space-between" align="center" style="width: 100%"
+              >
+<span>{{ item.name }}</span
+              ><NTag size="small">{{ item.status || 'DRAFT' }}</NTag>
+</NSpace
+            >
+</NListItem
           >
         </NList>
       </NCard>

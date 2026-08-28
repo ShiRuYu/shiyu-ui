@@ -5,10 +5,10 @@ import { Page } from '@vben/common-ui';
 
 import { NCard, NGi, NGrid } from 'naive-ui';
 
-import { getOverview } from '#/features/education/api';
-import MetricCard from '#/shared/ui/metric-card.vue';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
+import { getOverview } from '#/features/education/api';
 import { $t } from '#/locales';
+import MetricCard from '#/shared/ui/metric-card.vue';
 
 const overview = ref<any>({});
 const { getCurrentStudentId } = useCurrentStudentId();

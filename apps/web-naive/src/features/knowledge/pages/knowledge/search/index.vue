@@ -22,9 +22,8 @@ import {
 import { storeToRefs } from 'pinia';
 
 import { searchKnowledge } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
 import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
+import { useKnowledgeStore } from '#/store';
 
 const message = useMessage();
 const store = useKnowledgeStore();

@@ -12,8 +12,8 @@ import { NButton } from 'naive-ui';
 
 import { dialog, message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteUser, getUserList, resetUserPassword } from '#/features/iam/api';
 import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
+import { deleteUser, getUserList, resetUserPassword } from '#/features/iam/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

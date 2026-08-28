@@ -78,7 +78,9 @@ async function changeSpace(value: null | number) {
         />
         <NButton :loading="loading" @click="emit('refresh')">刷新</NButton>
         <NButton @click="router.push('/knowledge-center/spaces')"
-          >空间设置</NButton
+          >
+空间设置
+</NButton
         >
         <NButton v-if="showImport" type="primary" @click="emit('import')">
           导入文档

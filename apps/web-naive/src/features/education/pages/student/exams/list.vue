@@ -17,9 +17,9 @@ import {
 } from 'naive-ui';
 
 import { getExamBySubject } from '#/features/education';
+import { EducationAdminExamPage as AdminExamList } from '#/features/education';
 import { getDictByType } from '#/features/iam';
 import { $t } from '#/locales';
-import { EducationAdminExamPage as AdminExamList } from '#/features/education';
 
 const accessStore = useAccessStore();
 const router = useRouter();

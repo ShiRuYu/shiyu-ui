@@ -5,8 +5,8 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NSelect, NSpace } from 'naive-ui';
 
-import { generateReport } from '#/features/agent';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
+import { generateReport } from '#/features/agent';
 import { $t } from '#/locales';
 
 const period = ref('WEEKLY');

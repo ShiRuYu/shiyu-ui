@@ -11,12 +11,11 @@ import { storeToRefs } from 'pinia';
 
 import { getDocuments, getJobs } from '#/features/knowledge/api';
 import { getKnowledgePoints } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
+import { getStageLabel } from '#/features/knowledge/model/status';
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
 import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
 import KnowledgeStatusTag from '#/features/knowledge/ui/knowledge-status-tag.vue';
-import { getStageLabel } from '#/features/knowledge/model/status';
+import { useKnowledgeStore } from '#/store';
 
 const router = useRouter();
 const store = useKnowledgeStore();

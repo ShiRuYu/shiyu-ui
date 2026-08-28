@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -13,7 +15,6 @@ import {
 } from 'naive-ui';
 
 import { listRuntimeApps, listRuntimeAppVersions } from '#/features/agent';
-import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const router = useRouter();

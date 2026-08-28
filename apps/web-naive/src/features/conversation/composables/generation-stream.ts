@@ -1,3 +1,6 @@
+import type { AiRunEvent, RuntimeMode } from '#/features/agent';
+import type { ChatApi } from '#/features/conversation/api/chat';
+
 import { ref } from 'vue';
 
 import {
@@ -5,14 +8,12 @@ import {
   getRuntimeRunEvents,
   streamGenerationRuntimeEvents,
 } from '#/features/agent';
-import type { AiRunEvent, RuntimeMode } from '#/features/agent';
 import {
   cancelGeneration,
   chatStream,
   retryGeneration as retryGenerationRequest,
   streamGeneration,
 } from '#/features/conversation/api/chat';
-import type { ChatApi } from '#/features/conversation/api/chat';
 
 export interface GenerationStreamHandlers {
   onChunk?: (chunk: string) => void;

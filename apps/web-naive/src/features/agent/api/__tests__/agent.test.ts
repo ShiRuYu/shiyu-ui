@@ -17,13 +17,6 @@ vi.mock('@vben/stores', () => ({
 }));
 
 import * as adminApi from '../admin';
-import * as graphApi from '../graph';
-import * as intentApi from '../intent-def';
-import * as nodeTypeApi from '../node-type';
-import * as runtimeApi from '../runtime';
-import * as tutorApi from '../tutor-agent';
-import * as versionApi from '../version';
-
 import {
   deleteAgent,
   executeAgent,
@@ -33,6 +26,12 @@ import {
   registerAgent,
   switchAgentVersion,
 } from '../agent';
+import * as graphApi from '../graph';
+import * as intentApi from '../intent-def';
+import * as nodeTypeApi from '../node-type';
+import * as runtimeApi from '../runtime';
+import * as tutorApi from '../tutor-agent';
+import * as versionApi from '../version';
 
 describe('agent feature transport facade', () => {
   beforeEach(() => {

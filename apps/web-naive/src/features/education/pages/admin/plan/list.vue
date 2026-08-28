@@ -12,8 +12,8 @@ import { NButton } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deletePlan, getPlansByStudent } from '#/features/education/api';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
+import { deletePlan, getPlansByStudent } from '#/features/education/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

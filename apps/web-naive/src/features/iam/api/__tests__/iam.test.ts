@@ -13,19 +13,19 @@ vi.mock('#/shared/api/request', () => ({
   requestClient: requestMock,
 }));
 
+import { getTimezone, setTimezone } from '../common/timezone';
 import {
   getAccessCodesApi,
-  getUserTenantsApi,
   getAllMenusApi,
   getTimezoneOptions,
   getUserInfoApi,
+  getUserTenantsApi,
   loginApi,
   logoutApi,
   refreshTokenApi,
   switchCurrentRoleApi,
   switchTenantApi,
 } from '../index';
-import { getTimezone, setTimezone } from '../common/timezone';
 import {
   createAuthCode,
   deleteAuthCode,
@@ -72,6 +72,13 @@ import {
   updateTenant,
 } from '../system/tenant';
 import {
+  deleteFile,
+  downloadFile,
+  getFileList,
+  getFileStorageConfig,
+  uploadFile,
+} from '../system/upload';
+import {
   changePassword,
   createUser,
   deleteUser,
@@ -83,13 +90,6 @@ import {
   resetUserPassword,
   updateUser,
 } from '../system/user';
-import {
-  deleteFile,
-  downloadFile,
-  getFileList,
-  getFileStorageConfig,
-  uploadFile,
-} from '../system/upload';
 
 describe('iAM feature transport facades', () => {
   beforeEach(() => {

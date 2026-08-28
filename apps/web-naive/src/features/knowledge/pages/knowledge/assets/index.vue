@@ -35,10 +35,9 @@ import {
   getKnowledgePoints,
   updateKnowledgePoint,
 } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
 import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
+import { useKnowledgeStore } from '#/store';
 
 const router = useRouter();
 const message = useMessage();

@@ -11,8 +11,8 @@ import { Plus } from '@vben/icons';
 import { NButton } from 'naive-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteTenant, getTenantList } from '#/features/iam/api';
 import { useDeleteConfirm } from '#/composables/useDeleteConfirm';
+import { deleteTenant, getTenantList } from '#/features/iam/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';

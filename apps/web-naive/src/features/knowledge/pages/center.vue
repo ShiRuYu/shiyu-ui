@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { KnowledgeSpace } from '#/features/knowledge/api';
+
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { NAlert, NButton, NEmpty, NList, NListItem, NSpin } from 'naive-ui';
 
 import { getKnowledgeSpaceOptions } from '#/features/knowledge/api';
-import type { KnowledgeSpace } from '#/features/knowledge/api';
 import { PlatformWorkspaceShell } from '#/shared';
 const spaces = ref<KnowledgeSpace[]>([]);
 const router = useRouter();
@@ -69,9 +70,11 @@ onMounted(async () => {
     <template #side>
       <h3>快捷操作</h3>
       <NButton block secondary @click="router.push('/knowledge-center/search')">
-        检索实验室 </NButton
+        检索实验室
+</NButton
       ><NButton block secondary @click="router.push('/knowledge-center/graph')">
-        图谱洞察 </NButton
+        图谱洞察
+</NButton
       ><NButton
         block
         secondary

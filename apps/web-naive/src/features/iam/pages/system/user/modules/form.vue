@@ -4,9 +4,9 @@ import type { SystemUserApi } from '#/features/iam/api';
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import { NButton } from 'naive-ui';
-import { useUserStore } from '@vben/stores';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';

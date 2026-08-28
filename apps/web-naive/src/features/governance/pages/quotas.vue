@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { DailyUsage, UsageOverview } from '#/features/governance';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -15,7 +17,6 @@ import {
 } from 'naive-ui';
 
 import { getDailyUsageApi, getUsageOverviewApi } from '#/features/governance';
-import type { DailyUsage, UsageOverview } from '#/features/governance';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const router = useRouter();

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { SearchResponse } from '#/features/knowledge/api';
+
 import { ref } from 'vue';
 
 import {
@@ -15,7 +17,6 @@ import {
 } from 'naive-ui';
 
 import { searchKnowledge } from '#/features/knowledge/api';
-import type { SearchResponse } from '#/features/knowledge/api';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const notice = useMessage();
@@ -68,7 +69,8 @@ async function search() {
         :disabled="!query.trim()"
         @click="search"
       >
-        开始检索 </NButton
+        开始检索
+</NButton
       ><NAlert v-if="error" type="warning" :bordered="false">{{ error }}</NAlert
       ><NSpin v-if="loading" /><NEmpty
         v-else-if="!result?.hits?.length"

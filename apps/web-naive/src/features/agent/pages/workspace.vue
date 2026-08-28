@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent/api';
+
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -16,9 +18,8 @@ import {
   useMessage,
 } from 'naive-ui';
 
-import { chatStream } from '#/features/conversation';
 import { listRuntimeApps, listRuntimeAppVersions } from '#/features/agent/api';
-import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent/api';
+import { chatStream } from '#/features/conversation';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const notice = useMessage();

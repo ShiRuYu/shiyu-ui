@@ -9,8 +9,8 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { createPlan, updatePlan } from '#/features/education/api';
 import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
+import { createPlan, updatePlan } from '#/features/education/api';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';

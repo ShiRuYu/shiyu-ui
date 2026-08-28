@@ -24,11 +24,10 @@ import {
 
 import { message } from '#/adapter/naive';
 import { deleteAdminAgent, getAdminAgentPage } from '#/features/agent/api';
+import { AgentChatModal as ChatModal } from '#/features/agent/ui';
+import { $t } from '#/locales';
 import BusinessEmptyState from '#/shared/ui/business-empty-state.vue';
 import FilterBar from '#/shared/ui/filter-bar.vue';
-import { $t } from '#/locales';
-
-import { AgentChatModal as ChatModal } from '#/features/agent/ui';
 
 const router = useRouter();
 

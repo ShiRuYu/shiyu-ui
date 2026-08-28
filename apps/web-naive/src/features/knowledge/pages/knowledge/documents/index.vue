@@ -48,12 +48,11 @@ import {
   getKnowledgePoint,
   getKnowledgePoints,
 } from '#/features/knowledge/api';
-import { useKnowledgeStore } from '#/store';
-
+import { lifecycleStatusOptions } from '#/features/knowledge/model/status';
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
 import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
 import KnowledgeStatusTag from '#/features/knowledge/ui/knowledge-status-tag.vue';
-import { lifecycleStatusOptions } from '#/features/knowledge/model/status';
+import { useKnowledgeStore } from '#/store';
 
 const message = useMessage();
 const router = useRouter();

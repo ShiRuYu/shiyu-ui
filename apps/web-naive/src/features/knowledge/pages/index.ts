@@ -1,5 +1,4 @@
 export { default as KnowledgeCenterPage } from './center.vue';
-export { default as KnowledgeRagPage } from './rag.vue';
 export { default as KnowledgeAssetsPage } from './knowledge/assets/index.vue';
 export { default as KnowledgeDocumentsPage } from './knowledge/documents/index.vue';
 export { default as KnowledgeEvaluationsPage } from './knowledge/evaluations/index.vue';
@@ -9,3 +8,4 @@ export { default as KnowledgeOperationsPage } from './knowledge/operations/index
 export { default as KnowledgeSearchPage } from './knowledge/search/index.vue';
 export { default as KnowledgeSpacesPage } from './knowledge/spaces/index.vue';
 export { default as KnowledgeWorkbenchPage } from './knowledge/workbench/index.vue';
+export { default as KnowledgeRagPage } from './rag.vue';

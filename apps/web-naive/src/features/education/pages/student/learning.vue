@@ -21,8 +21,8 @@ import {
 } from 'naive-ui';
 
 import { getCourseList, getSubjectList } from '#/features/education';
-import { $t } from '#/locales';
 import { EducationAdminCoursePage as AdminCourseList } from '#/features/education';
+import { $t } from '#/locales';
 
 const accessStore = useAccessStore();
 const router = useRouter();
