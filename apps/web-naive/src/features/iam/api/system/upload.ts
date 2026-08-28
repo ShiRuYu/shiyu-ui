@@ -74,6 +74,3 @@ export async function uploadFile({
     throw normalized;
   }
 }
-
-/** @deprecated Use uploadFile. */
-export const upload_file = uploadFile;

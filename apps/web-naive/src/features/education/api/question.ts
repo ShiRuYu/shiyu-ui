@@ -93,12 +93,3 @@ export async function getQuestionOptions() {
   const result = await getAllQuestions(1, 1000);
   return (result?.items || []).map((q: any) => ({ id: q.id, title: q.title }));
 }
-
-// ---- 兼容别名 ----
-export const getQuestionDetailApi = getQuestionById;
-export const getQuestionBySubjectAndGradeApi = getQuestionBySubjectGrade;
-export const getQuestionByDifficultyApi = getQuestionByDifficulty;
-export const getQuestionByTypeApi = getQuestionByType;
-export const createQuestionApi = createQuestion;
-export const updateQuestionApi = updateQuestion;
-export const deleteQuestionApi = deleteQuestion;

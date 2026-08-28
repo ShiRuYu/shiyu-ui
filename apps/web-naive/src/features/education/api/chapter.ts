@@ -90,11 +90,3 @@ export async function getChapterOptions(textbookId?: number) {
   const chapters = await getChaptersByTextbook(textbookId);
   return (chapters || []).map((c: any) => ({ id: c.id, name: c.name }));
 }
-
-// ---- 兼容别名（部分旧代码使用 *Api 后缀） ----
-export const getChapterDetailApi = getChapterById;
-export const getChapterByTextbookApi = getChaptersByTextbook;
-export const getChapterTreeApi = getChapterTree;
-export const createChapterApi = createChapter;
-export const updateChapterApi = updateChapter;
-export const deleteChapterApi = deleteChapter;
