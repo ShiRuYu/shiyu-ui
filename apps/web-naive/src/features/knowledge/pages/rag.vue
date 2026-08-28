@@ -69,7 +69,8 @@ async function search() {
         :disabled="!query.trim()"
         @click="search"
       >
-        开始检索 </NButton
+        开始检索
+</NButton
       ><NAlert v-if="error" type="warning" :bordered="false">{{ error }}</NAlert
       ><NSpin v-if="loading" /><NEmpty
         v-else-if="!result?.hits?.length"

@@ -44,7 +44,8 @@ onMounted(async () => {
             ><small>{{ plugin.version || '未标记版本' }}</small></span
           ><NSpace>
             <NTag :type="plugin.signed ? 'success' : 'warning'">
-              {{ plugin.signed ? '已签名' : '待校验' }} </NTag
+              {{ plugin.signed ? '已签名' : '待校验' }}
+</NTag
             ><NButton size="small">查看权限</NButton>
           </NSpace>
         </NSpace>
