@@ -2,6 +2,10 @@ import { defineConfig } from '@vben/eslint-config';
 
 export default defineConfig([
   {
+    // OpenAPI output is formatted by the generation script with oxfmt.
+    ignores: ['apps/web-naive/src/shared/api/generated/schema.ts'],
+  },
+  {
     files: ['**/*.vue'],
     rules: {
       // Oxfmt owns template whitespace and intentionally wraps some closing

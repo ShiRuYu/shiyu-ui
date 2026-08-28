@@ -97,6 +97,7 @@
     "happy-dom": "catalog:",
     "is-ci": "catalog:",
     "lefthook": "catalog:",
+    "openapi-typescript": "7.13.0",
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "oxlint-tsgolint": "catalog:",
