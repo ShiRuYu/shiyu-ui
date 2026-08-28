@@ -1,0 +1,39 @@
+{
+  "source": [
+    "shiyu-ai/domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql",
+    "shiyu-ai/domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"
+  ],
+  "featureIds": [
+    "feature:knowledge.spaces",
+    "feature:knowledge.documents",
+    "feature:knowledge.search",
+    "feature:knowledge.graph",
+    "feature:knowledge.evaluations",
+    "feature:record.profiles",
+    "feature:record.timeline",
+    "feature:record.content",
+    "feature:governance.observability",
+    "feature:governance.approvals",
+    "feature:model.models",
+    "feature:tooling.plugins",
+    "feature:iam.users",
+    "feature:iam.roles",
+    "feature:iam.menus",
+    "feature:iam.tenants",
+    "feature:iam.dictionaries",
+    "feature:iam.auth-codes",
+    "feature:agent.execution",
+    "feature:knowledge.retrieval",
+    "feature:agent.admin",
+    "feature:agent.intents",
+    "feature:education.learning",
+    "feature:education.practice",
+    "feature:education.analytics",
+    "feature:education.tutor",
+    "feature:conversation.chat",
+    "feature:conversation.prompts",
+    "feature:agent.apps",
+    "feature:iam.files",
+    "feature:governance.quotas"
+  ]
+}
