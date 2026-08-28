@@ -39,12 +39,43 @@ def clean(value: str) -> str:
     return "" if value.upper() == "NULL" else value
 
 
-def component_file(views: Path, component: str) -> Path | None:
-    if not component:
-        return None
-    relative = component.strip("/")
-    candidates = [views / f"{relative}.vue", views / relative / "index.vue"]
-    return next((path for path in candidates if path.is_file()), None)
+FEATURE_COMPONENTS = {
+    "feature:agent.admin",
+    "feature:agent.apps",
+    "feature:agent.execution",
+    "feature:agent.intents",
+    "feature:conversation.chat",
+    "feature:conversation.prompts",
+    "feature:education.analytics",
+    "feature:education.learning",
+    "feature:education.practice",
+    "feature:education.tutor",
+    "feature:governance.approvals",
+    "feature:governance.observability",
+    "feature:governance.quotas",
+    "feature:iam.auth-codes",
+    "feature:iam.dictionaries",
+    "feature:iam.files",
+    "feature:iam.menus",
+    "feature:iam.roles",
+    "feature:iam.tenants",
+    "feature:iam.users",
+    "feature:knowledge.documents",
+    "feature:knowledge.evaluations",
+    "feature:knowledge.graph",
+    "feature:knowledge.retrieval",
+    "feature:knowledge.search",
+    "feature:knowledge.spaces",
+    "feature:model.models",
+    "feature:record.content",
+    "feature:record.profiles",
+    "feature:record.timeline",
+    "feature:tooling.plugins",
+}
+
+
+def component_file(component: str) -> Path | None:
+    return Path(component) if component in FEATURE_COMPONENTS else None
 
 
 def main() -> None:
@@ -53,11 +84,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--seed-file",
-        default=str(backend / "infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/02_auth.sql"),
+        default=str(backend / "shiyu-domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql"),
     )
     parser.add_argument(
         "--navigation-file",
-        default=str(backend / "infrastructure/shiyu-ai-dal/src/main/resources/db/baseline/h2/seed/05_navigation.sql"),
+        default=str(backend / "shiyu-domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"),
     )
     args = parser.parse_args()
 
@@ -100,7 +131,6 @@ def main() -> None:
             }
         )
 
-    views = root / "apps/web-naive/src/views"
     missing = []
     lines = [
         "# 页面路由与角色清单",
@@ -114,11 +144,13 @@ def main() -> None:
         "",
         "## 完整清单",
         "",
+        "> Agent 平台与知识引擎页面均通过 feature 公共入口装配。",
+        "",
         "| ID | 类型 | 页面/目录 | 路由 | 组件 | 可见 | 初始角色 | 组件校验 |",
         "|---:|---|---|---|---|---|---|---|",
     ]
     for menu in sorted(menus, key=lambda item: item["id"]):
-        file = component_file(views, menu["component"])
+        file = component_file(menu["component"])
         if menu["type"] == "MENU" and not file:
             missing.append(f"{menu['id']} {menu['path']} -> {menu['component']}")
         component_status = "目录" if menu["type"] == "CATALOG" else ("存在" if file else "缺失")
@@ -133,10 +165,10 @@ def main() -> None:
             "## 使用规则",
             "",
             "- `CATALOG` 负责导航分组，不对应 Vue 页面文件。",
-            "- `MENU` 的组件路径必须对应 `apps/web-naive/src/views/<component>.vue` 或 `<component>/index.vue`。",
+            "- `MENU` 的组件字段必须使用 `feature:<domain>.<page>` 语义标识，旧 views 路径会被拒绝。",
             "- 隐藏页面仍由动态路由注册，用于编辑、详情、答题和结果等上下文跳转。",
             "- 初始角色仅描述 seed 基线；实际可达性还受当前租户授权、角色状态和后端权限码约束。",
-            "- 修改后端菜单 seed 或前端 views 后重新执行本脚本；存在缺失组件时脚本以非零状态退出。",
+            "- 修改后端菜单 seed 或 feature 公共入口后重新执行本脚本；存在缺失组件时脚本以非零状态退出。",
             "",
         ]
     )
