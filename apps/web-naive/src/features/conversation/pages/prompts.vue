@@ -85,36 +85,26 @@ onMounted(load);
             :autosize="{ minRows: 8, maxRows: 18 }"
             placeholder="输入结构化 Prompt 模板，例如：{{question}}"
           />
-          <NSpace
-            >
-<NButton type="primary" @click="save">保存草稿</NButton
-            ><NButton :loading="previewing" @click="previewTemplate"
-              >
-预览
-</NButton
-            >
-</NSpace
-          >
+          <NSpace>
+            <NButton type="primary" @click="save">保存草稿</NButton
+            ><NButton :loading="previewing" @click="previewTemplate">
+              预览
+            </NButton>
+          </NSpace>
           <NAlert v-if="preview" type="info" :bordered="false">
-{{
-            preview
-          }}
-</NAlert>
+            {{ preview }}
+          </NAlert>
         </NSpace>
       </NCard>
       <NCard title="模板版本">
         <NEmpty v-if="!prompts.length" description="暂无 Prompt 模板" />
         <NList v-else :loading="loading" bordered>
-          <NListItem v-for="item in prompts" :key="item.id"
-            >
-<NSpace justify="space-between" align="center" style="width: 100%"
-              >
-<span>{{ item.name }}</span
+          <NListItem v-for="item in prompts" :key="item.id">
+            <NSpace justify="space-between" align="center" style="width: 100%">
+              <span>{{ item.name }}</span
               ><NTag size="small">{{ item.status || 'DRAFT' }}</NTag>
-</NSpace
-            >
-</NListItem
-          >
+            </NSpace>
+          </NListItem>
         </NList>
       </NCard>
     </div>

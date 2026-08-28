@@ -21,16 +21,12 @@ onMounted(async () => {
   >
     <NEmpty v-if="!approvals.length" description="暂无待审批工具调用" />
     <NList v-else bordered>
-      <NListItem v-for="item in approvals" :key="item.id"
-        >
-<NSpace justify="space-between" style="width: 100%"
-          >
-<span>{{ item.toolName || item.id }}</span
+      <NListItem v-for="item in approvals" :key="item.id">
+        <NSpace justify="space-between" style="width: 100%">
+          <span>{{ item.toolName || item.id }}</span
           ><NTag>{{ item.status }}</NTag>
-</NSpace
-        >
-</NListItem
-      >
+        </NSpace>
+      </NListItem>
     </NList>
   </PlatformWorkspaceShell>
 </template>
