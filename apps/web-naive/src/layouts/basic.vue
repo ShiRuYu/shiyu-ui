@@ -9,10 +9,10 @@ import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { parseExtInfo } from '@vben/utils';
 
+import LoginForm from '#/app/pages/core/authentication/login.vue';
 import { $t } from '#/locales';
 import { resetRoutes } from '#/router';
 import { useAuthStore } from '#/store';
-import LoginForm from '#/app/pages/core/authentication/login.vue';
 
 const router = useRouter();
 const userStore = useUserStore();
