@@ -68,12 +68,6 @@ const pageMap: ComponentRecordType = {
   'feature:knowledge.spaces': () =>
     import('#/features/knowledge/pages/knowledge/spaces/index.vue'),
   'feature:model.models': () => import('#/features/model/pages/model/list.vue'),
-  'feature:record.content': () =>
-    import('#/features/record/pages/record/content/index.vue'),
-  'feature:record.profiles': () =>
-    import('#/features/record/pages/record/profiles/index.vue'),
-  'feature:record.timeline': () =>
-    import('#/features/record/pages/record/timeline/index.vue'),
   'feature:tooling.plugins': () =>
     import('#/features/tooling/pages/plugin/index.vue'),
 };

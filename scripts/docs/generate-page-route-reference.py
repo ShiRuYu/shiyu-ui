@@ -67,9 +67,6 @@ FEATURE_COMPONENTS = {
     "feature:knowledge.search",
     "feature:knowledge.spaces",
     "feature:model.models",
-    "feature:record.content",
-    "feature:record.profiles",
-    "feature:record.timeline",
     "feature:tooling.plugins",
 }
 

@@ -153,7 +153,6 @@ test.describe('web-naive critical journeys', () => {
       '/education-center/practice',
       '/education-center/analytics',
       '/education-center/ai-tutor',
-      '/record/content',
       '/system/user',
     ]) {
       await page.goto(path);

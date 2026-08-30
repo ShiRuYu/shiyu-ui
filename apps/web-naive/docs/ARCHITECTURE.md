@@ -68,7 +68,6 @@ src/
 │   ├── education/             # 教育模块接口
 │   ├── education-admin/       # 教育管理后台接口
 │   ├── knowledge/             # 知识库接口
-│   ├── record/                # 成长记录接口
 │   ├── common/                # 通用接口
 │   └── system/                # 系统管理接口
 │
@@ -112,7 +111,6 @@ src/
     ├── knowledge/             # 企业知识平台
     ├── learning/              # 学习
     ├── practice/              # 练习
-    ├── record/                # 成长记录
     ├── review/                # 复习
     ├── system/                # 系统设置
     └── _core/                 # 核心页面（登录、个人信息、404）

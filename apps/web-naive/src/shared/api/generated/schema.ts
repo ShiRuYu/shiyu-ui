@@ -217,310 +217,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/record/timeline/update': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['update_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/timeline/delete': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['delete_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/timeline/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['create'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/update': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['update_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/delete': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['delete_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['create_1'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/record/update': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['update_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/record/delete': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['delete_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/record/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['create_2'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/profile/update': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['update_5'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/profile/delete': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['delete_5'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/profile/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['create_3'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/update': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['update_6'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/tts': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['tts'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/translate': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['translate'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/image/understand': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['understand'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/image/generate': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['generate'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/delete': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['delete_6'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/create': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post: operations['create_4'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/model/routes': {
     parameters: {
       query?: never;
@@ -563,7 +259,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Update */
-    post: operations['update_7'];
+    post: operations['update_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -614,7 +310,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Delete */
-    post: operations['delete_7'];
+    post: operations['delete_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -631,7 +327,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Create */
-    post: operations['create_5'];
+    post: operations['create'];
     delete?: never;
     options?: never;
     head?: never;
@@ -648,7 +344,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Update */
-    post: operations['update_8'];
+    post: operations['update_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -682,7 +378,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Delete */
-    post: operations['delete_8'];
+    post: operations['delete_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -699,7 +395,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Create */
-    post: operations['create_6'];
+    post: operations['create_1'];
     delete?: never;
     options?: never;
     head?: never;
@@ -717,6 +413,70 @@ export interface paths {
     put?: never;
     /** Delete Batch */
     post: operations['deleteBatch'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/model/media/tts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['tts'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/model/media/translate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['translate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/model/media/image/understand': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['understand'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/model/media/image/generate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['generate'];
     delete?: never;
     options?: never;
     head?: never;
@@ -860,7 +620,7 @@ export interface paths {
     };
     get: operations['page'];
     put?: never;
-    post: operations['create_7'];
+    post: operations['create_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -876,7 +636,7 @@ export interface paths {
     };
     get: operations['page_1'];
     put?: never;
-    post: operations['create_8'];
+    post: operations['create_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -972,7 +732,7 @@ export interface paths {
     };
     get: operations['list_1'];
     put?: never;
-    post: operations['create_9'];
+    post: operations['create_4'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1036,7 +796,7 @@ export interface paths {
     };
     get: operations['page_3'];
     put?: never;
-    post: operations['create_10'];
+    post: operations['create_5'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1742,7 +1502,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Update Auth Code */
-    post: operations['update_9'];
+    post: operations['update_4'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1810,7 +1570,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Delete Auth Code */
-    post: operations['delete_9'];
+    post: operations['delete_4'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1827,7 +1587,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Create Auth Code */
-    post: operations['create_11'];
+    post: operations['create_6'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1843,7 +1603,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_10'];
+    post: operations['update_5'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1859,7 +1619,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_10'];
+    post: operations['delete_5'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1875,7 +1635,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_12'];
+    post: operations['create_7'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1891,7 +1651,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_11'];
+    post: operations['update_6'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1907,7 +1667,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_11'];
+    post: operations['delete_6'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1923,7 +1683,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_13'];
+    post: operations['create_8'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1939,7 +1699,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_12'];
+    post: operations['update_7'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1955,7 +1715,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_12'];
+    post: operations['delete_7'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1971,7 +1731,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_14'];
+    post: operations['create_9'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1987,7 +1747,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_13'];
+    post: operations['update_8'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2003,7 +1763,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_13'];
+    post: operations['delete_8'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2019,7 +1779,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_15'];
+    post: operations['create_10'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2035,7 +1795,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_14'];
+    post: operations['update_9'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2051,7 +1811,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_14'];
+    post: operations['delete_9'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2067,7 +1827,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_16'];
+    post: operations['create_11'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2083,7 +1843,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_15'];
+    post: operations['update_10'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2099,7 +1859,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_15'];
+    post: operations['delete_10'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2115,7 +1875,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_17'];
+    post: operations['create_12'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2147,7 +1907,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_16'];
+    post: operations['update_11'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2163,7 +1923,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_16'];
+    post: operations['delete_11'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2179,7 +1939,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_18'];
+    post: operations['create_13'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2195,7 +1955,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_17'];
+    post: operations['update_12'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2211,7 +1971,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_17'];
+    post: operations['delete_12'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2227,7 +1987,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_19'];
+    post: operations['create_14'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2243,7 +2003,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_18'];
+    post: operations['update_13'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2259,7 +2019,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_18'];
+    post: operations['delete_13'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2275,7 +2035,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_20'];
+    post: operations['create_15'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2291,7 +2051,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_19'];
+    post: operations['update_14'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2323,7 +2083,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_19'];
+    post: operations['delete_14'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2339,7 +2099,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_21'];
+    post: operations['create_16'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2355,7 +2115,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_20'];
+    post: operations['update_15'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2387,7 +2147,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_20'];
+    post: operations['delete_15'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2403,7 +2163,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_22'];
+    post: operations['create_17'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2451,7 +2211,7 @@ export interface paths {
     };
     get: operations['list_2'];
     put?: never;
-    post: operations['create_23'];
+    post: operations['create_18'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2547,7 +2307,7 @@ export interface paths {
     };
     get: operations['list_3'];
     put?: never;
-    post: operations['create_24'];
+    post: operations['create_19'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3186,7 +2946,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['update_21'];
+    post: operations['update_16'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3202,7 +2962,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['delete_21'];
+    post: operations['delete_16'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3218,7 +2978,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_25'];
+    post: operations['create_20'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3351,7 +3111,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['create_26'];
+    post: operations['create_21'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3529,7 +3289,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Update */
-    post: operations['update_22'];
+    post: operations['update_17'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3580,7 +3340,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Delete */
-    post: operations['delete_22'];
+    post: operations['delete_17'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3614,7 +3374,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Create */
-    post: operations['create_27'];
+    post: operations['create_22'];
     delete?: never;
     options?: never;
     head?: never;
@@ -3631,10 +3391,10 @@ export interface paths {
     get: operations['detail'];
     put?: never;
     post?: never;
-    delete: operations['delete_23'];
+    delete: operations['delete_18'];
     options?: never;
     head?: never;
-    patch: operations['update_23'];
+    patch: operations['update_18'];
     trace?: never;
   };
   '/api/tooling/tools/mcp/tools': {
@@ -3738,200 +3498,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/record/timeline/profile': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getTimelineByProfileId'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/timeline/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getPage'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/timeline/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getById'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getPage_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getById_1'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/tag/all': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getAll'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/record/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getPage_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/record/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getById_2'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/profile/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getPage_3'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/profile/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations['getById_3'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/list': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 分页查询附件列表 */
-    get: operations['getPage_4'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/record/media/detail': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 查询附件 */
-    get: operations['getById_4'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/model/providers': {
     parameters: {
       query?: never;
@@ -3988,7 +3554,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get Page */
-    get: operations['getPage_5'];
+    get: operations['getPage'];
     put?: never;
     post?: never;
     delete?: never;
@@ -4039,7 +3605,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get by Id */
-    get: operations['getById_5'];
+    get: operations['getById'];
     put?: never;
     post?: never;
     delete?: never;
@@ -4157,7 +3723,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get Page */
-    get: operations['getPage_6'];
+    get: operations['getPage_1'];
     put?: never;
     post?: never;
     delete?: never;
@@ -4191,7 +3757,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get by Id */
-    get: operations['getById_6'];
+    get: operations['getById_1'];
     put?: never;
     post?: never;
     delete?: never;
@@ -4386,7 +3952,7 @@ export interface paths {
     get: operations['get_3'];
     put?: never;
     post?: never;
-    delete: operations['delete_24'];
+    delete: operations['delete_19'];
     options?: never;
     head?: never;
     patch?: never;
@@ -5165,7 +4731,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_7'];
+    get: operations['getById_2'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5213,7 +4779,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_8'];
+    get: operations['getById_3'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5261,7 +4827,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_9'];
+    get: operations['getById_4'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5325,7 +4891,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_10'];
+    get: operations['getById_5'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5389,7 +4955,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_11'];
+    get: operations['getById_6'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5437,7 +5003,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_12'];
+    get: operations['getById_7'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5501,7 +5067,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_13'];
+    get: operations['getById_8'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5666,7 +5232,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_14'];
+    get: operations['getById_9'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5730,7 +5296,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_15'];
+    get: operations['getById_10'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5810,7 +5376,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_16'];
+    get: operations['getById_11'];
     put?: never;
     post?: never;
     delete?: never;
@@ -5874,7 +5440,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['getById_17'];
+    get: operations['getById_12'];
     put?: never;
     post?: never;
     delete?: never;
@@ -6442,7 +6008,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get Page */
-    get: operations['getPage_7'];
+    get: operations['getPage_2'];
     put?: never;
     post?: never;
     delete?: never;
@@ -6527,7 +6093,7 @@ export interface paths {
       cookie?: never;
     };
     /** Get by Id */
-    get: operations['getById_18'];
+    get: operations['getById_13'];
     put?: never;
     post?: never;
     delete?: never;
@@ -6563,7 +6129,7 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    delete: operations['delete_25'];
+    delete: operations['delete_20'];
     options?: never;
     head?: never;
     patch?: never;
@@ -6579,7 +6145,7 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    delete: operations['delete_26'];
+    delete: operations['delete_21'];
     options?: never;
     head?: never;
     patch?: never;
@@ -6596,7 +6162,7 @@ export interface paths {
     put?: never;
     post?: never;
     /** 删除文件 */
-    delete: operations['delete_27'];
+    delete: operations['delete_22'];
     options?: never;
     head?: never;
     patch?: never;
@@ -6750,224 +6316,6 @@ export interface components {
       error?: string;
       success?: boolean;
     };
-    TimelineEventRequest: {
-      /** Format: int64 */
-      profileId: number;
-      title: string;
-      /** Format: date-time */
-      eventTime?: string;
-      /** Format: date-time */
-      eventDate?: string;
-      eventType?: string;
-    };
-    ResultBoolean: {
-      /** Format: int32 */
-      code?: number;
-      data?: boolean;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MediaVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      recordId?: number;
-      url?: string;
-      type?: string;
-      /** Format: int64 */
-      size?: number;
-      /** Format: int32 */
-      duration?: number;
-      /** Format: int32 */
-      width?: number;
-      /** Format: int32 */
-      height?: number;
-      /** Format: int32 */
-      sort?: number;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    RecordVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      eventId?: number;
-      content?: string;
-      mood?: string;
-      location?: string;
-      weather?: string;
-      /** Format: date-time */
-      createTime?: string;
-      mediaList?: components['schemas']['MediaVO'][];
-      tags?: components['schemas']['TagVO'][];
-    };
-    ResultTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TimelineEventVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TagVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      /** Format: date-time */
-      createTime?: string;
-    };
-    TimelineEventVO: {
-      /** Format: int64 */
-      id?: number;
-      /** Format: int64 */
-      profileId?: number;
-      title?: string;
-      /** Format: date-time */
-      eventTime?: string;
-      type?: string;
-      visibility?: string;
-      /** Format: int64 */
-      createdBy?: number;
-      /** Format: date-time */
-      createTime?: string;
-      record?: components['schemas']['RecordVO'];
-      mediaList?: components['schemas']['MediaVO'][];
-    };
-    TagRequest: {
-      name: string;
-    };
-    ResultTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TagVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    RecordRequest: {
-      /** Format: int64 */
-      eventId: number;
-      content?: string;
-    };
-    ResultRecordVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['RecordVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ProfileRequest: {
-      name: string;
-      avatar?: string;
-    };
-    ProfileVO: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
-      gender?: string;
-      /** Format: date-time */
-      birthDate?: string;
-      avatar?: string;
-      /** Format: int32 */
-      status?: number;
-      /** Format: date-time */
-      createTime?: string;
-      /** Format: date-time */
-      updateTime?: string;
-    };
-    ResultProfileVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ProfileVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    MediaRequest: {
-      /** Format: int64 */
-      recordId: number;
-      url: string;
-      mediaType?: string;
-    };
-    TtsRequest: {
-      provider?: string;
-      text?: string;
-      voice?: string;
-      format?: string;
-    };
-    ResultMapStringString: {
-      /** Format: int32 */
-      code?: number;
-      data?: {
-        [key: string]: string;
-      };
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    TranslateRequest: {
-      provider?: string;
-      text?: string;
-      sourceLanguage?: string;
-      targetLanguage?: string;
-    };
-    ResultString: {
-      /** Format: int32 */
-      code?: number;
-      data?: string;
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ImageRequest: {
-      provider?: string;
-      imageBase64?: string;
-      mimeType?: string;
-      instruction?: string;
-    };
-    ResultVisionResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['VisionResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    VisionResult: {
-      text?: string;
-      labels?: string[];
-    };
-    GenerateRequest: {
-      provider?: string;
-      prompt?: string;
-      format?: string;
-    };
-    ImageResult: {
-      objectKey?: string;
-      mimeType?: string;
-      /** Format: int32 */
-      width?: number;
-      /** Format: int32 */
-      height?: number;
-    };
-    ResultImageResult: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['ImageResult'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultMediaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['MediaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
     RouteRequest: {
       name?: string;
       orderedModels?: string[];
@@ -7112,6 +6460,75 @@ export interface components {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['AiModelVO'];
+      message?: string;
+      error?: string;
+      success?: boolean;
+    };
+    TtsRequest: {
+      provider?: string;
+      text?: string;
+      voice?: string;
+      format?: string;
+    };
+    ResultMapStringString: {
+      /** Format: int32 */
+      code?: number;
+      data?: {
+        [key: string]: string;
+      };
+      message?: string;
+      error?: string;
+      success?: boolean;
+    };
+    TranslateRequest: {
+      provider?: string;
+      text?: string;
+      sourceLanguage?: string;
+      targetLanguage?: string;
+    };
+    ResultString: {
+      /** Format: int32 */
+      code?: number;
+      data?: string;
+      message?: string;
+      error?: string;
+      success?: boolean;
+    };
+    ImageRequest: {
+      provider?: string;
+      imageBase64?: string;
+      mimeType?: string;
+      instruction?: string;
+    };
+    ResultVisionResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['VisionResult'];
+      message?: string;
+      error?: string;
+      success?: boolean;
+    };
+    VisionResult: {
+      text?: string;
+      labels?: string[];
+    };
+    GenerateRequest: {
+      provider?: string;
+      prompt?: string;
+      format?: string;
+    };
+    ImageResult: {
+      objectKey?: string;
+      mimeType?: string;
+      /** Format: int32 */
+      width?: number;
+      /** Format: int32 */
+      height?: number;
+    };
+    ResultImageResult: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ImageResult'];
       message?: string;
       error?: string;
       success?: boolean;
@@ -7886,6 +7303,14 @@ export interface components {
       code: string;
       /** @description 验证码Key（从 /captcha 接口获取） */
       captchaKey: string;
+    };
+    ResultBoolean: {
+      /** Format: int32 */
+      code?: number;
+      data?: boolean;
+      message?: string;
+      error?: string;
+      success?: boolean;
     };
     /** @description 切换角色请求 */
     SwitchRoleRequest: {
@@ -9633,119 +9058,6 @@ export interface components {
       error?: string;
       success?: boolean;
     };
-    ResultListTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TimelineEventVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    FilterCondition: {
-      field?: string;
-      /** @enum {string} */
-      operator?:
-        | 'EQ'
-        | 'NE'
-        | 'GT'
-        | 'GE'
-        | 'LT'
-        | 'LE'
-        | 'LIKE'
-        | 'IN'
-        | 'NOT_IN'
-        | 'IS_NULL'
-        | 'IS_NOT_NULL';
-      value?: unknown;
-    };
-    OrderField: {
-      column?: string;
-      /** @enum {string} */
-      direction?: 'ASC' | 'DESC';
-    };
-    PageQuery: {
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      pageNum?: number;
-      orderByColumn?: string;
-      isAsc?: string;
-      orderFields?: components['schemas']['OrderField'][];
-      filterConditions?: components['schemas']['FilterCondition'][];
-    };
-    PageDataTimelineEventVO: {
-      items?: components['schemas']['TimelineEventVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTimelineEventVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataTimelineEventVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataTagVO: {
-      items?: components['schemas']['TagVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataTagVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    ResultListTagVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['TagVO'][];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataRecordVO: {
-      items?: components['schemas']['RecordVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataRecordVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataRecordVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataProfileVO: {
-      items?: components['schemas']['ProfileVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataProfileVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataProfileVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
-    PageDataMediaVO: {
-      items?: components['schemas']['MediaVO'][];
-      /** Format: int64 */
-      total?: number;
-    };
-    ResultPageDataMediaVO: {
-      /** Format: int32 */
-      code?: number;
-      data?: components['schemas']['PageDataMediaVO'];
-      message?: string;
-      error?: string;
-      success?: boolean;
-    };
     ResultListModelRoutePolicy: {
       /** Format: int32 */
       code?: number;
@@ -10260,6 +9572,28 @@ export interface components {
       roleId?: number;
       roleName?: string;
       roleCode?: string;
+    };
+    FilterCondition: {
+      field?: string;
+      /** @enum {string} */
+      operator?:
+        | 'EQ'
+        | 'NE'
+        | 'GT'
+        | 'GE'
+        | 'LT'
+        | 'LE'
+        | 'LIKE'
+        | 'IN'
+        | 'NOT_IN'
+        | 'IS_NULL'
+        | 'IS_NOT_NULL';
+      value?: unknown;
+    };
+    OrderField: {
+      column?: string;
+      /** @enum {string} */
+      direction?: 'ASC' | 'DESC';
     };
     /** @description 用户分页查询请求 */
     UserPageRequest: {
@@ -11849,6 +11183,76 @@ export interface operations {
       };
     };
   };
+  routes: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultListModelRoutePolicy'];
+        };
+      };
+    };
+  };
+  save: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RouteRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultModelRoutePolicy'];
+        };
+      };
+    };
+  };
+  test: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['TestRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultModelProviderCapabilities'];
+        };
+      };
+    };
+  };
   update_2: {
     parameters: {
       query: {
@@ -11860,7 +11264,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['TimelineEventRequest'];
+        'application/json': components['schemas']['AiPlatformRequest'];
       };
     };
     responses: {
@@ -11870,7 +11274,49 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultBoolean'];
+          '*/*': components['schemas']['ResultAiPlatformVO'];
+        };
+      };
+    };
+  };
+  setDefault: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultAiPlatformVO'];
+        };
+      };
+    };
+  };
+  reload: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -11892,7 +11338,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultBoolean'];
+          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -11906,7 +11352,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['TimelineEventRequest'];
+        'application/json': components['schemas']['AiPlatformRequest'];
       };
     };
     responses: {
@@ -11916,7 +11362,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultTimelineEventVO'];
+          '*/*': components['schemas']['ResultAiPlatformVO'];
         };
       };
     };
@@ -11932,7 +11378,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['TagRequest'];
+        'application/json': components['schemas']['AiModelRequest'];
       };
     };
     responses: {
@@ -11942,7 +11388,29 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultBoolean'];
+          '*/*': components['schemas']['ResultAiModelVO'];
+        };
+      };
+    };
+  };
+  setDefault_1: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultAiModelVO'];
         };
       };
     };
@@ -11964,7 +11432,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultBoolean'];
+          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -11978,7 +11446,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['TagRequest'];
+        'application/json': components['schemas']['AiModelRequest'];
       };
     };
     responses: {
@@ -11988,60 +11456,12 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultTagVO'];
+          '*/*': components['schemas']['ResultAiModelVO'];
         };
       };
     };
   };
-  update_4: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RecordRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
-        };
-      };
-    };
-  };
-  delete_4: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
-        };
-      };
-    };
-  };
-  create_2: {
+  deleteBatch: {
     parameters: {
       query?: never;
       header?: never;
@@ -12050,7 +11470,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['RecordRequest'];
+        'application/json': number[];
       };
     };
     responses: {
@@ -12060,105 +11480,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultRecordVO'];
-        };
-      };
-    };
-  };
-  update_5: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ProfileRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
-        };
-      };
-    };
-  };
-  delete_5: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
-        };
-      };
-    };
-  };
-  create_3: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ProfileRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultProfileVO'];
-        };
-      };
-    };
-  };
-  update_6: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['MediaRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
+          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -12255,354 +11577,6 @@ export interface operations {
         };
         content: {
           '*/*': components['schemas']['ResultImageResult'];
-        };
-      };
-    };
-  };
-  delete_6: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultBoolean'];
-        };
-      };
-    };
-  };
-  create_4: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['MediaRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultMediaVO'];
-        };
-      };
-    };
-  };
-  routes: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultListModelRoutePolicy'];
-        };
-      };
-    };
-  };
-  save: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RouteRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultModelRoutePolicy'];
-        };
-      };
-    };
-  };
-  test: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        'application/json': components['schemas']['TestRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultModelProviderCapabilities'];
-        };
-      };
-    };
-  };
-  update_7: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AiPlatformRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiPlatformVO'];
-        };
-      };
-    };
-  };
-  setDefault: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiPlatformVO'];
-        };
-      };
-    };
-  };
-  reload: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_7: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_5: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AiPlatformRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiPlatformVO'];
-        };
-      };
-    };
-  };
-  update_8: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AiModelRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiModelVO'];
-        };
-      };
-    };
-  };
-  setDefault_1: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiModelVO'];
-        };
-      };
-    };
-  };
-  delete_8: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_6: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AiModelRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultAiModelVO'];
-        };
-      };
-    };
-  };
-  deleteBatch: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': number[];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -12820,7 +11794,7 @@ export interface operations {
       };
     };
   };
-  create_7: {
+  create_2: {
     parameters: {
       query?: never;
       header?: {
@@ -12875,7 +11849,7 @@ export interface operations {
       };
     };
   };
-  create_8: {
+  create_3: {
     parameters: {
       query?: never;
       header?: {
@@ -13094,7 +12068,7 @@ export interface operations {
       };
     };
   };
-  create_9: {
+  create_4: {
     parameters: {
       query?: never;
       header?: {
@@ -13222,7 +12196,7 @@ export interface operations {
       };
     };
   };
-  create_10: {
+  create_5: {
     parameters: {
       query?: never;
       header?: {
@@ -14293,7 +13267,7 @@ export interface operations {
       };
     };
   };
-  update_9: {
+  update_4: {
     parameters: {
       query: {
         id: number;
@@ -14397,6 +13371,366 @@ export interface operations {
       };
     };
   };
+  delete_4: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  create_6: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AuthCodeRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultAuthCodeResponse'];
+        };
+      };
+    };
+  };
+  update_5: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['WrongQuestionRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  delete_5: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  create_7: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['WrongQuestionRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultWrongQuestionResponse'];
+        };
+      };
+    };
+  };
+  update_6: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TextbookRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  delete_6: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  create_8: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TextbookRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultTextbookResponse'];
+        };
+      };
+    };
+  };
+  update_7: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubjectRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  delete_7: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  create_9: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubjectRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultSubjectResponse'];
+        };
+      };
+    };
+  };
+  update_8: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudyPlanRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  delete_8: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  create_10: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudyPlanRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudyPlanResponse'];
+        };
+      };
+    };
+  };
+  update_9: {
+    parameters: {
+      query: {
+        id: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudentRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
   delete_9: {
     parameters: {
       query: {
@@ -14428,7 +13762,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['AuthCodeRequest'];
+        'application/json': components['schemas']['StudentRequest'];
       };
     };
     responses: {
@@ -14438,7 +13772,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          '*/*': components['schemas']['ResultAuthCodeResponse'];
+          '*/*': components['schemas']['ResultStudentResponse'];
         };
       };
     };
@@ -14454,7 +13788,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': components['schemas']['WrongQuestionRequest'];
+        'application/json': components['schemas']['ReviewRequest'];
       };
     };
     responses: {
@@ -14492,366 +13826,6 @@ export interface operations {
     };
   };
   create_12: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['WrongQuestionRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultWrongQuestionResponse'];
-        };
-      };
-    };
-  };
-  update_11: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['TextbookRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_11: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_13: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['TextbookRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultTextbookResponse'];
-        };
-      };
-    };
-  };
-  update_12: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['SubjectRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_12: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_14: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['SubjectRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultSubjectResponse'];
-        };
-      };
-    };
-  };
-  update_13: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['StudyPlanRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_13: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_15: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['StudyPlanRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultStudyPlanResponse'];
-        };
-      };
-    };
-  };
-  update_14: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['StudentRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_14: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_16: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['StudentRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultStudentResponse'];
-        };
-      };
-    };
-  };
-  update_15: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ReviewRequest'];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  delete_15: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultVoid'];
-        };
-      };
-    };
-  };
-  create_17: {
     parameters: {
       query?: never;
       header?: never;
@@ -14901,7 +13875,7 @@ export interface operations {
       };
     };
   };
-  update_16: {
+  update_11: {
     parameters: {
       query: {
         id: number;
@@ -14927,7 +13901,7 @@ export interface operations {
       };
     };
   };
-  delete_16: {
+  delete_11: {
     parameters: {
       query: {
         id: number;
@@ -14949,7 +13923,7 @@ export interface operations {
       };
     };
   };
-  create_18: {
+  create_13: {
     parameters: {
       query?: never;
       header?: never;
@@ -14973,7 +13947,7 @@ export interface operations {
       };
     };
   };
-  update_17: {
+  update_12: {
     parameters: {
       query: {
         id: number;
@@ -14999,7 +13973,7 @@ export interface operations {
       };
     };
   };
-  delete_17: {
+  delete_12: {
     parameters: {
       query: {
         id: number;
@@ -15021,7 +13995,7 @@ export interface operations {
       };
     };
   };
-  create_19: {
+  create_14: {
     parameters: {
       query?: never;
       header?: never;
@@ -15045,7 +14019,7 @@ export interface operations {
       };
     };
   };
-  update_18: {
+  update_13: {
     parameters: {
       query: {
         id: number;
@@ -15071,7 +14045,7 @@ export interface operations {
       };
     };
   };
-  delete_18: {
+  delete_13: {
     parameters: {
       query: {
         id: number;
@@ -15093,7 +14067,7 @@ export interface operations {
       };
     };
   };
-  create_20: {
+  create_15: {
     parameters: {
       query?: never;
       header?: never;
@@ -15117,7 +14091,7 @@ export interface operations {
       };
     };
   };
-  update_19: {
+  update_14: {
     parameters: {
       query: {
         id: number;
@@ -15166,7 +14140,7 @@ export interface operations {
       };
     };
   };
-  delete_19: {
+  delete_14: {
     parameters: {
       query: {
         id: number;
@@ -15188,7 +14162,7 @@ export interface operations {
       };
     };
   };
-  create_21: {
+  create_16: {
     parameters: {
       query?: never;
       header?: never;
@@ -15212,7 +14186,7 @@ export interface operations {
       };
     };
   };
-  update_20: {
+  update_15: {
     parameters: {
       query: {
         id: number;
@@ -15264,7 +14238,7 @@ export interface operations {
       };
     };
   };
-  delete_20: {
+  delete_15: {
     parameters: {
       query: {
         id: number;
@@ -15286,7 +14260,7 @@ export interface operations {
       };
     };
   };
-  create_22: {
+  create_17: {
     parameters: {
       query?: never;
       header?: never;
@@ -15379,7 +14353,7 @@ export interface operations {
       };
     };
   };
-  create_23: {
+  create_18: {
     parameters: {
       query?: never;
       header?: never;
@@ -15550,7 +14524,7 @@ export interface operations {
       };
     };
   };
-  create_24: {
+  create_19: {
     parameters: {
       query?: never;
       header?: {
@@ -16735,7 +15709,7 @@ export interface operations {
       };
     };
   };
-  update_21: {
+  update_16: {
     parameters: {
       query: {
         id: number;
@@ -16761,7 +15735,7 @@ export interface operations {
       };
     };
   };
-  delete_21: {
+  delete_16: {
     parameters: {
       query: {
         id: number;
@@ -16783,7 +15757,7 @@ export interface operations {
       };
     };
   };
-  create_25: {
+  create_20: {
     parameters: {
       query?: never;
       header?: never;
@@ -16977,7 +15951,7 @@ export interface operations {
       };
     };
   };
-  create_26: {
+  create_21: {
     parameters: {
       query?: never;
       header?: never;
@@ -17308,7 +16282,7 @@ export interface operations {
       };
     };
   };
-  update_22: {
+  update_17: {
     parameters: {
       query: {
         id: number;
@@ -17381,7 +16355,7 @@ export interface operations {
       };
     };
   };
-  delete_22: {
+  delete_17: {
     parameters: {
       query: {
         id: number;
@@ -17425,7 +16399,7 @@ export interface operations {
       };
     };
   };
-  create_27: {
+  create_22: {
     parameters: {
       query?: never;
       header?: never;
@@ -17471,7 +16445,7 @@ export interface operations {
       };
     };
   };
-  delete_23: {
+  delete_18: {
     parameters: {
       query?: never;
       header?: never;
@@ -17493,7 +16467,7 @@ export interface operations {
       };
     };
   };
-  update_23: {
+  update_18: {
     parameters: {
       query?: never;
       header?: never;
@@ -17645,273 +16619,6 @@ export interface operations {
       };
     };
   };
-  getTimelineByProfileId: {
-    parameters: {
-      query: {
-        profileId: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultListTimelineEventVO'];
-        };
-      };
-    };
-  };
-  getPage: {
-    parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        profileId?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultPageDataTimelineEventVO'];
-        };
-      };
-    };
-  };
-  getById: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultTimelineEventVO'];
-        };
-      };
-    };
-  };
-  getPage_1: {
-    parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        name?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultPageDataTagVO'];
-        };
-      };
-    };
-  };
-  getById_1: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultTagVO'];
-        };
-      };
-    };
-  };
-  getAll: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultListTagVO'];
-        };
-      };
-    };
-  };
-  getPage_2: {
-    parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        eventId?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultPageDataRecordVO'];
-        };
-      };
-    };
-  };
-  getById_2: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultRecordVO'];
-        };
-      };
-    };
-  };
-  getPage_3: {
-    parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        createBy?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultPageDataProfileVO'];
-        };
-      };
-    };
-  };
-  getById_3: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultProfileVO'];
-        };
-      };
-    };
-  };
-  getPage_4: {
-    parameters: {
-      query: {
-        query: components['schemas']['PageQuery'];
-        recordId?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultPageDataMediaVO'];
-        };
-      };
-    };
-  };
-  getById_4: {
-    parameters: {
-      query: {
-        id: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          '*/*': components['schemas']['ResultMediaVO'];
-        };
-      };
-    };
-  };
   models: {
     parameters: {
       query?: never;
@@ -17977,7 +16684,7 @@ export interface operations {
       };
     };
   };
-  getPage_5: {
+  getPage: {
     parameters: {
       query?: {
         name?: string;
@@ -18042,7 +16749,7 @@ export interface operations {
       };
     };
   };
-  getById_5: {
+  getById: {
     parameters: {
       query: {
         id: number;
@@ -18194,7 +16901,7 @@ export interface operations {
       };
     };
   };
-  getPage_6: {
+  getPage_1: {
     parameters: {
       query?: {
         platformId?: number;
@@ -18240,7 +16947,7 @@ export interface operations {
       };
     };
   };
-  getById_6: {
+  getById_1: {
     parameters: {
       query: {
         id: number;
@@ -18549,7 +17256,7 @@ export interface operations {
       };
     };
   };
-  delete_24: {
+  delete_19: {
     parameters: {
       query?: never;
       header?: {
@@ -19586,7 +18293,7 @@ export interface operations {
       };
     };
   };
-  getById_7: {
+  getById_2: {
     parameters: {
       query: {
         id: number;
@@ -19654,7 +18361,7 @@ export interface operations {
       };
     };
   };
-  getById_8: {
+  getById_3: {
     parameters: {
       query: {
         id: number;
@@ -19721,7 +18428,7 @@ export interface operations {
       };
     };
   };
-  getById_9: {
+  getById_4: {
     parameters: {
       query: {
         id: number;
@@ -19809,7 +18516,7 @@ export interface operations {
       };
     };
   };
-  getById_10: {
+  getById_5: {
     parameters: {
       query: {
         id: number;
@@ -19898,7 +18605,7 @@ export interface operations {
       };
     };
   };
-  getById_11: {
+  getById_6: {
     parameters: {
       query: {
         id: number;
@@ -19965,7 +18672,7 @@ export interface operations {
       };
     };
   };
-  getById_12: {
+  getById_7: {
     parameters: {
       query: {
         id: number;
@@ -20054,7 +18761,7 @@ export interface operations {
       };
     };
   };
-  getById_13: {
+  getById_8: {
     parameters: {
       query: {
         id: number;
@@ -20280,7 +18987,7 @@ export interface operations {
       };
     };
   };
-  getById_14: {
+  getById_9: {
     parameters: {
       query: {
         id: number;
@@ -20369,7 +19076,7 @@ export interface operations {
       };
     };
   };
-  getById_15: {
+  getById_10: {
     parameters: {
       query: {
         id: number;
@@ -20480,7 +19187,7 @@ export interface operations {
       };
     };
   };
-  getById_16: {
+  getById_11: {
     parameters: {
       query: {
         id: number;
@@ -20568,7 +19275,7 @@ export interface operations {
       };
     };
   };
-  getById_17: {
+  getById_12: {
     parameters: {
       query: {
         id: number;
@@ -21457,7 +20164,7 @@ export interface operations {
       };
     };
   };
-  getPage_7: {
+  getPage_2: {
     parameters: {
       query?: {
         pageNo?: number;
@@ -21564,7 +20271,7 @@ export interface operations {
       };
     };
   };
-  getById_18: {
+  getById_13: {
     parameters: {
       query: {
         id: number;
@@ -21608,7 +20315,7 @@ export interface operations {
       };
     };
   };
-  delete_25: {
+  delete_20: {
     parameters: {
       query: {
         type: 'PRE' | 'NEXT' | 'INCLUDE' | 'RELATED' | 'SIMILAR' | 'BELONG';
@@ -21635,7 +20342,7 @@ export interface operations {
       };
     };
   };
-  delete_26: {
+  delete_21: {
     parameters: {
       query?: never;
       header?: {
@@ -21659,7 +20366,7 @@ export interface operations {
       };
     };
   };
-  delete_27: {
+  delete_22: {
     parameters: {
       query: {
         key: string;

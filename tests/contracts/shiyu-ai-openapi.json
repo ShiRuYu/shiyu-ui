@@ -15,7 +15,7 @@
     "url": "https://springdoc.org/"
   },
   "servers": [
-    { "url": "http://127.0.0.1:19191", "description": "Generated server url" }
+    { "url": "http://127.0.0.1:9000", "description": "Generated server url" }
   ],
   "tags": [
     { "name": "Agent Definition", "description": "Agent Definition" },
@@ -657,506 +657,6 @@
         }
       }
     },
-    "/api/record/timeline/update": {
-      "post": {
-        "tags": ["时间线事件管理"],
-        "operationId": "update_2",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TimelineEventRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/timeline/delete": {
-      "post": {
-        "tags": ["时间线事件管理"],
-        "operationId": "delete_2",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/timeline/create": {
-      "post": {
-        "tags": ["时间线事件管理"],
-        "operationId": "create",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TimelineEventRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultTimelineEventVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/update": {
-      "post": {
-        "tags": ["标签管理"],
-        "operationId": "update_3",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TagRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/delete": {
-      "post": {
-        "tags": ["标签管理"],
-        "operationId": "delete_3",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/create": {
-      "post": {
-        "tags": ["标签管理"],
-        "operationId": "create_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TagRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultTagVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/record/update": {
-      "post": {
-        "tags": ["记录管理"],
-        "operationId": "update_4",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/RecordRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/record/delete": {
-      "post": {
-        "tags": ["记录管理"],
-        "operationId": "delete_4",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/record/create": {
-      "post": {
-        "tags": ["记录管理"],
-        "operationId": "create_2",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/RecordRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultRecordVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/profile/update": {
-      "post": {
-        "tags": ["档案管理"],
-        "operationId": "update_5",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/ProfileRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/profile/delete": {
-      "post": {
-        "tags": ["档案管理"],
-        "operationId": "delete_5",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/profile/create": {
-      "post": {
-        "tags": ["档案管理"],
-        "operationId": "create_3",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/ProfileRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultProfileVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/update": {
-      "post": {
-        "tags": ["附件管理"],
-        "operationId": "update_6",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/MediaRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/tts": {
-      "post": {
-        "tags": ["media-controller"],
-        "operationId": "tts",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TtsRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultMapStringString"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/translate": {
-      "post": {
-        "tags": ["media-controller"],
-        "operationId": "translate",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/TranslateRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultString" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/image/understand": {
-      "post": {
-        "tags": ["media-controller"],
-        "operationId": "understand",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/ImageRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultVisionResult" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/image/generate": {
-      "post": {
-        "tags": ["media-controller"],
-        "operationId": "generate",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/GenerateRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultImageResult" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/delete": {
-      "post": {
-        "tags": ["附件管理"],
-        "operationId": "delete_6",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultBoolean" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/create": {
-      "post": {
-        "tags": ["附件管理"],
-        "operationId": "create_4",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/MediaRequest" }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultMediaVO" }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/model/routes": {
       "get": {
         "tags": ["model-gateway-controller"],
@@ -1236,7 +736,7 @@
       "post": {
         "tags": ["Ai Platform"],
         "summary": "Update",
-        "operationId": "update_7",
+        "operationId": "update_2",
         "parameters": [
           {
             "name": "id",
@@ -1309,7 +809,7 @@
       "post": {
         "tags": ["Ai Platform"],
         "summary": "Delete",
-        "operationId": "delete_7",
+        "operationId": "delete_2",
         "parameters": [
           {
             "name": "id",
@@ -1332,7 +832,7 @@
       "post": {
         "tags": ["Ai Platform"],
         "summary": "Create",
-        "operationId": "create_5",
+        "operationId": "create",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1357,7 +857,7 @@
       "post": {
         "tags": ["Ai Model"],
         "summary": "Update",
-        "operationId": "update_8",
+        "operationId": "update_3",
         "parameters": [
           {
             "name": "id",
@@ -1415,7 +915,7 @@
       "post": {
         "tags": ["Ai Model"],
         "summary": "Delete",
-        "operationId": "delete_8",
+        "operationId": "delete_3",
         "parameters": [
           {
             "name": "id",
@@ -1438,7 +938,7 @@
       "post": {
         "tags": ["Ai Model"],
         "summary": "Create",
-        "operationId": "create_6",
+        "operationId": "create_1",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1480,6 +980,104 @@
             "description": "OK",
             "content": {
               "*/*": { "schema": { "$ref": "#/components/schemas/ResultVoid" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/media/tts": {
+      "post": {
+        "tags": ["media-controller"],
+        "operationId": "tts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TtsRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultMapStringString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/media/translate": {
+      "post": {
+        "tags": ["media-controller"],
+        "operationId": "translate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TranslateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ResultString" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/media/image/understand": {
+      "post": {
+        "tags": ["media-controller"],
+        "operationId": "understand",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ImageRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ResultVisionResult" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/media/image/generate": {
+      "post": {
+        "tags": ["media-controller"],
+        "operationId": "generate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GenerateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ResultImageResult" }
+              }
             }
           }
         }
@@ -1740,7 +1338,7 @@
       },
       "post": {
         "tags": ["知识空间"],
-        "operationId": "create_7",
+        "operationId": "create_2",
         "parameters": [
           {
             "name": "version",
@@ -1826,7 +1424,7 @@
       },
       "post": {
         "tags": ["知识点"],
-        "operationId": "create_8",
+        "operationId": "create_3",
         "parameters": [
           {
             "name": "spaceId",
@@ -2137,7 +1735,7 @@
       },
       "post": {
         "tags": ["知识关系"],
-        "operationId": "create_9",
+        "operationId": "create_4",
         "parameters": [
           {
             "name": "pointId",
@@ -2301,7 +1899,7 @@
       },
       "post": {
         "tags": ["知识评测"],
-        "operationId": "create_10",
+        "operationId": "create_5",
         "parameters": [
           {
             "name": "version",
@@ -3566,7 +3164,7 @@
       "post": {
         "tags": ["Auth Code"],
         "summary": "Update Auth Code",
-        "operationId": "update_9",
+        "operationId": "update_4",
         "parameters": [
           {
             "name": "id",
@@ -3709,7 +3307,7 @@
       "post": {
         "tags": ["Auth Code"],
         "summary": "Delete Auth Code",
-        "operationId": "delete_9",
+        "operationId": "delete_4",
         "parameters": [
           {
             "name": "id",
@@ -3732,7 +3330,7 @@
       "post": {
         "tags": ["Auth Code"],
         "summary": "Create Auth Code",
-        "operationId": "create_11",
+        "operationId": "create_6",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3758,7 +3356,7 @@
     "/api/education/wrong-question/update": {
       "post": {
         "tags": ["wrong-question-controller"],
-        "operationId": "update_10",
+        "operationId": "update_5",
         "parameters": [
           {
             "name": "id",
@@ -3788,7 +3386,7 @@
     "/api/education/wrong-question/delete": {
       "post": {
         "tags": ["wrong-question-controller"],
-        "operationId": "delete_10",
+        "operationId": "delete_5",
         "parameters": [
           {
             "name": "id",
@@ -3810,7 +3408,7 @@
     "/api/education/wrong-question/create": {
       "post": {
         "tags": ["wrong-question-controller"],
-        "operationId": "create_12",
+        "operationId": "create_7",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3836,7 +3434,7 @@
     "/api/education/textbook/update": {
       "post": {
         "tags": ["textbook-controller"],
-        "operationId": "update_11",
+        "operationId": "update_6",
         "parameters": [
           {
             "name": "id",
@@ -3866,7 +3464,7 @@
     "/api/education/textbook/delete": {
       "post": {
         "tags": ["textbook-controller"],
-        "operationId": "delete_11",
+        "operationId": "delete_6",
         "parameters": [
           {
             "name": "id",
@@ -3888,7 +3486,7 @@
     "/api/education/textbook/create": {
       "post": {
         "tags": ["textbook-controller"],
-        "operationId": "create_13",
+        "operationId": "create_8",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3914,7 +3512,7 @@
     "/api/education/subject/update": {
       "post": {
         "tags": ["subject-controller"],
-        "operationId": "update_12",
+        "operationId": "update_7",
         "parameters": [
           {
             "name": "id",
@@ -3944,7 +3542,7 @@
     "/api/education/subject/delete": {
       "post": {
         "tags": ["subject-controller"],
-        "operationId": "delete_12",
+        "operationId": "delete_7",
         "parameters": [
           {
             "name": "id",
@@ -3966,7 +3564,7 @@
     "/api/education/subject/create": {
       "post": {
         "tags": ["subject-controller"],
-        "operationId": "create_14",
+        "operationId": "create_9",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3992,7 +3590,7 @@
     "/api/education/study-plan/update": {
       "post": {
         "tags": ["study-plan-controller"],
-        "operationId": "update_13",
+        "operationId": "update_8",
         "parameters": [
           {
             "name": "id",
@@ -4022,7 +3620,7 @@
     "/api/education/study-plan/delete": {
       "post": {
         "tags": ["study-plan-controller"],
-        "operationId": "delete_13",
+        "operationId": "delete_8",
         "parameters": [
           {
             "name": "id",
@@ -4044,7 +3642,7 @@
     "/api/education/study-plan/create": {
       "post": {
         "tags": ["study-plan-controller"],
-        "operationId": "create_15",
+        "operationId": "create_10",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4070,7 +3668,7 @@
     "/api/education/students/update": {
       "post": {
         "tags": ["student-controller"],
-        "operationId": "update_14",
+        "operationId": "update_9",
         "parameters": [
           {
             "name": "id",
@@ -4100,7 +3698,7 @@
     "/api/education/students/delete": {
       "post": {
         "tags": ["student-controller"],
-        "operationId": "delete_14",
+        "operationId": "delete_9",
         "parameters": [
           {
             "name": "id",
@@ -4122,7 +3720,7 @@
     "/api/education/students/create": {
       "post": {
         "tags": ["student-controller"],
-        "operationId": "create_16",
+        "operationId": "create_11",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4148,7 +3746,7 @@
     "/api/education/review/update": {
       "post": {
         "tags": ["review-controller"],
-        "operationId": "update_15",
+        "operationId": "update_10",
         "parameters": [
           {
             "name": "id",
@@ -4178,7 +3776,7 @@
     "/api/education/review/delete": {
       "post": {
         "tags": ["review-controller"],
-        "operationId": "delete_15",
+        "operationId": "delete_10",
         "parameters": [
           {
             "name": "id",
@@ -4200,7 +3798,7 @@
     "/api/education/review/create": {
       "post": {
         "tags": ["review-controller"],
-        "operationId": "create_17",
+        "operationId": "create_12",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4256,7 +3854,7 @@
     "/api/education/resource/update": {
       "post": {
         "tags": ["resource-controller"],
-        "operationId": "update_16",
+        "operationId": "update_11",
         "parameters": [
           {
             "name": "id",
@@ -4286,7 +3884,7 @@
     "/api/education/resource/delete": {
       "post": {
         "tags": ["resource-controller"],
-        "operationId": "delete_16",
+        "operationId": "delete_11",
         "parameters": [
           {
             "name": "id",
@@ -4308,7 +3906,7 @@
     "/api/education/resource/create": {
       "post": {
         "tags": ["resource-controller"],
-        "operationId": "create_18",
+        "operationId": "create_13",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4334,7 +3932,7 @@
     "/api/education/question/update": {
       "post": {
         "tags": ["question-controller"],
-        "operationId": "update_17",
+        "operationId": "update_12",
         "parameters": [
           {
             "name": "id",
@@ -4364,7 +3962,7 @@
     "/api/education/question/delete": {
       "post": {
         "tags": ["question-controller"],
-        "operationId": "delete_17",
+        "operationId": "delete_12",
         "parameters": [
           {
             "name": "id",
@@ -4386,7 +3984,7 @@
     "/api/education/question/create": {
       "post": {
         "tags": ["question-controller"],
-        "operationId": "create_19",
+        "operationId": "create_14",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4412,7 +4010,7 @@
     "/api/education/exam/update": {
       "post": {
         "tags": ["exam-controller"],
-        "operationId": "update_18",
+        "operationId": "update_13",
         "parameters": [
           {
             "name": "id",
@@ -4442,7 +4040,7 @@
     "/api/education/exam/delete": {
       "post": {
         "tags": ["exam-controller"],
-        "operationId": "delete_18",
+        "operationId": "delete_13",
         "parameters": [
           {
             "name": "id",
@@ -4464,7 +4062,7 @@
     "/api/education/exam/create": {
       "post": {
         "tags": ["exam-controller"],
-        "operationId": "create_20",
+        "operationId": "create_15",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4488,7 +4086,7 @@
     "/api/education/course/update": {
       "post": {
         "tags": ["course-controller"],
-        "operationId": "update_19",
+        "operationId": "update_14",
         "parameters": [
           {
             "name": "id",
@@ -4550,7 +4148,7 @@
     "/api/education/course/delete": {
       "post": {
         "tags": ["course-controller"],
-        "operationId": "delete_19",
+        "operationId": "delete_14",
         "parameters": [
           {
             "name": "id",
@@ -4572,7 +4170,7 @@
     "/api/education/course/create": {
       "post": {
         "tags": ["course-controller"],
-        "operationId": "create_21",
+        "operationId": "create_16",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4598,7 +4196,7 @@
     "/api/education/chapter/update": {
       "post": {
         "tags": ["chapter-controller"],
-        "operationId": "update_20",
+        "operationId": "update_15",
         "parameters": [
           {
             "name": "id",
@@ -4661,7 +4259,7 @@
     "/api/education/chapter/delete": {
       "post": {
         "tags": ["chapter-controller"],
-        "operationId": "delete_20",
+        "operationId": "delete_15",
         "parameters": [
           {
             "name": "id",
@@ -4683,7 +4281,7 @@
     "/api/education/chapter/create": {
       "post": {
         "tags": ["chapter-controller"],
-        "operationId": "create_22",
+        "operationId": "create_17",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4774,7 +4372,7 @@
       },
       "post": {
         "tags": ["prompt-controller"],
-        "operationId": "create_23",
+        "operationId": "create_18",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4979,7 +4577,7 @@
       },
       "post": {
         "tags": ["Conversation Platform"],
-        "operationId": "create_24",
+        "operationId": "create_19",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -6410,7 +6008,7 @@
     "/api/agent/intents/update": {
       "post": {
         "tags": ["intent-def-controller"],
-        "operationId": "update_21",
+        "operationId": "update_16",
         "parameters": [
           {
             "name": "id",
@@ -6442,7 +6040,7 @@
     "/api/agent/intents/delete": {
       "post": {
         "tags": ["intent-def-controller"],
-        "operationId": "delete_21",
+        "operationId": "delete_16",
         "parameters": [
           {
             "name": "id",
@@ -6464,7 +6062,7 @@
     "/api/agent/intents/create": {
       "post": {
         "tags": ["intent-def-controller"],
-        "operationId": "create_25",
+        "operationId": "create_20",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6681,7 +6279,7 @@
     "/api/agent/evaluations/datasets": {
       "post": {
         "tags": ["evaluation-controller"],
-        "operationId": "create_26",
+        "operationId": "create_21",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7065,7 +6663,7 @@
       "post": {
         "tags": ["Agent Definition"],
         "summary": "Update",
-        "operationId": "update_22",
+        "operationId": "update_17",
         "parameters": [
           {
             "name": "id",
@@ -7154,7 +6752,7 @@
       "post": {
         "tags": ["Agent Definition"],
         "summary": "Delete",
-        "operationId": "delete_22",
+        "operationId": "delete_17",
         "parameters": [
           {
             "name": "id",
@@ -7200,7 +6798,7 @@
       "post": {
         "tags": ["Agent Definition"],
         "summary": "Create",
-        "operationId": "create_27",
+        "operationId": "create_22",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7246,7 +6844,7 @@
       },
       "delete": {
         "tags": ["Conversation Platform"],
-        "operationId": "delete_23",
+        "operationId": "delete_18",
         "parameters": [
           {
             "name": "id",
@@ -7266,7 +6864,7 @@
       },
       "patch": {
         "tags": ["Conversation Platform"],
-        "operationId": "update_23",
+        "operationId": "update_18",
         "parameters": [
           {
             "name": "id",
@@ -7436,330 +7034,6 @@
         }
       }
     },
-    "/api/record/timeline/profile": {
-      "get": {
-        "tags": ["时间线事件管理"],
-        "operationId": "getTimelineByProfileId",
-        "parameters": [
-          {
-            "name": "profileId",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultListTimelineEventVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/timeline/list": {
-      "get": {
-        "tags": ["时间线事件管理"],
-        "operationId": "getPage",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/PageQuery" }
-          },
-          {
-            "name": "profileId",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultPageDataTimelineEventVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/timeline/detail": {
-      "get": {
-        "tags": ["时间线事件管理"],
-        "operationId": "getById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultTimelineEventVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/list": {
-      "get": {
-        "tags": ["标签管理"],
-        "operationId": "getPage_1",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/PageQuery" }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultPageDataTagVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/detail": {
-      "get": {
-        "tags": ["标签管理"],
-        "operationId": "getById_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultTagVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/tag/all": {
-      "get": {
-        "tags": ["标签管理"],
-        "operationId": "getAll",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultListTagVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/record/list": {
-      "get": {
-        "tags": ["记录管理"],
-        "operationId": "getPage_2",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/PageQuery" }
-          },
-          {
-            "name": "eventId",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultPageDataRecordVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/record/detail": {
-      "get": {
-        "tags": ["记录管理"],
-        "operationId": "getById_2",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultRecordVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/profile/list": {
-      "get": {
-        "tags": ["档案管理"],
-        "operationId": "getPage_3",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/PageQuery" }
-          },
-          {
-            "name": "createBy",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultPageDataProfileVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/profile/detail": {
-      "get": {
-        "tags": ["档案管理"],
-        "operationId": "getById_3",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultProfileVO" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/list": {
-      "get": {
-        "tags": ["附件管理"],
-        "summary": "分页查询附件列表",
-        "operationId": "getPage_4",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": true,
-            "schema": { "$ref": "#/components/schemas/PageQuery" }
-          },
-          {
-            "name": "recordId",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResultPageDataMediaVO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/record/media/detail": {
-      "get": {
-        "tags": ["附件管理"],
-        "summary": "查询附件",
-        "operationId": "getById_4",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": { "$ref": "#/components/schemas/ResultMediaVO" }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/model/providers": {
       "get": {
         "tags": ["model-gateway-controller"],
@@ -7840,7 +7114,7 @@
       "get": {
         "tags": ["Ai Platform"],
         "summary": "Get Page",
-        "operationId": "getPage_5",
+        "operationId": "getPage",
         "parameters": [
           {
             "name": "name",
@@ -7923,7 +7197,7 @@
       "get": {
         "tags": ["Ai Platform"],
         "summary": "Get by Id",
-        "operationId": "getById_5",
+        "operationId": "getById",
         "parameters": [
           {
             "name": "id",
@@ -8089,7 +7363,7 @@
       "get": {
         "tags": ["Ai Model"],
         "summary": "Get Page",
-        "operationId": "getPage_6",
+        "operationId": "getPage_1",
         "parameters": [
           {
             "name": "platformId",
@@ -8155,7 +7429,7 @@
       "get": {
         "tags": ["Ai Model"],
         "summary": "Get by Id",
-        "operationId": "getById_6",
+        "operationId": "getById_1",
         "parameters": [
           {
             "name": "id",
@@ -8567,7 +7841,7 @@
       },
       "delete": {
         "tags": ["知识文档"],
-        "operationId": "delete_24",
+        "operationId": "delete_19",
         "parameters": [
           {
             "name": "id",
@@ -9723,7 +8997,7 @@
     "/api/education/wrong-question/detail": {
       "get": {
         "tags": ["wrong-question-controller"],
-        "operationId": "getById_7",
+        "operationId": "getById_2",
         "parameters": [
           {
             "name": "id",
@@ -9813,7 +9087,7 @@
     "/api/education/textbook/detail": {
       "get": {
         "tags": ["textbook-controller"],
-        "operationId": "getById_8",
+        "operationId": "getById_3",
         "parameters": [
           {
             "name": "id",
@@ -9897,7 +9171,7 @@
     "/api/education/subject/detail": {
       "get": {
         "tags": ["subject-controller"],
-        "operationId": "getById_9",
+        "operationId": "getById_4",
         "parameters": [
           {
             "name": "id",
@@ -10001,7 +9275,7 @@
     "/api/education/study-plan/detail": {
       "get": {
         "tags": ["study-plan-controller"],
-        "operationId": "getById_10",
+        "operationId": "getById_5",
         "parameters": [
           {
             "name": "id",
@@ -10111,7 +9385,7 @@
     "/api/education/students/detail": {
       "get": {
         "tags": ["student-controller"],
-        "operationId": "getById_11",
+        "operationId": "getById_6",
         "parameters": [
           {
             "name": "id",
@@ -10195,7 +9469,7 @@
     "/api/education/review/detail": {
       "get": {
         "tags": ["review-controller"],
-        "operationId": "getById_12",
+        "operationId": "getById_7",
         "parameters": [
           {
             "name": "id",
@@ -10305,7 +9579,7 @@
     "/api/education/resource/detail": {
       "get": {
         "tags": ["resource-controller"],
-        "operationId": "getById_13",
+        "operationId": "getById_8",
         "parameters": [
           {
             "name": "id",
@@ -10606,7 +9880,7 @@
     "/api/education/question/detail": {
       "get": {
         "tags": ["question-controller"],
-        "operationId": "getById_14",
+        "operationId": "getById_9",
         "parameters": [
           {
             "name": "id",
@@ -10716,7 +9990,7 @@
     "/api/education/exam/detail": {
       "get": {
         "tags": ["exam-controller"],
-        "operationId": "getById_15",
+        "operationId": "getById_10",
         "parameters": [
           {
             "name": "id",
@@ -10846,7 +10120,7 @@
     "/api/education/course/detail": {
       "get": {
         "tags": ["course-controller"],
-        "operationId": "getById_16",
+        "operationId": "getById_11",
         "parameters": [
           {
             "name": "id",
@@ -10948,7 +10222,7 @@
     "/api/education/chapter/detail": {
       "get": {
         "tags": ["chapter-controller"],
-        "operationId": "getById_17",
+        "operationId": "getById_12",
         "parameters": [
           {
             "name": "id",
@@ -12077,7 +11351,7 @@
       "get": {
         "tags": ["Agent Definition"],
         "summary": "Get Page",
-        "operationId": "getPage_7",
+        "operationId": "getPage_2",
         "parameters": [
           {
             "name": "pageNo",
@@ -12206,7 +11480,7 @@
       "get": {
         "tags": ["Agent Definition"],
         "summary": "Get by Id",
-        "operationId": "getById_18",
+        "operationId": "getById_13",
         "parameters": [
           {
             "name": "id",
@@ -12257,7 +11531,7 @@
     "/api/knowledge/points/{pointId}/relations/{targetId}": {
       "delete": {
         "tags": ["知识关系"],
-        "operationId": "delete_25",
+        "operationId": "delete_20",
         "parameters": [
           {
             "name": "pointId",
@@ -12300,7 +11574,7 @@
     "/api/knowledge/evaluations/{id}": {
       "delete": {
         "tags": ["知识评测"],
-        "operationId": "delete_26",
+        "operationId": "delete_21",
         "parameters": [
           {
             "name": "id",
@@ -12329,7 +11603,7 @@
       "delete": {
         "tags": ["File"],
         "summary": "删除文件",
-        "operationId": "delete_27",
+        "operationId": "delete_22",
         "parameters": [
           {
             "name": "key",
@@ -12546,275 +11820,6 @@
           "success": { "type": "boolean" }
         }
       },
-      "TimelineEventRequest": {
-        "type": "object",
-        "properties": {
-          "profileId": { "type": "integer", "format": "int64" },
-          "title": { "type": "string", "minLength": 1 },
-          "eventTime": { "type": "string", "format": "date-time" },
-          "eventDate": { "type": "string", "format": "date-time" },
-          "eventType": { "type": "string" }
-        },
-        "required": ["profileId", "title"]
-      },
-      "ResultBoolean": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "type": "boolean" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "MediaVO": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "recordId": { "type": "integer", "format": "int64" },
-          "url": { "type": "string" },
-          "type": { "type": "string" },
-          "size": { "type": "integer", "format": "int64" },
-          "duration": { "type": "integer", "format": "int32" },
-          "width": { "type": "integer", "format": "int32" },
-          "height": { "type": "integer", "format": "int32" },
-          "sort": { "type": "integer", "format": "int32" },
-          "createTime": { "type": "string", "format": "date-time" }
-        }
-      },
-      "RecordVO": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "eventId": { "type": "integer", "format": "int64" },
-          "content": { "type": "string" },
-          "mood": { "type": "string" },
-          "location": { "type": "string" },
-          "weather": { "type": "string" },
-          "createTime": { "type": "string", "format": "date-time" },
-          "mediaList": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/MediaVO" }
-          },
-          "tags": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/TagVO" }
-          }
-        }
-      },
-      "ResultTimelineEventVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/TimelineEventVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "TagVO": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "createTime": { "type": "string", "format": "date-time" }
-        }
-      },
-      "TimelineEventVO": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "profileId": { "type": "integer", "format": "int64" },
-          "title": { "type": "string" },
-          "eventTime": { "type": "string", "format": "date-time" },
-          "type": { "type": "string" },
-          "visibility": { "type": "string" },
-          "createdBy": { "type": "integer", "format": "int64" },
-          "createTime": { "type": "string", "format": "date-time" },
-          "record": { "$ref": "#/components/schemas/RecordVO" },
-          "mediaList": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/MediaVO" }
-          }
-        }
-      },
-      "TagRequest": {
-        "type": "object",
-        "properties": { "name": { "type": "string", "minLength": 1 } },
-        "required": ["name"]
-      },
-      "ResultTagVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/TagVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "RecordRequest": {
-        "type": "object",
-        "properties": {
-          "eventId": { "type": "integer", "format": "int64" },
-          "content": { "type": "string" }
-        },
-        "required": ["eventId"]
-      },
-      "ResultRecordVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/RecordVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "ProfileRequest": {
-        "type": "object",
-        "properties": {
-          "name": { "type": "string", "minLength": 1 },
-          "avatar": { "type": "string" }
-        },
-        "required": ["name"]
-      },
-      "ProfileVO": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" },
-          "gender": { "type": "string" },
-          "birthDate": { "type": "string", "format": "date-time" },
-          "avatar": { "type": "string" },
-          "status": { "type": "integer", "format": "int32" },
-          "createTime": { "type": "string", "format": "date-time" },
-          "updateTime": { "type": "string", "format": "date-time" }
-        }
-      },
-      "ResultProfileVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/ProfileVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "MediaRequest": {
-        "type": "object",
-        "properties": {
-          "recordId": { "type": "integer", "format": "int64" },
-          "url": { "type": "string", "minLength": 1 },
-          "mediaType": { "type": "string" }
-        },
-        "required": ["recordId", "url"]
-      },
-      "TtsRequest": {
-        "type": "object",
-        "properties": {
-          "provider": { "type": "string" },
-          "text": { "type": "string" },
-          "voice": { "type": "string" },
-          "format": { "type": "string" }
-        }
-      },
-      "ResultMapStringString": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": {
-            "type": "object",
-            "additionalProperties": { "type": "string" }
-          },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "TranslateRequest": {
-        "type": "object",
-        "properties": {
-          "provider": { "type": "string" },
-          "text": { "type": "string" },
-          "sourceLanguage": { "type": "string" },
-          "targetLanguage": { "type": "string" }
-        }
-      },
-      "ResultString": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "type": "string" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "ImageRequest": {
-        "type": "object",
-        "properties": {
-          "provider": { "type": "string" },
-          "imageBase64": { "type": "string" },
-          "mimeType": { "type": "string" },
-          "instruction": { "type": "string" }
-        }
-      },
-      "ResultVisionResult": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/VisionResult" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "VisionResult": {
-        "type": "object",
-        "properties": {
-          "text": { "type": "string" },
-          "labels": { "type": "array", "items": { "type": "string" } }
-        }
-      },
-      "GenerateRequest": {
-        "type": "object",
-        "properties": {
-          "provider": { "type": "string" },
-          "prompt": { "type": "string" },
-          "format": { "type": "string" }
-        }
-      },
-      "ImageResult": {
-        "type": "object",
-        "properties": {
-          "objectKey": { "type": "string" },
-          "mimeType": { "type": "string" },
-          "width": { "type": "integer", "format": "int32" },
-          "height": { "type": "integer", "format": "int32" }
-        }
-      },
-      "ResultImageResult": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/ImageResult" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "ResultMediaVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/MediaVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
       "RouteRequest": {
         "type": "object",
         "properties": {
@@ -12975,6 +11980,100 @@
         "properties": {
           "code": { "type": "integer", "format": "int32" },
           "data": { "$ref": "#/components/schemas/AiModelVO" },
+          "message": { "type": "string" },
+          "error": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
+      },
+      "TtsRequest": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "text": { "type": "string" },
+          "voice": { "type": "string" },
+          "format": { "type": "string" }
+        }
+      },
+      "ResultMapStringString": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "data": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "message": { "type": "string" },
+          "error": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
+      },
+      "TranslateRequest": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "text": { "type": "string" },
+          "sourceLanguage": { "type": "string" },
+          "targetLanguage": { "type": "string" }
+        }
+      },
+      "ResultString": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "data": { "type": "string" },
+          "message": { "type": "string" },
+          "error": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
+      },
+      "ImageRequest": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "imageBase64": { "type": "string" },
+          "mimeType": { "type": "string" },
+          "instruction": { "type": "string" }
+        }
+      },
+      "ResultVisionResult": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "data": { "$ref": "#/components/schemas/VisionResult" },
+          "message": { "type": "string" },
+          "error": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
+      },
+      "VisionResult": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "labels": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "GenerateRequest": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "prompt": { "type": "string" },
+          "format": { "type": "string" }
+        }
+      },
+      "ImageResult": {
+        "type": "object",
+        "properties": {
+          "objectKey": { "type": "string" },
+          "mimeType": { "type": "string" },
+          "width": { "type": "integer", "format": "int32" },
+          "height": { "type": "integer", "format": "int32" }
+        }
+      },
+      "ResultImageResult": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "data": { "$ref": "#/components/schemas/ImageResult" },
           "message": { "type": "string" },
           "error": { "type": "string" },
           "success": { "type": "boolean" }
@@ -13978,6 +13077,16 @@
           }
         },
         "required": ["captchaKey", "code", "email", "newPassword"]
+      },
+      "ResultBoolean": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "data": { "type": "boolean" },
+          "message": { "type": "string" },
+          "error": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
       },
       "SwitchRoleRequest": {
         "type": "object",
@@ -16038,179 +15147,6 @@
           "success": { "type": "boolean" }
         }
       },
-      "ResultListTimelineEventVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/TimelineEventVO" }
-          },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "FilterCondition": {
-        "type": "object",
-        "properties": {
-          "field": { "type": "string" },
-          "operator": {
-            "type": "string",
-            "enum": [
-              "EQ",
-              "NE",
-              "GT",
-              "GE",
-              "LT",
-              "LE",
-              "LIKE",
-              "IN",
-              "NOT_IN",
-              "IS_NULL",
-              "IS_NOT_NULL"
-            ]
-          },
-          "value": {}
-        }
-      },
-      "OrderField": {
-        "type": "object",
-        "properties": {
-          "column": { "type": "string" },
-          "direction": { "type": "string", "enum": ["ASC", "DESC"] }
-        }
-      },
-      "PageQuery": {
-        "type": "object",
-        "properties": {
-          "pageSize": { "type": "integer", "format": "int32" },
-          "pageNum": { "type": "integer", "format": "int32" },
-          "orderByColumn": { "type": "string" },
-          "isAsc": { "type": "string" },
-          "orderFields": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/OrderField" }
-          },
-          "filterConditions": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/FilterCondition" }
-          }
-        }
-      },
-      "PageDataTimelineEventVO": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/TimelineEventVO" }
-          },
-          "total": { "type": "integer", "format": "int64" }
-        }
-      },
-      "ResultPageDataTimelineEventVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/PageDataTimelineEventVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "PageDataTagVO": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/TagVO" }
-          },
-          "total": { "type": "integer", "format": "int64" }
-        }
-      },
-      "ResultPageDataTagVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/PageDataTagVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "ResultListTagVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/TagVO" }
-          },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "PageDataRecordVO": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/RecordVO" }
-          },
-          "total": { "type": "integer", "format": "int64" }
-        }
-      },
-      "ResultPageDataRecordVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/PageDataRecordVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "PageDataProfileVO": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/ProfileVO" }
-          },
-          "total": { "type": "integer", "format": "int64" }
-        }
-      },
-      "ResultPageDataProfileVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/PageDataProfileVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
-      "PageDataMediaVO": {
-        "type": "object",
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/MediaVO" }
-          },
-          "total": { "type": "integer", "format": "int64" }
-        }
-      },
-      "ResultPageDataMediaVO": {
-        "type": "object",
-        "properties": {
-          "code": { "type": "integer", "format": "int32" },
-          "data": { "$ref": "#/components/schemas/PageDataMediaVO" },
-          "message": { "type": "string" },
-          "error": { "type": "string" },
-          "success": { "type": "boolean" }
-        }
-      },
       "ResultListModelRoutePolicy": {
         "type": "object",
         "properties": {
@@ -16895,6 +15831,36 @@
           "roleId": { "type": "integer", "format": "int64" },
           "roleName": { "type": "string" },
           "roleCode": { "type": "string" }
+        }
+      },
+      "FilterCondition": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "EQ",
+              "NE",
+              "GT",
+              "GE",
+              "LT",
+              "LE",
+              "LIKE",
+              "IN",
+              "NOT_IN",
+              "IS_NULL",
+              "IS_NOT_NULL"
+            ]
+          },
+          "value": {}
+        }
+      },
+      "OrderField": {
+        "type": "object",
+        "properties": {
+          "column": { "type": "string" },
+          "direction": { "type": "string", "enum": ["ASC", "DESC"] }
         }
       },
       "UserPageRequest": {

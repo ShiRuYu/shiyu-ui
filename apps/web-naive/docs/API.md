@@ -14,7 +14,6 @@ src/features/<domain>/api/
 ├── education/         # 教育模块
 ├── education-admin/   # 教育管理
 ├── knowledge/         # 知识库
-├── record/            # 成长记录
 └── system/            # 系统管理
 ```
 
@@ -133,16 +132,6 @@ export { getKnowledgePage, createKnowledge };
 | `upload.ts`    | 文件上传         |
 | `user.ts`      | 用户管理         |
 | `tenant.ts`    | 租户与子租户范围 |
-
-### record/
-
-| 文件          | 主要接口 |
-| ------------- | -------- |
-| `media.ts`    | 媒体记录 |
-| `profile.ts`  | 个人档案 |
-| `records.ts`  | 成长记录 |
-| `tag.ts`      | 标签管理 |
-| `timeline.ts` | 时间线   |
 
 ### core/
 

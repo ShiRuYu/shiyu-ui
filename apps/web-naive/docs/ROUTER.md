@@ -57,7 +57,8 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'Overview',
         path: 'overview',
-        component: () => import('#/features/core/pages/overview.vue'),
+        component: () =>
+          import('#/app/pages/workbench/dashboard/overview/index.vue'),
       },
     ],
   },
@@ -86,7 +87,7 @@ const routes: RouteRecordRaw[] = [
 
 ## 5. 信息架构
 
-一级导航为工作台、Agent 平台、知识引擎、教育空间、日常记录、系统管理。教育空间继续聚合为学习、练习与考试、复习、AI 辅学、学习分析、教育配置。
+一级导航为工作台、Agent 平台、知识引擎、教育空间、运行观测和系统管理。教育空间继续聚合为学习、练习与考试、复习、AI 辅学、学习分析、教育配置。
 
 完整树、权限规则与升级兼容策略见 [`docs/web-naive-layout-redesign.md`](../../../docs/web-naive-layout-redesign.md)。
 

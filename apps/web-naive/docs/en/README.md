@@ -42,7 +42,6 @@ apps/web-naive/src/
 | knowledge       | `/knowledge`       |   9   | Enterprise Knowledge Platform |
 | learning        | `/learning`        |  10   | Learning                      |
 | practice        | `/practice`        |   2   | Practice                      |
-| record          | `/record`          |  15   | Growth Records                |
 | review          | `/review`          |   2   | Review                        |
 | system          | `/system`          |  21   | System Admin                  |
 | \_core          | `/`                |  14   | Core Pages                    |

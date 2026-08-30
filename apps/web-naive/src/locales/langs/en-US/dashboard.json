@@ -38,7 +38,6 @@
     "courseLearning": "Course Learning",
     "aiChat": "AI Chat",
     "analytics": "Analytics",
-    "records": "Daily Records",
     "platformInspection": "Platform health check",
     "platformInspectionDescription": "Check Agent runtime status and confirm that all nodes are healthy.",
     "usageMonitoring": "API usage monitoring",

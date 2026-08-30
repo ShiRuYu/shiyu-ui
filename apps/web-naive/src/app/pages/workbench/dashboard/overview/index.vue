@@ -57,12 +57,6 @@ const quickNavItems = [
     title: $t('dashboard.workbench.analytics'),
     url: '/observability/runs',
   },
-  {
-    color: '#0891B2',
-    icon: 'carbon:notebook',
-    title: $t('dashboard.workbench.records'),
-    url: '/record/profiles',
-  },
 ];
 
 const todoItems = ref([

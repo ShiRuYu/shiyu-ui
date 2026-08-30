@@ -13,7 +13,6 @@
 | `knowledge` | `/knowledge` | 9 | 知识引擎 |
 | `learning` | `/learning` | 10 | 学习模块 |
 | `practice` | `/practice` | 2 | 练习模块 |
-| `record` | `/record` | 15 | 日常记录 |
 | `review` | `/review` | 2 | 复习 |
 | `system` | `/system` | 21 | 系统管理 |
 | `_core` | `/` | 14 | 核心页面（登录/注册/个人信息） |
@@ -167,17 +166,6 @@ learning/
 │   └── detail.vue      (104 行)
 └── resource/
     └── list.vue        (111 行)
-```
-
-### 2.6 成长记录模块 `features/record/`
-
-```
-record/
-├── media/               # 媒体记录
-├── profile/             # 个人档案
-├── records/             # 成长记录
-├── tags/                # 标签管理
-└── timeline/            # 时间线
 ```
 
 ### 2.7 其他模块

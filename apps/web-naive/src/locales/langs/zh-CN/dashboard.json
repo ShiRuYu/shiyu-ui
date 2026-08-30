@@ -38,7 +38,6 @@
     "courseLearning": "课程学习",
     "aiChat": "AI 对话",
     "analytics": "数据看板",
-    "records": "日常记录",
     "platformInspection": "平台运行巡检",
     "platformInspectionDescription": "检查平台 Agent 运行状态，确认所有节点正常运作。",
     "usageMonitoring": "API 用量监控",
