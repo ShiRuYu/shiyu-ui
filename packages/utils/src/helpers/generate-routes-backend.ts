@@ -38,6 +38,8 @@ async function generateRoutesByBackend(
     const normalizePageMap: ComponentRecordType = {};
 
     for (const [key, value] of Object.entries(pageMap)) {
+      // Keep semantic feature keys intact; they are not filesystem paths.
+      normalizePageMap[key] = value;
       normalizePageMap[normalizeViewPath(key)] = value;
     }
 
@@ -77,6 +79,13 @@ function convertRoutes(
       route.component = layoutMap[component];
       // 页面组件转换
     } else if (component) {
+      // Feature Slice menus use semantic keys (for example
+      // `feature:iam.files`) rather than filesystem view paths. Resolve the
+      // key directly before applying the legacy path normalization below.
+      if (pageMap[component]) {
+        route.component = pageMap[component];
+        return route;
+      }
       const normalizePath = normalizeViewPath(component);
       const pageKey = normalizePath.endsWith('.vue')
         ? normalizePath
