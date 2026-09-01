@@ -41,6 +41,30 @@ export function useSchema(): VbenFormSchema[] {
         .min(1, $t('ui.formRules.required', [$t('system.platform.code')])),
     },
     {
+      component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: $t('system.platform.adapterTypeOpenAiCompatible'),
+            value: 'OPENAI_COMPATIBLE',
+          },
+          {
+            label: $t('system.platform.adapterTypeOllama'),
+            value: 'OLLAMA',
+          },
+        ],
+      },
+      defaultValue: 'OPENAI_COMPATIBLE',
+      fieldName: 'adapterType',
+      label: $t('system.platform.adapterType'),
+      rules: z
+        .string()
+        .min(
+          1,
+          $t('ui.formRules.required', [$t('system.platform.adapterType')]),
+        ),
+    },
+    {
       component: 'Input',
       fieldName: 'baseUrl',
       label: $t('system.platform.baseUrl'),

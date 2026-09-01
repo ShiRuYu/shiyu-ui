@@ -6377,6 +6377,11 @@ export interface components {
     AiPlatformRequest: {
       name: string;
       code: string;
+      /**
+       * @description 平台接口适配器协议
+       * @enum {string}
+       */
+      adapterType?: 'OPENAI_COMPATIBLE' | 'OLLAMA';
       baseUrl?: string;
       apiKey?: string;
       /** Format: double */
@@ -6398,6 +6403,11 @@ export interface components {
       id?: number;
       name?: string;
       code?: string;
+      /**
+       * @description 平台接口适配器协议
+       * @enum {string}
+       */
+      adapterType?: 'OPENAI_COMPATIBLE' | 'OLLAMA';
       baseUrl?: string;
       /** Format: double */
       temperature?: number;
@@ -9133,6 +9143,11 @@ export interface components {
       id?: number;
       name?: string;
       code?: string;
+      /**
+       * @description 平台接口适配器协议
+       * @enum {string}
+       */
+      adapterType?: 'OPENAI_COMPATIBLE' | 'OLLAMA';
       baseUrl?: string;
       /** Format: double */
       temperature?: number;

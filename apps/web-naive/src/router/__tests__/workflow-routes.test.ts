@@ -41,6 +41,10 @@ describe('workflow route contract', () => {
   });
 
   it('keeps workflow pages out of primary navigation', () => {
+    expect(
+      routes.find((route) => route.name === 'EducationWorkspace')?.meta,
+    ).toMatchObject({ hideInMenu: true, hideInTab: true });
+
     const visit = (route: (typeof routes)[number]) => {
       for (const child of route.children ?? []) {
         if (child.children?.length) visit(child as (typeof routes)[number]);

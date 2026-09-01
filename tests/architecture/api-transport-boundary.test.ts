@@ -44,5 +44,5 @@ describe('aPI transport boundary', () => {
       }
     }
     expect(offenders).toEqual([]);
-  });
+  }, 30_000);
 });

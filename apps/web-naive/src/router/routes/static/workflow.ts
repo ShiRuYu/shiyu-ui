@@ -39,6 +39,12 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'EducationWorkspace',
     path: '/education-center',
+    meta: {
+      hideInBreadcrumb: true,
+      hideInMenu: true,
+      hideInTab: true,
+      title: '教育中心',
+    },
     children: [
       {
         name: 'EducationPractice',

@@ -12,6 +12,7 @@
     "feature:governance.observability",
     "feature:governance.approvals",
     "feature:model.models",
+    "feature:model.platforms",
     "feature:tooling.plugins",
     "feature:iam.users",
     "feature:iam.roles",

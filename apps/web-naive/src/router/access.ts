@@ -68,6 +68,8 @@ const pageMap: ComponentRecordType = {
   'feature:knowledge.spaces': () =>
     import('#/features/knowledge/pages/knowledge/spaces/index.vue'),
   'feature:model.models': () => import('#/features/model/pages/model/list.vue'),
+  'feature:model.platforms': () =>
+    import('#/features/model/pages/platform/list.vue'),
   'feature:tooling.plugins': () =>
     import('#/features/tooling/pages/plugin/index.vue'),
 };
