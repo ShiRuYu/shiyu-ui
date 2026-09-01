@@ -102,7 +102,7 @@ async function signIn(page: Page): Promise<MenuNode[]> {
 }
 
 test.describe('web-naive critical journeys', () => {
-  test('loads the six-domain navigation without template residue', async ({
+  test('loads the domain navigation without template residue', async ({
     page,
   }, testInfo) => {
     test.skip(
@@ -115,12 +115,11 @@ test.describe('web-naive critical journeys', () => {
 
     for (const title of [
       '工作台',
-      'AI 工作区',
+      'AI 控制台',
       '应用开发',
       '知识中心',
       '运行观测',
-      '教育空间',
-      '个人记录',
+      '教育中心',
       '平台管理',
       '系统管理',
     ]) {
@@ -128,7 +127,7 @@ test.describe('web-naive critical journeys', () => {
         page.getByText(title, { exact: true }).first(),
       ).toBeVisible();
     }
-    await page.getByText('教育空间', { exact: true }).first().click();
+    await page.getByText('教育中心', { exact: true }).first().click();
     for (const title of ['学习', '练习', 'AI 辅学', '学习分析']) {
       await expect(
         page.getByText(title, { exact: true }).first(),
