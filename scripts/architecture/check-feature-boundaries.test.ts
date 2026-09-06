@@ -18,6 +18,47 @@ describe('feature slice boundaries', () => {
     ).toEqual([]);
   });
 
+  it.each([
+    [
+      'features/agent/example.ts',
+      '../knowledge/api/search',
+      'feature-public-entry',
+    ],
+    [
+      'app/router.ts',
+      '../features/agent/pages/editor.vue',
+      'app-feature-public-entry',
+    ],
+    [
+      'shared/http/result.ts',
+      '../../features/agent',
+      'shared-no-feature-dependency',
+    ],
+    ['features/agent/example.ts', '../../views/chat', 'legacy-view-import'],
+    ['features/agent/example.ts', '../../api/request', 'legacy-api-import'],
+  ])('checks relative imports from %s', (file, target, rule) => {
+    expect(
+      findBoundaryViolations(
+        `apps/web-naive/src/${file}`,
+        `export { value } from '${target}';`,
+      ),
+    ).toEqual([expect.objectContaining({ rule, specifier: target })]);
+  });
+
+  it.each([
+    '../knowledge',
+    '../knowledge/index.ts',
+    '#/features/knowledge/index',
+    './api/search',
+  ])('allows public entries and same-feature imports: %s', (target) => {
+    expect(
+      findBoundaryViolations(
+        'E:\\Dev\\shiyu\\shiyu-ui\\apps\\web-naive\\src\\features\\agent\\example.ts',
+        `const page = () => import('${target}');`,
+      ),
+    ).toEqual([]);
+  });
+
   it('rejects deep imports into another feature', () => {
     expect(
       findBoundaryViolations(

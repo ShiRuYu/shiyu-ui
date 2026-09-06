@@ -33,6 +33,13 @@ jobs:
       - name: Setup Node and pnpm
         uses: ./.github/actions/setup-node
 
+      - name: Verify feature boundaries and API contracts
+        run: |
+          pnpm check:boundaries
+          pnpm test:contract
+          pnpm test:openapi
+          pnpm exec vitest run scripts/architecture tests/architecture
+
       - name: Typecheck web-naive
         run: pnpm -F @vben/web-naive run typecheck
 

@@ -21,7 +21,14 @@ function sourceLocation(filePath) {
 
 function featureImport(specifier) {
   const match = specifier.match(/^#\/features\/([^/]+)(?:\/(.+))?$/);
-  return match ? { domain: match[1], deepPath: match[2] } : undefined;
+  return match
+    ? {
+        domain: match[1],
+        deepPath: /^index(?:\.ts)?$/.test(match[2] ?? '')
+          ? undefined
+          : match[2],
+      }
+    : undefined;
 }
 
 function violation(rule, file, specifier) {
@@ -35,26 +42,32 @@ export function findBoundaryViolations(filePath, source) {
 
   for (const match of source.matchAll(IMPORT_PATTERN)) {
     const specifier = match[1] ?? match[2];
+    // Resolve both aliases and relative imports against the source file before
+    // applying rules, using POSIX paths on every host.
+    const target = specifier.startsWith('.')
+      ? path.posix.normalize(
+          path.posix.join(path.posix.dirname(location), specifier),
+        )
+      : specifier.startsWith('#/')
+        ? path.posix.normalize(specifier.slice(2))
+        : undefined;
+    if (target === undefined) continue;
+    const resolved = `#/${target}`;
 
-    if (
-      specifier === '#/views' ||
-      specifier.startsWith('#/views/') ||
-      specifier === '../views' ||
-      specifier.startsWith('../views/')
-    ) {
+    if (resolved === '#/views' || resolved.startsWith('#/views/')) {
       violations.push(violation('legacy-view-import', location, specifier));
       continue;
     }
 
     if (
-      (specifier === '#/api' || specifier.startsWith('#/api/')) &&
+      (resolved === '#/api' || resolved.startsWith('#/api/')) &&
       slice !== 'api'
     ) {
       violations.push(violation('legacy-api-import', location, specifier));
       continue;
     }
 
-    const importedFeature = featureImport(specifier);
+    const importedFeature = featureImport(resolved);
     if (!importedFeature) continue;
 
     if (slice === 'shared') {

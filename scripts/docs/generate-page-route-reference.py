@@ -67,6 +67,7 @@ FEATURE_COMPONENTS = {
     "feature:knowledge.search",
     "feature:knowledge.spaces",
     "feature:model.models",
+    "feature:model.platforms",
     "feature:tooling.plugins",
 }
 
@@ -144,7 +145,7 @@ def main() -> None:
         "> Agent 平台与知识引擎页面均通过 feature 公共入口装配。",
         "",
         "| ID | 类型 | 页面/目录 | 路由 | 组件 | 可见 | 初始角色 | 组件校验 |",
-        "|---:|---|---|---|---|---|---|---|",
+        "| --: | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for menu in sorted(menus, key=lambda item: item["id"]):
         file = component_file(menu["component"])
