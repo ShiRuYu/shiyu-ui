@@ -26,6 +26,7 @@ import {
   publishRuntimeAppVersion,
 } from '#/features/agent';
 
+const configPlaceholder = '{"executionType":"AGENT","agentId":"..."}';
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
@@ -84,8 +85,7 @@ function nextVersion(value: string) {
   return `${match[1]}.${match[2]}.${Number(match[3]) + 1}`;
 }
 
-function buildConfig() {
-  const config = JSON.parse(form.configJson) as Record<string, unknown>;
+function buildConfig(config: Record<string, unknown>) {
   config.executionType = config.executionType ?? 'AGENT';
   if (form.agentId) {
     config.agentId = form.agentId;
@@ -106,8 +106,14 @@ async function submit(publish = false) {
     message.warning('请输入 App 名称');
     return;
   }
+  let configJson: string;
   try {
-    JSON.parse(form.configJson);
+    const config: unknown = JSON.parse(form.configJson);
+    if (!config || typeof config !== 'object' || Array.isArray(config)) {
+      message.error('配置 JSON 必须是对象');
+      return;
+    }
+    configJson = buildConfig(config as Record<string, unknown>);
   } catch {
     message.error('配置 JSON 格式不正确');
     return;
@@ -124,7 +130,7 @@ async function submit(publish = false) {
     }
     const createdVersion = await createRuntimeAppVersion(appId.value, {
       version: form.version.trim() || '0.1.0',
-      configJson: buildConfig(),
+      configJson,
     });
     if (publish) {
       await publishRuntimeAppVersion(appId.value, createdVersion.id);
@@ -202,7 +208,7 @@ onMounted(async () => {
             v-model:value="form.configJson"
             type="textarea"
             :rows="12"
-            placeholder='{"executionType":"AGENT","agentId":"..."}'
+            :placeholder="configPlaceholder"
           />
         </NFormItem>
         <NSpace justify="end">
