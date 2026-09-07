@@ -82,11 +82,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--seed-file",
-        default=str(backend / "modules/domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql"),
+        default=str(backend / "modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql"),
     )
     parser.add_argument(
         "--navigation-file",
-        default=str(backend / "modules/domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"),
+        default=str(backend / "modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"),
     )
     args = parser.parse_args()
 
