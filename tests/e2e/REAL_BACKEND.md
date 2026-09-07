@@ -13,3 +13,7 @@ pnpm exec playwright test real-backend
 The Playwright configuration runs desktop and mobile projects serially. Keep other tests using the same account stopped because login can replace its session. Test records use unique names and remain in the disposable data directory for inspection. Credentials must not be committed.
 
 Coverage includes App creation and publication, rejecting non-object App configuration before writes, document ingestion, preview, publication and vector search, and idempotent conversation creation with a persisted generation failure delivered over SSE. The generation test deliberately selects an unavailable model; it does not verify successful inference from an external model provider.
+
+`model-provider.spec.ts` verifies successful real inference and persisted assistant messages. Configure the test backend provider first, set `E2E_MODEL_PROVIDER` (for example `DEEPSEEK`) and `E2E_MODEL_NAME` (for example `deepseek-v4-flash`), then run `pnpm exec playwright test model-provider`.
+
+This performs billable provider requests. For database-backed startup configuration, set `shiyu.ai.tenant-id` to the tenant owning the test platform. Keep the API key in the isolated backend configuration, never in test source.
