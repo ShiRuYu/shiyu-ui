@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { KnowledgePoint } from '#/features/knowledge/api';
-import type { KnowledgeRelation } from '#/features/knowledge/api';
+import type {
+  KnowledgePoint,
+  KnowledgeRelation,
+} from '#/features/knowledge/api';
 import type {
   KnowledgeGraphEdge,
   KnowledgeGraphNode,
 } from '#/features/knowledge/ui/knowledge-graph-canvas.vue';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -27,12 +29,10 @@ import {
 import { storeToRefs } from 'pinia';
 
 import {
-  getKnowledgePointGraph,
-  getKnowledgePoints,
-} from '#/features/knowledge/api';
-import {
   createKnowledgeRelation,
   deleteKnowledgeRelation,
+  getKnowledgePointGraph,
+  getKnowledgePoints,
   getKnowledgeRelations,
 } from '#/features/knowledge/api';
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
@@ -286,50 +286,92 @@ const relationType = ref('PRE');
 const relationOriginalType = ref('PRE');
 const relationWeight = ref(1);
 const relationSaving = ref(false);
+let disposed = false;
+let latestRefreshRequest = 0;
+let latestOptionsRequest = 0;
+let latestGraphRequest = 0;
 
-async function loadOptions(reset = false) {
-  if (!activeSpaceId.value) {
+async function loadOptions(
+  reset = false,
+  refreshRequest = latestRefreshRequest,
+) {
+  const requestId = ++latestOptionsRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     options.value = [];
     selectedId.value = undefined;
     graph.value = undefined;
     return;
   }
-  const result = await getKnowledgePoints(activeSpaceId.value, {
-    pageNum: 1,
-    pageSize: 500,
-  });
-  options.value = result.items.map((item) => ({
-    label: `${item.code} · ${item.name}`,
-    value: item.id,
-  }));
-  if (reset || !options.value.some((item) => item.value === selectedId.value)) {
-    const queryId = Number(route.query.pointId);
-    selectedId.value = options.value.some((item) => item.value === queryId)
-      ? queryId
-      : options.value[0]?.value;
+  try {
+    const result = await getKnowledgePoints(spaceId, {
+      pageNum: 1,
+      pageSize: 500,
+    });
+    if (
+      disposed ||
+      requestId !== latestOptionsRequest ||
+      refreshRequest !== latestRefreshRequest
+    ) {
+      return false;
+    }
+    options.value = result.items.map((item) => ({
+      label: `${item.code} · ${item.name}`,
+      value: item.id,
+    }));
+    if (
+      reset ||
+      !options.value.some((item) => item.value === selectedId.value)
+    ) {
+      const queryId = Number(route.query.pointId);
+      selectedId.value = options.value.some((item) => item.value === queryId)
+        ? queryId
+        : options.value[0]?.value;
+    }
+    return true;
+  } catch {
+    if (!disposed && requestId === latestOptionsRequest) {
+      message.error('知识点选项加载失败，请稍后重试');
+    }
+    return false;
   }
 }
 async function loadGraph() {
-  if (!selectedId.value) {
+  const requestId = ++latestGraphRequest;
+  const pointId = selectedId.value;
+  if (!pointId) {
     graph.value = undefined;
     return;
   }
   loading.value = true;
   try {
     const [graphResult, relationResult] = await Promise.all([
-      getKnowledgePointGraph(selectedId.value),
-      getKnowledgeRelations(selectedId.value),
+      getKnowledgePointGraph(pointId),
+      getKnowledgeRelations(pointId),
     ]);
+    if (
+      disposed ||
+      requestId !== latestGraphRequest ||
+      pointId !== selectedId.value
+    ) {
+      return;
+    }
     graph.value = graphResult as PointGraph;
     relations.value = relationResult || [];
     selectedNode.value = graph.value.node;
     graphCanvasKey.value += 1;
+  } catch {
+    if (!disposed && requestId === latestGraphRequest) {
+      message.error('图谱数据加载失败，请稍后重试');
+    }
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestGraphRequest) loading.value = false;
   }
 }
 async function refresh(reset = false) {
-  await loadOptions(reset);
+  const requestId = ++latestRefreshRequest;
+  const loaded = await loadOptions(reset, requestId);
+  if (disposed || requestId !== latestRefreshRequest || !loaded) return;
   await loadGraph();
 }
 async function handleGraphNodeSelect(nodeId: number) {
@@ -423,8 +465,10 @@ async function saveRelation() {
     message.success('关系已保存');
     relationModalVisible.value = false;
     await loadGraph();
+  } catch {
+    if (!disposed) message.error('关系保存失败，请稍后重试');
   } finally {
-    relationSaving.value = false;
+    if (!disposed) relationSaving.value = false;
   }
 }
 
@@ -440,13 +484,28 @@ async function removeRelation() {
     message.success('关系已删除');
     relationModalVisible.value = false;
     await loadGraph();
+  } catch {
+    if (!disposed) message.error('关系删除失败，请稍后重试');
   } finally {
-    relationSaving.value = false;
+    if (!disposed) relationSaving.value = false;
   }
 }
+watch(activeSpaceId, () => void refresh(true));
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await refresh(true);
+  try {
+    await store.loadSpaces();
+    if (!disposed) await refresh(true);
+  } catch {
+    if (!disposed) message.error('知识空间加载失败，请稍后重试');
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestRefreshRequest += 1;
+  latestOptionsRequest += 1;
+  latestGraphRequest += 1;
 });
 </script>
 

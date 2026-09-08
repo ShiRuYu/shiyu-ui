@@ -6,7 +6,8 @@
     "deleteSuccess": "Deleted successfully: {0}",
     "editSuccess": "Updated successfully",
     "operationSuccess": "Operation successful",
-    "deleteFailed": "Delete failed"
+    "deleteFailed": "Delete failed",
+    "operationFailed": "Operation failed"
   },
   "actionTitle": {
     "create": "Create {0}",

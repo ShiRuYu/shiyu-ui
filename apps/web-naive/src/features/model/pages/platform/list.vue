@@ -47,6 +47,7 @@ function onDelete(row: PlatformApi.PlatformItem) {
       hideLoading.destroy();
     })
     .catch(() => {
+      message.error($t('ui.actionMessage.deleteFailed'));
       hideLoading.destroy();
     });
 }
@@ -56,7 +57,7 @@ async function onReload() {
     await reloadPlatforms();
     message.success($t('ui.actionMessage.operationSuccess'));
   } catch {
-    // handled by request interceptor
+    message.error($t('ui.actionMessage.operationFailed'));
   }
 }
 
@@ -66,7 +67,7 @@ async function onSetDefault(row: PlatformApi.PlatformItem) {
     message.success($t('agent.platformSetDefault', { name: row.name }));
     refreshGrid();
   } catch {
-    // handled by request interceptor
+    message.error($t('ui.actionMessage.operationFailed'));
   }
 }
 

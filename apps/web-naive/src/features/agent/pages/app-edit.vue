@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -37,6 +37,8 @@ const versions = ref<
   Array<{ configJson?: string; id: string; status: string; version: string }>
 >([]);
 const agentOptions = ref<Array<{ label: string; value: string }>>([]);
+let disposed = false;
+let latestLoadRequest = 0;
 const form = reactive({
   name: '',
   description: '',
@@ -47,21 +49,39 @@ const form = reactive({
 
 const isNew = computed(() => route.query.new === 'true' || !appId.value);
 
-async function loadApp() {
-  if (!appId.value) return;
+function resetForm() {
+  Object.assign(form, {
+    name: '',
+    description: '',
+    version: '0.1.0',
+    agentId: agentOptions.value[0]?.value ?? '',
+    configJson: '{\n  "executionType": "AGENT"\n}',
+  });
+  versions.value = [];
+}
+
+async function loadApp(targetId = appId.value) {
+  const requestId = ++latestLoadRequest;
+  if (!targetId) {
+    loading.value = false;
+    return;
+  }
   loading.value = true;
   loadError.value = '';
   try {
     const apps = (await listRuntimeApps()) ?? [];
-    const app = apps.find((item) => item.id === appId.value);
+    if (disposed || requestId !== latestLoadRequest) return;
+    const app = apps.find((item) => item.id === targetId);
     if (!app) {
       loadError.value = '未找到该 App，可能已被删除或无权访问';
       return;
     }
     form.name = app.name;
     form.description = app.description || '';
-    versions.value = (await listRuntimeAppVersions(appId.value)) ?? [];
-    const latest = versions.value[0];
+    const loadedVersions = (await listRuntimeAppVersions(targetId)) ?? [];
+    if (disposed || requestId !== latestLoadRequest) return;
+    versions.value = loadedVersions;
+    const latest = loadedVersions[0];
     if (latest?.version) form.version = nextVersion(latest.version);
     if (latest?.configJson) {
       form.configJson = latest.configJson;
@@ -73,9 +93,31 @@ async function loadApp() {
       }
     }
   } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
     loadError.value = 'App 详情加载失败，请稍后重试';
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
+  }
+}
+
+async function loadAgents() {
+  try {
+    const agents = (await getAdminAgentListAll()) as Array<{
+      agentId?: string;
+      name?: string;
+      status?: number;
+    }>;
+    if (disposed) return;
+    agentOptions.value = (agents ?? [])
+      .filter((agent) => agent.agentId && agent.status !== 0)
+      .map((agent) => ({
+        label: `${agent.name || agent.agentId} · ${agent.agentId}`,
+        value: agent.agentId as string,
+      }));
+    if (!form.agentId) form.agentId = agentOptions.value[0]?.value ?? '';
+  } catch {
+    // Agent binding remains editable through the JSON config if the registry
+    // is unavailable.
   }
 }
 
@@ -102,6 +144,7 @@ function buildConfig(config: Record<string, unknown>) {
 }
 
 async function submit(publish = false) {
+  if (saving.value) return;
   if (!form.name.trim()) {
     message.warning('请输入 App 名称');
     return;
@@ -148,29 +191,31 @@ async function submit(publish = false) {
         : '保存失败，请检查权限或配置后重试',
     );
   } finally {
-    saving.value = false;
+    if (!disposed) saving.value = false;
   }
 }
 
-onMounted(async () => {
-  try {
-    const agents = (await getAdminAgentListAll()) as Array<{
-      agentId?: string;
-      name?: string;
-      status?: number;
-    }>;
-    agentOptions.value = (agents ?? [])
-      .filter((agent) => agent.agentId && agent.status !== 0)
-      .map((agent) => ({
-        label: `${agent.name || agent.agentId} · ${agent.agentId}`,
-        value: agent.agentId as string,
-      }));
-    if (!form.agentId) form.agentId = agentOptions.value[0]?.value ?? '';
-  } catch {
-    // Agent binding remains editable through the JSON config if the registry
-    // is unavailable.
-  }
-  await loadApp();
+watch(
+  () => route.query.id,
+  (value) => {
+    const nextId = typeof value === 'string' ? value : '';
+    if (nextId === appId.value) return;
+    appId.value = nextId;
+    latestLoadRequest += 1;
+    loadError.value = '';
+    resetForm();
+    void loadApp(nextId);
+  },
+);
+
+onMounted(() => {
+  void loadAgents();
+  void loadApp();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
 });
 </script>
 

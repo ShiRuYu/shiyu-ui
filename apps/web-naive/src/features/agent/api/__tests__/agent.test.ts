@@ -121,6 +121,22 @@ describe('agent feature transport facade', () => {
     expect(chunks).toEqual(['{\n  "output": 42\n}\n', '{']);
   });
 
+  it('passes an abort signal to synchronous execution requests', async () => {
+    const controller = new AbortController();
+
+    await executeAgent(
+      'agent-1',
+      { input: 'hello' },
+      { signal: controller.signal },
+    );
+
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/executions/execute',
+      { input: 'hello' },
+      { params: { agentId: 'agent-1' }, signal: controller.signal },
+    );
+  });
+
   it('covers agent administration, graph, version and runtime facades explicitly', async () => {
     const payload = {} as any;
     await adminApi.getAgentPage({ page: 1, pageSize: 10, name: 'Tutor' });
@@ -205,5 +221,127 @@ describe('agent feature transport facade', () => {
       type: 'TOKEN',
     });
     expect(chunks.join('')).toContain('chunk');
+  });
+
+  it('uses the backend pageNo parameter for intent definitions', async () => {
+    await intentApi.getIntentDefPage({
+      page: 3,
+      pageSize: 25,
+      category: 'faq',
+    });
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/agent/intents/page', {
+      params: { pageNo: 3, pageSize: 25, category: 'faq' },
+    });
+  });
+
+  it('keeps version copy inputs in the request body', async () => {
+    await versionApi.copyVersion('agent-1', 7, {
+      versionNumber: 'v2',
+      description: 'copy',
+    });
+
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/versions/copy',
+      { versionNumber: 'v2', description: 'copy', copyFromVersionId: 7 },
+      { params: { agentId: 'agent-1' } },
+    );
+  });
+
+  it('releases the teaching stream reader when reading fails', async () => {
+    const releaseLock = vi.fn();
+    const read = vi.fn().mockRejectedValue(new Error('stream interrupted'));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        body: { getReader: () => ({ read, releaseLock }) },
+        ok: true,
+        status: 200,
+      }),
+    );
+
+    await expect(
+      tutorApi.teachStream(
+        { studentId: 1, knowledgeId: 2, style: 'guided' },
+        vi.fn(),
+      ),
+    ).rejects.toThrow('stream interrupted');
+    expect(releaseLock).toHaveBeenCalledOnce();
+  });
+
+  it('cancels the teaching stream when its abort signal fires', async () => {
+    let resolveRead!: (result: { done: boolean; value?: Uint8Array }) => void;
+    const read = vi.fn(
+      () =>
+        new Promise<{ done: boolean; value?: Uint8Array }>((resolve) => {
+          resolveRead = resolve;
+        }),
+    );
+    const cancel = vi.fn(() => {
+      resolveRead({ done: true });
+      return Promise.resolve();
+    });
+    const releaseLock = vi.fn();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        body: { getReader: () => ({ cancel, read, releaseLock }) },
+        ok: true,
+        status: 200,
+      }),
+    );
+    const controller = new AbortController();
+
+    const stream = tutorApi.teachStream(
+      { studentId: 1, knowledgeId: 2 },
+      vi.fn(),
+      { signal: controller.signal },
+    );
+    await Promise.resolve();
+    controller.abort();
+    await expect(stream).rejects.toMatchObject({ name: 'AbortError' });
+
+    expect(fetch).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ signal: controller.signal }),
+    );
+    expect(cancel).toHaveBeenCalledOnce();
+    expect(releaseLock).toHaveBeenCalledOnce();
+  });
+
+  it('flushes a teaching stream decoder when the final UTF-8 sequence spans chunks', async () => {
+    const chunks = [
+      new TextEncoder().encode('\u{1f600}').slice(0, 2),
+      new TextEncoder().encode('\u{1f600}').slice(2),
+    ];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        body: {
+          getReader: () => ({
+            read: vi
+              .fn()
+              .mockImplementationOnce(async () => ({
+                done: false,
+                value: chunks[0],
+              }))
+              .mockImplementationOnce(async () => ({
+                done: true,
+                value: chunks[1],
+              })),
+            releaseLock: vi.fn(),
+          }),
+        },
+        ok: true,
+        status: 200,
+      }),
+    );
+    const received: string[] = [];
+
+    await tutorApi.teachStream({ studentId: 1, knowledgeId: 2 }, (chunk) =>
+      received.push(chunk),
+    );
+
+    expect(received.join('')).toBe('😀');
   });
 });

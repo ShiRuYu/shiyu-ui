@@ -18,15 +18,18 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { getQuestionBySubjectGrade } from '#/features/education';
-import { getSubjectOptions } from '#/features/education';
+import {
+  type EducationQuestionApi,
+  getQuestionBySubjectGrade,
+  getSubjectOptions,
+} from '#/features/education';
 import { EducationAdminQuestionPage as AdminQuestionList } from '#/features/education';
 import { $t } from '#/locales';
 
 const accessStore = useAccessStore();
 const router = useRouter();
 const loading = ref(false);
-const questions = ref<any[]>([]);
+const questions = ref<EducationQuestionApi.Question[]>([]);
 const activeTab = ref('student');
 const adminPermission = accessStore.accessCodes.includes('edu:question:list');
 
@@ -37,7 +40,7 @@ const subjectOptions = ref<Array<{ label: string; value: string }>>([]);
 async function loadSubjectOptions() {
   try {
     const data = await getSubjectOptions();
-    subjectOptions.value = data.map((s: any) => ({
+    subjectOptions.value = data.map((s) => ({
       label: s.name,
       value: s.code,
     }));
@@ -46,7 +49,7 @@ async function loadSubjectOptions() {
   }
 }
 
-const columns: DataTableColumns<any> = [
+const columns: DataTableColumns<EducationQuestionApi.Question> = [
   { title: 'ID', key: 'id', width: 60 },
   {
     title: '题型',
@@ -113,11 +116,15 @@ async function loadQuestions() {
   }
 }
 
-function startPractice(row: any) {
+function startPractice(row: EducationQuestionApi.Question) {
   router.push({
     path: '/education-center/practice',
     query: { questionId: String(row.id) },
   });
+}
+
+function questionRowKey(row: EducationQuestionApi.Question) {
+  return row.id;
 }
 
 onMounted(() => {
@@ -151,7 +158,7 @@ onMounted(() => {
           :data="questions"
           :loading="loading"
           striped
-          :row-key="(row: any) => row.id"
+          :row-key="questionRowKey"
         />
       </NTabPane>
 

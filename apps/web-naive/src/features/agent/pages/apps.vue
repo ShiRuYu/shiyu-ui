@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import {
@@ -22,6 +22,8 @@ const apps = ref<AiAppSummary[]>([]);
 const appVersions = ref<Record<string, AiAppVersionSummary[]>>({});
 const loading = ref(false);
 const loadError = ref(false);
+let disposed = false;
+let latestRequestId = 0;
 const draftCount = computed(
   () =>
     apps.value.filter(
@@ -40,10 +42,14 @@ const publishedCount = computed(
     ).length,
 );
 
-onMounted(async () => {
+async function loadApps() {
+  const requestId = ++latestRequestId;
   loading.value = true;
+  loadError.value = false;
   try {
-    apps.value = (await listRuntimeApps()) ?? [];
+    const loadedApps = (await listRuntimeApps()) ?? [];
+    if (disposed || requestId !== latestRequestId) return;
+    apps.value = loadedApps;
     const versionEntries = await Promise.all(
       apps.value.map(async (app) => {
         try {
@@ -56,12 +62,22 @@ onMounted(async () => {
         }
       }),
     );
+    if (disposed || requestId !== latestRequestId) return;
     appVersions.value = Object.fromEntries(versionEntries);
   } catch {
+    if (disposed || requestId !== latestRequestId) return;
     loadError.value = true;
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestRequestId) {
+      loading.value = false;
+    }
   }
+}
+
+onMounted(() => void loadApps());
+onBeforeUnmount(() => {
+  disposed = true;
+  latestRequestId += 1;
 });
 
 function openApp(app: AiAppSummary) {

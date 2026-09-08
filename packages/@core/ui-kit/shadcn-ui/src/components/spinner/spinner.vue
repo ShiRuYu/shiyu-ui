@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 
 import { cn } from '@vben-core/shared/utils';
 
@@ -28,12 +28,17 @@ const showSpinner = ref(false);
 const renderSpinner = ref(false);
 const timer = ref<ReturnType<typeof setTimeout>>();
 
+function clearTimer() {
+  clearTimeout(timer.value);
+  timer.value = undefined;
+}
+
 watch(
   () => props.spinning,
   (show) => {
     if (!show) {
       showSpinner.value = false;
-      clearTimeout(timer.value);
+      clearTimer();
       return;
     }
 
@@ -51,6 +56,8 @@ watch(
     immediate: true,
   },
 );
+
+onBeforeUnmount(clearTimer);
 
 function onTransitionEnd() {
   if (!showSpinner.value) {

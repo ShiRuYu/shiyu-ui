@@ -37,7 +37,7 @@ async function getPlatformPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<PlatformApi.PageResult<PlatformApi.PlatformItem>>(
     '/api/model/providers/page',
-    { params: { pageNum: page, pageSize, ...rest } },
+    { params: { pageNo: page, pageSize, ...rest } },
   );
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AiRunEvent, AiRunSummary } from '#/features/agent';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import {
   NAlert,
@@ -22,6 +22,9 @@ const selectedEvents = ref<AiRunEvent[]>([]);
 const eventLoading = ref(false);
 const loading = ref(false);
 const error = ref(false);
+let disposed = false;
+let latestRunsRequest = 0;
+let latestEventRequest = 0;
 const successRate = computed(() => {
   if (runs.value.length === 0) return '—';
   const completed = runs.value.filter(
@@ -29,28 +32,49 @@ const successRate = computed(() => {
   ).length;
   return `${Math.round((completed / runs.value.length) * 1000) / 10}%`;
 });
-onMounted(async () => {
+async function loadRuns() {
+  const requestId = ++latestRunsRequest;
   loading.value = true;
+  error.value = false;
   try {
-    runs.value = (await listRuntimeRuns(50)) ?? [];
+    const result = (await listRuntimeRuns(50)) ?? [];
+    if (disposed || requestId !== latestRunsRequest) return;
+    runs.value = result;
   } catch {
+    if (disposed || requestId !== latestRunsRequest) return;
     error.value = true;
   } finally {
-    loading.value = false;
-  }
-});
-
-async function inspectRun(run: AiRunSummary) {
-  selectedRun.value = run;
-  eventLoading.value = true;
-  try {
-    selectedEvents.value = (await getRuntimeRunEvents(run.id)) ?? [];
-  } catch {
-    selectedEvents.value = [];
-  } finally {
-    eventLoading.value = false;
+    if (!disposed && requestId === latestRunsRequest) loading.value = false;
   }
 }
+
+async function inspectRun(run: AiRunSummary) {
+  const requestId = ++latestEventRequest;
+  selectedRun.value = run;
+  selectedEvents.value = [];
+  eventLoading.value = true;
+  try {
+    const events = (await getRuntimeRunEvents(run.id)) ?? [];
+    if (disposed || requestId !== latestEventRequest) return;
+    selectedEvents.value = events;
+  } catch {
+    if (disposed || requestId !== latestEventRequest) return;
+    selectedEvents.value = [];
+  } finally {
+    if (!disposed && requestId === latestEventRequest)
+      eventLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  void loadRuns();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestRunsRequest += 1;
+  latestEventRequest += 1;
+});
 </script>
 <template>
   <PlatformWorkspaceShell
@@ -100,7 +124,8 @@ async function inspectRun(run: AiRunSummary) {
         </div>
         <template #suffix>
           <NButton text type="primary" @click.stop="inspectRun(run)">
-            查看 Trace </NButton
+            查看 Trace
+</NButton
           ><NTag
             size="small"
             :type="
@@ -137,7 +162,8 @@ async function inspectRun(run: AiRunSummary) {
               ><NTag size="tiny">#{{ event.seq }}</NTag
               >{{ event.type }}</span
             >
-          </NListItem> </NList
+          </NListItem>
+</NList
         ><NEmpty v-else description="暂无事件" /><NButton
           text
           type="primary"

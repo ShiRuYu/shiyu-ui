@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 let isCheckingUpdates = false;
+let disposed = false;
 const currentVersionTag = ref('');
 const lastVersionTag = ref('');
 const timer = ref<ReturnType<typeof setInterval>>();
@@ -59,20 +60,24 @@ async function getVersionTag() {
 }
 
 async function checkForUpdates() {
-  const versionTag = await getVersionTag();
-  if (!versionTag) {
-    return;
-  }
+  if (isCheckingUpdates) return;
+  isCheckingUpdates = true;
+  try {
+    const versionTag = await getVersionTag();
+    if (disposed || !versionTag) return;
 
-  // 首次运行时不提示更新
-  if (!lastVersionTag.value) {
-    lastVersionTag.value = versionTag;
-    return;
-  }
+    // 首次运行时不提示更新
+    if (!lastVersionTag.value) {
+      lastVersionTag.value = versionTag;
+      return;
+    }
 
-  if (lastVersionTag.value !== versionTag && versionTag) {
-    clearInterval(timer.value);
-    handleNotice(versionTag);
+    if (lastVersionTag.value !== versionTag) {
+      stop();
+      handleNotice(versionTag);
+    }
+  } finally {
+    isCheckingUpdates = false;
   }
 }
 function handleNotice(versionTag: string) {
@@ -85,6 +90,7 @@ function start() {
     return;
   }
 
+  stop();
   // 每 checkUpdatesInterval(默认值为1) 分钟检查一次
   timer.value = setInterval(
     checkForUpdates,
@@ -93,29 +99,30 @@ function start() {
 }
 
 function handleVisibilitychange() {
+  if (disposed) return;
   if (document.hidden) {
     stop();
   } else {
-    if (!isCheckingUpdates) {
-      isCheckingUpdates = true;
-      checkForUpdates().finally(() => {
-        isCheckingUpdates = false;
-        start();
-      });
-    }
+    stop();
+    void checkForUpdates().finally(() => {
+      if (!disposed && !document.hidden) start();
+    });
   }
 }
 
 function stop() {
   clearInterval(timer.value);
+  timer.value = undefined;
 }
 
 onMounted(() => {
+  disposed = false;
   start();
   document.addEventListener('visibilitychange', handleVisibilitychange);
 });
 
 onUnmounted(() => {
+  disposed = true;
   stop();
   document.removeEventListener('visibilitychange', handleVisibilitychange);
 });

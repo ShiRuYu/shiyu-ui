@@ -60,6 +60,44 @@ function fetchMethod(call) {
     : 'get';
 }
 
+function propertyName(property) {
+  if (
+    !ts.isPropertyAssignment(property) &&
+    !ts.isShorthandPropertyAssignment(property)
+  )
+    return undefined;
+  const name = property.name;
+  if (!name) return undefined;
+  if (
+    ts.isIdentifier(name) ||
+    ts.isStringLiteral(name) ||
+    ts.isNumericLiteral(name)
+  )
+    return name.text;
+  return undefined;
+}
+
+function explicitQueryKeys(call) {
+  for (const argument of call.arguments.slice(1)) {
+    if (!ts.isObjectLiteralExpression(argument)) continue;
+    const params = argument.properties.find(
+      (property) =>
+        propertyName(property) === 'params' &&
+        ts.isPropertyAssignment(property),
+    );
+    if (
+      !params ||
+      !ts.isPropertyAssignment(params) ||
+      !ts.isObjectLiteralExpression(params.initializer)
+    )
+      continue;
+    return params.initializer.properties
+      .map(propertyName)
+      .filter((name) => name !== undefined);
+  }
+  return [];
+}
+
 async function collectFrontendCalls() {
   const calls = [];
   const unresolved = [];
@@ -105,7 +143,12 @@ async function collectFrontendCalls() {
           );
           const sourceLocation = `${relative(root, file).replaceAll('\\', '/')}:${location.line + 1}`;
           if (route?.startsWith('/'))
-            calls.push({ method, route: route.split('?')[0], sourceLocation });
+            calls.push({
+              method,
+              route: route.split('?')[0],
+              sourceLocation,
+              queryKeys: explicitQueryKeys(node),
+            });
           else if (route !== undefined)
             unresolved.push({ route, sourceLocation });
         }
@@ -122,15 +165,44 @@ function segments(path) {
 }
 
 function routeMatches(frontendPath, backendPath) {
+  return routeMatchScore(frontendPath, backendPath) >= 0;
+}
+
+function routeMatchScore(frontendPath, backendPath) {
   const front = segments(frontendPath);
   const back = segments(backendPath);
-  if (front.length !== back.length) return false;
-  return front.every((segment, index) => {
+  if (front.length !== back.length) return -1;
+  let score = 0;
+  for (const [index, segment] of front.entries()) {
     const serverSegment = back[index];
     const frontVariable = /^\{[^}]+\}$/.test(segment);
     const serverVariable = /^\{[^}]+\}$/.test(serverSegment);
-    return frontVariable || serverVariable || segment === serverSegment;
-  });
+    if (!frontVariable && !serverVariable && segment !== serverSegment)
+      return -1;
+    if (!frontVariable && !serverVariable) score += 2;
+    else score += 1;
+  }
+  return score;
+}
+
+function queryParameters(operation, schemas) {
+  const parameters = new Set();
+  for (const parameter of operation.parameters ?? []) {
+    if (parameter.in !== 'query' || typeof parameter.name !== 'string')
+      continue;
+    parameters.add(parameter.name);
+    const schema = parameter.schema;
+    const refPrefix = '#/components/schemas/';
+    const schemaName = schema?.$ref?.startsWith(refPrefix)
+      ? schema.$ref.slice(refPrefix.length)
+      : undefined;
+    const resolvedSchema = schemaName ? schemas[schemaName] : schema;
+    if (resolvedSchema?.type === 'object') {
+      for (const name of Object.keys(resolvedSchema.properties ?? {}))
+        parameters.add(name);
+    }
+  }
+  return parameters;
 }
 
 function assertCoreSchemas(spec, failures) {
@@ -184,24 +256,42 @@ async function loadSpec() {
 }
 
 const spec = await loadSpec();
+const schemas = spec.components?.schemas ?? {};
 const { calls, unresolved } = await collectFrontendCalls();
 const failures = [];
 const backendOperations = [];
 for (const [path, pathItem] of Object.entries(spec.paths ?? {})) {
   for (const method of Object.keys(pathItem)) {
-    if (httpMethods.has(method)) backendOperations.push({ method, path });
+    if (httpMethods.has(method))
+      backendOperations.push({ method, path, operation: pathItem[method] });
   }
 }
 for (const call of calls) {
-  const matched = backendOperations.some(
-    (operation) =>
-      operation.method === call.method &&
-      routeMatches(call.route, operation.path),
-  );
-  if (!matched)
+  const matchingOperations = backendOperations
+    .filter(
+      (operation) =>
+        operation.method === call.method &&
+        routeMatches(call.route, operation.path),
+    )
+    .sort(
+      (left, right) =>
+        routeMatchScore(call.route, right.path) -
+        routeMatchScore(call.route, left.path),
+    );
+  if (matchingOperations.length === 0)
     failures.push(
       `${call.method.toUpperCase()} ${call.route} (${call.sourceLocation})`,
     );
+  else {
+    const operation = matchingOperations[0];
+    const parameters = queryParameters(operation.operation, schemas);
+    for (const key of call.queryKeys) {
+      if (!parameters.has(key))
+        failures.push(
+          `${call.method.toUpperCase()} ${call.route} uses unknown query parameter ${key} (${call.sourceLocation})`,
+        );
+    }
+  }
 }
 assertCoreSchemas(spec, failures);
 

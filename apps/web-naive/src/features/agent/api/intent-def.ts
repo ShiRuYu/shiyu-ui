@@ -46,7 +46,7 @@ export namespace IntentDefApi {
 async function getIntentDefPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get('/api/agent/intents/page', {
-    params: { pageNum: page, pageSize, ...rest },
+    params: { pageNo: page, pageSize, ...rest },
   });
 }
 

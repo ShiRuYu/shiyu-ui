@@ -31,7 +31,7 @@ export namespace EducationAgentApi {
 }
 
 async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'teacher' },
   });
 }
@@ -39,6 +39,7 @@ async function teach(data: EducationAgentApi.TeachRequest) {
 async function teachStream(
   data: EducationAgentApi.TeachRequest,
   onMessage: (chunk: string) => void,
+  options: { signal?: AbortSignal } = {},
 ): Promise<void> {
   const accessStore = useAccessStore();
   const token = accessStore.accessToken;
@@ -53,51 +54,64 @@ async function teachStream(
         'Content-Type': 'application/json',
       },
       method: 'POST',
+      signal: options.signal,
     },
   );
   if (!response.ok || !response.body)
     throw new Error(`Stream error: ${response.status}`);
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    onMessage(decoder.decode(value, { stream: true }));
+  const abort = () => {
+    void reader.cancel();
+  };
+  options.signal?.addEventListener('abort', abort, { once: true });
+  try {
+    while (true) {
+      if (options.signal?.aborted)
+        throw new DOMException('Aborted', 'AbortError');
+      const { done, value } = await reader.read();
+      if (options.signal?.aborted)
+        throw new DOMException('Aborted', 'AbortError');
+      const chunk = decoder.decode(value, { stream: !done });
+      if (chunk) onMessage(chunk);
+      if (done) break;
+    }
+  } finally {
+    options.signal?.removeEventListener('abort', abort);
+    reader.releaseLock();
   }
 }
 
 async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'practice' },
   });
 }
 
 async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'exam' },
   });
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/api/agent/agents/list', {
-    params: { agentId: 'review' },
-  });
+  return requestClient.get('/api/agent/agents/list');
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'review' },
   });
 }
 
 async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'planner' },
   });
 }
 
 async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post('/api/agent/executions/execute', data, {
+  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
     params: { agentId: 'report' },
   });
 }

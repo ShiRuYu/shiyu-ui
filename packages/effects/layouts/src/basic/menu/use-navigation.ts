@@ -1,5 +1,6 @@
 import type { RouteRecordNormalized } from 'vue-router';
 
+import { onScopeDispose } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { isHttpUrl, openRouteInNewWindow, openWindow } from '@vben/utils';
@@ -19,9 +20,10 @@ function useNavigation() {
   initRouteMetaMap();
 
   // 监听路由变化
-  router.afterEach(() => {
+  const removeAfterHook = router.afterEach(() => {
     initRouteMetaMap();
   });
+  onScopeDispose(removeAfterHook);
 
   // 检查是否应该在新窗口打开
   const shouldOpenInNewWindow = (path: string): boolean => {

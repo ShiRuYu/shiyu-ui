@@ -14,6 +14,7 @@ import { useVbenForm } from '@vben-core/form-ui';
 import { VbenButton, VbenCheckbox } from '@vben-core/shadcn-ui';
 
 import Title from './auth-title.vue';
+import { readRememberedUsername, writeRememberedUsername } from './remember-me';
 import ThirdPartyLogin from './third-party-login.vue';
 
 interface Props extends AuthenticationProps {
@@ -60,7 +61,7 @@ const router = useRouter();
 
 const REMEMBER_ME_KEY = `REMEMBER_ME_USERNAME_${location.hostname}`;
 
-const localUsername = localStorage.getItem(REMEMBER_ME_KEY) || '';
+const localUsername = readRememberedUsername(REMEMBER_ME_KEY);
 
 const rememberMe = ref(!!localUsername);
 
@@ -68,7 +69,7 @@ async function handleSubmit() {
   const { valid } = await formApi.validate();
   const values = await formApi.getValues();
   if (valid) {
-    localStorage.setItem(
+    writeRememberedUsername(
       REMEMBER_ME_KEY,
       rememberMe.value ? values?.username : '',
     );

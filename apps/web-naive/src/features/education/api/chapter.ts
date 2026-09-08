@@ -88,5 +88,5 @@ export async function replaceChapterKnowledgeIds(
 export async function getChapterOptions(textbookId?: number) {
   if (!textbookId || textbookId <= 0) return [];
   const chapters = await getChaptersByTextbook(textbookId);
-  return (chapters || []).map((c: any) => ({ id: c.id, name: c.name }));
+  return (chapters || []).map((c) => ({ id: c.id, name: c.name }));
 }

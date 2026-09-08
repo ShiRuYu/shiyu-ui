@@ -9,7 +9,7 @@ import { generatePlan } from '#/features/agent';
 import { $t } from '#/locales';
 
 const loading = ref(false);
-const result = ref<any>(null);
+const result = ref<unknown>(null);
 const knowledgeId = ref<null | number>(null);
 const targetDate = ref<number>(Date.now() + 14 * 86_400_000);
 

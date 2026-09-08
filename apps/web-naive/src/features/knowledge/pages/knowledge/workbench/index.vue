@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { IngestionJob, KnowledgeDocument } from '#/features/knowledge/api';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
-import { NButton, NCard, NStatistic, NTag } from 'naive-ui';
+import { NAlert, NButton, NCard, NStatistic, NTag } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 
 import { getDocuments, getJobs } from '#/features/knowledge/api';
@@ -29,6 +29,9 @@ const failedJobCount = ref(0);
 const reviewingDocumentCount = ref(0);
 const parseFailedDocumentCount = ref(0);
 const loading = ref(false);
+const loadError = ref(false);
+let disposed = false;
+let latestLoadRequest = 0;
 
 const processingJobs = computed(() => processingJobCount.value);
 const reviewingDocuments = computed(() => reviewingDocumentCount.value);
@@ -58,7 +61,9 @@ const todos = computed(() => [
 ]);
 
 async function load() {
-  if (!activeSpaceId.value) {
+  const requestId = ++latestLoadRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     documents.value = [];
     jobs.value = [];
     pointCount.value = 0;
@@ -67,9 +72,12 @@ async function load() {
     failedJobCount.value = 0;
     reviewingDocumentCount.value = 0;
     parseFailedDocumentCount.value = 0;
+    loading.value = false;
+    loadError.value = false;
     return;
   }
   loading.value = true;
+  loadError.value = false;
   try {
     const [
       docs,
@@ -81,15 +89,15 @@ async function load() {
       runningJobs,
       failedJobsPage,
     ] = await Promise.all([
-      getDocuments(activeSpaceId.value, { pageNum: 1, pageSize: 50 }),
-      getJobs({ pageNum: 1, pageSize: 20, spaceId: activeSpaceId.value }),
-      getKnowledgePoints(activeSpaceId.value, { pageNum: 1, pageSize: 1 }),
-      getDocuments(activeSpaceId.value, {
+      getDocuments(spaceId, { pageNum: 1, pageSize: 50 }),
+      getJobs({ pageNum: 1, pageSize: 20, spaceId }),
+      getKnowledgePoints(spaceId, { pageNum: 1, pageSize: 1 }),
+      getDocuments(spaceId, {
         lifecycleStatus: 'REVIEWING',
         pageNum: 1,
         pageSize: 1,
       }),
-      getDocuments(activeSpaceId.value, {
+      getDocuments(spaceId, {
         parseStatus: 'FAILED',
         pageNum: 1,
         pageSize: 1,
@@ -97,22 +105,23 @@ async function load() {
       getJobs({
         pageNum: 1,
         pageSize: 1,
-        spaceId: activeSpaceId.value,
+        spaceId,
         status: 'PENDING',
       }),
       getJobs({
         pageNum: 1,
         pageSize: 1,
-        spaceId: activeSpaceId.value,
+        spaceId,
         status: 'RUNNING',
       }),
       getJobs({
         pageNum: 1,
         pageSize: 1,
-        spaceId: activeSpaceId.value,
+        spaceId,
         status: 'FAILED',
       }),
     ]);
+    if (disposed || requestId !== latestLoadRequest) return;
     documents.value = docs.items;
     jobs.value = taskPage.items;
     pointCount.value = points.total;
@@ -121,14 +130,33 @@ async function load() {
     parseFailedDocumentCount.value = parseFailed.total;
     processingJobCount.value = pendingJobs.total + runningJobs.total;
     failedJobCount.value = failedJobsPage.total;
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = true;
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 
+watch(
+  activeSpaceId,
+  () => {
+    void load();
+  },
+  { immediate: true },
+);
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await load();
+  try {
+    await store.loadSpaces();
+  } catch {
+    if (!disposed) loadError.value = true;
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
 });
 </script>
 
@@ -143,6 +171,9 @@ onMounted(async () => {
       @refresh="load"
       @import="router.push('/knowledge-center/documents')"
     />
+    <NAlert v-if="loadError" type="warning" :bordered="false">
+      知识总览加载失败，请点击刷新重试。
+    </NAlert>
 
     <KnowledgeEmptyState
       v-if="!activeSpaceId"

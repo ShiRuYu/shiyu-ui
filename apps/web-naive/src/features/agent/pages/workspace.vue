@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AiAppSummary, AiAppVersionSummary } from '#/features/agent/api';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import {
@@ -34,6 +34,9 @@ const output = ref('');
 const running = ref(false);
 const loadError = ref(false);
 const versionError = ref(false);
+let disposed = false;
+let latestAppRequest = 0;
+let latestVersionRequest = 0;
 const publishedVersions = computed(() =>
   versions.value.filter((version) => version.status === 'PUBLISHED'),
 );
@@ -42,11 +45,14 @@ const executableAppCount = computed(
 );
 
 async function loadApps() {
+  const requestId = ++latestAppRequest;
   try {
     loadError.value = false;
-    apps.value =
+    const loadedApps =
       (await listRuntimeApps())?.filter((app) => app.status !== 'ARCHIVED') ??
       [];
+    if (disposed || requestId !== latestAppRequest) return;
+    apps.value = loadedApps;
     const requestedAppId =
       typeof route.query.appId === 'string' ? route.query.appId : undefined;
     selectedAppId.value = apps.value.some((app) => app.id === requestedAppId)
@@ -54,21 +60,28 @@ async function loadApps() {
       : apps.value[0]?.id;
     if (selectedAppId.value) await loadVersions(selectedAppId.value);
   } catch {
+    if (disposed || requestId !== latestAppRequest) return;
     loadError.value = true;
   }
 }
 
 async function loadVersions(appId: string) {
+  const requestId = ++latestVersionRequest;
   versionError.value = false;
+  versions.value = [];
+  selectedVersionId.value = undefined;
   try {
     // Keep drafts visible so users can understand why an App is not yet
     // executable. The API still enforces that only the published version runs.
-    versions.value = (await listRuntimeAppVersions(appId)) ?? [];
-    const published = versions.value.find(
+    const loadedVersions = (await listRuntimeAppVersions(appId)) ?? [];
+    if (disposed || requestId !== latestVersionRequest) return;
+    versions.value = loadedVersions;
+    const published = loadedVersions.find(
       (version) => version.status === 'PUBLISHED',
     );
-    selectedVersionId.value = (published ?? versions.value[0])?.id;
+    selectedVersionId.value = (published ?? loadedVersions[0])?.id;
   } catch {
+    if (disposed || requestId !== latestVersionRequest) return;
     versions.value = [];
     selectedVersionId.value = undefined;
     versionError.value = true;
@@ -105,7 +118,35 @@ async function execute() {
   }
 }
 
-onMounted(loadApps);
+watch(
+  () => route.query.appId,
+  (value) => {
+    if (!apps.value.length) return;
+    const requestedAppId = typeof value === 'string' ? value : undefined;
+    const nextAppId = apps.value.some((app) => app.id === requestedAppId)
+      ? requestedAppId
+      : apps.value[0]?.id;
+    if (nextAppId === selectedAppId.value) return;
+    selectedAppId.value = nextAppId;
+    if (nextAppId) {
+      void loadVersions(nextAppId);
+    } else {
+      latestVersionRequest += 1;
+      versions.value = [];
+      selectedVersionId.value = undefined;
+    }
+  },
+);
+
+onMounted(() => {
+  void loadApps();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestAppRequest += 1;
+  latestVersionRequest += 1;
+});
 </script>
 <template>
   <PlatformWorkspaceShell

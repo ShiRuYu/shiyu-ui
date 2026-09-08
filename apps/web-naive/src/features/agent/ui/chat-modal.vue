@@ -48,11 +48,17 @@ async function onSend() {
         { signal: controller.signal },
       );
     } else {
-      const data = await executeAgent(agentData.value.agentId, requestData);
+      const data = await executeAgent(agentData.value.agentId, requestData, {
+        signal: controller.signal,
+      });
       response.value = data?.output || JSON.stringify(data, null, 2);
     }
   } catch (error: any) {
-    if (error?.name !== 'AbortError') {
+    const cancelled =
+      controller?.signal.aborted ||
+      error?.name === 'AbortError' ||
+      error?.code === 'ERR_CANCELED';
+    if (!cancelled) {
       response.value = $t('agent.chatConfigError', {
         message: error?.message || String(error),
       });

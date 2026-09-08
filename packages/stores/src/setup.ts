@@ -5,6 +5,8 @@ import type { App } from 'vue';
 import { createPinia } from 'pinia';
 import SecureLS from 'secure-ls';
 
+import { getBrowserStorage } from './storage';
+
 let pinia: Pinia;
 
 type SecureLSStorage = {
@@ -54,7 +56,7 @@ export async function initStores(app: App, options: InitStoreOptions) {
       // key $appName-$store.id
       key: (storeKey) => `${namespace}-${storeKey}`,
       storage: import.meta.env.DEV
-        ? localStorage
+        ? getBrowserStorage()
         : {
             getItem(key) {
               return ls.get(key);

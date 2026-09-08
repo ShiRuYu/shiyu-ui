@@ -67,11 +67,20 @@ async function switchAgentVersion(agentId: string, version: string) {
 }
 
 /** Execute an Agent synchronously. */
-async function executeAgent(agentId: string, data?: Record<string, any>) {
+async function executeAgent(
+  agentId: string,
+  data?: Record<string, any>,
+  options: { signal?: AbortSignal } = {},
+) {
+  const requestOptions: { params: { agentId: string }; signal?: AbortSignal } =
+    {
+      params: { agentId },
+    };
+  if (options.signal) requestOptions.signal = options.signal;
   return requestClient.post<Record<string, any>>(
     '/api/agent/executions/execute',
     data,
-    { params: { agentId } },
+    requestOptions,
   );
 }
 

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 interface DragOptions {
   max: number;
@@ -141,6 +141,10 @@ export function useSidebarDrag() {
   const endDrag = () => {
     cleanup?.();
   };
+
+  onBeforeUnmount(() => {
+    endDrag();
+  });
 
   return {
     startDrag,

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { HybridHit } from '#/features/knowledge/api';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import {
+  NAlert,
   NButton,
   NCard,
   NCollapse,
@@ -35,11 +36,16 @@ const mode = ref('HYBRID');
 const rerank = ref(true);
 const hits = ref<HybridHit[]>([]);
 const loading = ref(false);
+const searchError = ref(false);
 const searched = ref(false);
 const elapsed = ref(0);
+let disposed = false;
+let latestSearchRequest = 0;
 
 async function search() {
-  if (!activeSpaceId.value) {
+  if (loading.value) return;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     message.warning('请先选择知识空间');
     return;
   }
@@ -47,47 +53,78 @@ async function search() {
     message.warning('请输入要验证的问题');
     return;
   }
+  const requestId = ++latestSearchRequest;
   loading.value = true;
+  searchError.value = false;
   const startedAt = performance.now();
   try {
     const result = await searchKnowledge({
       mode: mode.value,
       query: query.value.trim(),
       rerank: rerank.value,
-      spaceId: activeSpaceId.value,
+      spaceId,
       threshold: threshold.value || undefined,
       topK: topK.value,
     });
+    if (disposed || requestId !== latestSearchRequest) return;
     hits.value = result.hits;
     searched.value = true;
     elapsed.value = Math.round(performance.now() - startedAt);
+  } catch {
+    if (disposed || requestId !== latestSearchRequest) return;
+    searchError.value = true;
+    message.error('检索失败，请稍后重试');
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestSearchRequest) loading.value = false;
   }
 }
 function resetResults() {
+  latestSearchRequest += 1;
+  loading.value = false;
   hits.value = [];
   searched.value = false;
+  searchError.value = false;
 }
-function highlight(content: string) {
-  const escaped = content
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
+function highlightedParts(content: string) {
   const terms = query.value
     .trim()
     .split(/\s+/)
     .filter((item) => item.length > 1);
-  let highlighted = escaped;
-  for (const term of terms) {
-    highlighted = highlighted.replaceAll(
-      new RegExp(term.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`), 'gi'),
-      (match) => `<mark class="rounded bg-warning/20 px-0.5">${match}</mark>`,
-    );
+  if (terms.length === 0) return [{ matched: false, text: content }];
+
+  const pattern = new RegExp(
+    terms
+      .map((term) => term.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`))
+      .join('|'),
+    'gi',
+  );
+  const parts: Array<{ matched: boolean; text: string }> = [];
+  let cursor = 0;
+  for (const match of content.matchAll(pattern)) {
+    const index = match.index ?? cursor;
+    if (index > cursor) {
+      parts.push({ matched: false, text: content.slice(cursor, index) });
+    }
+    parts.push({ matched: true, text: match[0] });
+    cursor = index + match[0].length;
   }
-  return highlighted;
+  if (cursor < content.length) {
+    parts.push({ matched: false, text: content.slice(cursor) });
+  }
+  return parts;
 }
-onMounted(() => store.loadSpaces());
+watch(activeSpaceId, resetResults);
+
+onMounted(() => {
+  void store.loadSpaces().catch(() => {
+    if (!disposed) message.error('知识空间加载失败，请稍后重试');
+  });
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestSearchRequest += 1;
+});
 </script>
 
 <template>
@@ -96,6 +133,9 @@ onMounted(() => store.loadSpaces());
     description="用真实业务问题验证召回质量，并逐项调节检索参数。"
   >
     <KnowledgeSpaceHeader @refresh="resetResults" />
+    <NAlert v-if="searchError" type="warning" :bordered="false">
+      检索服务暂时不可用，请调整参数后重试。
+    </NAlert>
     <NCard :bordered="false">
       <div class="flex flex-col gap-3 lg:flex-row">
         <NInput
@@ -205,10 +245,19 @@ onMounted(() => store.loadSpaces());
                 综合分 {{ hit.rrfScore.toFixed(3) }}
               </NTag>
             </div>
-            <div
-              class="mt-4 text-sm leading-7"
-              v-html="highlight(hit.highlight || hit.content)"
-            ></div>
+            <div class="mt-4 text-sm leading-7">
+              <template
+                v-for="(part, partIndex) in highlightedParts(
+                  hit.highlight || hit.content,
+                )"
+                :key="`${hit.chunkId}-${partIndex}`"
+              >
+                <mark v-if="part.matched" class="rounded bg-warning/20 px-0.5">
+                  {{ part.text }}
+                </mark>
+                <span v-else>{{ part.text }}</span>
+              </template>
+            </div>
             <NCollapse class="mt-3">
               <NCollapseItem title="查看调试分数" :name="hit.chunkId">
                 <div

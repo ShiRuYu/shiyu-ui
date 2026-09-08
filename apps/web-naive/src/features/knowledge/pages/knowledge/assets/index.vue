@@ -3,12 +3,13 @@ import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 
 import type { KnowledgePoint } from '#/features/knowledge/api';
 
-import { computed, h, onMounted, reactive, ref } from 'vue';
+import { computed, h, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
 import {
+  NAlert,
   NButton,
   NCard,
   NDataTable,
@@ -25,14 +26,13 @@ import { storeToRefs } from 'pinia';
 
 import { dialog } from '#/adapter/naive';
 import {
-  getKnowledgeDocumentsByPoint,
-  replaceKnowledgePointDocuments,
-} from '#/features/knowledge/api';
-import { getDocuments, getKnowledgeDocument } from '#/features/knowledge/api';
-import {
   createKnowledgePoint,
   deleteKnowledgePoint,
+  getDocuments,
+  getKnowledgeDocument,
+  getKnowledgeDocumentsByPoint,
   getKnowledgePoints,
+  replaceKnowledgePointDocuments,
   updateKnowledgePoint,
 } from '#/features/knowledge/api';
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
@@ -47,6 +47,7 @@ const rows = ref<KnowledgePoint[]>([]);
 const total = ref(0);
 const keyword = ref('');
 const loading = ref(false);
+const loadError = ref('');
 const saving = ref(false);
 const showDrawer = ref(false);
 const editing = ref<KnowledgePoint>();
@@ -57,6 +58,10 @@ const documentOptions = ref<Array<{ label: string; value: number }>>([]);
 const documentOptionsLoading = ref(false);
 const relationSaving = ref(false);
 const pagination = reactive({ page: 1, pageSize: 10 });
+let disposed = false;
+let latestLoadRequest = 0;
+let latestOpenRequest = 0;
+let latestDocumentRequest = 0;
 const form = reactive({
   category: '',
   code: '',
@@ -99,25 +104,34 @@ function parseTags(value?: string) {
 }
 
 async function load() {
-  if (!activeSpaceId.value) {
+  const requestId = ++latestLoadRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     rows.value = [];
     total.value = 0;
+    loadError.value = '';
     return;
   }
   loading.value = true;
+  loadError.value = '';
   try {
-    const result = await getKnowledgePoints(activeSpaceId.value, {
+    const result = await getKnowledgePoints(spaceId, {
       keyword: keyword.value.trim() || undefined,
       pageNum: pagination.page,
       pageSize: pagination.pageSize,
     });
+    if (disposed || requestId !== latestLoadRequest) return;
     rows.value = result.items;
     total.value = result.total;
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = '知识条目加载失败，请稍后重试';
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 async function open(row?: KnowledgePoint) {
+  const requestId = ++latestOpenRequest;
   editing.value = row;
   Object.assign(
     form,
@@ -139,18 +153,28 @@ async function open(row?: KnowledgePoint) {
           tags: '',
         },
   );
-  const relatedDocuments = row
-    ? await getKnowledgeDocumentsByPoint(row.id)
-    : [];
-  selectedDocumentIds.value = relatedDocuments.map((item) => item.id);
-  await searchDocumentOptions('');
-  showDrawer.value = true;
+  try {
+    const relatedDocuments = row
+      ? await getKnowledgeDocumentsByPoint(row.id)
+      : [];
+    if (disposed || requestId !== latestOpenRequest) return;
+    selectedDocumentIds.value = relatedDocuments.map((item) => item.id);
+    await searchDocumentOptions('');
+    if (disposed || requestId !== latestOpenRequest) return;
+    showDrawer.value = true;
+  } catch {
+    if (!disposed && requestId === latestOpenRequest) {
+      message.error('知识条目详情加载失败，请稍后重试');
+    }
+  }
 }
 async function searchDocumentOptions(keyword: string) {
-  if (!activeSpaceId.value) return;
+  const requestId = ++latestDocumentRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) return;
   documentOptionsLoading.value = true;
   try {
-    const result = await getDocuments(activeSpaceId.value, {
+    const result = await getDocuments(spaceId, {
       keyword: keyword.trim() || undefined,
       pageNum: 1,
       pageSize: 50,
@@ -173,23 +197,35 @@ async function searchDocumentOptions(keyword: string) {
         })),
       );
     }
+    if (disposed || requestId !== latestDocumentRequest) return;
     documentOptions.value = options;
+  } catch {
+    if (!disposed && requestId === latestDocumentRequest) {
+      message.error('文档选项加载失败，请稍后重试');
+    }
   } finally {
-    documentOptionsLoading.value = false;
+    if (!disposed && requestId === latestDocumentRequest) {
+      documentOptionsLoading.value = false;
+    }
   }
 }
 async function saveDocumentRelations() {
   if (!editing.value) return;
+  const pointId = editing.value.id;
+  const documentIds = [...selectedDocumentIds.value];
   relationSaving.value = true;
   try {
     await replaceKnowledgePointDocuments(
-      editing.value.id,
-      selectedDocumentIds.value,
+      pointId,
+      documentIds,
       relationType.value,
     );
+    if (disposed) return;
     message.success('知识条目关联文档已更新');
+  } catch {
+    if (!disposed) message.error('知识条目关联文档保存失败，请稍后重试');
   } finally {
-    relationSaving.value = false;
+    if (!disposed) relationSaving.value = false;
   }
 }
 async function save() {
@@ -209,11 +245,14 @@ async function save() {
     } else {
       await createKnowledgePoint(activeSpaceId.value, form);
     }
+    if (disposed) return;
     message.success(editing.value ? '知识条目已更新' : '知识条目已创建');
     showDrawer.value = false;
     await load();
+  } catch {
+    if (!disposed) message.error('知识条目保存失败，请稍后重试');
   } finally {
-    saving.value = false;
+    if (!disposed) saving.value = false;
   }
 }
 function remove(row: KnowledgePoint) {
@@ -223,9 +262,14 @@ function remove(row: KnowledgePoint) {
     negativeText: '取消',
     positiveText: '删除',
     onPositiveClick: async () => {
-      await deleteKnowledgePoint(row.id);
-      message.success('知识条目已删除');
-      await load();
+      try {
+        await deleteKnowledgePoint(row.id);
+        if (disposed) return;
+        message.success('知识条目已删除');
+        await load();
+      } catch {
+        if (!disposed) message.error('知识条目删除失败，请稍后重试');
+      }
     },
   });
 }
@@ -306,9 +350,25 @@ const columns: DataTableColumns<KnowledgePoint> = [
       ]),
   },
 ];
+watch(activeSpaceId, () => {
+  pagination.page = 1;
+  void load();
+});
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await load();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await load();
+  } catch {
+    if (!disposed) loadError.value = '知识空间加载失败，请稍后重试';
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
+  latestOpenRequest += 1;
+  latestDocumentRequest += 1;
 });
 </script>
 
@@ -318,6 +378,9 @@ onMounted(async () => {
     description="维护可复用的通用知识概念，并管理其文档来源和关系。"
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="load" />
+    <NAlert v-if="loadError" type="warning" :bordered="false">
+      {{ loadError }}
+    </NAlert>
     <NCard :bordered="false">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex gap-2">

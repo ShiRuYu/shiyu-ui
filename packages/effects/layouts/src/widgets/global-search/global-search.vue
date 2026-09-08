@@ -95,10 +95,10 @@ watch(() => props.enableShortcutKey, toggleKeydownListener);
 
 onMounted(() => {
   toggleKeydownListener();
+});
 
-  onUnmounted(() => {
-    window.removeEventListener('keydown', preventDefaultBrowserSearchHotKey);
-  });
+onUnmounted(() => {
+  window.removeEventListener('keydown', preventDefaultBrowserSearchHotKey);
 });
 
 // 暴露给父组件，允许从外部触发搜索弹框（如 user-dropdown 里点击菜单项触发）

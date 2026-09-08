@@ -1,7 +1,7 @@
 {
   "source": [
-    "shiyu-ai/domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql",
-    "shiyu-ai/domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"
+    "shiyu-ai/modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql",
+    "shiyu-ai/modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql"
   ],
   "featureIds": [
     "feature:knowledge.spaces",

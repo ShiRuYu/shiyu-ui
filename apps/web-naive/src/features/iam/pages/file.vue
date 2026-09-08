@@ -3,7 +3,7 @@ import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
 
 import type { FileStorageConfig, StoredFile } from '#/features/iam';
 
-import { h, onMounted, ref } from 'vue';
+import { h, onMounted, onUnmounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -36,6 +36,9 @@ const storageConfig = ref<FileStorageConfig>();
 const loading = ref(false);
 const uploading = ref(false);
 const uploadProgress = ref(0);
+const loadError = ref(false);
+let disposed = false;
+let latestLoadRequest = 0;
 
 const storageLabels: Record<string, string> = {
   'aliyun-oss': 'Alibaba Cloud OSS',
@@ -46,16 +49,22 @@ const storageLabels: Record<string, string> = {
 };
 
 async function loadData() {
+  const requestId = ++latestLoadRequest;
   loading.value = true;
+  loadError.value = false;
   try {
     const [config, list] = await Promise.all([
       getFileStorageConfig(),
       getFileList(),
     ]);
+    if (disposed || requestId !== latestLoadRequest) return;
     storageConfig.value = config;
     files.value = Array.isArray(list) ? list : [];
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = true;
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 
@@ -68,13 +77,16 @@ function handleUpload({ file }: { file: UploadFileInfo }) {
   uploadFile({
     file: rawFile,
     onError: (error) => {
+      if (disposed) return;
       uploading.value = false;
       message.error(error.message);
     },
     onProgress: ({ percent }) => {
+      if (disposed) return;
       uploadProgress.value = percent;
     },
     onSuccess: (storedFile) => {
+      if (disposed) return;
       files.value.unshift(storedFile);
       uploading.value = false;
       message.success($t('page.file.uploadSuccess'));
@@ -84,13 +96,22 @@ function handleUpload({ file }: { file: UploadFileInfo }) {
 }
 
 async function handleDelete(file: StoredFile) {
-  await deleteFile(file.key);
-  files.value = files.value.filter((item) => item.key !== file.key);
-  message.success($t('page.file.deleteSuccess'));
+  try {
+    await deleteFile(file.key);
+    if (disposed) return;
+    files.value = files.value.filter((item) => item.key !== file.key);
+    message.success($t('page.file.deleteSuccess'));
+  } catch {
+    if (!disposed) message.error('文件删除失败，请稍后重试');
+  }
 }
 
 async function handleDownload(file: StoredFile) {
-  await downloadFile(file);
+  try {
+    await downloadFile(file);
+  } catch {
+    if (!disposed) message.error('文件下载失败，请稍后重试');
+  }
 }
 
 function formatSize(bytes: number) {
@@ -168,7 +189,14 @@ const columns: DataTableColumns<StoredFile> = [
   },
 ];
 
-onMounted(loadData);
+onMounted(() => {
+  void loadData();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
+});
 </script>
 
 <template>
@@ -187,6 +215,9 @@ onMounted(loadData);
             {{ $t('page.file.storageConfiguredByServer') }}
           </span>
         </div>
+      </NAlert>
+      <NAlert v-if="loadError" class="mb-4" type="warning">
+        文件列表加载失败，请点击刷新重试。
       </NAlert>
 
       <NUpload

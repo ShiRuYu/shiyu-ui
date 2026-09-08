@@ -163,4 +163,57 @@ describe('conversation chat facade', () => {
       'failed',
     );
   });
+
+  it('passes an abort signal to generation setup requests', async () => {
+    const controller = new AbortController();
+    requestMock.post.mockImplementation(async (url: string) =>
+      url.endsWith('/conversations')
+        ? { id: 'created-conversation' }
+        : { id: 'run-2' },
+    );
+
+    await chatStream(
+      { prompt: 'new conversation', model: 'gpt', platform: 'openai' },
+      () => {},
+      { signal: controller.signal },
+    );
+
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/conversation/conversations',
+      expect.any(Object),
+      expect.objectContaining({ signal: controller.signal }),
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/conversation/conversations/created-conversation/generations',
+      expect.any(Object),
+      expect.objectContaining({ signal: controller.signal }),
+    );
+  });
+
+  it('removes reconnect abort listeners after the wait completes', async () => {
+    const signal = {
+      aborted: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    } as unknown as AbortSignal;
+    let attempt = 0;
+    consumeMock.mockImplementation(async (_response, onEvent) => {
+      onEvent(
+        attempt++ === 0
+          ? { data: JSON.stringify({ type: 'DELTA', content: 'hello' }) }
+          : { data: JSON.stringify({ type: 'COMPLETED' }) },
+      );
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response('event: message\n\n')),
+    );
+
+    await streamGeneration('run-reconnect', () => {}, signal);
+
+    expect(signal.removeEventListener).toHaveBeenCalledWith(
+      'abort',
+      expect.any(Function),
+    );
+  });
 });

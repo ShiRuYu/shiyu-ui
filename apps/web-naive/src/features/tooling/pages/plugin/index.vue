@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PluginSummary } from '#/features/tooling/api';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import {
   NAlert,
@@ -18,12 +18,26 @@ import { PlatformWorkspaceShell } from '#/shared';
 
 const plugins = ref<PluginSummary[]>([]);
 const error = ref(false);
-onMounted(async () => {
+let disposed = false;
+let latestRequestId = 0;
+
+async function loadPlugins() {
+  const requestId = ++latestRequestId;
+  error.value = false;
   try {
-    plugins.value = (await listPlugins()) ?? [];
+    const result = (await listPlugins()) ?? [];
+    if (disposed || requestId !== latestRequestId) return;
+    plugins.value = result;
   } catch {
+    if (disposed || requestId !== latestRequestId) return;
     error.value = true;
   }
+}
+
+onMounted(() => void loadPlugins());
+onUnmounted(() => {
+  disposed = true;
+  latestRequestId += 1;
 });
 </script>
 <template>
@@ -44,7 +58,8 @@ onMounted(async () => {
             ><small>{{ plugin.version || '未标记版本' }}</small></span
           ><NSpace>
             <NTag :type="plugin.signed ? 'success' : 'warning'">
-              {{ plugin.signed ? '已签名' : '待校验' }} </NTag
+              {{ plugin.signed ? '已签名' : '待校验' }}
+</NTag
             ><NButton size="small">查看权限</NButton>
           </NSpace>
         </NSpace>

@@ -22,6 +22,8 @@ import {
 
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
+import { getBrowserStorage } from '../storage';
+
 interface RouteCached {
   component: VNode;
   key: string;
@@ -615,7 +617,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
     // tabs不需要保存在localStorage
     {
       pick: ['tabs', 'visitHistory'],
-      storage: sessionStorage,
+      storage: getBrowserStorage('sessionStorage'),
       serializer: {
         serialize: JSON.stringify,
         deserialize(value: string) {

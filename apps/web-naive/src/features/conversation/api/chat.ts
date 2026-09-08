@@ -110,11 +110,16 @@ async function editMessage(messageId: string, content: string) {
 async function retryGeneration(
   messageId: string,
   data: { model?: string; platform?: string },
+  options: { signal?: AbortSignal } = {},
 ) {
+  const requestOptions = {
+    headers: { 'Idempotency-Key': crypto.randomUUID() },
+    ...(options.signal ? { signal: options.signal } : {}),
+  };
   return requestClient.post<{ id: string }>(
     `/api/conversation/messages/${messageId}/generations`,
     data,
-    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+    requestOptions,
   );
 }
 
@@ -151,14 +156,31 @@ async function chatStream(
   } = {},
 ): Promise<string> {
   if (data.appId && data.sceneType === 'agent') {
-    const result = await requestClient.post<{
-      executionId: string;
-      output?: unknown;
-      runtimeRunId?: string;
-    }>(`/api/agent/apps/${data.appId}/execute`, {
-      prompt: data.prompt,
-      appVersionId: data.appVersionId,
-    });
+    const requestOptions = options.signal
+      ? { signal: options.signal }
+      : undefined;
+    const result = requestOptions
+      ? await requestClient.post<{
+          executionId: string;
+          output?: unknown;
+          runtimeRunId?: string;
+        }>(
+          `/api/agent/apps/${data.appId}/execute`,
+          {
+            prompt: data.prompt,
+            appVersionId: data.appVersionId,
+          },
+          requestOptions,
+        )
+      : await requestClient.post<{
+          executionId: string;
+          output?: unknown;
+          runtimeRunId?: string;
+        }>(`/api/agent/apps/${data.appId}/execute`, {
+          prompt: data.prompt,
+          appVersionId: data.appVersionId,
+        });
+
     const output =
       typeof result.output === 'string'
         ? result.output
@@ -177,7 +199,10 @@ async function chatStream(
           model: data.model,
           sceneType: data.sceneType ?? 'chat',
         },
-        { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+        {
+          headers: { 'Idempotency-Key': crypto.randomUUID() },
+          ...(options.signal ? { signal: options.signal } : {}),
+        },
       );
   const run = await requestClient.post<{ id: string }>(
     `/api/conversation/conversations/${conversation.id}/generations`,
@@ -187,7 +212,10 @@ async function chatStream(
       model: data.model,
       appId: data.appId,
     },
-    { headers: { 'Idempotency-Key': crypto.randomUUID() } },
+    {
+      headers: { 'Idempotency-Key': crypto.randomUUID() },
+      ...(options.signal ? { signal: options.signal } : {}),
+    },
   );
   options.onRunId?.(run.id);
   await streamGeneration(run.id, onMessage, options.signal, options.onEvent);
@@ -251,21 +279,36 @@ async function streamGeneration(
       },
       signal,
     );
-    if (!terminal)
-      await new Promise<void>((resolve, reject) => {
-        const timer = globalThis.setTimeout(resolve, 250);
-        signal?.addEventListener(
-          'abort',
-          () => {
-            globalThis.clearTimeout(timer);
-            reject(new DOMException('Aborted', 'AbortError'));
-          },
-          { once: true },
-        );
-      });
+    if (!terminal) await waitForReconnect(signal, 250);
   }
   if (!terminal)
     throw new Error('Generation stream ended before a terminal event');
+}
+
+function waitForReconnect(signal: AbortSignal | undefined, delay: number) {
+  return new Promise<void>((resolve, reject) => {
+    let settled = false;
+    const timer = globalThis.setTimeout(onTimeout, delay);
+
+    const cleanup = () => {
+      globalThis.clearTimeout(timer);
+      signal?.removeEventListener('abort', onAbort);
+    };
+    const settle = (callback: () => void) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      callback();
+    };
+    const onAbort = () =>
+      settle(() => reject(new DOMException('Aborted', 'AbortError')));
+    function onTimeout() {
+      settle(resolve);
+    }
+
+    if (signal?.aborted) onAbort();
+    else signal?.addEventListener('abort', onAbort, { once: true });
+  });
 }
 
 export {

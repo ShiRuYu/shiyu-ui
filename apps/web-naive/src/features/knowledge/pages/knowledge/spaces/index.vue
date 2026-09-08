@@ -4,7 +4,7 @@ import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 import type { KnowledgeSpace } from '#/features/knowledge/api';
 import type { SpaceMember } from '#/features/knowledge/api';
 
-import { h, onMounted, reactive, ref } from 'vue';
+import { h, onMounted, onUnmounted, reactive, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -54,6 +54,9 @@ const editing = ref<KnowledgeSpace>();
 const formRef = ref<FormInst>();
 const members = ref<SpaceMember[]>([]);
 const confirmCode = ref('');
+let disposed = false;
+let latestListRequest = 0;
+let latestOpenRequest = 0;
 
 const form = reactive({
   accessMode: 'PRIVATE',
@@ -85,6 +88,7 @@ const rules: FormRules = {
   },
 };
 async function loadPage() {
+  const requestId = ++latestListRequest;
   loading.value = true;
   try {
     const result = await getSpaces({
@@ -92,10 +96,17 @@ async function loadPage() {
       pageSize: pagination.pageSize,
       keyword: keyword.value.trim() || undefined,
     });
+    if (disposed || requestId !== latestListRequest) return;
     rows.value = result.items;
     total.value = result.total;
+  } catch {
+    if (!disposed && requestId === latestListRequest) {
+      message.error('加载知识空间失败');
+    }
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestListRequest) {
+      loading.value = false;
+    }
   }
 }
 function search() {
@@ -104,6 +115,7 @@ function search() {
 }
 
 async function open(row?: KnowledgeSpace) {
+  const requestId = ++latestOpenRequest;
   editing.value = row;
   Object.assign(
     form,
@@ -137,8 +149,18 @@ async function open(row?: KnowledgeSpace) {
           reviewMode: 'OPTIONAL',
         },
   );
-  members.value = row ? await getSpaceMembers(row.id) : [];
+  members.value = [];
   show.value = true;
+  if (!row) return;
+  try {
+    const result = await getSpaceMembers(row.id);
+    if (disposed || requestId !== latestOpenRequest) return;
+    members.value = result;
+  } catch {
+    if (!disposed && requestId === latestOpenRequest) {
+      message.error('加载空间成员失败');
+    }
+  }
 }
 
 async function save() {
@@ -153,12 +175,18 @@ async function save() {
       ? await updateSpace(editing.value.id, form)
       : await createSpace(form);
     if (editing.value) await replaceSpaceMembers(result.id, members.value);
+    if (disposed) return;
     message.success(editing.value ? '空间已更新' : '空间已创建');
     show.value = false;
     await Promise.all([store.loadSpaces(true), loadPage()]);
+    if (disposed) return;
     store.setActiveSpace(result.id);
+  } catch {
+    if (!disposed) {
+      message.error(editing.value ? '更新知识空间失败' : '创建知识空间失败');
+    }
   } finally {
-    saving.value = false;
+    if (!disposed) saving.value = false;
   }
 }
 
@@ -186,9 +214,15 @@ function requestRemove(row: KnowledgeSpace) {
         message.error('空间编码不匹配');
         return false;
       }
-      await deleteSpace(row.id);
-      message.success('空间已删除');
-      await Promise.all([store.loadSpaces(true), loadPage()]);
+      try {
+        await deleteSpace(row.id);
+        if (disposed) return;
+        message.success('空间已删除');
+        await Promise.all([store.loadSpaces(true), loadPage()]);
+      } catch {
+        if (!disposed) message.error('删除知识空间失败');
+        return false;
+      }
     },
   });
 }
@@ -266,8 +300,18 @@ const columns: DataTableColumns<KnowledgeSpace> = [
 ];
 
 onMounted(async () => {
-  await store.loadSpaces();
-  await loadPage();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await loadPage();
+  } catch {
+    if (!disposed) message.error('加载知识空间失败');
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestListRequest += 1;
+  latestOpenRequest += 1;
 });
 </script>
 

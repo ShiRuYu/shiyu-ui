@@ -6,7 +6,8 @@
     "deleteSuccess": "删除成功：{0}",
     "deleteFailed": "删除失败",
     "editSuccess": "修改成功",
-    "operationSuccess": "操作成功"
+    "operationSuccess": "操作成功",
+    "operationFailed": "操作失败"
   },
   "actionTitle": {
     "create": "新增{0}",

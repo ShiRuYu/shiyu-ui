@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue';
 import { isNavigationFailure, useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
@@ -115,11 +115,18 @@ async function focusPageHeading() {
   }
 }
 
+let removeAfterEach: (() => void) | undefined;
+
 onMounted(() => {
   void focusPageHeading();
-  router.afterEach(() => {
+  removeAfterEach = router.afterEach(() => {
     void focusPageHeading();
   });
+});
+
+onBeforeUnmount(() => {
+  removeAfterEach?.();
+  removeAfterEach = undefined;
 });
 
 watch(

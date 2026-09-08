@@ -6,11 +6,12 @@ import type {
   KnowledgeEvaluationRunResult,
 } from '#/features/knowledge/api';
 
-import { h, onMounted, reactive, ref } from 'vue';
+import { h, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import {
+  NAlert,
   NButton,
   NCard,
   NDataTable,
@@ -44,11 +45,14 @@ const loading = ref(false);
 const saving = ref(false);
 const running = ref(false);
 const runResult = ref<KnowledgeEvaluationRunResult>();
+const loadError = ref('');
 // Keep the empty state independent from the last run result card.
 const show = ref(false);
 const page = reactive({ pageNum: 1, pageSize: 10 });
 const formRef = ref<FormInst>();
 const form = reactive({ question: '', expectedDocIds: '', expectedAnswer: '' });
+let disposed = false;
+let latestLoadRequest = 0;
 const rules: FormRules = {
   question: {
     required: true,
@@ -58,22 +62,32 @@ const rules: FormRules = {
 };
 
 async function load() {
-  if (!activeSpaceId.value) {
+  const requestId = ++latestLoadRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     rows.value = [];
     total.value = 0;
+    loadError.value = '';
     return;
   }
   loading.value = true;
+  loadError.value = '';
   try {
     const result = await getKnowledgeEvaluations(
-      activeSpaceId.value,
+      spaceId,
       page.pageNum,
       page.pageSize,
     );
+    if (disposed || requestId !== latestLoadRequest) return;
     rows.value = result.items;
     total.value = result.total;
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = '评测用例加载失败，请稍后重试';
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) {
+      loading.value = false;
+    }
   }
 }
 async function runEvaluation() {
@@ -82,8 +96,10 @@ async function runEvaluation() {
   try {
     runResult.value = await runKnowledgeEvaluation(activeSpaceId.value, 5);
     message.success('评测已完成');
+  } catch {
+    if (!disposed) message.error('评测运行失败，请稍后重试');
   } finally {
-    running.value = false;
+    if (!disposed) running.value = false;
   }
 }
 function openCreate() {
@@ -99,8 +115,10 @@ async function save() {
     show.value = false;
     message.success('评测用例已创建');
     await load();
+  } catch {
+    if (!disposed) message.error('评测用例保存失败，请稍后重试');
   } finally {
-    saving.value = false;
+    if (!disposed) saving.value = false;
   }
 }
 function remove(row: KnowledgeEvaluationCase) {
@@ -110,9 +128,14 @@ function remove(row: KnowledgeEvaluationCase) {
     negativeText: '取消',
     positiveText: '删除',
     onPositiveClick: async () => {
-      await deleteKnowledgeEvaluation(row.id);
-      message.success('评测用例已删除');
-      await load();
+      try {
+        await deleteKnowledgeEvaluation(row.id);
+        if (disposed) return;
+        message.success('评测用例已删除');
+        await load();
+      } catch {
+        if (!disposed) message.error('评测用例删除失败，请稍后重试');
+      }
     },
   });
 }
@@ -148,9 +171,20 @@ const columns: DataTableColumns<KnowledgeEvaluationCase> = [
       ),
   },
 ];
+watch(activeSpaceId, () => void load());
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await load();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await load();
+  } catch {
+    if (!disposed) loadError.value = '知识空间加载失败，请稍后重试';
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
 });
 </script>
 
@@ -160,6 +194,9 @@ onMounted(async () => {
     description="维护检索问题、期望引用和答案，作为后续 Recall、MRR 和引用准确率评测集。"
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="load" />
+    <NAlert v-if="loadError" type="warning" :bordered="false">
+      {{ loadError }}
+    </NAlert>
     <NCard :bordered="false">
       <div class="mb-4 flex justify-end">
         <NSpace>

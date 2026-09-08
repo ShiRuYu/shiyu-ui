@@ -279,19 +279,31 @@ function createCustomImage(
             input.accept = imageUpload.accept ?? DEFAULT_ACCEPT;
             input.style.display = 'none';
 
-            input.addEventListener('change', () => {
-              const file = input.files?.[0];
-              if (!file) return;
+            input.addEventListener(
+              'change',
+              () => {
+                try {
+                  const file = input.files?.[0];
+                  if (!file) return;
 
-              const error = validateFile(file, imageUpload);
-              if (error) {
-                handleUploadError(new Error(error), imageUpload);
-                return;
-              }
+                  const error = validateFile(file, imageUpload);
+                  if (error) {
+                    handleUploadError(new Error(error), imageUpload);
+                    return;
+                  }
 
-              createUploadProcess(cmdEditor, file, imageUpload, blobUrlTracker);
-              input.remove();
-            });
+                  createUploadProcess(
+                    cmdEditor,
+                    file,
+                    imageUpload,
+                    blobUrlTracker,
+                  );
+                } finally {
+                  input.remove();
+                }
+              },
+              { once: true },
+            );
 
             document.body.append(input);
             input.click();

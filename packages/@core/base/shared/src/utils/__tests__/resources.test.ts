@@ -66,12 +66,36 @@ describe('loadScript', () => {
   });
 
   it('should handle multiple concurrent calls and only insert one script tag', async () => {
-    const p1 = loadScript('/test-script.js');
-    const p2 = loadScript('/test-script.js');
+    let capturedScript: HTMLScriptElement | null = null;
+    const appendSpy = vi
+      .spyOn(document.head, 'append')
+      .mockImplementation((...nodes) => {
+        for (const node of nodes) {
+          if (node instanceof HTMLScriptElement) capturedScript = node;
+        }
+      });
 
-    // happy-dom v20+ auto-fires 'load'，两个 promise 都应该 resolve
+    let firstSettled = false;
+    let secondSettled = false;
+    const p1 = loadScript('/test-script.js').finally(() => {
+      firstSettled = true;
+    });
+    const p2 = loadScript('/test-script.js').finally(() => {
+      secondSettled = true;
+    });
+
+    expect(capturedScript).toBeTruthy();
+    expect(firstSettled).toBe(false);
+    expect(secondSettled).toBe(false);
+    capturedScript?.dispatchEvent(new Event('load'));
+    appendSpy.mockRestore();
+    if (capturedScript) document.head.append(capturedScript);
+
+    // 两个调用都必须等待同一个脚本的 load 事件
     await expect(p1).resolves.toBeUndefined();
     await expect(p2).resolves.toBeUndefined();
+    expect(firstSettled).toBe(true);
+    expect(secondSettled).toBe(true);
 
     // 只插入一次
     const scripts = document.head.querySelectorAll(

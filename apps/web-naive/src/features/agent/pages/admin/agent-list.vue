@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { AgentAdminApi } from '#/features/agent/api';
-import type { AgentApi } from '#/features/agent/api';
+import type { AgentAdminApi, AgentApi } from '#/features/agent/api';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page, useVbenModal } from '@vben/common-ui';
@@ -42,11 +41,14 @@ const searchName = ref('');
 const total = ref(0);
 const page = ref(1);
 const pageSize = ref(12);
+let disposed = false;
+let latestRequestId = 0;
 const pageCount = computed(() =>
   Math.max(1, Math.ceil(total.value / pageSize.value)),
 );
 
 async function loadAgents() {
+  const requestId = ++latestRequestId;
   loading.value = true;
   try {
     const res = await getAdminAgentPage({
@@ -54,14 +56,29 @@ async function loadAgents() {
       page: page.value,
       pageSize: pageSize.value,
     });
+    if (disposed || requestId !== latestRequestId) return;
     agents.value = res?.items || [];
     total.value = res?.total || 0;
+  } catch {
+    if (!disposed) {
+      message.error($t('agent.adminListLoadFailed'));
+    }
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestRequestId) {
+      loading.value = false;
+    }
   }
 }
 
-onMounted(loadAgents);
+onMounted(() => {
+  disposed = false;
+  void loadAgents();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestRequestId++;
+});
 
 function onView(row: AgentAdminApi.AgentVO) {
   router.push({
@@ -94,6 +111,10 @@ async function onDelete(row: AgentAdminApi.AgentVO) {
     await deleteAdminAgent(row.id);
     message.success($t('agent.adminListDeleteSuccess', { name: row.name }));
     await loadAgents();
+  } catch {
+    if (!disposed) {
+      message.error($t('agent.adminListDeleteFailed'));
+    }
   } finally {
     hideLoading.destroy();
   }

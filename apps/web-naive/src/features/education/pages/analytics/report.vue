@@ -22,7 +22,7 @@ const periodOptions = [
 async function handleGenerate() {
   loading.value = true;
   try {
-    const res: any = await generateReport({
+    const res: unknown = await generateReport({
       studentId: getCurrentStudentId(),
       period: period.value,
     });

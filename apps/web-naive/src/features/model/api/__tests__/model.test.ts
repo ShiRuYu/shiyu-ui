@@ -41,7 +41,7 @@ describe('model feature transport facades', () => {
     });
 
     expect(requestMock.get).toHaveBeenCalledWith('/api/model/models/page', {
-      params: { pageNum: 2, pageSize: 25, platformId: 9, keyword: 'chat' },
+      params: { pageNo: 2, pageSize: 25, platformId: 9, keyword: 'chat' },
     });
   });
 
@@ -65,7 +65,7 @@ describe('model feature transport facades', () => {
     expect(requestMock.get).toHaveBeenNthCalledWith(
       1,
       '/api/model/providers/page',
-      { params: { pageNum: 1, pageSize: 10 } },
+      { params: { pageNo: 1, pageSize: 10 } },
     );
     expect(requestMock.get).toHaveBeenNthCalledWith(
       2,
@@ -85,7 +85,7 @@ describe('model feature transport facades', () => {
     await reloadPlatforms();
 
     expect(requestMock.get).toHaveBeenCalledWith('/api/model/models/page', {
-      params: { pageNum: 1, pageSize: 10 },
+      params: { pageNo: 1, pageSize: 10 },
     });
     expect(requestMock.post).toHaveBeenCalledWith(
       '/api/model/models/batch-delete',

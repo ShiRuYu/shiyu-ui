@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,14 +10,16 @@ const uiRoot = path.resolve(
 const backendRoot = process.env.SHIYU_BACKEND_ROOT
   ? path.resolve(process.env.SHIYU_BACKEND_ROOT)
   : path.resolve(uiRoot, '../shiyu-ai');
+const backendCheckoutPresent =
+  Boolean(process.env.SHIYU_BACKEND_ROOT) || existsSync(backendRoot);
 const navigationFiles = [
   path.join(
     backendRoot,
-    'domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql',
+    'modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql',
   ),
   path.join(
     backendRoot,
-    'domains/iam/iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql',
+    'modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql',
   ),
 ];
 const navigationSnapshot = path.join(
@@ -35,6 +38,9 @@ const [navigation, access] = await Promise.all([
     ),
   ).then(async (contents) => {
     const available = contents.filter((content) => content !== null);
+    if (backendCheckoutPresent && available.length !== navigationFiles.length) {
+      throw new Error('Backend navigation SQL files are incomplete');
+    }
     return available.length > 0
       ? available.join('\n')
       : readFile(navigationSnapshot, 'utf8');

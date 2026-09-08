@@ -27,6 +27,8 @@
   "adminListConfirmDelete": "确认删除 {name}？",
   "adminListDeleting": "正在删除...",
   "adminListDeleteSuccess": "删除成功: {name}",
+  "adminListLoadFailed": "Agent 列表加载失败，请稍后重试",
+  "adminListDeleteFailed": "Agent 删除失败，请稍后重试",
   "adminFormEdit": "编辑 Agent",
   "adminFormCreate": "新增 Agent",
   "adminFormReset": "重置",

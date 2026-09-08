@@ -82,7 +82,9 @@ export function useGenerationStream() {
   ) {
     begin();
     try {
-      const run = await retryGenerationRequest(messageId, request);
+      const run = await retryGenerationRequest(messageId, request, {
+        signal: controller?.signal,
+      });
       activeRunId.value = run.id;
       handlers.onRunId?.(run.id);
       await streamGeneration(

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import type { DataTableColumns, UploadCustomRequestOptions } from 'naive-ui';
 
-import type { DocumentVersion } from '#/features/knowledge/api';
-import type { KnowledgeDocument } from '#/features/knowledge/api';
+import type {
+  DocumentVersion,
+  KnowledgeDocument,
+} from '#/features/knowledge/api';
 
-import { h, onMounted, reactive, ref } from 'vue';
+import { h, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 
 import {
+  NAlert,
   NButton,
   NCard,
   NDataTable,
@@ -29,24 +32,20 @@ import { storeToRefs } from 'pinia';
 
 import { dialog } from '#/adapter/naive';
 import {
+  deleteDocument,
+  getDocuments,
   getDocumentVersions,
   getKnowledgeDocumentRelations,
+  getKnowledgePoint,
   getKnowledgePointIdsByDocument,
+  getKnowledgePoints,
+  importDocumentFromUrl,
   previewDocument,
   replaceKnowledgeDocumentPoints,
   replaceKnowledgeDocumentRelations,
   rollbackDocument,
-} from '#/features/knowledge/api';
-import {
-  deleteDocument,
-  getDocuments,
-  importDocumentFromUrl,
   transitionDocument,
   uploadDocument,
-} from '#/features/knowledge/api';
-import {
-  getKnowledgePoint,
-  getKnowledgePoints,
 } from '#/features/knowledge/api';
 import { lifecycleStatusOptions } from '#/features/knowledge/model/status';
 import KnowledgeEmptyState from '#/features/knowledge/ui/knowledge-empty-state.vue';
@@ -63,6 +62,7 @@ const total = ref(0);
 const keyword = ref('');
 const lifecycleStatus = ref<string>();
 const loading = ref(false);
+const loadError = ref('');
 const uploading = ref(false);
 const drawer = ref(false);
 const versions = ref<DocumentVersion[]>([]);
@@ -82,6 +82,10 @@ const importUrl = ref('');
 const importTitle = ref('');
 const pagination = reactive({ page: 1, pageSize: 10 });
 const uploadRef = ref<InstanceType<typeof NUpload>>();
+let disposed = false;
+let latestLoadRequest = 0;
+let latestDetailRequest = 0;
+let latestPointRequest = 0;
 const documentTypeLabels: Record<string, string> = {
   ARTICLE: '文章',
   MANUAL: '手册',
@@ -90,23 +94,31 @@ const documentTypeLabels: Record<string, string> = {
 };
 
 async function load() {
-  if (!activeSpaceId.value) {
+  const requestId = ++latestLoadRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) {
     rows.value = [];
     total.value = 0;
+    loadError.value = '';
     return;
   }
   loading.value = true;
+  loadError.value = '';
   try {
-    const result = await getDocuments(activeSpaceId.value, {
+    const result = await getDocuments(spaceId, {
       keyword: keyword.value.trim() || undefined,
       lifecycleStatus: lifecycleStatus.value,
       pageNum: pagination.page,
       pageSize: pagination.pageSize,
     });
+    if (disposed || requestId !== latestLoadRequest) return;
     rows.value = result.items;
     total.value = result.total;
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = '文档列表加载失败，请稍后重试';
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 function search() {
@@ -119,17 +131,15 @@ async function upload({
   onFinish,
   onProgress,
 }: UploadCustomRequestOptions) {
-  if (!activeSpaceId.value || !file.file) return;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId || !file.file) return;
   uploading.value = true;
   onProgress({ percent: 0 });
   try {
-    const result = await uploadDocument(
-      activeSpaceId.value,
-      file.file,
-      (percent) => {
-        onProgress({ percent });
-      },
-    );
+    const result = await uploadDocument(spaceId, file.file, (percent) => {
+      onProgress({ percent });
+    });
+    if (disposed) return;
     onProgress({ percent: 100 });
     onFinish();
     if (result.duplicate) message.warning('检测到重复文件，已复用已有内容');
@@ -139,48 +149,65 @@ async function upload({
     await load();
   } catch {
     onError();
+    if (!disposed) message.error('文档上传失败，请稍后重试');
   } finally {
-    uploading.value = false;
+    if (!disposed) uploading.value = false;
   }
 }
 async function action(
   row: KnowledgeDocument,
   actionName: 'approve' | 'archive' | 'publish' | 'reject' | 'submit',
 ) {
-  await transitionDocument(row.id, actionName);
-  message.success('文档状态已更新');
-  await load();
+  try {
+    await transitionDocument(row.id, actionName);
+    if (disposed) return;
+    message.success('文档状态已更新');
+    await load();
+  } catch {
+    if (!disposed) message.error('文档状态更新失败，请稍后重试');
+  }
 }
 async function showDetail(row: KnowledgeDocument) {
+  const requestId = ++latestDetailRequest;
   const spaceId = activeSpaceId.value;
   if (!spaceId) return;
   selected.value = row;
   drawer.value = true;
-  const [documentVersions, pointIds, relations] = await Promise.all([
-    getDocumentVersions(row.id),
-    getKnowledgePointIdsByDocument(row.id),
-    getKnowledgeDocumentRelations(row.id),
-  ]);
-  versions.value = documentVersions;
-  selectedPointIds.value = pointIds;
-  documentRelations.value = relations.map((item) => ({
-    documentId: item.targetDocumentId,
-    relationType: item.relationType,
-  }));
-  const documentPage = await getDocuments(spaceId, {
-    pageNum: 1,
-    pageSize: 100,
-  });
-  documentOptions.value = documentPage.items
-    .filter((item) => item.id !== row.id)
-    .map((item) => ({ label: item.title, value: item.id }));
-  await searchPointOptions('');
+  try {
+    const [documentVersions, pointIds, relations] = await Promise.all([
+      getDocumentVersions(row.id),
+      getKnowledgePointIdsByDocument(row.id),
+      getKnowledgeDocumentRelations(row.id),
+    ]);
+    if (disposed || requestId !== latestDetailRequest) return;
+    versions.value = documentVersions;
+    selectedPointIds.value = pointIds;
+    documentRelations.value = relations.map((item) => ({
+      documentId: item.targetDocumentId,
+      relationType: item.relationType,
+    }));
+    const documentPage = await getDocuments(spaceId, {
+      pageNum: 1,
+      pageSize: 100,
+    });
+    if (disposed || requestId !== latestDetailRequest) return;
+    documentOptions.value = documentPage.items
+      .filter((item) => item.id !== row.id)
+      .map((item) => ({ label: item.title, value: item.id }));
+    await searchPointOptions('');
+  } catch {
+    if (!disposed && requestId === latestDetailRequest) {
+      message.error('文档详情加载失败，请稍后重试');
+    }
+  }
 }
 async function searchPointOptions(keyword: string) {
-  if (!activeSpaceId.value) return;
+  const requestId = ++latestPointRequest;
+  const spaceId = activeSpaceId.value;
+  if (!spaceId) return;
   pointOptionsLoading.value = true;
   try {
-    const result = await getKnowledgePoints(activeSpaceId.value, {
+    const result = await getKnowledgePoints(spaceId, {
       keyword: keyword.trim() || undefined,
       pageNum: 1,
       pageSize: 50,
@@ -203,37 +230,51 @@ async function searchPointOptions(keyword: string) {
         })),
       );
     }
+    if (disposed || requestId !== latestPointRequest) return;
     pointOptions.value = options;
+  } catch {
+    if (!disposed && requestId === latestPointRequest) {
+      message.error('知识点选项加载失败，请稍后重试');
+    }
   } finally {
-    pointOptionsLoading.value = false;
+    if (!disposed && requestId === latestPointRequest) {
+      pointOptionsLoading.value = false;
+    }
   }
 }
 async function savePointRelations() {
   if (!selected.value) return;
+  const documentId = selected.value.id;
+  const pointIds = [...selectedPointIds.value];
   relationSaving.value = true;
   try {
     await replaceKnowledgeDocumentPoints(
-      selected.value.id,
-      selectedPointIds.value,
+      documentId,
+      pointIds,
       relationType.value,
     );
+    if (disposed) return;
     message.success('文档关联知识点已更新');
+  } catch {
+    if (!disposed) message.error('文档关联知识点保存失败，请稍后重试');
   } finally {
-    relationSaving.value = false;
+    if (!disposed) relationSaving.value = false;
   }
 }
 
 async function saveDocumentRelations() {
   if (!selected.value) return;
+  const documentId = selected.value.id;
+  const relations = documentRelations.value.map((item) => ({ ...item }));
   relationSaving.value = true;
   try {
-    await replaceKnowledgeDocumentRelations(
-      selected.value.id,
-      documentRelations.value,
-    );
+    await replaceKnowledgeDocumentRelations(documentId, relations);
+    if (disposed) return;
     message.success('document relation updated');
+  } catch {
+    if (!disposed) message.error('文档关联保存失败，请稍后重试');
   } finally {
-    relationSaving.value = false;
+    if (!disposed) relationSaving.value = false;
   }
 }
 
@@ -246,17 +287,19 @@ function updateDocumentSelection(ids: number[]) {
   }));
 }
 async function importFromUrl() {
-  if (!activeSpaceId.value || !importUrl.value.trim()) {
+  const spaceId = activeSpaceId.value;
+  if (!spaceId || !importUrl.value.trim()) {
     message.warning('请输入要导入的 URL');
     return;
   }
   urlImporting.value = true;
   try {
     const result = await importDocumentFromUrl(
-      activeSpaceId.value,
+      spaceId,
       importUrl.value.trim(),
       importTitle.value.trim() || undefined,
     );
+    if (disposed) return;
     message.success(
       result.duplicate
         ? '检测到重复网页，已复用已有文档'
@@ -266,8 +309,10 @@ async function importFromUrl() {
     importUrl.value = '';
     importTitle.value = '';
     await load();
+  } catch {
+    if (!disposed) message.error('网页导入失败，请稍后重试');
   } finally {
-    urlImporting.value = false;
+    if (!disposed) urlImporting.value = false;
   }
 }
 async function rollback(versionId: number) {
@@ -279,17 +324,27 @@ async function rollback(versionId: number) {
     negativeText: '取消',
     positiveText: '确认回滚',
     onPositiveClick: async () => {
-      await rollbackDocument(document.id, versionId);
-      message.success('已回滚到指定版本');
-      await Promise.all([load(), showDetail(document)]);
+      try {
+        await rollbackDocument(document.id, versionId);
+        if (disposed) return;
+        message.success('已回滚到指定版本');
+        await Promise.all([load(), showDetail(document)]);
+      } catch {
+        if (!disposed) message.error('文档回滚失败，请稍后重试');
+      }
     },
   });
 }
 async function preview(row: KnowledgeDocument) {
-  const blob = await previewDocument(row.id);
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
-  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  try {
+    const blob = await previewDocument(row.id);
+    if (disposed) return;
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  } catch {
+    if (!disposed) message.error('文档预览失败，请稍后重试');
+  }
 }
 function remove(row: KnowledgeDocument) {
   dialog.warning({
@@ -298,9 +353,14 @@ function remove(row: KnowledgeDocument) {
     negativeText: '取消',
     positiveText: '删除',
     onPositiveClick: async () => {
-      await deleteDocument(row.id);
-      message.success('文档已删除');
-      await load();
+      try {
+        await deleteDocument(row.id);
+        if (disposed) return;
+        message.success('文档已删除');
+        await load();
+      } catch {
+        if (!disposed) message.error('文档删除失败，请稍后重试');
+      }
     },
   });
 }
@@ -402,9 +462,25 @@ const columns: DataTableColumns<KnowledgeDocument> = [
       ),
   },
 ];
+watch(activeSpaceId, () => {
+  pagination.page = 1;
+  void load();
+});
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await load();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await load();
+  } catch {
+    if (!disposed) loadError.value = '知识空间加载失败，请稍后重试';
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
+  latestDetailRequest += 1;
+  latestPointRequest += 1;
 });
 </script>
 
@@ -419,6 +495,9 @@ onMounted(async () => {
       @refresh="load"
       @import="uploadRef?.openOpenFileDialog()"
     />
+    <NAlert v-if="loadError" type="warning" :bordered="false">
+      {{ loadError }}
+    </NAlert>
     <NCard :bordered="false">
       <div class="flex flex-wrap justify-between gap-3">
         <div class="flex flex-wrap gap-2">

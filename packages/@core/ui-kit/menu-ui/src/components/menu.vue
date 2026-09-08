@@ -13,6 +13,7 @@ import type {
 import {
   computed,
   nextTick,
+  onBeforeUnmount,
   reactive,
   ref,
   toRef,
@@ -182,29 +183,38 @@ function calcSliceIndex() {
 }
 
 function debounce(fn: () => void, wait = 33.34) {
-  let timer: null | ReturnType<typeof setTimeout>;
-  return () => {
-    timer && clearTimeout(timer);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const debounced = () => {
+    if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
+      timer = undefined;
       fn();
     }, wait);
   };
+  debounced.cancel = () => {
+    if (!timer) return;
+    clearTimeout(timer);
+    timer = undefined;
+  };
+  return debounced;
 }
 
+function resizeCallback() {
+  sliceIndex.value = -1;
+  void nextTick(() => {
+    if (menu.value) sliceIndex.value = calcSliceIndex();
+  });
+}
+
+const debouncedResize = debounce(resizeCallback);
 let isFirstTimeRender = true;
 function handleResize() {
   if (sliceIndex.value === calcSliceIndex()) {
     return;
   }
-  const callback = () => {
-    sliceIndex.value = -1;
-    nextTick(() => {
-      sliceIndex.value = calcSliceIndex();
-    });
-  };
-  callback();
+  resizeCallback();
   // // execute callback directly when first time resize to avoid shaking
-  isFirstTimeRender ? callback() : debounce(callback)();
+  isFirstTimeRender ? resizeCallback() : debouncedResize();
   isFirstTimeRender = false;
 }
 
@@ -215,6 +225,11 @@ const enableScroll = computed(
 useMenuScroll(activePath, {
   enable: enableScroll,
   delay: 320,
+});
+
+onBeforeUnmount(() => {
+  resizeStopper?.();
+  debouncedResize.cancel();
 });
 
 // 监听 activePath 变化，自动滚动到激活项

@@ -120,10 +120,11 @@ describe('useGenerationStream', () => {
         onRunId: (runId) => runIds.push(runId),
       },
     );
-    expect(conversationApi.retryGeneration).toHaveBeenCalledWith('message-1', {
-      model: 'gpt',
-      platform: 'openai',
-    });
+    expect(conversationApi.retryGeneration).toHaveBeenCalledWith(
+      'message-1',
+      { model: 'gpt', platform: 'openai' },
+      { signal: expect.any(AbortSignal) },
+    );
     expect(conversationApi.streamGeneration).toHaveBeenCalledWith(
       'retry-1',
       expect.any(Function),

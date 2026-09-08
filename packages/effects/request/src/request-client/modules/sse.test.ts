@@ -139,4 +139,56 @@ describe('sSE', () => {
     );
     await expect(sse.requestSSE('/sse')).rejects.toThrow('No reader');
   });
+
+  it('should release the reader when reading the stream fails', async () => {
+    const releaseLock = vi.fn();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        body: {
+          getReader: () => ({
+            read: async () => {
+              throw new Error('read failed');
+            },
+            releaseLock,
+          }),
+        },
+      }),
+    );
+
+    await expect(sse.requestSSE('/sse')).rejects.toThrow('read failed');
+    expect(releaseLock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should flush decoder output when the stream ends', async () => {
+    const messages: string[] = [];
+    const bytes = new TextEncoder().encode('你');
+    let readCount = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        body: {
+          getReader: () => ({
+            read: async () => {
+              if (readCount++ === 0) {
+                return { done: false, value: bytes.slice(0, 1) };
+              }
+              return { done: true, value: undefined };
+            },
+            releaseLock: vi.fn(),
+          }),
+        },
+      }),
+    );
+
+    await sse.requestSSE('/sse', undefined, {
+      onMessage: (message) => messages.push(message),
+    });
+
+    expect(messages).toEqual(['�']);
+  });
 });

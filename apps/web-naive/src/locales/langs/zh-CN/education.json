@@ -75,6 +75,7 @@
     "submit": "交卷",
     "submitFailed": "交卷失败",
     "submitSuccess": "交卷成功",
+    "submitUnavailable": "交卷功能暂未开放，请稍后再试",
     "noQuestions": "暂无试题",
     "submitExam": "交卷",
     "aiGenerate": "AI组卷",

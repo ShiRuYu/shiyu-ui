@@ -75,7 +75,7 @@ export async function deleteTextbook(id: number) {
 /** 获取教材下拉选项 */
 export async function getTextbookOptions() {
   const result = await getTextbookList(1, 1000);
-  return (result?.items || []).map((t: any) => ({
+  return (result?.items || []).map((t) => ({
     id: t.id,
     name: t.name,
   }));

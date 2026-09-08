@@ -16,6 +16,20 @@ export namespace EducationExamApi {
     durationMin: number;
     totalScore: number;
     status: number;
+    questions?: Question[];
+    sections?: Section[];
+  }
+
+  export interface Question {
+    id: number;
+    title?: string;
+    name?: string;
+    type: string;
+    options?: any[];
+  }
+
+  export interface Section {
+    questions?: Question[];
   }
 }
 

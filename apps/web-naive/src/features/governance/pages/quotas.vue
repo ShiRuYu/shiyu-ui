@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DailyUsage, UsageOverview } from '#/features/governance';
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import {
@@ -24,16 +24,21 @@ const loading = ref(false);
 const error = ref(false);
 const overview = ref<UsageOverview>();
 const dailyUsage = ref<DailyUsage[]>([]);
+let requestId = 0;
+let disposed = false;
 
 const totalCost = computed(() =>
   Number(overview.value?.total_cost ?? 0).toFixed(4),
 );
 const averageLatency = computed(() => {
   const value = overview.value?.avg_latency_ms;
-  return value == null ? '—' : `${Math.round(value)} ms`;
+  return value === null || value === undefined
+    ? '—'
+    : `${Math.round(value)} ms`;
 });
 
 async function loadUsage() {
+  const currentRequestId = ++requestId;
   loading.value = true;
   error.value = false;
   try {
@@ -41,16 +46,24 @@ async function loadUsage() {
       getUsageOverviewApi(),
       getDailyUsageApi(14),
     ]);
+    if (disposed || currentRequestId !== requestId) return;
     overview.value = summary;
     dailyUsage.value = daily ?? [];
   } catch {
+    if (disposed || currentRequestId !== requestId) return;
     error.value = true;
   } finally {
-    loading.value = false;
+    if (!disposed && currentRequestId === requestId) {
+      loading.value = false;
+    }
   }
 }
 
-onMounted(loadUsage);
+onMounted(() => void loadUsage());
+onBeforeUnmount(() => {
+  disposed = true;
+  requestId += 1;
+});
 </script>
 
 <template>

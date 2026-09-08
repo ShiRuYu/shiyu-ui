@@ -7,7 +7,7 @@ import type {
   KnowledgeAuditLog,
 } from '#/features/knowledge/api';
 
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -52,6 +52,8 @@ const audits = ref<KnowledgeAuditLog[]>([]);
 const auditTotal = ref(0);
 const auditLoading = ref(false);
 const auditPagination = reactive({ page: 1, pageSize: 10 });
+let disposed = false;
+let latestRefreshRequest = 0;
 const auditColumns: DataTableColumns<KnowledgeAuditLog> = [
   {
     key: 'createTime',
@@ -88,6 +90,8 @@ function formatBytes(value?: number) {
   return `${(value / 1024 / 1024 / 1024).toFixed(2)} GB`;
 }
 async function refresh() {
+  const requestId = ++latestRefreshRequest;
+  const spaceId = activeSpace.value?.id;
   refreshing.value = true;
   auditLoading.value = true;
   try {
@@ -96,15 +100,22 @@ async function refresh() {
       getKnowledgeAudits({
         pageNum: auditPagination.page,
         pageSize: auditPagination.pageSize,
-        spaceId: activeSpace.value?.id,
+        spaceId,
       }),
     ]);
+    if (disposed || requestId !== latestRefreshRequest) return;
     runtime.value = runtimeStatus;
     audits.value = auditPage.items;
     auditTotal.value = auditPage.total;
+  } catch {
+    if (!disposed && requestId === latestRefreshRequest) {
+      message.error('系统状态或审计记录加载失败，请稍后重试');
+    }
   } finally {
-    refreshing.value = false;
-    auditLoading.value = false;
+    if (!disposed && requestId === latestRefreshRequest) {
+      refreshing.value = false;
+      auditLoading.value = false;
+    }
   }
 }
 function requestBackup() {
@@ -118,10 +129,14 @@ function requestBackup() {
       backingUp.value = true;
       verifyResult.value = undefined;
       try {
-        backup.value = await createEmbeddedBackup();
+        const result = await createEmbeddedBackup();
+        if (disposed) return;
+        backup.value = result;
         message.success('备份已生成');
+      } catch {
+        if (!disposed) message.error('备份创建失败，请稍后重试');
       } finally {
-        backingUp.value = false;
+        if (!disposed) backingUp.value = false;
       }
     },
   });
@@ -130,17 +145,32 @@ async function verify() {
   if (!backup.value) return;
   verifying.value = true;
   try {
-    verifyResult.value = await checkEmbeddedBackup(backup.value.fileName);
+    const result = await checkEmbeddedBackup(backup.value.fileName);
+    if (disposed) return;
+    verifyResult.value = result;
     verifyResult.value.valid
       ? message.success(`校验通过，共 ${verifyResult.value.entries} 条记录`)
       : message.error('备份校验未通过，请查看错误信息');
+  } catch {
+    if (!disposed) message.error('备份校验失败，请稍后重试');
   } finally {
-    verifying.value = false;
+    if (!disposed) verifying.value = false;
   }
 }
+watch(activeSpace, () => void refresh());
+
 onMounted(async () => {
-  await store.loadSpaces();
-  await refresh();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await refresh();
+  } catch {
+    if (!disposed) message.error('知识空间加载失败，请稍后重试');
+  }
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestRefreshRequest += 1;
 });
 </script>
 

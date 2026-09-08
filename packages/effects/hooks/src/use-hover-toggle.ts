@@ -76,18 +76,11 @@ export function useHoverToggle(
     });
   }
 
-  // 监听元素数量变化，避免过度执行
-  const elementsCount = computed(() => {
-    const raw = unref(refElement);
-    if (raw === null) return 0;
-    return Array.isArray(raw) ? raw.length : 1;
-  });
-
   // 初始设置
   updateHovers();
 
-  // 只在元素数量变化时重新设置监听器
-  const stopWatcher = watch(elementsCount, updateHovers, { deep: false });
+  // 元素数量不变时也可能替换节点，必须观察完整引用集合以重建监听器。
+  const stopWatcher = watch(refs, updateHovers, { deep: true });
 
   const isOutsideAll = computed(() => isHovers.value.every((v) => !v.value));
 

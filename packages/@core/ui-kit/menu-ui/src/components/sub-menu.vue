@@ -185,6 +185,10 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  if (timer.value) {
+    window.clearTimeout(timer.value);
+    timer.value = null;
+  }
   subMenu?.removeSubMenu?.(item);
   rootMenu?.removeSubMenu?.(item);
 });

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { TagProps } from 'naive-ui';
+
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -16,21 +18,21 @@ import {
   NTag,
 } from 'naive-ui';
 
-import { getExamBySubject } from '#/features/education';
+import { type EducationExamApi, getExamBySubject } from '#/features/education';
 import { EducationAdminExamPage as AdminExamList } from '#/features/education';
 import { getDictByType } from '#/features/iam';
 import { $t } from '#/locales';
 
 const accessStore = useAccessStore();
 const router = useRouter();
-const exams = ref<any[]>([]);
+const exams = ref<EducationExamApi.Exam[]>([]);
 const loading = ref(false);
 const activeTab = ref('student');
 const adminPermission = accessStore.accessCodes.includes('edu:exam:list');
 
 const typeMap = ref<Record<string, string>>({});
 
-const typeColor: Record<string, any> = {
+const typeColor: Record<string, TagProps['type']> = {
   DAILY_QUIZ: 'info',
   UNIT_TEST: 'success',
   MIDTERM: 'warning',
@@ -63,7 +65,7 @@ async function loadExams() {
   }
 }
 
-function startExam(exam: any) {
+function startExam(exam: EducationExamApi.Exam) {
   router.push({ path: `/education-center/practice/exams/take/${exam.id}` });
 }
 

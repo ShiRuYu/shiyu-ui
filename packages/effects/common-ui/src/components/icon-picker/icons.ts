@@ -31,14 +31,14 @@ export async function fetchIconsData(prefix: string): Promise<string[]> {
     return PENDING_REQUESTS[prefix];
   }
   PENDING_REQUESTS[prefix] = (async () => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1000 * 10);
+      timeoutId = setTimeout(() => controller.abort(), 1000 * 10);
       const response: IconifyResponse = await fetch(
         `https://api.iconify.design/collection?prefix=${prefix}`,
         { signal: controller.signal },
       ).then((res) => res.json());
-      clearTimeout(timeoutId);
       const list = response.uncategorized || [];
       if (response.categories) {
         for (const category in response.categories) {
@@ -49,6 +49,9 @@ export async function fetchIconsData(prefix: string): Promise<string[]> {
     } catch (error) {
       console.error(`Failed to fetch icons for prefix ${prefix}:`, error);
       return [] as string[];
+    } finally {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      delete PENDING_REQUESTS[prefix];
     }
     return ICONS_MAP[prefix];
   })();

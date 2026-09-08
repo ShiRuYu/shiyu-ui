@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PromptSummary } from '#/features/conversation';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import {
   NAlert,
@@ -26,46 +26,82 @@ import { PlatformWorkspaceShell } from '#/shared';
 const notice = useMessage();
 const prompts = ref<PromptSummary[]>([]);
 const loading = ref(false);
+const saving = ref(false);
+const loadError = ref('');
 const title = ref('');
 const template = ref('');
 const preview = ref('');
 const previewing = ref(false);
+let disposed = false;
+let latestLoadRequest = 0;
+let latestPreviewRequest = 0;
 
 async function load() {
+  const requestId = ++latestLoadRequest;
   loading.value = true;
+  loadError.value = '';
   try {
-    prompts.value = (await listPrompts()) ?? [];
+    const result = (await listPrompts()) ?? [];
+    if (disposed || requestId !== latestLoadRequest) return;
+    prompts.value = result;
+  } catch {
+    if (disposed || requestId !== latestLoadRequest) return;
+    loadError.value = 'Prompt 列表加载失败，请稍后重试';
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 async function save() {
+  if (saving.value) return;
   if (!title.value.trim() || !template.value.trim())
     return notice.warning('请输入名称和模板');
-  await createPrompt({
-    name: title.value.trim(),
-    template: template.value,
-    variables: [],
-  });
-  title.value = '';
-  template.value = '';
-  await load();
-  notice.success('Prompt 草稿已保存');
+  saving.value = true;
+  try {
+    await createPrompt({
+      name: title.value.trim(),
+      template: template.value,
+      variables: [],
+    });
+    if (disposed) return;
+    title.value = '';
+    template.value = '';
+    await load();
+    if (!disposed) notice.success('Prompt 草稿已保存');
+  } catch {
+    if (!disposed) notice.error('Prompt 保存失败，请稍后重试');
+  } finally {
+    if (!disposed) saving.value = false;
+  }
 }
 async function previewTemplate() {
   if (!template.value.trim()) return;
+  const requestId = ++latestPreviewRequest;
   previewing.value = true;
   try {
-    preview.value = (
-      await previewPrompt({ template: template.value, variables: {} })
-    ).content;
+    const result = await previewPrompt({
+      template: template.value,
+      variables: {},
+    });
+    if (disposed || requestId !== latestPreviewRequest) return;
+    preview.value = result.content;
   } catch {
+    if (disposed || requestId !== latestPreviewRequest) return;
     preview.value = '预览失败，请检查模板变量';
   } finally {
-    previewing.value = false;
+    if (!disposed && requestId === latestPreviewRequest) {
+      previewing.value = false;
+    }
   }
 }
-onMounted(load);
+onMounted(() => {
+  void load();
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestLoadRequest += 1;
+  latestPreviewRequest += 1;
+});
 </script>
 
 <template>
@@ -86,7 +122,9 @@ onMounted(load);
             placeholder="输入结构化 Prompt 模板，例如：{{question}}"
           />
           <NSpace>
-            <NButton type="primary" @click="save">保存草稿</NButton
+            <NButton type="primary" :loading="saving" @click="save">
+              保存草稿
+</NButton
             ><NButton :loading="previewing" @click="previewTemplate">
               预览
             </NButton>
@@ -97,6 +135,9 @@ onMounted(load);
         </NSpace>
       </NCard>
       <NCard title="模板版本">
+        <NAlert v-if="loadError" type="error" :bordered="false">
+          {{ loadError }}
+        </NAlert>
         <NEmpty v-if="!prompts.length" description="暂无 Prompt 模板" />
         <NList v-else :loading="loading" bordered>
           <NListItem v-for="item in prompts" :key="item.id">

@@ -22,6 +22,31 @@ function storageKey(prefix: string, domainCode?: KnowledgeDomainCode) {
   return `${prefix}:${domainCode || PLATFORM_SCOPE}`;
 }
 
+function readStorage(key: string) {
+  try {
+    return globalThis.localStorage?.getItem(key) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(key: string, value: string) {
+  try {
+    globalThis.localStorage?.setItem(key, value);
+  } catch {
+    // Workspace selection is a convenience preference; storage failures must
+    // not prevent the knowledge workspace from loading.
+  }
+}
+
+function removeStorage(key: string) {
+  try {
+    globalThis.localStorage?.removeItem(key);
+  } catch {
+    // Ignore unavailable or quota-limited browser storage.
+  }
+}
+
 export const useKnowledgeStore = defineStore('knowledge', () => {
   const spaces = ref<KnowledgeSpace[]>([]);
   const difficultyScale = ref<KnowledgeDifficultyScale>();
@@ -70,12 +95,10 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
           : result.items.filter((space) => space.domainCode !== 'EDUCATION');
         loadedDomainCode.value = domainCode;
         const savedId = Number(
-          localStorage.getItem(storageKey(ACTIVE_SPACE_KEY, domainCode)),
+          readStorage(storageKey(ACTIVE_SPACE_KEY, domainCode)),
         );
         const hasManualSelection =
-          localStorage.getItem(
-            storageKey(ACTIVE_SPACE_MANUAL_KEY, domainCode),
-          ) === '1';
+          readStorage(storageKey(ACTIVE_SPACE_MANUAL_KEY, domainCode)) === '1';
         const defaultSpaceId = spaces.value.find(
           (space) => space.code === 'default',
         )?.id;
@@ -90,7 +113,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
               : (defaultSpaceId ?? spaces.value[0]?.id);
         }
         if (activeSpaceId.value) {
-          localStorage.setItem(
+          writeStorage(
             storageKey(ACTIVE_SPACE_KEY, domainCode),
             String(activeSpaceId.value),
           );
@@ -115,19 +138,17 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     ) {
       activeSpaceId.value = spaceId;
       if (spaceId) {
-        localStorage.setItem(
+        writeStorage(
           storageKey(ACTIVE_SPACE_KEY, loadedDomainCode.value),
           String(spaceId),
         );
-        localStorage.setItem(
+        writeStorage(
           storageKey(ACTIVE_SPACE_MANUAL_KEY, loadedDomainCode.value),
           '1',
         );
       } else {
-        localStorage.removeItem(
-          storageKey(ACTIVE_SPACE_KEY, loadedDomainCode.value),
-        );
-        localStorage.removeItem(
+        removeStorage(storageKey(ACTIVE_SPACE_KEY, loadedDomainCode.value));
+        removeStorage(
           storageKey(ACTIVE_SPACE_MANUAL_KEY, loadedDomainCode.value),
         );
       }

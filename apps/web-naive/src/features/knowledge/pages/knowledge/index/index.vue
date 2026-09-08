@@ -66,56 +66,84 @@ const drawer = ref(false);
 const total = ref(0);
 const runningCount = ref(0);
 const failedCount = ref(0);
+const loadError = ref('');
 const pagination = reactive({ page: 1, pageSize: 10 });
 let timer: ReturnType<typeof setInterval> | undefined;
+let disposed = false;
+let latestLoadRequest = 0;
 const failed = computed(() => failedCount.value);
 const running = computed(() => runningCount.value);
 
 async function load(silent = false) {
+  await loadInternal(silent);
+}
+
+async function loadInternal(silent = false) {
+  const requestId = ++latestLoadRequest;
+  const spaceId = activeSpaceId.value;
   if (!activeSpaceId.value) {
+    loading.value = false;
     jobs.value = [];
     total.value = 0;
     runningCount.value = 0;
     failedCount.value = 0;
+    loadError.value = '';
     return;
   }
   if (!silent) loading.value = true;
+  if (!silent) loadError.value = '';
   try {
     const [jobPage, runtimeStatus, pendingPage, runningPage, failedPage] =
       await Promise.all([
         getJobs({
           pageNum: pagination.page,
           pageSize: pagination.pageSize,
-          spaceId: activeSpaceId.value,
+          spaceId,
           status: status.value,
         }),
         getEmbeddedRuntimeStatus(),
         getJobs({
           pageNum: 1,
           pageSize: 1,
-          spaceId: activeSpaceId.value,
+          spaceId,
           status: 'PENDING',
         }),
         getJobs({
           pageNum: 1,
           pageSize: 1,
-          spaceId: activeSpaceId.value,
+          spaceId,
           status: 'RUNNING',
         }),
         getJobs({
           pageNum: 1,
           pageSize: 1,
-          spaceId: activeSpaceId.value,
+          spaceId,
           status: 'FAILED',
         }),
       ]);
+    if (
+      disposed ||
+      requestId !== latestLoadRequest ||
+      activeSpaceId.value !== spaceId
+    ) {
+      return;
+    }
     jobs.value = jobPage.items;
     total.value = jobPage.total;
     runningCount.value = pendingPage.total + runningPage.total;
     failedCount.value = failedPage.total;
     runtime.value = runtimeStatus;
+  } catch {
+    if (
+      !disposed &&
+      requestId === latestLoadRequest &&
+      activeSpaceId.value === spaceId
+    ) {
+      loadError.value = '任务与运行状态加载失败，请稍后重试';
+      if (!silent) message.error(loadError.value);
+    }
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestLoadRequest) loading.value = false;
   }
 }
 function rebuild() {
@@ -130,18 +158,26 @@ function rebuild() {
       rebuilding.value = true;
       try {
         await rebuildSpaceIndex(spaceId);
+        if (disposed || activeSpaceId.value !== spaceId) return;
         message.success('索引重建任务已提交');
         await load();
+      } catch {
+        if (!disposed) message.error('索引重建提交失败，请稍后重试');
       } finally {
-        rebuilding.value = false;
+        if (!disposed) rebuilding.value = false;
       }
     },
   });
 }
 async function retry(row: IngestionJob) {
-  await retryJob(row.id);
-  message.success(`任务 #${row.id} 已重新排队`);
-  await load();
+  try {
+    await retryJob(row.id);
+    if (disposed) return;
+    message.success(`任务 #${row.id} 已重新排队`);
+    await load();
+  } catch {
+    if (!disposed) message.error('任务重试失败，请稍后重试');
+  }
 }
 function cancel(row: IngestionJob) {
   dialog.warning({
@@ -150,9 +186,14 @@ function cancel(row: IngestionJob) {
     negativeText: '返回',
     positiveText: '确认取消',
     onPositiveClick: async () => {
-      await cancelJob(row.id);
-      message.success('任务已取消');
-      await load();
+      try {
+        await cancelJob(row.id);
+        if (disposed) return;
+        message.success('任务已取消');
+        await load();
+      } catch {
+        if (!disposed) message.error('任务取消失败，请稍后重试');
+      }
     },
   });
 }
@@ -224,6 +265,7 @@ const columns: DataTableColumns<IngestionJob> = [
       ),
   },
 ];
+watch(activeSpaceId, () => void load());
 watch(
   autoRefresh,
   (enabled) => {
@@ -233,10 +275,21 @@ watch(
   { immediate: true },
 );
 onMounted(async () => {
-  await store.loadSpaces();
-  await load();
+  try {
+    await store.loadSpaces();
+    if (!disposed) await load();
+  } catch {
+    if (!disposed) {
+      loadError.value = '知识空间加载失败，请稍后重试';
+      message.error(loadError.value);
+    }
+  }
 });
-onBeforeUnmount(() => timer && clearInterval(timer));
+onBeforeUnmount(() => {
+  disposed = true;
+  latestLoadRequest += 1;
+  if (timer) clearInterval(timer);
+});
 </script>
 
 <template>
@@ -245,6 +298,9 @@ onBeforeUnmount(() => timer && clearInterval(timer));
     description="观察解析、切分、向量化和索引重建状态，及时处理异常任务。"
   >
     <KnowledgeSpaceHeader :loading="loading" @refresh="load" />
+    <NAlert v-if="loadError" type="warning" :bordered="false" class="mb-4">
+      {{ loadError }}
+    </NAlert>
     <div class="grid gap-3 md:grid-cols-3">
       <NCard size="small">
         <div class="text-sm text-muted-foreground">任务总数</div>

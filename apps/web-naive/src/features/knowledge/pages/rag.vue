@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SearchResponse } from '#/features/knowledge/api';
 
-import { ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import {
   NAlert,
@@ -15,35 +15,71 @@ import {
   NSpin,
   useMessage,
 } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 
 import { searchKnowledge } from '#/features/knowledge/api';
+import KnowledgeSpaceHeader from '#/features/knowledge/ui/knowledge-space-header.vue';
 import { PlatformWorkspaceShell } from '#/shared';
+import { useKnowledgeStore } from '#/store';
 
 const notice = useMessage();
+const store = useKnowledgeStore();
+const { activeSpaceId } = storeToRefs(store);
 const query = ref('');
-const spaceId = ref(1);
 const loading = ref(false);
 const result = ref<SearchResponse>();
 const error = ref<string>();
+const spaceId = computed(() => activeSpaceId.value);
+let disposed = false;
+let latestSearchRequest = 0;
 
 async function search() {
   if (!query.value.trim() || loading.value) return;
+  const currentSpaceId = activeSpaceId.value;
+  if (!currentSpaceId) {
+    notice.warning('请先选择知识空间');
+    return;
+  }
+  const requestId = ++latestSearchRequest;
   loading.value = true;
   error.value = undefined;
   try {
-    result.value = await searchKnowledge({
+    const response = await searchKnowledge({
       query: query.value.trim(),
-      spaceId: spaceId.value,
+      spaceId: currentSpaceId,
       topK: 8,
       rerank: true,
     });
+    if (disposed || requestId !== latestSearchRequest) return;
+    result.value = response;
   } catch {
+    if (disposed || requestId !== latestSearchRequest) return;
     error.value = '检索失败，请检查知识空间权限或索引状态。';
     notice.error(error.value);
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestSearchRequest) loading.value = false;
   }
 }
+
+function resetResults() {
+  latestSearchRequest += 1;
+  loading.value = false;
+  result.value = undefined;
+  error.value = undefined;
+}
+
+watch(activeSpaceId, resetResults);
+
+onMounted(() => {
+  void store.loadSpaces().catch(() => {
+    if (!disposed) notice.error('知识空间加载失败，请稍后重试');
+  });
+});
+
+onUnmounted(() => {
+  disposed = true;
+  latestSearchRequest += 1;
+});
 </script>
 <template>
   <PlatformWorkspaceShell
@@ -51,12 +87,13 @@ async function search() {
     title="RAG 检索工作区"
     description="用统一 Context Contract 组合知识文档与 MAGMA 关系路径，并在发送前查看引用。"
     :metrics="[
-      { label: '知识空间', value: String(spaceId) },
+      { label: '知识空间', value: String(spaceId ?? '未选择') },
       { label: '当前召回', value: String(result?.hits?.length ?? 0) },
       { label: '检索模式', value: result?.mode ?? 'HYBRID' },
       { label: '索引状态', value: '正常', tone: 'success' },
     ]"
   >
+    <KnowledgeSpaceHeader @refresh="resetResults" />
     <NSpace vertical size="large" class="rag-form">
       <NInput
         v-model:value="query"
@@ -66,10 +103,11 @@ async function search() {
       /><NButton
         type="primary"
         :loading="loading"
-        :disabled="!query.trim()"
+        :disabled="!query.trim() || !spaceId"
         @click="search"
       >
-        开始检索 </NButton
+        开始检索
+</NButton
       ><NAlert v-if="error" type="warning" :bordered="false">{{ error }}</NAlert
       ><NSpin v-if="loading" /><NEmpty
         v-else-if="!result?.hits?.length"

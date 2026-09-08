@@ -17,13 +17,13 @@ import {
 } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
-import { getExamById } from '#/features/education';
+import { type EducationExamApi, getExamById } from '#/features/education';
 import { $t } from '#/locales';
 
 const route = useRoute();
 const router = useRouter();
-const exam = ref<any>(null);
-const questions = ref<any[]>([]);
+const exam = ref<EducationExamApi.Exam | null>(null);
+const questions = ref<EducationExamApi.Question[]>([]);
 const answers = ref<Record<number, string>>({});
 const loading = ref(false);
 const submitting = ref(false);
@@ -38,7 +38,7 @@ async function loadExam() {
     if (data?.questions?.length) {
       questions.value = data.questions;
     } else if (data?.sections?.length) {
-      questions.value = data.sections.flatMap((s: any) => s.questions || []);
+      questions.value = data.sections.flatMap((s) => s.questions || []);
     }
   } catch (error) {
     console.error('Failed to load exam:', error);
@@ -54,15 +54,10 @@ function setAnswer(questionId: number, answer: string) {
 async function handleSubmit() {
   if (!exam.value) return;
   submitting.value = true;
-  // TODO: 提交答卷 - 后端暂未实现 submitExam 接口
   try {
-    message.success($t('education.exam.submitSuccess'));
-    router.push({
-      path: `/education-center/practice/exams/result/${exam.value.id}`,
-    });
-  } catch (error) {
-    console.error('Failed to submit exam:', error);
-    message.error($t('education.exam.submitFailed'));
+    // The backend submit endpoint is not available yet. Do not claim success
+    // or navigate to a result page until the answers have been persisted.
+    message.warning($t('education.exam.submitUnavailable'));
   } finally {
     submitting.value = false;
   }

@@ -3,7 +3,14 @@ import type { StyleValue } from 'vue';
 
 import type { PageProps } from './types';
 
-import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  useTemplateRef,
+} from 'vue';
 
 import { CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT } from '@vben-core/shared/constants';
 import { cn } from '@vben-core/shared/utils';
@@ -24,6 +31,7 @@ const shouldAutoHeight = ref(false);
 
 const headerRef = useTemplateRef<HTMLDivElement>('headerRef');
 const footerRef = useTemplateRef<HTMLDivElement>('footerRef');
+let heightTimer: ReturnType<typeof setTimeout> | undefined;
 
 const contentStyle = computed<StyleValue>(() => {
   if (autoContentHeight) {
@@ -45,13 +53,20 @@ async function calcContentHeight() {
 
   footerHeight.value = footerFixed ? 0 : footerRef.value?.offsetHeight || 0;
 
-  setTimeout(() => {
+  if (heightTimer) clearTimeout(heightTimer);
+  heightTimer = setTimeout(() => {
+    heightTimer = undefined;
     shouldAutoHeight.value = true;
   }, 30);
 }
 
 onMounted(() => {
   calcContentHeight();
+});
+
+onBeforeUnmount(() => {
+  if (heightTimer) clearTimeout(heightTimer);
+  heightTimer = undefined;
 });
 </script>
 

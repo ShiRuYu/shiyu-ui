@@ -115,8 +115,8 @@ async function copyVersion(
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
     '/api/agent/versions/copy',
-    data,
-    { params: { agentId, sourceVersionId } },
+    { ...data, copyFromVersionId: sourceVersionId },
+    { params: { agentId } },
   );
 }
 

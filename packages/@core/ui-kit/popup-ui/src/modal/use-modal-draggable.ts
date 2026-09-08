@@ -23,6 +23,7 @@ export function useModalDraggable(
   });
 
   const dragging = ref(false);
+  let stopDragging: (() => void) | undefined;
 
   const onMousedown = (e: MouseEvent) => {
     const downX = e.clientX;
@@ -86,9 +87,14 @@ export function useModalDraggable(
     };
 
     const onMouseup = () => {
+      stopDragging?.();
+    };
+
+    stopDragging = () => {
       dragging.value = false;
       document.removeEventListener('mousemove', onMousemove);
       document.removeEventListener('mouseup', onMouseup);
+      stopDragging = undefined;
     };
 
     document.addEventListener('mousemove', onMousemove);
@@ -130,6 +136,7 @@ export function useModalDraggable(
   });
 
   onBeforeUnmount(() => {
+    stopDragging?.();
     offDraggable();
   });
 

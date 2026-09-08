@@ -27,6 +27,8 @@
   "adminListConfirmDelete": "Are you sure to delete {name}?",
   "adminListDeleting": "Deleting...",
   "adminListDeleteSuccess": "Deleted successfully: {name}",
+  "adminListLoadFailed": "Failed to load Agents. Please try again later.",
+  "adminListDeleteFailed": "Failed to delete the Agent. Please try again later.",
   "adminFormEdit": "Edit Agent",
   "adminFormCreate": "New Agent",
   "adminFormReset": "Reset",

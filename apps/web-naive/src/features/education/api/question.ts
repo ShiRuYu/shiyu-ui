@@ -91,5 +91,5 @@ export async function deleteQuestion(id: number) {
 /** 获取题目下拉选项 */
 export async function getQuestionOptions() {
   const result = await getAllQuestions(1, 1000);
-  return (result?.items || []).map((q: any) => ({ id: q.id, title: q.title }));
+  return (result?.items || []).map((q) => ({ id: q.id, title: q.title }));
 }

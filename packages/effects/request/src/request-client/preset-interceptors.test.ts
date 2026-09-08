@@ -61,4 +61,95 @@ describe('authentication response handling', () => {
     await expect(messageInterceptor.rejected?.(error)).rejects.toBe(error);
     expect(showMessage).toHaveBeenCalledOnce();
   });
+
+  it('rejects queued requests when the shared token refresh fails', async () => {
+    const client = createClient();
+    const doReAuthenticate = vi.fn().mockResolvedValue(undefined);
+    let rejectRefresh!: (reason: unknown) => void;
+    const refreshFailure = new Error('refresh failed');
+    const interceptor = authenticateResponseInterceptor({
+      client,
+      doReAuthenticate,
+      doRefreshToken: () =>
+        new Promise<string>((_resolve, reject) => {
+          rejectRefresh = reject;
+        }),
+      enableRefreshToken: true,
+      formatToken: (token) => `Bearer ${token}`,
+    });
+    const error = (url: string) =>
+      ({
+        config: { url, headers: { Authorization: 'Bearer expired' } },
+        response: { data: { code: 401 }, status: 401 },
+      }) as any;
+
+    const refreshing = interceptor.rejected?.(error('/first'));
+    const queued = interceptor.rejected?.(error('/second'));
+    rejectRefresh(refreshFailure);
+
+    await expect(refreshing).rejects.toBe(refreshFailure);
+    await expect(queued).rejects.toBe(refreshFailure);
+    expect(client.request).not.toHaveBeenCalled();
+    expect(doReAuthenticate).toHaveBeenCalledOnce();
+  });
+
+  it('marks queued requests as one-time retries after refresh succeeds', async () => {
+    const client = createClient();
+    client.request.mockResolvedValue('retried');
+    const interceptor = authenticateResponseInterceptor({
+      client,
+      doReAuthenticate: vi.fn(),
+      doRefreshToken: vi.fn().mockResolvedValue('fresh-token'),
+      enableRefreshToken: true,
+      formatToken: (token) => `Bearer ${token}`,
+    });
+    const error = (url: string) =>
+      ({
+        config: { url, headers: { Authorization: 'Bearer expired' } },
+        response: { data: { code: 401 }, status: 401 },
+      }) as any;
+
+    await Promise.all([
+      interceptor.rejected?.(error('/first')),
+      interceptor.rejected?.(error('/second')),
+    ]);
+
+    expect(client.request).toHaveBeenCalledWith(
+      '/second',
+      expect.objectContaining({
+        __isRetryRequest: true,
+        headers: expect.objectContaining({
+          Authorization: 'Bearer fresh-token',
+        }),
+      }),
+    );
+  });
+
+  it('retries the request that refreshed the token with the fresh token', async () => {
+    const client = createClient();
+    client.request.mockResolvedValue('retried');
+    const interceptor = authenticateResponseInterceptor({
+      client,
+      doReAuthenticate: vi.fn(),
+      doRefreshToken: vi.fn().mockResolvedValue('fresh-token'),
+      enableRefreshToken: true,
+      formatToken: (token) => `Bearer ${token}`,
+    });
+    const error = {
+      config: { url: '/first', headers: { Authorization: 'Bearer expired' } },
+      response: { data: { code: 401 }, status: 401 },
+    } as any;
+
+    await interceptor.rejected?.(error);
+
+    expect(client.request).toHaveBeenCalledWith(
+      '/first',
+      expect.objectContaining({
+        __isRetryRequest: true,
+        headers: expect.objectContaining({
+          Authorization: 'Bearer fresh-token',
+        }),
+      }),
+    );
+  });
 });

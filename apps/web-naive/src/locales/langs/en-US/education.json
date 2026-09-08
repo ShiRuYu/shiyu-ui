@@ -75,6 +75,7 @@
     "submit": "Submit",
     "submitFailed": "Submit failed",
     "submitSuccess": "Submitted successfully",
+    "submitUnavailable": "Exam submission is not available yet. Please try again later.",
     "noQuestions": "No questions available",
     "submitExam": "Submit Exam",
     "aiGenerate": "Generate with AI",

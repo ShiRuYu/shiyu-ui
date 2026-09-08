@@ -48,6 +48,7 @@ function onDelete(row: ModelApi.ModelItem) {
       hideLoading.destroy();
     })
     .catch(() => {
+      message.error($t('ui.actionMessage.deleteFailed'));
       hideLoading.destroy();
     });
 }
@@ -62,7 +63,7 @@ async function onSetDefault(row: ModelApi.ModelItem) {
     message.success($t('agent.modelSetDefault', { name: row.modelName }));
     refreshGrid();
   } catch {
-    // handled by request interceptor
+    message.error($t('ui.actionMessage.operationFailed'));
   }
 }
 

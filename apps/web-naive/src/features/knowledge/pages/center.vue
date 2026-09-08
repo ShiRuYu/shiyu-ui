@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { KnowledgeSpace } from '#/features/knowledge/api';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { NAlert, NButton, NEmpty, NList, NListItem, NSpin } from 'naive-ui';
@@ -12,15 +12,31 @@ const spaces = ref<KnowledgeSpace[]>([]);
 const router = useRouter();
 const loading = ref(false);
 const error = ref(false);
-onMounted(async () => {
+let disposed = false;
+let latestRequestId = 0;
+
+async function loadSpaces() {
+  const requestId = ++latestRequestId;
   loading.value = true;
+  error.value = false;
   try {
-    spaces.value = (await getKnowledgeSpaceOptions()) ?? [];
+    const result = (await getKnowledgeSpaceOptions()) ?? [];
+    if (disposed || requestId !== latestRequestId) return;
+    spaces.value = result;
   } catch {
+    if (disposed || requestId !== latestRequestId) return;
     error.value = true;
   } finally {
-    loading.value = false;
+    if (!disposed && requestId === latestRequestId) {
+      loading.value = false;
+    }
   }
+}
+
+onMounted(() => void loadSpaces());
+onUnmounted(() => {
+  disposed = true;
+  latestRequestId += 1;
 });
 </script>
 <template>
@@ -70,9 +86,11 @@ onMounted(async () => {
     <template #side>
       <h3>快捷操作</h3>
       <NButton block secondary @click="router.push('/knowledge-center/search')">
-        检索实验室 </NButton
+        检索实验室
+</NButton
       ><NButton block secondary @click="router.push('/knowledge-center/graph')">
-        图谱洞察 </NButton
+        图谱洞察
+</NButton
       ><NButton
         block
         secondary

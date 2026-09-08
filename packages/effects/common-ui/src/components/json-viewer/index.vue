@@ -10,7 +10,7 @@ import type {
   JsonViewerValue,
 } from './types';
 
-import { computed, ref, useAttrs } from 'vue';
+import { computed, onBeforeUnmount, ref, useAttrs } from 'vue';
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 
@@ -43,6 +43,7 @@ const emit = defineEmits<{
 const attrs: SetupContext['attrs'] = useAttrs();
 
 const copiedPath = ref<null | string>(null);
+let copiedResetTimer: ReturnType<typeof setTimeout> | undefined;
 
 const copyConfig = computed(() => {
   return {
@@ -60,12 +61,19 @@ function handleCopy(node: any, defaultCopy: () => void) {
     text: JSON.stringify(node.content),
     trigger: node.el ?? document.body,
   });
-  setTimeout(() => {
+  if (copiedResetTimer) clearTimeout(copiedResetTimer);
+  copiedResetTimer = setTimeout(() => {
+    copiedResetTimer = undefined;
     if (copiedPath.value === node.path) {
       copiedPath.value = null;
     }
   }, copyConfig.value.timeout ?? 2000);
 }
+
+onBeforeUnmount(() => {
+  if (copiedResetTimer) clearTimeout(copiedResetTimer);
+  copiedResetTimer = undefined;
+});
 
 // 支持显示 bigint 数据，如较长的订单号
 const jsonData = computed<Record<string, any>>(() => {

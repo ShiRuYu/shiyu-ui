@@ -78,6 +78,10 @@ const contextTab = ref<'context' | 'details' | 'trace'>('context');
 const sidebarVisible = ref(false);
 const mobileContextVisible = ref(false);
 const notice = useMessage();
+let disposed = false;
+let latestPlatformRequest = 0;
+let latestModelRequest = 0;
+let latestConversationRequest = 0;
 const {
   dispose: disposeGenerationStream,
   loading,
@@ -87,11 +91,13 @@ const {
 } = useGenerationStream();
 
 async function loadModels(platformId: number) {
+  const requestId = ++latestModelRequest;
   loadingModels.value = true;
   selectedModel.value = undefined;
   modelOptions.value = [];
   try {
     const models = await getModelOptions(platformId);
+    if (disposed || requestId !== latestModelRequest) return;
     modelOptions.value = (models ?? [])
       .filter((item) => item.value)
       .map((item) => ({
@@ -100,17 +106,21 @@ async function loadModels(platformId: number) {
       }));
     selectedModel.value = modelOptions.value[0]?.value;
   } catch {
+    if (disposed || requestId !== latestModelRequest) return;
     catalogError.value = true;
   } finally {
-    loadingModels.value = false;
+    if (!disposed && requestId === latestModelRequest)
+      loadingModels.value = false;
   }
 }
 
 async function loadPlatforms() {
+  const requestId = ++latestPlatformRequest;
   loadingPlatforms.value = true;
   catalogError.value = false;
   try {
     const platforms = await getPlatformOptions();
+    if (disposed || requestId !== latestPlatformRequest) return;
     platformOptions.value = (platforms ?? []).map((item) => ({
       code: item.code,
       label: item.name,
@@ -121,13 +131,16 @@ async function loadPlatforms() {
       await loadModels(selectedPlatformId.value);
     }
   } catch {
+    if (disposed || requestId !== latestPlatformRequest) return;
     catalogError.value = true;
   } finally {
-    loadingPlatforms.value = false;
+    if (!disposed && requestId === latestPlatformRequest)
+      loadingPlatforms.value = false;
   }
 }
 
 async function onPlatformChange(platformId: number) {
+  latestPlatformRequest += 1;
   catalogError.value = false;
   await loadModels(platformId);
 }
@@ -152,17 +165,23 @@ async function sendMessage(promptOverride?: string) {
   }
 
   if (!activeConversationId.value) {
-    const created = await createConversation({
-      platform,
-      model: selectedModel.value,
-      title: prompt.slice(0, 40),
-      sceneType: mode.value,
-    });
-    activeConversationId.value = created.id;
-    conversations.value = [
-      { id: created.id, title: created.title },
-      ...conversations.value,
-    ];
+    try {
+      const created = await createConversation({
+        platform,
+        model: selectedModel.value,
+        title: prompt.slice(0, 40),
+        sceneType: mode.value,
+      });
+      if (disposed) return;
+      activeConversationId.value = created.id;
+      conversations.value = [
+        { id: created.id, title: created.title },
+        ...conversations.value,
+      ];
+    } catch {
+      notice.error($t('ai-tutor.chatError'));
+      return;
+    }
   }
   messages.value.push({
     content: prompt,
@@ -226,15 +245,27 @@ async function sendMessage(promptOverride?: string) {
 
 async function loadConversation(id: string) {
   if (loading.value) return;
+  const requestId = ++latestConversationRequest;
   activeConversationId.value = id;
-  branches.value = await listBranches(id).catch(() => []);
-  const remote = await getConversationMessages(id);
-  messages.value = (remote ?? []).map((item) => ({
-    id: item.id,
-    role: item.role.toLowerCase() as ChatMessage['role'],
-    content: (item.contentParts ?? []).map((part) => part.text ?? '').join(''),
-  }));
-  await scrollToLatest();
+  try {
+    const [loadedBranches, remote] = await Promise.all([
+      listBranches(id).catch(() => []),
+      getConversationMessages(id),
+    ]);
+    if (disposed || requestId !== latestConversationRequest) return;
+    branches.value = loadedBranches;
+    messages.value = (remote ?? []).map((item) => ({
+      id: item.id,
+      role: item.role.toLowerCase() as ChatMessage['role'],
+      content: (item.contentParts ?? [])
+        .map((part) => part.text ?? '')
+        .join(''),
+    }));
+    await scrollToLatest();
+  } catch {
+    if (!disposed && requestId === latestConversationRequest)
+      notice.error($t('ai-tutor.chatError'));
+  }
 }
 
 function beginEdit(message: ChatMessage) {
@@ -244,15 +275,22 @@ function beginEdit(message: ChatMessage) {
 
 async function saveEdit() {
   if (!editingMessageId.value || !editingText.value.trim()) return;
-  await editMessage(editingMessageId.value, editingText.value.trim());
-  editingMessageId.value = undefined;
-  if (activeConversationId.value)
-    await loadConversation(activeConversationId.value);
+  try {
+    await editMessage(editingMessageId.value, editingText.value.trim());
+    if (disposed) return;
+    editingMessageId.value = undefined;
+    if (activeConversationId.value)
+      await loadConversation(activeConversationId.value);
+  } catch {
+    notice.error($t('ai-tutor.chatError'));
+  }
 }
 
 function newConversation() {
   if (loading.value) return;
+  latestConversationRequest += 1;
   activeConversationId.value = undefined;
+  branches.value = [];
   messages.value = [];
 }
 
@@ -276,8 +314,12 @@ async function loadRuntimeApps() {
 
 async function showPromptPreview() {
   if (!activeConversationId.value) return;
-  promptPreview.value = await getPromptPreview(activeConversationId.value);
-  previewVisible.value = true;
+  try {
+    promptPreview.value = await getPromptPreview(activeConversationId.value);
+    if (!disposed) previewVisible.value = true;
+  } catch {
+    notice.error($t('ai-tutor.chatError'));
+  }
 }
 
 async function stopGeneration() {
@@ -335,11 +377,21 @@ async function retryMessage(index: number) {
 }
 
 async function copyMessage(content: string) {
-  await navigator.clipboard.writeText(content);
-  notice.success($t('ai-tutor.copied'));
+  try {
+    await navigator.clipboard.writeText(content);
+    notice.success($t('ai-tutor.copied'));
+  } catch {
+    notice.error($t('ai-tutor.chatError'));
+  }
 }
 
-onBeforeUnmount(disposeGenerationStream);
+onBeforeUnmount(() => {
+  disposed = true;
+  latestPlatformRequest += 1;
+  latestModelRequest += 1;
+  latestConversationRequest += 1;
+  disposeGenerationStream();
+});
 onMounted(async () => {
   await Promise.all([
     loadPlatforms(),
@@ -516,11 +568,13 @@ onMounted(async () => {
                   <span class="message-label">TOOL</span>
                   <span class="whitespace-pre-wrap">{{ msg.content }}</span>
                 </div>
+                <!-- eslint-disable vue/no-v-html -->
                 <div
                   v-else-if="msg.role === 'assistant'"
                   class="chat-markdown"
                   v-html="renderSafeMarkdown(msg.content)"
                 ></div>
+                <!-- eslint-enable vue/no-v-html -->
                 <template v-else>
                   <NInput
                     v-if="editingMessageId === msg.id"
