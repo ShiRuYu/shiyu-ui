@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const requestMock = vi.hoisted(() => ({
+  delete: vi.fn(),
   get: vi.fn(),
   post: vi.fn(),
+  put: vi.fn(),
 }));
 
 vi.mock('#/shared/api/request', () => ({
@@ -116,14 +118,30 @@ describe('education feature transport facades', () => {
       chapterOrder: 1,
     } as any);
 
-    expect(requestMock.get).toHaveBeenCalledWith(
-      '/api/education/chapter/detail',
-      { params: { id: 12 } },
-    );
+    expect(requestMock.get).toHaveBeenCalledWith('/api/education/chapter/12');
     expect(requestMock.post).toHaveBeenCalledWith(
-      '/api/education/chapter/create',
+      '/api/education/chapter',
       expect.objectContaining({ textbookId: 3, name: 'Algebra' }),
     );
+  });
+
+  it('uses canonical REST collection and item routes for education resources', async () => {
+    await getCourseList();
+    await getCourseById(12);
+    await createCourse({} as any);
+    await updateCourse(12, {});
+    await deleteCourse(12);
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/education/course', {
+      params: { pageNum: 1, pageSize: 10 },
+    });
+    expect(requestMock.get).toHaveBeenCalledWith('/api/education/course/12');
+    expect(requestMock.post).toHaveBeenCalledWith('/api/education/course', {});
+    expect(requestMock.put).toHaveBeenCalledWith(
+      '/api/education/course/12',
+      {},
+    );
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/education/course/12');
   });
 
   it('does not turn a missing textbook into a zero-id request', async () => {
@@ -143,10 +161,9 @@ describe('education feature transport facades', () => {
       { id: 1, title: 'Linear equations' },
       { id: 2, title: 'Quadratic equations' },
     ]);
-    expect(requestMock.get).toHaveBeenCalledWith(
-      '/api/education/question/list',
-      { params: { pageNum: 1, pageSize: 1000 } },
-    );
+    expect(requestMock.get).toHaveBeenCalledWith('/api/education/question', {
+      params: { pageNum: 1, pageSize: 1000 },
+    });
   });
 
   it('covers education query and lifecycle facades explicitly', async () => {

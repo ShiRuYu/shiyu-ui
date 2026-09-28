@@ -24,7 +24,7 @@ export async function getAllQuestions(pageNum = 1, pageSize = 10) {
   return requestClient.get<{
     items: EducationQuestionApi.Question[];
     total: number;
-  }>('/api/education/question/list', {
+  }>('/api/education/question', {
     params: { pageNum, pageSize },
   });
 }
@@ -32,8 +32,7 @@ export async function getAllQuestions(pageNum = 1, pageSize = 10) {
 /** 获取题目详情 */
 export async function getQuestionById(id: number) {
   return requestClient.get<EducationQuestionApi.Question>(
-    '/api/education/question/detail',
-    { params: { id } },
+    `/api/education/question/${id}`,
   );
 }
 
@@ -68,7 +67,7 @@ export async function getQuestionByType(type: string) {
 export async function createQuestion(
   data: Omit<EducationQuestionApi.Question, 'id'>,
 ) {
-  return requestClient.post('/api/education/question/create', data);
+  return requestClient.post('/api/education/question', data);
 }
 
 /** 更新题目 */
@@ -76,16 +75,12 @@ export async function updateQuestion(
   id: number,
   data: Partial<EducationQuestionApi.Question>,
 ) {
-  return requestClient.post('/api/education/question/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/question/${id}`, data);
 }
 
 /** 删除题目 */
 export async function deleteQuestion(id: number) {
-  return requestClient.post('/api/education/question/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/question/${id}`);
 }
 
 /** 获取题目下拉选项 */

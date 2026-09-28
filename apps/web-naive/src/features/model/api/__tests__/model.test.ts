@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const requestMock = vi.hoisted(() => ({
+  delete: vi.fn(),
   get: vi.fn(),
   post: vi.fn(),
+  put: vi.fn(),
 }));
 
 vi.mock('#/shared/api/request', () => ({
@@ -30,6 +32,8 @@ describe('model feature transport facades', () => {
     vi.clearAllMocks();
     requestMock.get.mockResolvedValue({ items: [], total: 0 });
     requestMock.post.mockResolvedValue({});
+    requestMock.put.mockResolvedValue({});
+    requestMock.delete.mockResolvedValue({});
   });
 
   it('normalizes model pagination before calling the model bounded context', async () => {
@@ -40,9 +44,12 @@ describe('model feature transport facades', () => {
       keyword: 'chat',
     });
 
-    expect(requestMock.get).toHaveBeenCalledWith('/api/model/models/page', {
-      params: { pageNo: 2, pageSize: 25, platformId: 9, keyword: 'chat' },
-    });
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/model/model-configurations',
+      {
+        params: { pageNo: 2, pageSize: 25, platformId: 9, keyword: 'chat' },
+      },
+    );
   });
 
   it('keeps model commands and platform queries in the model facade', async () => {
@@ -53,23 +60,21 @@ describe('model feature transport facades', () => {
 
     expect(requestMock.post).toHaveBeenNthCalledWith(
       1,
-      '/api/model/models/create',
+      '/api/model/model-configurations',
       expect.objectContaining({ modelName: 'gpt', platformId: 9 }),
     );
     expect(requestMock.post).toHaveBeenNthCalledWith(
       2,
-      '/api/model/models/set-default',
+      '/api/model/model-configurations/set-default',
       null,
       { params: { id: 4 } },
     );
-    expect(requestMock.get).toHaveBeenNthCalledWith(
-      1,
-      '/api/model/providers/page',
-      { params: { pageNo: 1, pageSize: 10 } },
-    );
+    expect(requestMock.get).toHaveBeenNthCalledWith(1, '/api/model/platforms', {
+      params: { pageNo: 1, pageSize: 10 },
+    });
     expect(requestMock.get).toHaveBeenNthCalledWith(
       2,
-      '/api/model/providers/options',
+      '/api/model/platforms/options',
     );
   });
 
@@ -84,15 +89,34 @@ describe('model feature transport facades', () => {
     await setDefaultPlatform(2);
     await reloadPlatforms();
 
-    expect(requestMock.get).toHaveBeenCalledWith('/api/model/models/page', {
-      params: { pageNo: 1, pageSize: 10 },
-    });
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/model/model-configurations',
+      {
+        params: { pageNo: 1, pageSize: 10 },
+      },
+    );
     expect(requestMock.post).toHaveBeenCalledWith(
-      '/api/model/models/batch-delete',
+      '/api/model/model-configurations/batch-delete',
       [4, 5],
     );
-    expect(requestMock.post).toHaveBeenCalledWith(
-      '/api/model/providers/reload',
+    expect(requestMock.put).toHaveBeenCalledWith(
+      '/api/model/model-configurations/4',
+      expect.objectContaining({ status: 0 }),
     );
+    expect(requestMock.delete).toHaveBeenCalledWith(
+      '/api/model/model-configurations/4',
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/model/platforms/reload',
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/model/platforms',
+      expect.objectContaining({ code: 'openai' }),
+    );
+    expect(requestMock.put).toHaveBeenCalledWith(
+      '/api/model/platforms/2',
+      expect.objectContaining({ name: 'Updated' }),
+    );
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/model/platforms/2');
   });
 });

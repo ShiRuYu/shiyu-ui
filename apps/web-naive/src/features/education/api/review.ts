@@ -21,10 +21,7 @@ export namespace EducationReviewApi {
 
 async function getReviewById(id: number) {
   return requestClient.get<EducationReviewApi.ReviewTask>(
-    '/api/education/review/detail',
-    {
-      params: { id },
-    },
+    `/api/education/review/${id}`,
   );
 }
 
@@ -37,28 +34,24 @@ async function getTodayReviews(studentId: number) {
 
 async function getReviewsByStatus(studentId: number, status: number) {
   return requestClient.get<EducationReviewApi.ReviewTask[]>(
-    '/api/education/review/list',
+    '/api/education/review',
     { params: { studentId, status } },
   );
 }
 
 async function createReview(data: Omit<EducationReviewApi.ReviewTask, 'id'>) {
-  return requestClient.post('/api/education/review/create', data);
+  return requestClient.post('/api/education/review', data);
 }
 
 async function updateReview(
   id: number,
   data: Partial<EducationReviewApi.ReviewTask>,
 ) {
-  return requestClient.post('/api/education/review/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/review/${id}`, data);
 }
 
 async function deleteReview(id: number) {
-  return requestClient.post('/api/education/review/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/review/${id}`);
 }
 
 async function completeReview(

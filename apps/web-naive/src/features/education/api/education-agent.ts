@@ -95,7 +95,7 @@ async function generateExam(data: EducationAgentApi.ExamRequest) {
 }
 
 async function getTodayReviewTasks() {
-  return requestClient.get('/api/agent/agents/list');
+  return requestClient.get('/api/agent/agents/definitions');
 }
 
 async function completeReviewTask(data: { result: number; taskId: number }) {

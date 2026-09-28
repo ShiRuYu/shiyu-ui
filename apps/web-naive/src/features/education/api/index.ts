@@ -1,6 +1,7 @@
 export * from './analytics';
 export * from './chapter';
 export * from './course';
+export * from './education-agent';
 export * from './exam';
 export {
   createExam as createAdminExam,
@@ -10,8 +11,8 @@ export {
   updateExam as updateAdminExam,
 } from './exam-admin';
 export type { EducationAdminExamApi } from './exam-admin';
-export * from './plan';
 
+export * from './plan';
 export * from './question';
 export * from './resource';
 export * from './review';

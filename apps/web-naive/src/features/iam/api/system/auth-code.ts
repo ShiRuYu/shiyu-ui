@@ -25,7 +25,7 @@ export namespace AuthCodeApi {
 /** 获取所有权限码 */
 async function getAuthCodeList() {
   return requestClient.get<AuthCodeApi.AuthCodeItem[]>(
-    '/api/iam/auth-codes/list',
+    '/api/iam/auth-codes/options',
   );
 }
 
@@ -33,12 +33,12 @@ async function getAuthCodePage(params?: Record<string, any>) {
   return requestClient.get<{
     items: AuthCodeApi.AuthCodeItem[];
     total: number;
-  }>('/api/iam/auth-codes/page', { params });
+  }>('/api/iam/auth-codes', { params });
 }
 
 /** 创建权限码 */
 async function createAuthCode(data: { code: string; name: string }) {
-  return requestClient.post('/api/iam/auth-codes/create', data);
+  return requestClient.post('/api/iam/auth-codes', data);
 }
 
 /** 更新权限码 */
@@ -46,16 +46,12 @@ async function updateAuthCode(
   id: number,
   data: Partial<AuthCodeApi.AuthCodeItem>,
 ) {
-  return requestClient.post('/api/iam/auth-codes/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/iam/auth-codes/${id}`, data);
 }
 
 /** 删除权限码 */
 async function deleteAuthCode(id: number) {
-  return requestClient.post('/api/iam/auth-codes/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/iam/auth-codes/${id}`);
 }
 
 async function getRoleAuthCodes(roleId: number, tenantId: number) {

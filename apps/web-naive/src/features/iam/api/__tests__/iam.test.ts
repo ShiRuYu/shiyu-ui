@@ -122,6 +122,127 @@ describe('iAM feature transport facades', () => {
     );
   });
 
+  it('uses canonical REST collection and item routes for IAM CRUD resources', async () => {
+    await getUserList({ page: 2, pageSize: 20, username: 'ada' });
+    await createUser({ username: 'ada', status: 1, tenantId: 1 });
+    await updateUser(11, { username: 'ada', status: 1, tenantId: 1 });
+    await deleteUser(11);
+
+    await getRoleList({ page: 2, pageSize: 20 });
+    await createRole({ name: 'admin', status: 1 });
+    await getRoleDetail(12, 1);
+    await updateRole(12, { name: 'admin', status: 1 });
+    await deleteRole(12);
+
+    await getMenuPage({ pageNum: 2, pageSize: 20 });
+    await createMenu({
+      id: undefined as never,
+      name: 'Dashboard',
+      path: '/dashboard',
+      status: 1,
+      type: 'menu',
+    });
+    await updateMenu(13, {
+      id: undefined as never,
+      name: 'Dashboard',
+      path: '/dashboard',
+      status: 1,
+      type: 'menu',
+    });
+    await deleteMenu(13);
+
+    await getDictPage({ page: 2, pageSize: 20 });
+    await createDict({
+      dictLabel: 'Enabled',
+      dictType: 'status',
+      dictValue: '1',
+      status: 1,
+    });
+    await updateDict(14, { dictLabel: 'Enabled' });
+    await deleteDict(14);
+
+    await getAuthCodePage({ page: 2, pageSize: 20 });
+    await createAuthCode({ code: 'system:read', name: 'Read' });
+    await updateAuthCode(15, { name: 'Read' });
+    await deleteAuthCode(15);
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/users', {
+      params: { pageNum: 2, pageSize: 20, username: 'ada' },
+    });
+    expect(requestMock.post).toHaveBeenCalledWith('/api/iam/users', {
+      username: 'ada',
+      status: 1,
+      tenantId: 1,
+    });
+    expect(requestMock.put).toHaveBeenCalledWith('/api/iam/users/11', {
+      username: 'ada',
+      status: 1,
+      tenantId: 1,
+    });
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/iam/users/11');
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/roles', {
+      params: { page: 2, pageSize: 20 },
+    });
+    expect(requestMock.post).toHaveBeenCalledWith('/api/iam/roles', {
+      name: 'admin',
+      status: 1,
+    });
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/roles/12', {
+      params: { tenantId: 1 },
+    });
+    expect(requestMock.put).toHaveBeenCalledWith('/api/iam/roles/12', {
+      name: 'admin',
+      status: 1,
+    });
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/iam/roles/12');
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/menus', {
+      params: { pageNum: 2, pageSize: 20 },
+    });
+    expect(requestMock.post).toHaveBeenCalledWith('/api/iam/menus', {
+      name: 'Dashboard',
+      path: '/dashboard',
+      status: 1,
+      type: 'MENU',
+      meta: undefined,
+    });
+    expect(requestMock.put).toHaveBeenCalledWith('/api/iam/menus/13', {
+      name: 'Dashboard',
+      path: '/dashboard',
+      status: 1,
+      type: 'MENU',
+      meta: undefined,
+    });
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/iam/menus/13');
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/dicts', {
+      params: { pageNum: 2, pageSize: 20 },
+    });
+    expect(requestMock.post).toHaveBeenCalledWith('/api/iam/dicts', {
+      dictLabel: 'Enabled',
+      dictType: 'status',
+      dictValue: '1',
+      status: 1,
+    });
+    expect(requestMock.put).toHaveBeenCalledWith('/api/iam/dicts/14', {
+      dictLabel: 'Enabled',
+    });
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/iam/dicts/14');
+
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/auth-codes', {
+      params: { page: 2, pageSize: 20 },
+    });
+    expect(requestMock.post).toHaveBeenCalledWith('/api/iam/auth-codes', {
+      code: 'system:read',
+      name: 'Read',
+    });
+    expect(requestMock.put).toHaveBeenCalledWith('/api/iam/auth-codes/15', {
+      name: 'Read',
+    });
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/iam/auth-codes/15');
+  });
+
   it('covers IAM administration facades and their normalization branches', async () => {
     requestMock.get.mockImplementation(async (url: string) => {
       if (url.endsWith('/menus/list'))
@@ -137,7 +258,7 @@ describe('iAM feature transport facades', () => {
             ],
           },
         ];
-      if (url.endsWith('/tenants/list'))
+      if (url.endsWith('/tenants/tree'))
         return [
           { id: 1, parentId: null, code: 'root', name: 'Root', status: 1 },
           { id: 2, parentId: 1, code: 'child', name: 'Child', status: '1' },
@@ -211,6 +332,7 @@ describe('iAM feature transport facades', () => {
     await deleteRole(1);
     await getRoleDetail(1, 2);
     const tenantResult = await getTenantList({ name: 'child' });
+    expect(requestMock.get).toHaveBeenCalledWith('/api/iam/tenants/tree');
     expect(tenantResult.total).toBe(2);
     await getTenantList({ code: 'root', status: '1' });
     await getTenantPage();

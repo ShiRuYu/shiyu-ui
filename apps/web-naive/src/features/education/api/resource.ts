@@ -24,15 +24,14 @@ export namespace EducationResourceApi {
 async function getResourceList(pageNum = 1, pageSize = 10) {
   return requestClient.get<
     EducationResourceApi.PageResult<EducationResourceApi.Resource>
-  >('/api/education/resource/list', {
+  >('/api/education/resource', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getResourceById(id: number) {
   return requestClient.get<EducationResourceApi.Resource>(
-    '/api/education/resource/detail',
-    { params: { id } },
+    `/api/education/resource/${id}`,
   );
 }
 
@@ -51,22 +50,18 @@ async function getResourceByType(type: string) {
 }
 
 async function createResource(data: Omit<EducationResourceApi.Resource, 'id'>) {
-  return requestClient.post('/api/education/resource/create', data);
+  return requestClient.post('/api/education/resource', data);
 }
 
 async function updateResource(
   id: number,
   data: Partial<EducationResourceApi.Resource>,
 ) {
-  return requestClient.post('/api/education/resource/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/resource/${id}`, data);
 }
 
 async function deleteResource(id: number) {
-  return requestClient.post('/api/education/resource/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/resource/${id}`);
 }
 
 export {

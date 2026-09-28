@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const requestMock = vi.hoisted(() => ({
+  delete: vi.fn(),
   get: vi.fn(),
   getBaseUrl: vi.fn<() => string | undefined>(() => 'https://api.example.test'),
   post: vi.fn(),
+  put: vi.fn(),
 }));
 
 const consumeStreamMock = vi.hoisted(() => vi.fn());
@@ -30,7 +32,6 @@ import * as graphApi from '../graph';
 import * as intentApi from '../intent-def';
 import * as nodeTypeApi from '../node-type';
 import * as runtimeApi from '../runtime';
-import * as tutorApi from '../tutor-agent';
 import * as versionApi from '../version';
 
 describe('agent feature transport facade', () => {
@@ -38,6 +39,8 @@ describe('agent feature transport facade', () => {
     vi.clearAllMocks();
     requestMock.get.mockResolvedValue({ data: [] });
     requestMock.post.mockResolvedValue({ data: { ok: true } });
+    requestMock.put.mockResolvedValue({ data: { ok: true } });
+    requestMock.delete.mockResolvedValue({ data: { ok: true } });
     consumeStreamMock.mockImplementation(async (_response, onEvent) => {
       onEvent({ data: '{"content":"hello"}' });
       onEvent({ data: 'plain chunk' });
@@ -66,27 +69,23 @@ describe('agent feature transport facade', () => {
     );
     expect(requestMock.get).toHaveBeenNthCalledWith(
       1,
-      '/api/agent/agents/list',
+      '/api/agent/agents/definitions',
     );
     expect(requestMock.get).toHaveBeenNthCalledWith(
       2,
-      '/api/agent/agents/detail/by-agent-id',
-      { params: { agentId: 'agent-1' } },
+      '/api/agent/agents/definitions/agent-1',
+    );
+    expect(requestMock.delete).toHaveBeenCalledWith(
+      '/api/agent/agents/definitions/agent-1',
     );
     expect(requestMock.post).toHaveBeenNthCalledWith(
       2,
-      '/api/agent/agents/delete/by-agent-id',
-      null,
-      { params: { agentId: 'agent-1' } },
-    );
-    expect(requestMock.post).toHaveBeenNthCalledWith(
-      3,
       '/api/agent/agents/version/switch',
       null,
       { params: { agentId: 'agent-1', version: 'v2' } },
     );
     expect(requestMock.post).toHaveBeenNthCalledWith(
-      4,
+      3,
       '/api/agent/executions/execute',
       { input: 'hello' },
       { params: { agentId: 'agent-1' } },
@@ -147,6 +146,22 @@ describe('agent feature transport facade', () => {
     await adminApi.deleteAgent(1);
     await adminApi.toggleAgentStatus(1, 1);
 
+    expect(requestMock.get).toHaveBeenCalledWith('/api/agent/agents', {
+      params: { pageNo: 1, pageSize: 10, name: 'Tutor', status: undefined },
+    });
+    expect(requestMock.get).toHaveBeenCalledWith('/api/agent/agents/1');
+    expect(requestMock.post).toHaveBeenCalledWith('/api/agent/agents', payload);
+    expect(requestMock.put).toHaveBeenCalledWith(
+      '/api/agent/agents/1',
+      payload,
+    );
+    expect(requestMock.delete).toHaveBeenCalledWith('/api/agent/agents/1');
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/agents/status',
+      null,
+      { params: { id: 1, status: 1 } },
+    );
+
     await graphApi.getGraphConfig('agent-1', 2);
     await graphApi.updateGraphConfig('agent-1', 2, payload);
     await graphApi.validateGraphConfig('agent-1', 2, payload);
@@ -176,6 +191,24 @@ describe('agent feature transport facade', () => {
     await versionApi.activateVersion('agent-1', 2);
     await versionApi.copyVersion('agent-1', 2, payload);
 
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/agent/agents/agent-1/versions',
+    );
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/agent/agents/agent-1/versions/2',
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/agents/agent-1/versions',
+      payload,
+    );
+    expect(requestMock.put).toHaveBeenCalledWith(
+      '/api/agent/agents/agent-1/versions/2',
+      payload,
+    );
+    expect(requestMock.delete).toHaveBeenCalledWith(
+      '/api/agent/agents/agent-1/versions/2',
+    );
+
     await runtimeApi.listRuntimeApps();
     await runtimeApi.createRuntimeApp({ name: 'Tutor' });
     await runtimeApi.listRuntimeRuns();
@@ -203,16 +236,6 @@ describe('agent feature transport facade', () => {
       onEvent({ data: '[DONE]' });
     });
     await runtimeApi.streamGenerationRuntimeEvents('generation-1', event);
-    await tutorApi.teach(payload);
-    await tutorApi.practice(payload);
-    await tutorApi.generateExam(payload);
-    await tutorApi.getTodayReviewTasks();
-    await tutorApi.completeReviewTask(payload);
-    await tutorApi.generatePlan(payload);
-    await tutorApi.generateReport(payload);
-    const chunks: string[] = [];
-    await tutorApi.teachStream(payload, (chunk) => chunks.push(chunk));
-
     expect(requestMock.get).toHaveBeenCalled();
     expect(requestMock.post).toHaveBeenCalled();
     expect(event).toHaveBeenCalledWith({
@@ -220,7 +243,6 @@ describe('agent feature transport facade', () => {
       seq: 1,
       type: 'TOKEN',
     });
-    expect(chunks.join('')).toContain('chunk');
   });
 
   it('uses the backend pageNo parameter for intent definitions', async () => {
@@ -230,7 +252,7 @@ describe('agent feature transport facade', () => {
       category: 'faq',
     });
 
-    expect(requestMock.get).toHaveBeenCalledWith('/api/agent/intents/page', {
+    expect(requestMock.get).toHaveBeenCalledWith('/api/agent/intents', {
       params: { pageNo: 3, pageSize: 25, category: 'faq' },
     });
   });
@@ -246,102 +268,5 @@ describe('agent feature transport facade', () => {
       { versionNumber: 'v2', description: 'copy', copyFromVersionId: 7 },
       { params: { agentId: 'agent-1' } },
     );
-  });
-
-  it('releases the teaching stream reader when reading fails', async () => {
-    const releaseLock = vi.fn();
-    const read = vi.fn().mockRejectedValue(new Error('stream interrupted'));
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: { getReader: () => ({ read, releaseLock }) },
-        ok: true,
-        status: 200,
-      }),
-    );
-
-    await expect(
-      tutorApi.teachStream(
-        { studentId: 1, knowledgeId: 2, style: 'guided' },
-        vi.fn(),
-      ),
-    ).rejects.toThrow('stream interrupted');
-    expect(releaseLock).toHaveBeenCalledOnce();
-  });
-
-  it('cancels the teaching stream when its abort signal fires', async () => {
-    let resolveRead!: (result: { done: boolean; value?: Uint8Array }) => void;
-    const read = vi.fn(
-      () =>
-        new Promise<{ done: boolean; value?: Uint8Array }>((resolve) => {
-          resolveRead = resolve;
-        }),
-    );
-    const cancel = vi.fn(() => {
-      resolveRead({ done: true });
-      return Promise.resolve();
-    });
-    const releaseLock = vi.fn();
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: { getReader: () => ({ cancel, read, releaseLock }) },
-        ok: true,
-        status: 200,
-      }),
-    );
-    const controller = new AbortController();
-
-    const stream = tutorApi.teachStream(
-      { studentId: 1, knowledgeId: 2 },
-      vi.fn(),
-      { signal: controller.signal },
-    );
-    await Promise.resolve();
-    controller.abort();
-    await expect(stream).rejects.toMatchObject({ name: 'AbortError' });
-
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({ signal: controller.signal }),
-    );
-    expect(cancel).toHaveBeenCalledOnce();
-    expect(releaseLock).toHaveBeenCalledOnce();
-  });
-
-  it('flushes a teaching stream decoder when the final UTF-8 sequence spans chunks', async () => {
-    const chunks = [
-      new TextEncoder().encode('\u{1f600}').slice(0, 2),
-      new TextEncoder().encode('\u{1f600}').slice(2),
-    ];
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: {
-          getReader: () => ({
-            read: vi
-              .fn()
-              .mockImplementationOnce(async () => ({
-                done: false,
-                value: chunks[0],
-              }))
-              .mockImplementationOnce(async () => ({
-                done: true,
-                value: chunks[1],
-              })),
-            releaseLock: vi.fn(),
-          }),
-        },
-        ok: true,
-        status: 200,
-      }),
-    );
-    const received: string[] = [];
-
-    await tutorApi.teachStream({ studentId: 1, knowledgeId: 2 }, (chunk) =>
-      received.push(chunk),
-    );
-
-    expect(received.join('')).toBe('😀');
   });
 });

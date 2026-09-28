@@ -27,7 +27,7 @@ export async function getFileStorageConfig() {
 }
 
 export async function getFileList() {
-  return requestClient.get<StoredFile[]>('/api/iam/files/list');
+  return requestClient.get<StoredFile[]>('/api/iam/files');
 }
 
 export async function deleteFile(key: string) {

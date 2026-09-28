@@ -19,5 +19,4 @@ export * from './graph';
 export * from './intent-def';
 export * from './node-type';
 export * from './runtime';
-export * from './tutor-agent';
 export * from './version';

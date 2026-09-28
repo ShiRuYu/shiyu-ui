@@ -161,17 +161,17 @@ chore: update dependencies
 
 ```ts
 // 查询
-async function getAgentPage(params) → GET /api/agent/agents/list
-async function getAgentById(id)    → GET /api/agent/agents/detail/by-agent-id
+async function getAgentPage(params) → GET /api/agent/agents
+async function getAgentById(id)    → GET /api/agent/agents/{id}
 
 // 新增
-async function createAgent(data)   → POST /agent
+async function createAgent(data)   → POST /api/agent/agents
 
 // 更新
-async function updateAgent(data)   → PUT /agent
+async function updateAgent(id, data) → PUT /api/agent/agents/{id}
 
 // 删除
-async function deleteAgent(id)     → POST /api/agent/agents/delete/by-agent-id
+async function deleteAgent(id)     → DELETE /api/agent/agents/{id}
 ```
 
 ### 5.2 统一返回类型

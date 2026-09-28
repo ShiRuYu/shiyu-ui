@@ -16,10 +16,7 @@ export namespace EducationChapterApi {
 /** 获取章节详情 */
 export async function getChapterById(id: number) {
   return requestClient.get<EducationChapterApi.Chapter>(
-    '/api/education/chapter/detail',
-    {
-      params: { id },
-    },
+    `/api/education/chapter/${id}`,
   );
 }
 
@@ -45,7 +42,7 @@ export async function getChapterTree(textbookId: number) {
 export async function createChapter(
   data: Omit<EducationChapterApi.Chapter, 'children' | 'id'>,
 ) {
-  return requestClient.post('/api/education/chapter/create', data);
+  return requestClient.post('/api/education/chapter', data);
 }
 
 /** 更新章节 */
@@ -53,16 +50,12 @@ export async function updateChapter(
   id: number,
   data: Partial<EducationChapterApi.Chapter>,
 ) {
-  return requestClient.post('/api/education/chapter/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/chapter/${id}`, data);
 }
 
 /** 删除章节 */
 export async function deleteChapter(id: number) {
-  return requestClient.post('/api/education/chapter/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/chapter/${id}`);
 }
 
 export async function getChapterKnowledgeIds(chapterId: number) {

@@ -24,7 +24,7 @@ export async function getTextbookList(
   return requestClient.get<{
     items: EducationTextbookApi.Textbook[];
     total: number;
-  }>('/api/education/textbook/list', {
+  }>('/api/education/textbook', {
     params: { pageNum, pageSize, ...params },
   });
 }
@@ -32,8 +32,7 @@ export async function getTextbookList(
 /** 获取教材详情 */
 export async function getTextbookById(id: number) {
   return requestClient.get<EducationTextbookApi.Textbook>(
-    '/api/education/textbook/detail',
-    { params: { id } },
+    `/api/education/textbook/${id}`,
   );
 }
 
@@ -52,7 +51,7 @@ export async function getTextbookBySubjectAndGrade(
 export async function createTextbook(
   data: Omit<EducationTextbookApi.Textbook, 'id'>,
 ) {
-  return requestClient.post('/api/education/textbook/create', data);
+  return requestClient.post('/api/education/textbook', data);
 }
 
 /** 更新教材 */
@@ -60,16 +59,12 @@ export async function updateTextbook(
   id: number,
   data: Partial<EducationTextbookApi.Textbook>,
 ) {
-  return requestClient.post('/api/education/textbook/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/textbook/${id}`, data);
 }
 
 /** 删除教材 */
 export async function deleteTextbook(id: number) {
-  return requestClient.post('/api/education/textbook/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/textbook/${id}`);
 }
 
 /** 获取教材下拉选项 */

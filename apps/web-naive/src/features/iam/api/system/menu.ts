@@ -198,7 +198,7 @@ async function getMenuPage(params?: Recordable<any>) {
   const data = await requestClient.get<{
     items: Recordable<any>[];
     total: number;
-  }>('/api/iam/menus/page', { params });
+  }>('/api/iam/menus', { params });
   const normalize = (item: Recordable<any>): SystemMenuApi.SystemMenu => ({
     ...item,
     id: Number(item.id),
@@ -228,7 +228,7 @@ async function getMenuPage(params?: Recordable<any>) {
 async function createMenu(
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/api/iam/menus/create', toMenuRequest(data));
+  return requestClient.post('/api/iam/menus', toMenuRequest(data));
 }
 
 /**
@@ -241,9 +241,7 @@ async function updateMenu(
   id: number,
   data: Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>,
 ) {
-  return requestClient.post('/api/iam/menus/update', toMenuRequest(data), {
-    params: { id },
-  });
+  return requestClient.put(`/api/iam/menus/${id}`, toMenuRequest(data));
 }
 
 function toMenuRequest(data: Recordable<any>) {
@@ -262,9 +260,7 @@ function toMenuRequest(data: Recordable<any>) {
  * @param id 菜单 ID
  */
 async function deleteMenu(id: number) {
-  return requestClient.post('/api/iam/menus/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/iam/menus/${id}`);
 }
 
 export {

@@ -40,23 +40,22 @@ async function registerAgent(data: AgentApi.RegisterAgentRequest) {
 /** List available Agent definitions. */
 async function getAgentList() {
   return requestClient.get<AgentApi.AgentDefinition[]>(
-    '/api/agent/agents/list',
+    '/api/agent/agents/definitions',
   );
 }
 
 /** Load one Agent definition by its stable identifier. */
 async function getAgent(agentId: string) {
   return requestClient.get<AgentApi.AgentDefinition>(
-    '/api/agent/agents/detail/by-agent-id',
-    { params: { agentId } },
+    `/api/agent/agents/definitions/${encodeURIComponent(agentId)}`,
   );
 }
 
 /** Delete one Agent definition. */
 async function deleteAgent(agentId: string) {
-  return requestClient.post('/api/agent/agents/delete/by-agent-id', null, {
-    params: { agentId },
-  });
+  return requestClient.delete(
+    `/api/agent/agents/definitions/${encodeURIComponent(agentId)}`,
+  );
 }
 
 /** Switch the active version for an Agent. */

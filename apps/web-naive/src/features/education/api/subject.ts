@@ -20,17 +20,14 @@ export namespace EducationSubjectApi {
 async function getSubjectList(pageNum = 1, pageSize = 10) {
   return requestClient.get<
     EducationSubjectApi.PageResult<EducationSubjectApi.Subject>
-  >('/api/education/subject/list', {
+  >('/api/education/subject', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getSubjectById(id: number) {
   return requestClient.get<EducationSubjectApi.Subject>(
-    '/api/education/subject/detail',
-    {
-      params: { id },
-    },
+    `/api/education/subject/${id}`,
   );
 }
 
@@ -51,22 +48,18 @@ async function getSubjectByGradeLevel(gradeLevel: string) {
 }
 
 async function createSubject(data: Omit<EducationSubjectApi.Subject, 'id'>) {
-  return requestClient.post('/api/education/subject/create', data);
+  return requestClient.post('/api/education/subject', data);
 }
 
 async function updateSubject(
   id: number,
   data: Partial<EducationSubjectApi.Subject>,
 ) {
-  return requestClient.post('/api/education/subject/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/subject/${id}`, data);
 }
 
 async function deleteSubject(id: number) {
-  return requestClient.post('/api/education/subject/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/subject/${id}`);
 }
 
 async function getSubjectOptions() {

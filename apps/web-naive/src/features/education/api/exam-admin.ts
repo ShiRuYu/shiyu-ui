@@ -23,35 +23,28 @@ export namespace EducationAdminExamApi {
 async function getExamList(pageNum = 1, pageSize = 10) {
   return requestClient.get<
     EducationAdminExamApi.PageResult<EducationAdminExamApi.Exam>
-  >('/api/education/exam/list', { params: { pageNum, pageSize } });
+  >('/api/education/exam', { params: { pageNum, pageSize } });
 }
 
 async function getExamById(id: number) {
   return requestClient.get<EducationAdminExamApi.Exam>(
-    '/api/education/exam/detail',
-    {
-      params: { id },
-    },
+    `/api/education/exam/${id}`,
   );
 }
 
 async function createExam(data: Omit<EducationAdminExamApi.Exam, 'id'>) {
-  return requestClient.post('/api/education/exam/create', data);
+  return requestClient.post('/api/education/exam', data);
 }
 
 async function updateExam(
   id: number,
   data: Partial<EducationAdminExamApi.Exam>,
 ) {
-  return requestClient.post('/api/education/exam/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/exam/${id}`, data);
 }
 
 async function deleteExam(id: number) {
-  return requestClient.post('/api/education/exam/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/exam/${id}`);
 }
 
 export { createExam, deleteExam, getExamById, getExamList, updateExam };

@@ -24,17 +24,14 @@ export namespace EducationCourseApi {
 async function getCourseList(pageNum = 1, pageSize = 10) {
   return requestClient.get<
     EducationCourseApi.PageResult<EducationCourseApi.Course>
-  >('/api/education/course/list', {
+  >('/api/education/course', {
     params: { pageNum, pageSize },
   });
 }
 
 async function getCourseById(id: number) {
   return requestClient.get<EducationCourseApi.Course>(
-    '/api/education/course/detail',
-    {
-      params: { id },
-    },
+    `/api/education/course/${id}`,
   );
 }
 
@@ -57,16 +54,14 @@ async function getCourseByGrade(grade: number) {
 }
 
 async function createCourse(data: Omit<EducationCourseApi.Course, 'id'>) {
-  return requestClient.post('/api/education/course/create', data);
+  return requestClient.post('/api/education/course', data);
 }
 
 async function updateCourse(
   id: number,
   data: Partial<EducationCourseApi.Course>,
 ) {
-  return requestClient.post('/api/education/course/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/course/${id}`, data);
 }
 
 async function startLearning(courseId: number, studentId: number) {
@@ -76,9 +71,7 @@ async function startLearning(courseId: number, studentId: number) {
 }
 
 async function deleteCourse(id: number) {
-  return requestClient.post('/api/education/course/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/course/${id}`);
 }
 
 export {

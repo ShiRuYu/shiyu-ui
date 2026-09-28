@@ -72,7 +72,7 @@ function filterTenantTree(
 
 async function getTenantList(params?: Recordable<any>) {
   const data = await requestClient.get<SystemTenantApi.SystemTenant[]>(
-    '/api/iam/tenants/list',
+    '/api/iam/tenants/tree',
   );
   const list = Array.isArray(data) ? data : [];
   return {
@@ -85,28 +85,24 @@ async function getTenantPage(params?: Recordable<any>) {
   return requestClient.get<{
     items: SystemTenantApi.SystemTenant[];
     total: number;
-  }>('/api/iam/tenants/page', { params });
+  }>('/api/iam/tenants', { params });
 }
 
 async function createTenant(
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.post('/api/iam/tenants/create', data);
+  return requestClient.post('/api/iam/tenants', data);
 }
 
 async function updateTenant(
   id: number,
   data: Omit<SystemTenantApi.SystemTenant, 'createTime' | 'id' | 'updateTime'>,
 ) {
-  return requestClient.post('/api/iam/tenants/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/iam/tenants/${id}`, data);
 }
 
 async function deleteTenant(id: number) {
-  return requestClient.post('/api/iam/tenants/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/iam/tenants/${id}`);
 }
 
 /** 获取租户选项（构建为树形结构，供 ApiTreeSelect 使用） */

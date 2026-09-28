@@ -14,8 +14,7 @@ export namespace EducationWrongQuestionApi {
 
 async function getWrongQuestionById(id: number) {
   return requestClient.get<EducationWrongQuestionApi.WrongQuestion>(
-    '/api/education/wrong-question/detail',
-    { params: { id } },
+    `/api/education/wrong-question/${id}`,
   );
 }
 
@@ -29,22 +28,18 @@ async function getWrongQuestionsByStudent(studentId: number) {
 async function createWrongQuestion(
   data: Omit<EducationWrongQuestionApi.WrongQuestion, 'id'>,
 ) {
-  return requestClient.post('/api/education/wrong-question/create', data);
+  return requestClient.post('/api/education/wrong-question', data);
 }
 
 async function updateWrongQuestion(
   id: number,
   data: Partial<EducationWrongQuestionApi.WrongQuestion>,
 ) {
-  return requestClient.post('/api/education/wrong-question/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/education/wrong-question/${id}`, data);
 }
 
 async function deleteWrongQuestion(id: number) {
-  return requestClient.post('/api/education/wrong-question/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/education/wrong-question/${id}`);
 }
 
 export {

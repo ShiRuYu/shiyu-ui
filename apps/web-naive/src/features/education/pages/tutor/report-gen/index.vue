@@ -5,7 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NSelect, NSpace, NSpin } from 'naive-ui';
 
-import { generateReport } from '#/features/agent';
+import { generateReport } from '#/features/education';
 import { $t } from '#/locales';
 
 const loading = ref(false);

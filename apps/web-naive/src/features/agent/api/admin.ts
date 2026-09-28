@@ -46,7 +46,7 @@ async function getAgentPage(params: {
   status?: number;
 }) {
   return requestClient.get<PageResult<AgentAdminApi.AgentVO>>(
-    '/api/agent/agents/page',
+    '/api/agent/agents',
     {
       params: {
         name: params.name,
@@ -61,42 +61,31 @@ async function getAgentPage(params: {
 /** 根据 ID 查询详情 */
 async function getAgentById(id: number) {
   return requestClient.get<AgentAdminApi.AgentDetailVO>(
-    '/api/agent/agents/detail',
-    {
-      params: { id },
-    },
+    `/api/agent/agents/${id}`,
   );
 }
 
 /** 查询所有 Agent 列表 */
 async function getAgentListAll() {
-  return requestClient.get('/api/agent/agents/list');
+  return requestClient.get('/api/agent/agents/definitions');
 }
 
 /** 新增 Agent */
 async function createAgent(data: AgentAdminApi.AgentRequest) {
-  return requestClient.post<AgentAdminApi.AgentVO>(
-    '/api/agent/agents/create',
-    data,
-  );
+  return requestClient.post<AgentAdminApi.AgentVO>('/api/agent/agents', data);
 }
 
 /** 修改 Agent */
 async function updateAgent(id: number, data: AgentAdminApi.AgentRequest) {
-  return requestClient.post<AgentAdminApi.AgentVO>(
-    '/api/agent/agents/update',
+  return requestClient.put<AgentAdminApi.AgentVO>(
+    `/api/agent/agents/${id}`,
     data,
-    {
-      params: { id },
-    },
   );
 }
 
 /** 删除 Agent */
 async function deleteAgent(id: number) {
-  return requestClient.post('/api/agent/agents/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/agent/agents/${id}`);
 }
 
 /** 切换 Agent 状态 */

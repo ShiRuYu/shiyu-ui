@@ -23,7 +23,7 @@ async function getRoleList(params?: Recordable<any>) {
   return requestClient.get<{
     items: SystemRoleApi.SystemRole[];
     total: number;
-  }>('/api/iam/roles/list', { params });
+  }>('/api/iam/roles', { params });
 }
 
 /**
@@ -45,7 +45,7 @@ async function getAllRoles(status: string | undefined, tenantId: number) {
 async function createRole(
   data: Omit<SystemRoleApi.SystemRole, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/api/iam/roles/create', data);
+  return requestClient.post('/api/iam/roles', data);
 }
 
 /**
@@ -58,9 +58,7 @@ async function updateRole(
   id: number,
   data: Omit<SystemRoleApi.SystemRole, 'createTime' | 'id'>,
 ) {
-  return requestClient.post('/api/iam/roles/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/iam/roles/${id}`, data);
 }
 
 async function replaceRoleMenus(
@@ -78,17 +76,15 @@ async function replaceRoleMenus(
  * @param id 角色 ID
  */
 async function deleteRole(id: number) {
-  return requestClient.post('/api/iam/roles/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/iam/roles/${id}`);
 }
 
 /**
  * 获取角色详情
  */
 async function getRoleDetail(id: number, tenantId: number) {
-  return requestClient.get<SystemRoleApi.SystemRole>('/api/iam/roles/detail', {
-    params: { id, tenantId },
+  return requestClient.get<SystemRoleApi.SystemRole>(`/api/iam/roles/${id}`, {
+    params: { tenantId },
   });
 }
 

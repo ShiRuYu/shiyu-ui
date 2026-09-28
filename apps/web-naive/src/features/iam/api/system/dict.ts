@@ -30,7 +30,7 @@ export namespace DictApi {
 async function getDictPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<DictApi.PageResult<DictApi.DictItem>>(
-    '/api/iam/dicts/list',
+    '/api/iam/dicts',
     {
       params: { pageNum: page, pageSize, ...rest },
     },
@@ -50,25 +50,21 @@ async function getDictByType(dictType: string) {
  * 创建字典
  */
 async function createDict(data: Omit<DictApi.DictItem, 'id'>) {
-  return requestClient.post('/api/iam/dicts/create', data);
+  return requestClient.post('/api/iam/dicts', data);
 }
 
 /**
  * 更新字典
  */
 async function updateDict(id: number, data: Partial<DictApi.DictItem>) {
-  return requestClient.post('/api/iam/dicts/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/iam/dicts/${id}`, data);
 }
 
 /**
  * 删除字典
  */
 async function deleteDict(id: number) {
-  return requestClient.post('/api/iam/dicts/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/iam/dicts/${id}`);
 }
 
 /**

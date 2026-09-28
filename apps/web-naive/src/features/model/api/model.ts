@@ -30,35 +30,38 @@ async function getModelPage(params?: Recordable<any>) {
     query.platformId = platformId;
   }
   return requestClient.get<ModelApi.PageResult<ModelApi.ModelItem>>(
-    '/api/model/models/page',
+    '/api/model/model-configurations',
     { params: query },
   );
 }
 
 async function createModel(data: Omit<ModelApi.ModelItem, 'id'>) {
-  return requestClient.post('/api/model/models/create', data);
+  return requestClient.post('/api/model/model-configurations', data);
 }
 
 async function updateModel(id: number, data: Partial<ModelApi.ModelItem>) {
-  return requestClient.post('/api/model/models/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/model/model-configurations/${id}`, data);
 }
 
 async function deleteModel(id: number) {
-  return requestClient.post('/api/model/models/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/model/model-configurations/${id}`);
 }
 
 async function setDefaultModel(id: number) {
-  return requestClient.post('/api/model/models/set-default', null, {
-    params: { id },
-  });
+  return requestClient.post(
+    '/api/model/model-configurations/set-default',
+    null,
+    {
+      params: { id },
+    },
+  );
 }
 
 async function batchDeleteModel(ids: number[]) {
-  return requestClient.post('/api/model/models/batch-delete', ids);
+  return requestClient.post(
+    '/api/model/model-configurations/batch-delete',
+    ids,
+  );
 }
 
 export {

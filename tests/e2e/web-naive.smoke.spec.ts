@@ -371,7 +371,7 @@ test.describe('web-naive critical journeys', () => {
   }) => {
     await signIn(page);
     const calls: string[] = [];
-    await page.route('**/api/agent/agents/list', async (route) => {
+    await page.route('**/api/agent/agents/definitions', async (route) => {
       await route.fulfill({
         body: JSON.stringify({
           code: 200,

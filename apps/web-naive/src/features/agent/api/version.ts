@@ -34,23 +34,19 @@ export namespace AgentVersionApi {
   }
 }
 
-// ========== 版本 + Graph 管理 (AgentVersionController: /api/agent/versions) ==========
+// ========== 版本资源 CRUD + 生命周期/Graph 动作 ==========
 
 /** 获取版本列表 */
 async function getVersionList(agentId: string) {
   return requestClient.get<AgentVersionApi.AgentVersionVO[]>(
-    '/api/agent/versions/list',
-    {
-      params: { agentId },
-    },
+    `/api/agent/agents/${agentId}/versions`,
   );
 }
 
 /** 获取版本详情 */
 async function getVersionDetail(agentId: string, versionId: number) {
   return requestClient.get<AgentVersionApi.AgentVersionDetailVO>(
-    '/api/agent/versions/detail',
-    { params: { agentId, versionId } },
+    `/api/agent/agents/${agentId}/versions/${versionId}`,
   );
 }
 
@@ -60,9 +56,8 @@ async function createVersion(
   data: AgentVersionApi.VersionRequest,
 ) {
   return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    '/api/agent/versions/create',
+    `/api/agent/agents/${agentId}/versions`,
     data,
-    { params: { agentId } },
   );
 }
 
@@ -72,18 +67,17 @@ async function updateVersion(
   versionId: number,
   data: AgentVersionApi.VersionRequest,
 ) {
-  return requestClient.post<AgentVersionApi.AgentVersionVO>(
-    '/api/agent/versions/update',
+  return requestClient.put<AgentVersionApi.AgentVersionVO>(
+    `/api/agent/agents/${agentId}/versions/${versionId}`,
     data,
-    { params: { agentId, versionId } },
   );
 }
 
 /** 删除版本 */
 async function deleteVersion(agentId: string, versionId: number) {
-  return requestClient.post('/api/agent/versions/delete', null, {
-    params: { agentId, versionId },
-  });
+  return requestClient.delete(
+    `/api/agent/agents/${agentId}/versions/${versionId}`,
+  );
 }
 
 /** 发布版本 */

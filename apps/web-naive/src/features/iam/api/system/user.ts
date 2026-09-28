@@ -50,7 +50,7 @@ async function getUserList(params: Recordable<any>) {
   const data = await requestClient.get<
     | SystemUserApi.PageResult<SystemUserApi.SystemUser>
     | SystemUserApi.SystemUser[]
-  >('/api/iam/users/list', {
+  >('/api/iam/users', {
     params: {
       pageNum: page || 1,
       pageSize: pageSize || 10,
@@ -79,7 +79,7 @@ async function getRolesForUserForm(tenantId: number) {
  * @param data 用户数据
  */
 async function createUser(data: SystemUserApi.UserCommand) {
-  return requestClient.post('/api/iam/users/create', data);
+  return requestClient.post('/api/iam/users', data);
 }
 
 /**
@@ -89,9 +89,7 @@ async function createUser(data: SystemUserApi.UserCommand) {
  * @param data 用户数据
  */
 async function updateUser(id: number, data: SystemUserApi.UserCommand) {
-  return requestClient.post('/api/iam/users/update', data, {
-    params: { userId: id },
-  });
+  return requestClient.put(`/api/iam/users/${id}`, data);
 }
 
 /**
@@ -99,9 +97,7 @@ async function updateUser(id: number, data: SystemUserApi.UserCommand) {
  * @param id 用户 ID
  */
 async function deleteUser(id: number) {
-  return requestClient.post('/api/iam/users/delete', null, {
-    params: { userId: id },
-  });
+  return requestClient.delete(`/api/iam/users/${id}`);
 }
 
 /**

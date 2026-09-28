@@ -57,9 +57,10 @@ export namespace ChatApi {
 }
 
 async function getModelOptions(platformId?: number) {
-  return requestClient.get<ChatApi.OptionItem[]>('/api/model/models/options', {
-    params: platformId ? { platformId } : {},
-  });
+  return requestClient.get<ChatApi.OptionItem[]>(
+    '/api/model/model-configurations/options',
+    { params: platformId ? { platformId } : {} },
+  );
 }
 
 async function listConversations() {

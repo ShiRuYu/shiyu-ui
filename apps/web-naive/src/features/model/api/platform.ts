@@ -36,44 +36,40 @@ export namespace PlatformApi {
 async function getPlatformPage(params?: Recordable<any>) {
   const { page = 1, pageSize = 10, ...rest } = params || {};
   return requestClient.get<PlatformApi.PageResult<PlatformApi.PlatformItem>>(
-    '/api/model/providers/page',
+    '/api/model/platforms',
     { params: { pageNo: page, pageSize, ...rest } },
   );
 }
 
 async function createPlatform(data: Omit<PlatformApi.PlatformItem, 'id'>) {
-  return requestClient.post('/api/model/providers/create', data);
+  return requestClient.post('/api/model/platforms', data);
 }
 
 async function updatePlatform(
   id: number,
   data: Partial<PlatformApi.PlatformItem>,
 ) {
-  return requestClient.post('/api/model/providers/update', data, {
-    params: { id },
-  });
+  return requestClient.put(`/api/model/platforms/${id}`, data);
 }
 
 async function deletePlatform(id: number) {
-  return requestClient.post('/api/model/providers/delete', null, {
-    params: { id },
-  });
+  return requestClient.delete(`/api/model/platforms/${id}`);
 }
 
 async function setDefaultPlatform(id: number) {
-  return requestClient.post('/api/model/providers/set-default', null, {
+  return requestClient.post('/api/model/platforms/set-default', null, {
     params: { id },
   });
 }
 
 async function getPlatformOptions() {
   return requestClient.get<PlatformApi.PlatformOption[]>(
-    '/api/model/providers/options',
+    '/api/model/platforms/options',
   );
 }
 
 async function reloadPlatforms() {
-  return requestClient.post('/api/model/providers/reload');
+  return requestClient.post('/api/model/platforms/reload');
 }
 
 export {
