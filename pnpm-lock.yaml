@@ -3275,7 +3275,7 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@jspm/fetch@0.1.0':
-    resolution: {integrity: sha512-R749VLq+2zRvaYOrBz8JQaeahWmjOQH9tnvp6896WHhcsFwV7bJOEXiz56EMi34DxJZTLdFUFkrtjOC5Pw3zXQ==, tarball: https://registry.npmjs.org/@jspm/fetch/-/fetch-0.1.0.tgz}
+    resolution: {integrity: sha512-R749VLq+2zRvaYOrBz8JQaeahWmjOQH9tnvp6896WHhcsFwV7bJOEXiz56EMi34DxJZTLdFUFkrtjOC5Pw3zXQ==, tarball: https://registry.npmmirror.com/@jspm/fetch/-/fetch-0.1.0.tgz}
 
   '@jspm/generator@2.16.1':
     resolution: {integrity: sha512-TJCi0x0xJJd+GHZvh6I2j0fklzvVCqTgoQz2yKHKabXkY5wu2AJyzISn8W5OISSuRDY3U6aopqNJE0xpKTcvrw==}
