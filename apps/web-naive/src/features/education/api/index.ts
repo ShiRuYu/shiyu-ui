@@ -8,6 +8,8 @@ export {
   deleteExam as deleteAdminExam,
   getExamById as getAdminExamById,
   getExamList as getAdminExamList,
+  publishExam,
+  replaceExamComposition,
   updateExam as updateAdminExam,
 } from './exam-admin';
 export type { EducationAdminExamApi } from './exam-admin';

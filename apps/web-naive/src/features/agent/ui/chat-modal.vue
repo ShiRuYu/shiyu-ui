@@ -17,47 +17,66 @@ const response = ref('');
 const loading = ref(false);
 let controller: AbortController | undefined;
 
+function leaveCurrentChat() {
+  const previous = controller;
+  controller = undefined;
+  previous?.abort();
+  loading.value = false;
+}
+
 const [Modal, modalApi] = useVbenModal<AgentApi.AgentDefinition>({
   async onOpenChange(isOpen) {
+    leaveCurrentChat();
     if (isOpen) {
       const data = modalApi.getData();
       agentData.value = data;
       prompt.value = '';
       response.value = '';
-    } else {
-      controller?.abort();
     }
   },
 });
 
 async function onSend() {
-  if (!prompt.value.trim() || !agentData.value) return;
+  if (loading.value || !prompt.value.trim() || !agentData.value) return;
+  const agentId = agentData.value.agentId;
+  const requestController = new AbortController();
+  controller = requestController;
   loading.value = true;
   response.value = '';
-  controller = new AbortController();
   try {
     const requestData = { input: prompt.value };
 
     if (streamMode.value) {
       await executeAgentStream(
-        agentData.value.agentId,
+        agentId,
         requestData,
         (text) => {
-          response.value += text;
+          if (
+            controller === requestController &&
+            !requestController.signal.aborted
+          ) {
+            response.value += text;
+          }
         },
-        { signal: controller.signal },
+        { signal: requestController.signal },
       );
     } else {
-      const data = await executeAgent(agentData.value.agentId, requestData, {
-        signal: controller.signal,
+      const data = await executeAgent(agentId, requestData, {
+        signal: requestController.signal,
       });
-      response.value = data?.output || JSON.stringify(data, null, 2);
+      if (
+        controller === requestController &&
+        !requestController.signal.aborted
+      ) {
+        response.value = data?.output || JSON.stringify(data, null, 2);
+      }
     }
   } catch (error: any) {
     const cancelled =
-      controller?.signal.aborted ||
+      requestController.signal.aborted ||
       error?.name === 'AbortError' ||
       error?.code === 'ERR_CANCELED';
+    if (controller !== requestController) return;
     if (!cancelled) {
       response.value = $t('agent.chatConfigError', {
         message: error?.message || String(error),
@@ -66,8 +85,10 @@ async function onSend() {
       response.value = $t('agent.chatStopped');
     }
   } finally {
-    loading.value = false;
-    controller = undefined;
+    if (controller === requestController) {
+      loading.value = false;
+      controller = undefined;
+    }
   }
 }
 

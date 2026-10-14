@@ -33,9 +33,14 @@ describe('workflow route contract', () => {
       expect.arrayContaining([
         '/app-studio/apps/edit',
         '/app-studio/agents/edit',
+        '/education-center/learning/course/:id',
+        '/education-center/practice/questions/:id',
         '/education-center/practice/exams',
         '/education-center/practice/exams/take/:id',
         '/education-center/practice/exams/result/:id',
+        '/education-center/ai-tutor/practice',
+        '/education-center/ai-tutor/planner',
+        '/education-center/ai-tutor/report',
       ]),
     );
   });
@@ -62,9 +67,14 @@ describe('workflow route contract', () => {
     for (const path of [
       '/app-studio/apps/edit?new=true',
       '/app-studio/agents/edit?new=true',
+      '/education-center/learning/course/42',
+      '/education-center/practice/questions/42',
       '/education-center/practice/exams',
       '/education-center/practice/exams/take/42',
       '/education-center/practice/exams/result/42',
+      '/education-center/ai-tutor/practice',
+      '/education-center/ai-tutor/planner',
+      '/education-center/ai-tutor/report',
     ]) {
       const resolved = router.resolve(path);
       expect(resolved.matched.at(-1)?.name).not.toBeUndefined();

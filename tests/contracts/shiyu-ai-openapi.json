@@ -1202,6 +1202,28 @@
         },
         "type": "object"
       },
+      "Chapter": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "orderNo": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/Section"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
       "ChapterRequest": {
         "properties": {
           "chapterOrder": {
@@ -1730,6 +1752,20 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "CourseDetailResponse": {
+        "properties": {
+          "chapters": {
+            "items": {
+              "$ref": "#/components/schemas/Chapter"
+            },
+            "type": "array"
+          },
+          "course": {
+            "$ref": "#/components/schemas/CourseResponse"
           }
         },
         "type": "object"
@@ -2548,11 +2584,196 @@
         },
         "type": "object"
       },
+      "ExamCompositionQuestion": {
+        "properties": {
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "score": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "questionId",
+          "score"
+        ],
+        "type": "object"
+      },
+      "ExamCompositionRequest": {
+        "properties": {
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/ExamCompositionSection"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "sections"
+        ],
+        "type": "object"
+      },
+      "ExamCompositionSection": {
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/ExamCompositionQuestion"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "questions"
+        ],
+        "type": "object"
+      },
+      "ExamPaperOption": {
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ExamPaperQuestion": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ExamPaperOption"
+            },
+            "type": "array"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "score": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ExamPaperResponse": {
+        "properties": {
+          "attemptId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "deadlineAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "durationMin": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "examId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "grade": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/ExamPaperSection"
+            },
+            "type": "array"
+          },
+          "subjectCode": {
+            "type": "string"
+          },
+          "totalScore": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "ExamPaperSection": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "orderNo": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/ExamPaperQuestion"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ExamQuestionResult": {
+        "properties": {
+          "analysis": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "correctAnswer": {
+            "type": "string"
+          },
+          "maxScore": {
+            "type": "number"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "score": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "ExamRequest": {
         "properties": {
           "durationMin": {
             "format": "int32",
             "type": "integer"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
           },
           "grade": {
             "format": "int32",
@@ -2564,6 +2785,10 @@
           },
           "name": {
             "minLength": 1,
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
             "type": "string"
           },
           "status": {
@@ -2603,6 +2828,10 @@
             "format": "int32",
             "type": "integer"
           },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
           "grade": {
             "format": "int32",
             "type": "integer"
@@ -2612,6 +2841,10 @@
             "type": "integer"
           },
           "name": {
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
             "type": "string"
           },
           "status": {
@@ -2624,6 +2857,97 @@
           "teacherId": {
             "format": "int64",
             "type": "integer"
+          },
+          "totalScore": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ExamResultResponse": {
+        "properties": {
+          "attemptId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "examId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/ExamQuestionResult"
+            },
+            "type": "array"
+          },
+          "score": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "submittedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "totalScore": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "ExamSubmissionAnswer": {
+        "properties": {
+          "answer": {
+            "type": "string"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "questionId"
+        ],
+        "type": "object"
+      },
+      "ExamSummaryResponse": {
+        "properties": {
+          "attemptId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "attemptStatus": {
+            "type": "string"
+          },
+          "deadlineAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "durationMin": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "examId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "grade": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
+          "subjectCode": {
+            "type": "string"
           },
           "totalScore": {
             "format": "int32",
@@ -2767,6 +3091,41 @@
             "type": "string"
           },
           "provider": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "GenerationEvent": {
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "generationRunId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "sequence": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "type": {
+            "enum": [
+              "STARTED",
+              "BLOCK_STARTED",
+              "DELTA",
+              "METADATA",
+              "REASONING_DELTA",
+              "TOOL_CALL",
+              "BLOCK_COMPLETED",
+              "USAGE",
+              "COMPLETED",
+              "FAILED",
+              "CANCELLED"
+            ],
             "type": "string"
           }
         },
@@ -4902,6 +5261,21 @@
         },
         "type": "object"
       },
+      "PageDataExamSummaryResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ExamSummaryResponse"
+            },
+            "type": "array"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
       "PageDataIntentDefVO": {
         "properties": {
           "items": {
@@ -5289,6 +5663,103 @@
           },
           "tags": {
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PracticeCheckRequest": {
+        "properties": {
+          "answer": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "answer"
+        ],
+        "type": "object"
+      },
+      "PracticeCheckResponse": {
+        "properties": {
+          "analysis": {
+            "type": "string"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "correctAnswer": {
+            "type": "string"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "PracticeQuestionResponse": {
+        "properties": {
+          "grade": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ExamPaperOption"
+            },
+            "type": "array"
+          },
+          "subjectCode": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PracticeSubmissionRequest": {
+        "properties": {
+          "answer": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "submissionKey": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "answer",
+          "submissionKey"
+        ],
+        "type": "object"
+      },
+      "PracticeSubmissionResponse": {
+        "properties": {
+          "analysis": {
+            "type": "string"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "correctAnswer": {
+            "type": "string"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "recordId": {
+            "format": "int64",
+            "type": "integer"
           }
         },
         "type": "object"
@@ -5689,6 +6160,14 @@
           "options": {
             "type": "string"
           },
+          "purpose": {
+            "enum": [
+              "PRACTICE",
+              "EXAM_PRIVATE"
+            ],
+            "pattern": "PRACTICE|EXAM_PRIVATE",
+            "type": "string"
+          },
           "status": {
             "format": "int32",
             "type": "integer"
@@ -5746,6 +6225,13 @@
             "type": "integer"
           },
           "options": {
+            "type": "string"
+          },
+          "purpose": {
+            "enum": [
+              "PRACTICE",
+              "EXAM_PRIVATE"
+            ],
             "type": "string"
           },
           "subjectCode": {
@@ -5928,13 +6414,25 @@
       },
       "Request": {
         "properties": {
-          "argumentsRedacted": {
+          "appId": {
+            "minLength": 1,
             "type": "string"
           },
-          "toolName": {
+          "appVersionId": {
+            "type": "string"
+          },
+          "prompt": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sourceMessageId": {
             "type": "string"
           }
         },
+        "required": [
+          "appId",
+          "prompt"
+        ],
         "type": "object"
       },
       "ResetPasswordRequest": {
@@ -6593,6 +7091,27 @@
         },
         "type": "object"
       },
+      "ResultCourseDetailResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseDetailResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "ResultCourseResponse": {
         "properties": {
           "code": {
@@ -6740,6 +7259,27 @@
         },
         "type": "object"
       },
+      "ResultExamPaperResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExamPaperResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "ResultExamResponse": {
         "properties": {
           "code": {
@@ -6748,6 +7288,27 @@
           },
           "data": {
             "$ref": "#/components/schemas/ExamResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultExamResultResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExamResultResponse"
           },
           "error": {
             "type": "string"
@@ -7595,6 +8156,30 @@
         },
         "type": "object"
       },
+      "ResultListKnowledgeResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeResponse"
+            },
+            "type": "array"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "ResultListLong": {
         "properties": {
           "code": {
@@ -7894,6 +8479,30 @@
           "data": {
             "items": {
               "$ref": "#/components/schemas/PluginMarketEntry"
+            },
+            "type": "array"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultListPracticeQuestionResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/PracticeQuestionResponse"
             },
             "type": "array"
           },
@@ -8461,6 +9070,30 @@
         },
         "type": "object"
       },
+      "ResultListWrongPracticeResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/WrongPracticeResponse"
+            },
+            "type": "array"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "ResultListWrongQuestionResponse": {
         "properties": {
           "code": {
@@ -8536,6 +9169,30 @@
           },
           "data": {
             "$ref": "#/components/schemas/LorebookAsset"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultMapLongString": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           },
           "error": {
             "type": "string"
@@ -8971,6 +9628,27 @@
         },
         "type": "object"
       },
+      "ResultPageDataExamSummaryResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageDataExamSummaryResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
       "ResultPageDataIntentDefVO": {
         "properties": {
           "code": {
@@ -9315,6 +9993,69 @@
           },
           "data": {
             "$ref": "#/components/schemas/PointView"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultPracticeCheckResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PracticeCheckResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultPracticeQuestionResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PracticeQuestionResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultPracticeSubmissionResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PracticeSubmissionResponse"
           },
           "error": {
             "type": "string"
@@ -9697,6 +10438,27 @@
           },
           "data": {
             "$ref": "#/components/schemas/StudentResponse"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "ResultStudentTutorResponse": {
+        "properties": {
+          "code": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/StudentTutorResponse"
           },
           "error": {
             "type": "string"
@@ -10431,8 +11193,8 @@
           },
           "threshold": {
             "format": "double",
-            "maximum": 1.0,
-            "minimum": 0.0,
+            "maximum": 1,
+            "minimum": 0,
             "type": "number"
           },
           "topK": {
@@ -10477,8 +11239,28 @@
         },
         "type": "object"
       },
+      "Section": {
+        "properties": {
+          "durationMin": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "orderNo": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
       "ServerSentEventAiRunEvent": {},
-      "ServerSentEventGenerationEvent": {},
+      "ServerSentEventMapStringObject": {},
       "SessionResponse": {
         "properties": {
           "authenticated": {
@@ -10502,6 +11284,30 @@
         "required": [
           "timezone"
         ],
+        "type": "object"
+      },
+      "SourceRecord": {
+        "properties": {
+          "occurredAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "recordId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "recordType": {
+            "type": "string"
+          },
+          "score": {
+            "format": "double",
+            "type": "number"
+          }
+        },
         "type": "object"
       },
       "SpaceView": {
@@ -10663,6 +11469,67 @@
           "userId": {
             "format": "int64",
             "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "StudentTutorRequest": {
+        "properties": {
+          "count": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "difficulty": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "knowledgeId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "period": {
+            "type": "string"
+          },
+          "style": {
+            "type": "string"
+          },
+          "targetDate": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "StudentTutorResponse": {
+        "properties": {
+          "averageScore": {
+            "format": "double",
+            "type": "number"
+          },
+          "content": {
+            "type": "string"
+          },
+          "insufficientData": {
+            "type": "boolean"
+          },
+          "knowledgeId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "knowledgeName": {
+            "type": "string"
+          },
+          "period": {
+            "type": "string"
+          },
+          "recordCount": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRecord"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -10883,6 +11750,20 @@
             "type": "integer"
           }
         },
+        "type": "object"
+      },
+      "SubmitExamRequest": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/ExamSubmissionAnswer"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "answers"
+        ],
         "type": "object"
       },
       "SwitchContextResponse": {
@@ -11953,6 +12834,29 @@
           "mastery": {
             "format": "double",
             "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "WrongPracticeResponse": {
+        "properties": {
+          "correctTimes": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "lastAnswer": {
+            "type": "string"
+          },
+          "questionId": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
           }
         },
         "type": "object"
@@ -13029,7 +13933,7 @@
     },
     "/api/agent/apps/{id}/versions/{versionId}/publish": {
       "post": {
-        "operationId": "publish_4",
+        "operationId": "publish_5",
         "parameters": [
           {
             "in": "path",
@@ -13317,7 +14221,7 @@
     },
     "/api/agent/executions/execute": {
       "post": {
-        "operationId": "execute",
+        "operationId": "execute_1",
         "parameters": [
           {
             "in": "query",
@@ -14850,7 +15754,7 @@
     },
     "/api/agent/versions/publish": {
       "post": {
-        "operationId": "publish_3",
+        "operationId": "publish_4",
         "parameters": [
           {
             "in": "query",
@@ -15896,6 +16800,49 @@
         ]
       }
     },
+    "/api/conversation/conversations/{conversationId}/agent-executions": {
+      "post": {
+        "operationId": "execute",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversationId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ServerSentEventMapStringObject"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "agent-conversation-controller"
+        ]
+      }
+    },
     "/api/conversation/conversations/{id}": {
       "delete": {
         "operationId": "delete_18",
@@ -16392,14 +17339,11 @@
             "content": {
               "text/event-stream": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/ServerSentEventGenerationEvent"
-                  },
-                  "type": "array"
+                  "$ref": "#/components/schemas/GenerationEvent"
                 }
               }
             },
-            "description": "OK"
+            "description": "Each SSE data event is a GenerationEvent"
           }
         },
         "tags": [
@@ -16582,7 +17526,7 @@
     },
     "/api/conversation/prompts/{id}/publish": {
       "post": {
-        "operationId": "publish_2",
+        "operationId": "publish_3",
         "parameters": [
           {
             "in": "path",
@@ -17548,6 +18492,290 @@
         ]
       }
     },
+    "/api/education/exam/attempts/{attemptId}": {
+      "get": {
+        "operationId": "result",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "attemptId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultExamResultResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/attempts/{attemptId}/draft": {
+      "get": {
+        "operationId": "draft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "attemptId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultMapLongString"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      },
+      "put": {
+        "operationId": "saveDraft",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "attemptId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamSubmissionAnswer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultVoid"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/attempts/{attemptId}/submit": {
+      "post": {
+        "operationId": "submit_2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "attemptId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitExamRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultExamResultResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/available": {
+      "get": {
+        "operationId": "available",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "subjectCode",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPageDataExamResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/available-summary": {
+      "get": {
+        "operationId": "availableSummary",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "subjectCode",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPageDataExamSummaryResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/history": {
+      "get": {
+        "operationId": "history",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pageNum",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPageDataExamSummaryResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
     "/api/education/exam/subject": {
       "get": {
         "operationId": "listBySubjectCode_1",
@@ -17606,6 +18834,140 @@
         },
         "tags": [
           "exam-controller"
+        ]
+      }
+    },
+    "/api/education/exam/{examId}/attempts": {
+      "post": {
+        "operationId": "start",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "examId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultExamPaperResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/{examId}/composition": {
+      "put": {
+        "operationId": "replaceComposition",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "examId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExamCompositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultVoid"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-publishing-controller"
+        ]
+      }
+    },
+    "/api/education/exam/{examId}/paper": {
+      "get": {
+        "operationId": "paper",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "examId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultExamPaperResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-taking-controller"
+        ]
+      }
+    },
+    "/api/education/exam/{examId}/publish": {
+      "post": {
+        "operationId": "publish_2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "examId",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultVoid"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "exam-publishing-controller"
         ]
       }
     },
@@ -18645,6 +20007,408 @@
         ]
       }
     },
+    "/api/education/student-learning/courses": {
+      "get": {
+        "operationId": "courses",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "subjectCode",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "grade",
+            "required": false,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPageDataCourseResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/courses/{id}": {
+      "get": {
+        "operationId": "course",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultCourseDetailResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/questions": {
+      "get": {
+        "operationId": "questions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "subjectCode",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "grade",
+            "required": false,
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultListPracticeQuestionResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/questions/{id}": {
+      "get": {
+        "operationId": "question",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPracticeQuestionResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/questions/{id}/check": {
+      "post": {
+        "operationId": "check",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PracticeCheckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPracticeCheckResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/questions/{id}/submissions": {
+      "post": {
+        "operationId": "submit_1",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PracticeSubmissionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPracticeSubmissionResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-learning/wrong-questions": {
+      "get": {
+        "operationId": "wrongQuestions",
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultListWrongPracticeResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-learning-controller"
+        ]
+      }
+    },
+    "/api/education/student-tutor/knowledge": {
+      "get": {
+        "operationId": "knowledge",
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultListKnowledgeResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-tutor-controller"
+        ]
+      }
+    },
+    "/api/education/student-tutor/plan": {
+      "post": {
+        "operationId": "plan",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentTutorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultStudentTutorResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-tutor-controller"
+        ]
+      }
+    },
+    "/api/education/student-tutor/practice": {
+      "post": {
+        "operationId": "practice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentTutorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultStudentTutorResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-tutor-controller"
+        ]
+      }
+    },
+    "/api/education/student-tutor/report": {
+      "post": {
+        "operationId": "report",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentTutorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultStudentTutorResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-tutor-controller"
+        ]
+      }
+    },
+    "/api/education/student-tutor/teach": {
+      "post": {
+        "operationId": "teach",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentTutorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultStudentTutorResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-tutor-controller"
+        ]
+      }
+    },
     "/api/education/students": {
       "get": {
         "operationId": "list_4",
@@ -18698,6 +20462,26 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultStudentResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "student-controller"
+        ]
+      }
+    },
+    "/api/education/students/me": {
+      "get": {
+        "operationId": "getMe",
         "responses": {
           "200": {
             "content": {
@@ -27304,7 +29088,7 @@
   "servers": [
     {
       "description": "Generated server url",
-      "url": "http://127.0.0.1:19090"
+      "url": "http://127.0.0.1:9000"
     }
   ],
   "tags": [

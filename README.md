@@ -28,6 +28,8 @@ pnpm install --frozen-lockfile
 pnpm -F @vben/web-naive run dev
 ```
 
+前后端联调请使用同一组修复分支：UI 仓库 `fix/2026-10-05-cross-repo-repairs` 与 ShiYu AI 后端同名分支。先在后端仓库执行 `mvn -pl modules/applications/shiyu-ai-bootstrap -am package`，再按后端 README 启动本地 H2 开发服务；前端 `.env.development` 默认连接 `http://127.0.0.1:9000`。学生流程需要当前登录用户绑定一个有效学生档案，考试还需由管理员完成组卷与发布。
+
 开发服务器默认使用 `apps/web-naive/.env.development`，前端请求统一走 `/api`。不要在仓库环境文件中写入生产凭据、模型密钥或真实租户信息。
 
 ## 质量门禁
@@ -39,6 +41,11 @@ pnpm -F @vben/web-naive run typecheck
 # web-naive 契约与工具单测
 pnpm exec vitest run apps/web-naive/src
 
+# 功能边界、后端接口快照与生成类型
+pnpm check:boundaries
+pnpm test:contract
+pnpm test:openapi
+
 # 生产构建
 pnpm -F @vben/web-naive run build
 
@@ -47,7 +54,9 @@ $env:E2E_PASSWORD='your-password'
 pnpm run test:e2e
 ```
 
-GitHub Actions 会强制按“类型检查 → 应用单测 → 生产构建”执行。Playwright 覆盖桌面与移动端关键路径，可通过 `PLAYWRIGHT_BASE_URL`、`E2E_USERNAME`、`E2E_PASSWORD` 配置目标环境。
+GitHub Actions 会执行“类型检查 → 应用单测 → 生产构建”，并使用一次性 H2 后端运行无模型依赖的考试浏览器流程。该流程使用 H2 种子账号 `admin/123456`，仅连接 CI 本机启动的临时服务；`SHIYU_BACKEND_REF` 仓库变量可指定配套后端分支或提交，未设置时使用前端同名分支。手动运行其他 Playwright 流程时，可通过 `PLAYWRIGHT_BASE_URL`、`E2E_USERNAME`、`E2E_PASSWORD` 配置目标环境。
+
+更新接口快照时，先启动上述配套后端，然后执行 `pnpm test:contract:update` 和 `pnpm exec node scripts/contracts/generate-openapi.mjs`，检查生成差异后运行 `pnpm test:contract && pnpm test:openapi`。新接口必须同时更新服务端与前端契约，避免单独从主分支拉取不匹配的后端版本。
 
 ## 目录
 

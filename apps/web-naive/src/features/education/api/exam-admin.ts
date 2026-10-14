@@ -17,6 +17,8 @@ export namespace EducationAdminExamApi {
     totalScore: number;
     status: number;
     teacherId?: number;
+    startTime?: string;
+    endTime?: string;
   }
 }
 
@@ -47,4 +49,28 @@ async function deleteExam(id: number) {
   return requestClient.delete(`/api/education/exam/${id}`);
 }
 
-export { createExam, deleteExam, getExamById, getExamList, updateExam };
+async function replaceExamComposition(
+  id: number,
+  sections: {
+    name: string;
+    questions: { questionId: number; score: number }[];
+  }[],
+) {
+  return requestClient.put(`/api/education/exam/${id}/composition`, {
+    sections,
+  });
+}
+
+async function publishExam(id: number) {
+  return requestClient.post(`/api/education/exam/${id}/publish`);
+}
+
+export {
+  createExam,
+  deleteExam,
+  getExamById,
+  getExamList,
+  publishExam,
+  replaceExamComposition,
+  updateExam,
+};

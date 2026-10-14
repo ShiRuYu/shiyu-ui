@@ -19,6 +19,45 @@ export namespace EducationCourseApi {
     totalHours: number;
     status: number;
   }
+
+  export interface CourseDetail {
+    course: Course;
+    chapters: {
+      id: number;
+      name: string;
+      orderNo: number;
+      sections: {
+        durationMin: number;
+        id: number;
+        name: string;
+        orderNo: number;
+      }[];
+    }[];
+  }
+}
+
+async function getStudentCourseList(
+  pageNum = 1,
+  pageSize = 12,
+  subjectCode?: string,
+  grade?: number,
+) {
+  return requestClient.get<
+    EducationCourseApi.PageResult<EducationCourseApi.Course>
+  >('/api/education/student-learning/courses', {
+    params: {
+      pageNum,
+      pageSize,
+      ...(subjectCode ? { subjectCode } : {}),
+      ...(grade ? { grade } : {}),
+    },
+  });
+}
+
+async function getStudentCourseDetail(id: number) {
+  return requestClient.get<EducationCourseApi.CourseDetail>(
+    `/api/education/student-learning/courses/${id}`,
+  );
 }
 
 async function getCourseList(pageNum = 1, pageSize = 10) {
@@ -81,6 +120,8 @@ export {
   getCourseById,
   getCourseBySubject,
   getCourseList,
+  getStudentCourseDetail,
+  getStudentCourseList,
   startLearning,
   updateCourse,
 };

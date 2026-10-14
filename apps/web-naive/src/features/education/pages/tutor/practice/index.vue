@@ -1,25 +1,34 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
-import { practice } from '#/features/education';
+import { listTutorKnowledge, practice } from '#/features/education';
 import { $t } from '#/locales';
+
+import TutorNavigation from '../TutorNavigation.vue';
 
 const loading = ref(false);
 const result = ref('');
 const knowledgeId = ref<null | number>(null);
 const difficulty = ref(2);
 const count = ref(3);
-
-const knowledgeOptions = [
-  { label: $t('ai-tutor.knowledgeAbsoluteValue'), value: 5 },
-  { label: $t('ai-tutor.knowledgeOppositeNumber'), value: 4 },
-  { label: $t('ai-tutor.knowledgeNumberLine'), value: 3 },
-  { label: $t('ai-tutor.knowledgeRationalOperations'), value: 6 },
-];
+const knowledgeOptions = ref<Array<{ label: string; value: number }>>([]);
+onMounted(async () => {
+  try {
+    knowledgeOptions.value = (await listTutorKnowledge()).map((point) => ({
+      label: point.name,
+      value: point.id,
+    }));
+  } catch (error) {
+    result.value =
+      error instanceof Error
+        ? error.message
+        : $t('ai-tutor.featureRequestFailed');
+  }
+});
 
 const difficultyOptions = [
   { label: $t('education.question.difficultyBasic'), value: 1 },
@@ -33,14 +42,16 @@ async function handlePractice() {
   loading.value = true;
   try {
     const res = await practice({
-      studentId: 1,
       knowledgeId: knowledgeId.value,
       difficulty: difficulty.value,
       count: count.value,
     });
-    result.value = JSON.stringify(res, null, 2);
+    result.value = res.content;
   } catch (error) {
-    result.value = $t('ai-tutor.featureRequestFailed');
+    result.value =
+      error instanceof Error
+        ? error.message
+        : $t('ai-tutor.featureRequestFailed');
     console.error(error);
   } finally {
     loading.value = false;
@@ -50,6 +61,7 @@ async function handlePractice() {
 
 <template>
   <Page :title="$t('page.aiTutor.practice')">
+    <TutorNavigation />
     <NCard>
       <NSpace class="mb-4" vertical>
         <NSpace wrap>

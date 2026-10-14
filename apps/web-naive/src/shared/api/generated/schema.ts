@@ -352,7 +352,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['publish_4'];
+    post: operations['publish_5'];
     delete?: never;
     options?: never;
     head?: never;
@@ -483,7 +483,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Execute Agent */
-    post: operations['execute'];
+    post: operations['execute_1'];
     delete?: never;
     options?: never;
     head?: never;
@@ -998,7 +998,7 @@ export interface paths {
     get?: never;
     put?: never;
     /** Publish */
-    post: operations['publish_3'];
+    post: operations['publish_4'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1357,6 +1357,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/conversation/conversations/{conversationId}/agent-executions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['execute'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/conversation/conversations/{id}': {
     parameters: {
       query?: never;
@@ -1574,7 +1590,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['publish_2'];
+    post: operations['publish_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1933,6 +1949,102 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/education/exam/attempts/{attemptId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['result'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/attempts/{attemptId}/draft': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['draft'];
+    put: operations['saveDraft'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/attempts/{attemptId}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['submit_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/available': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['available'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/available-summary': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['availableSummary'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['history'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/education/exam/subject': {
     parameters: {
       query?: never;
@@ -1959,6 +2071,70 @@ export interface paths {
     get: operations['listByTeacherId'];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/{examId}/attempts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['start'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/{examId}/composition': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put: operations['replaceComposition'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/{examId}/paper': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['paper'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/exam/{examId}/publish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['publish_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -2274,6 +2450,198 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/education/student-learning/courses': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['courses'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/courses/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['course'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/questions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['questions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/questions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['question'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/questions/{id}/check': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['check'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/questions/{id}/submissions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['submit_1'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-learning/wrong-questions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['wrongQuestions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-tutor/knowledge': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['knowledge'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-tutor/plan': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['plan'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-tutor/practice': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['practice'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-tutor/report': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['report'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/student-tutor/teach': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['teach'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/education/students': {
     parameters: {
       query?: never;
@@ -2284,6 +2652,22 @@ export interface paths {
     get: operations['list_4'];
     put?: never;
     post: operations['create_11'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/education/students/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['getMe'];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -6036,6 +6420,14 @@ export interface components {
       default?: unknown;
       reducer?: components['schemas']['ReducerObject'];
     };
+    Chapter: {
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      orderNo?: number;
+      sections?: components['schemas']['Section'][];
+    };
     ChapterRequest: {
       /** Format: int32 */
       chapterOrder?: number;
@@ -6248,6 +6640,10 @@ export interface components {
       };
       /** Format: date-time */
       updatedAt?: string;
+    };
+    CourseDetailResponse: {
+      chapters?: components['schemas']['Chapter'][];
+      course?: components['schemas']['CourseResponse'];
     };
     CourseRequest: {
       coverUrl?: string;
@@ -6570,14 +6966,79 @@ export interface components {
       subjectId?: string;
       subjectType?: string;
     };
+    ExamCompositionQuestion: {
+      /** Format: int64 */
+      questionId: number;
+      score: number;
+    };
+    ExamCompositionRequest: {
+      sections: components['schemas']['ExamCompositionSection'][];
+    };
+    ExamCompositionSection: {
+      name: string;
+      questions: components['schemas']['ExamCompositionQuestion'][];
+    };
+    ExamPaperOption: {
+      label?: string;
+      value?: string;
+    };
+    ExamPaperQuestion: {
+      /** Format: int64 */
+      id?: number;
+      options?: components['schemas']['ExamPaperOption'][];
+      /** Format: int64 */
+      questionId?: number;
+      score?: number;
+      title?: string;
+      type?: string;
+    };
+    ExamPaperResponse: {
+      /** Format: int64 */
+      attemptId?: number;
+      /** Format: date-time */
+      deadlineAt?: string;
+      /** Format: int32 */
+      durationMin?: number;
+      /** Format: int64 */
+      examId?: number;
+      /** Format: int32 */
+      grade?: number;
+      name?: string;
+      sections?: components['schemas']['ExamPaperSection'][];
+      subjectCode?: string;
+      /** Format: int32 */
+      totalScore?: number;
+    };
+    ExamPaperSection: {
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      orderNo?: number;
+      questions?: components['schemas']['ExamPaperQuestion'][];
+    };
+    ExamQuestionResult: {
+      analysis?: string;
+      answer?: string;
+      correctAnswer?: string;
+      maxScore?: number;
+      /** Format: int64 */
+      questionId?: number;
+      score?: number;
+      title?: string;
+    };
     ExamRequest: {
       /** Format: int32 */
       durationMin: number;
+      /** Format: date-time */
+      endTime?: string;
       /** Format: int32 */
       grade: number;
       /** Format: int64 */
       id?: number;
       name: string;
+      /** Format: date-time */
+      startTime?: string;
       /** Format: int32 */
       status?: number;
       subjectCode: string;
@@ -6590,16 +7051,56 @@ export interface components {
     ExamResponse: {
       /** Format: int32 */
       durationMin?: number;
+      /** Format: date-time */
+      endTime?: string;
       /** Format: int32 */
       grade?: number;
       /** Format: int64 */
       id?: number;
       name?: string;
+      /** Format: date-time */
+      startTime?: string;
       /** Format: int32 */
       status?: number;
       subjectCode?: string;
       /** Format: int64 */
       teacherId?: number;
+      /** Format: int32 */
+      totalScore?: number;
+      type?: string;
+    };
+    ExamResultResponse: {
+      /** Format: int64 */
+      attemptId?: number;
+      /** Format: int64 */
+      examId?: number;
+      questions?: components['schemas']['ExamQuestionResult'][];
+      score?: number;
+      status?: string;
+      /** Format: date-time */
+      submittedAt?: string;
+      totalScore?: number;
+    };
+    ExamSubmissionAnswer: {
+      answer?: string;
+      /** Format: int64 */
+      questionId: number;
+    };
+    ExamSummaryResponse: {
+      /** Format: int64 */
+      attemptId?: number;
+      attemptStatus?: string;
+      /** Format: date-time */
+      deadlineAt?: string;
+      /** Format: int32 */
+      durationMin?: number;
+      /** Format: int64 */
+      examId?: number;
+      /** Format: int32 */
+      grade?: number;
+      name?: string;
+      score?: number;
+      subjectCode?: string;
       /** Format: int32 */
       totalScore?: number;
       type?: string;
@@ -6666,6 +7167,27 @@ export interface components {
       format?: string;
       prompt?: string;
       provider?: string;
+    };
+    GenerationEvent: {
+      /** Format: date-time */
+      createdAt?: string;
+      generationRunId?: string;
+      payload?: string;
+      /** Format: int32 */
+      sequence?: number;
+      /** @enum {string} */
+      type?:
+        | 'STARTED'
+        | 'BLOCK_STARTED'
+        | 'DELTA'
+        | 'METADATA'
+        | 'REASONING_DELTA'
+        | 'TOOL_CALL'
+        | 'BLOCK_COMPLETED'
+        | 'USAGE'
+        | 'COMPLETED'
+        | 'FAILED'
+        | 'CANCELLED';
     };
     GenerationRun: {
       assistantMessageId?: string;
@@ -7468,6 +7990,11 @@ export interface components {
       /** Format: int64 */
       total?: number;
     };
+    PageDataExamSummaryResponse: {
+      items?: components['schemas']['ExamSummaryResponse'][];
+      /** Format: int64 */
+      total?: number;
+    };
     PageDataIntentDefVO: {
       items?: components['schemas']['IntentDefVO'][];
       /** Format: int64 */
@@ -7607,6 +8134,39 @@ export interface components {
       /** Format: int64 */
       spaceId?: number;
       tags?: string;
+    };
+    PracticeCheckRequest: {
+      answer: string;
+    };
+    PracticeCheckResponse: {
+      analysis?: string;
+      correct?: boolean;
+      correctAnswer?: string;
+      /** Format: int64 */
+      questionId?: number;
+    };
+    PracticeQuestionResponse: {
+      /** Format: int32 */
+      grade?: number;
+      /** Format: int64 */
+      id?: number;
+      options?: components['schemas']['ExamPaperOption'][];
+      subjectCode?: string;
+      title?: string;
+      type?: string;
+    };
+    PracticeSubmissionRequest: {
+      answer: string;
+      submissionKey: string;
+    };
+    PracticeSubmissionResponse: {
+      analysis?: string;
+      correct?: boolean;
+      correctAnswer?: string;
+      /** Format: int64 */
+      questionId?: number;
+      /** Format: int64 */
+      recordId?: number;
     };
     PredicateCondition: {
       predicate?: unknown;
@@ -7761,6 +8321,8 @@ export interface components {
       /** Format: int64 */
       id?: number;
       options?: string;
+      /** @enum {string} */
+      purpose?: 'PRACTICE' | 'EXAM_PRIVATE';
       /** Format: int32 */
       status?: number;
       subjectCode: string;
@@ -7780,6 +8342,8 @@ export interface components {
       /** Format: int64 */
       id?: number;
       options?: string;
+      /** @enum {string} */
+      purpose?: 'PRACTICE' | 'EXAM_PRIVATE';
       subjectCode?: string;
       tags?: string;
       title?: string;
@@ -7838,8 +8402,10 @@ export interface components {
       relationType?: string;
     };
     Request: {
-      argumentsRedacted?: string;
-      toolName?: string;
+      appId: string;
+      appVersionId?: string;
+      prompt: string;
+      sourceMessageId?: string;
     };
     /** @description 重置密码请求 */
     ResetPasswordRequest: {
@@ -8093,6 +8659,14 @@ export interface components {
       message?: string;
       success?: boolean;
     };
+    ResultCourseDetailResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['CourseDetailResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
     ResultCourseResponse: {
       /** Format: int32 */
       code?: number;
@@ -8149,10 +8723,26 @@ export interface components {
       message?: string;
       success?: boolean;
     };
+    ResultExamPaperResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ExamPaperResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
     ResultExamResponse: {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['ExamResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultExamResultResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['ExamResultResponse'];
       error?: string;
       message?: string;
       success?: boolean;
@@ -8445,6 +9035,14 @@ export interface components {
       message?: string;
       success?: boolean;
     };
+    ResultListKnowledgeResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['KnowledgeResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
     ResultListLong: {
       /** Format: int32 */
       code?: number;
@@ -8547,6 +9145,14 @@ export interface components {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['PluginMarketEntry'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultListPracticeQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PracticeQuestionResponse'][];
       error?: string;
       message?: string;
       success?: boolean;
@@ -8735,6 +9341,14 @@ export interface components {
       message?: string;
       success?: boolean;
     };
+    ResultListWrongPracticeResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['WrongPracticeResponse'][];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
     ResultListWrongQuestionResponse: {
       /** Format: int32 */
       code?: number;
@@ -8764,6 +9378,16 @@ export interface components {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['LorebookAsset'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultMapLongString: {
+      /** Format: int32 */
+      code?: number;
+      data?: {
+        [key: string]: string;
+      };
       error?: string;
       message?: string;
       success?: boolean;
@@ -8932,6 +9556,14 @@ export interface components {
       message?: string;
       success?: boolean;
     };
+    ResultPageDataExamSummaryResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PageDataExamSummaryResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
     ResultPageDataIntentDefVO: {
       /** Format: int32 */
       code?: number;
@@ -9064,6 +9696,30 @@ export interface components {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['PointView'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPracticeCheckResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PracticeCheckResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPracticeQuestionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PracticeQuestionResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultPracticeSubmissionResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['PracticeSubmissionResponse'];
       error?: string;
       message?: string;
       success?: boolean;
@@ -9208,6 +9864,14 @@ export interface components {
       /** Format: int32 */
       code?: number;
       data?: components['schemas']['StudentResponse'];
+      error?: string;
+      message?: string;
+      success?: boolean;
+    };
+    ResultStudentTutorResponse: {
+      /** Format: int32 */
+      code?: number;
+      data?: components['schemas']['StudentTutorResponse'];
       error?: string;
       message?: string;
       success?: boolean;
@@ -9511,8 +10175,17 @@ export interface components {
       action?: string;
       value?: string;
     };
+    Section: {
+      /** Format: int32 */
+      durationMin?: number;
+      /** Format: int64 */
+      id?: number;
+      name?: string;
+      /** Format: int32 */
+      orderNo?: number;
+    };
     ServerSentEventAiRunEvent: unknown;
-    ServerSentEventGenerationEvent: unknown;
+    ServerSentEventMapStringObject: unknown;
     SessionResponse: {
       authenticated?: boolean;
       csrfToken?: string;
@@ -9521,6 +10194,17 @@ export interface components {
     SetTimezoneRequest: {
       /** @description 时区名称，如 Asia/Shanghai */
       timezone: string;
+    };
+    SourceRecord: {
+      /** Format: date-time */
+      occurredAt?: string;
+      /** Format: int64 */
+      questionId?: number;
+      /** Format: int64 */
+      recordId?: number;
+      recordType?: string;
+      /** Format: double */
+      score?: number;
     };
     SpaceView: {
       accessMode?: string;
@@ -9587,6 +10271,30 @@ export interface components {
       studentNo?: string;
       /** Format: int64 */
       userId?: number;
+    };
+    StudentTutorRequest: {
+      /** Format: int32 */
+      count?: number;
+      /** Format: int32 */
+      difficulty?: number;
+      /** Format: int64 */
+      knowledgeId?: number;
+      period?: string;
+      style?: string;
+      targetDate?: string;
+    };
+    StudentTutorResponse: {
+      /** Format: double */
+      averageScore?: number;
+      content?: string;
+      insufficientData?: boolean;
+      /** Format: int64 */
+      knowledgeId?: number;
+      knowledgeName?: string;
+      period?: string;
+      /** Format: int32 */
+      recordCount?: number;
+      sources?: components['schemas']['SourceRecord'][];
     };
     StudyPlanRequest: {
       /** Format: date */
@@ -9675,6 +10383,9 @@ export interface components {
       name?: string;
       /** Format: int32 */
       sortOrder?: number;
+    };
+    SubmitExamRequest: {
+      answers: components['schemas']['ExamSubmissionAnswer'][];
     };
     SwitchContextResponse: {
       tenants?: components['schemas']['TenantInfoVO'][];
@@ -10090,6 +10801,16 @@ export interface components {
       knowledgeName?: string;
       /** Format: double */
       mastery?: number;
+    };
+    WrongPracticeResponse: {
+      /** Format: int32 */
+      correctTimes?: number;
+      /** Format: int64 */
+      id?: number;
+      lastAnswer?: string;
+      /** Format: int64 */
+      questionId?: number;
+      title?: string;
     };
     WrongQuestionRequest: {
       /** Format: int32 */
@@ -10799,7 +11520,7 @@ export interface operations {
       };
     };
   };
-  publish_4: {
+  publish_5: {
     parameters: {
       query?: never;
       header?: never;
@@ -11006,7 +11727,7 @@ export interface operations {
       };
     };
   };
-  execute: {
+  execute_1: {
     parameters: {
       query: {
         agentId: string;
@@ -11910,7 +12631,7 @@ export interface operations {
       };
     };
   };
-  publish_3: {
+  publish_4: {
     parameters: {
       query: {
         agentId: string;
@@ -12686,6 +13407,32 @@ export interface operations {
       };
     };
   };
+  execute: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        conversationId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Request'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/event-stream': components['schemas']['ServerSentEventMapStringObject'][];
+        };
+      };
+    };
+  };
   detail_1: {
     parameters: {
       query?: never;
@@ -12995,13 +13742,13 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description OK */
+      /** @description Each SSE data event is a GenerationEvent */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          'text/event-stream': components['schemas']['ServerSentEventGenerationEvent'][];
+          'text/event-stream': components['schemas']['GenerationEvent'];
         };
       };
     };
@@ -13130,7 +13877,7 @@ export interface operations {
       };
     };
   };
-  publish_2: {
+  publish_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -13796,6 +14543,173 @@ export interface operations {
       };
     };
   };
+  result: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attemptId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultExamResultResponse'];
+        };
+      };
+    };
+  };
+  draft: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attemptId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultMapLongString'];
+        };
+      };
+    };
+  };
+  saveDraft: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attemptId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExamSubmissionAnswer'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  submit_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attemptId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SubmitExamRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultExamResultResponse'];
+        };
+      };
+    };
+  };
+  available: {
+    parameters: {
+      query?: {
+        subjectCode?: string;
+        pageNum?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPageDataExamResponse'];
+        };
+      };
+    };
+  };
+  availableSummary: {
+    parameters: {
+      query?: {
+        subjectCode?: string;
+        pageNum?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPageDataExamSummaryResponse'];
+        };
+      };
+    };
+  };
+  history: {
+    parameters: {
+      query?: {
+        pageNum?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPageDataExamSummaryResponse'];
+        };
+      };
+    };
+  };
   listBySubjectCode_1: {
     parameters: {
       query: {
@@ -13836,6 +14750,98 @@ export interface operations {
         };
         content: {
           '*/*': components['schemas']['ResultListExamResponse'];
+        };
+      };
+    };
+  };
+  start: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        examId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultExamPaperResponse'];
+        };
+      };
+    };
+  };
+  replaceComposition: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        examId: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ExamCompositionRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
+        };
+      };
+    };
+  };
+  paper: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        examId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultExamPaperResponse'];
+        };
+      };
+    };
+  };
+  publish_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        examId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultVoid'];
         };
       };
     };
@@ -14534,6 +15540,286 @@ export interface operations {
       };
     };
   };
+  courses: {
+    parameters: {
+      query?: {
+        subjectCode?: string;
+        grade?: number;
+        pageNum?: number;
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPageDataCourseResponse'];
+        };
+      };
+    };
+  };
+  course: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultCourseDetailResponse'];
+        };
+      };
+    };
+  };
+  questions: {
+    parameters: {
+      query: {
+        subjectCode: string;
+        grade?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultListPracticeQuestionResponse'];
+        };
+      };
+    };
+  };
+  question: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPracticeQuestionResponse'];
+        };
+      };
+    };
+  };
+  check: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PracticeCheckRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPracticeCheckResponse'];
+        };
+      };
+    };
+  };
+  submit_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PracticeSubmissionRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultPracticeSubmissionResponse'];
+        };
+      };
+    };
+  };
+  wrongQuestions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultListWrongPracticeResponse'];
+        };
+      };
+    };
+  };
+  knowledge: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultListKnowledgeResponse'];
+        };
+      };
+    };
+  };
+  plan: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudentTutorRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudentTutorResponse'];
+        };
+      };
+    };
+  };
+  practice: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudentTutorRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudentTutorResponse'];
+        };
+      };
+    };
+  };
+  report: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudentTutorRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudentTutorResponse'];
+        };
+      };
+    };
+  };
+  teach: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StudentTutorRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudentTutorResponse'];
+        };
+      };
+    };
+  };
   list_4: {
     parameters: {
       query?: {
@@ -14569,6 +15855,26 @@ export interface operations {
         'application/json': components['schemas']['StudentRequest'];
       };
     };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultStudentResponse'];
+        };
+      };
+    };
+  };
+  getMe: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
     responses: {
       /** @description OK */
       200: {

@@ -127,6 +127,20 @@ export async function cancelRuntimeRun(runId: string) {
   return requestClient.post<unknown>(`/api/agent/runs/${runId}/cancel`);
 }
 
+/** Lets the cancellation request finish while the page is closing. */
+export function cancelRuntimeRunOnUnload(runId: string) {
+  const token = useAccessStore().accessToken;
+  const baseURL = requestClient.getBaseUrl() ?? '';
+  return fetch(
+    `${baseURL}/api/agent/runs/${encodeURIComponent(runId)}/cancel`,
+    {
+      method: 'POST',
+      headers: { Authorization: token ? `Bearer ${token}` : '' },
+      keepalive: true,
+    },
+  );
+}
+
 export async function streamGenerationRuntimeEvents(
   generationId: string,
   onEvent: (event: AiRunEvent) => void,
@@ -174,5 +188,17 @@ export async function decideApproval(
 ) {
   return requestClient.post<ToolApproval>(
     `/api/agent/approvals/${id}/${decision}`,
+  );
+}
+
+export async function approveAndResumeTool(id: string) {
+  return requestClient.post<ToolApproval>(
+    `/api/agent/approvals/${id}/approve-and-resume`,
+  );
+}
+
+export async function rejectAndCancelTool(id: string) {
+  return requestClient.post<ToolApproval>(
+    `/api/agent/approvals/${id}/reject-and-cancel`,
   );
 }

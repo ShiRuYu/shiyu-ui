@@ -196,33 +196,43 @@ export function uploadDocument(
   spaceId: number,
   file: File,
   onProgress?: (percent: number) => void,
+  signal?: AbortSignal,
 ) {
   if (file.size > 10 * 1024 * 1024) {
-    return uploadDocumentResumable(spaceId, file, onProgress);
+    return uploadDocumentResumable(spaceId, file, onProgress, signal);
   }
-  return uploadDocumentDirect(spaceId, file, onProgress);
+  return uploadDocumentDirect(spaceId, file, onProgress, signal);
 }
 
-function uploadDocumentDirect(
+async function uploadDocumentDirect(
   spaceId: number,
   file: File,
   onProgress?: (percent: number) => void,
+  signal?: AbortSignal,
 ) {
-  return requestClient.upload<{
-    document: KnowledgeDocument;
-    duplicate: boolean;
-    jobId?: number;
-    versionId: number;
-  }>(
-    `/api/knowledge/spaces/${spaceId}/documents`,
-    { file },
-    {
-      onUploadProgress: (event) => {
-        if (event.total)
-          onProgress?.(Math.round((event.loaded / event.total) * 100));
+  try {
+    return await requestClient.upload<{
+      document: KnowledgeDocument;
+      duplicate: boolean;
+      jobId?: number;
+      versionId: number;
+    }>(
+      `/api/knowledge/spaces/${spaceId}/documents`,
+      { file },
+      {
+        ...(signal ? { signal } : {}),
+        onUploadProgress: (event) => {
+          if (event.total)
+            onProgress?.(Math.round((event.loaded / event.total) * 100));
+        },
       },
-    },
-  );
+    );
+  } catch (error) {
+    if (signal?.aborted) {
+      throw new DOMException('Upload cancelled', 'AbortError');
+    }
+    throw error;
+  }
 }
 
 export interface ResumableUploadSession {
@@ -233,6 +243,84 @@ export interface ResumableUploadSession {
   spaceId: number;
   totalChunks: number;
   uploadedChunks: number[];
+}
+
+function uploadSessionKey(spaceId: number, file: File) {
+  return `knowledge:document-upload:${JSON.stringify([
+    spaceId,
+    file.name,
+    file.size,
+    file.lastModified,
+    file.type,
+  ])}`;
+}
+
+function savedUploadSession(key: string) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function saveUploadSession(key: string, sessionId: string) {
+  try {
+    localStorage.setItem(key, sessionId);
+  } catch {
+    // A blocked or full browser store still permits this upload to finish.
+  }
+}
+
+function forgetUploadSession(key: string) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Storage access may be blocked by the browser.
+  }
+}
+
+function matchesUploadSession(
+  session: ResumableUploadSession,
+  spaceId: number,
+  file: File,
+  sessionId?: string,
+) {
+  return (
+    !!session &&
+    typeof session.sessionId === 'string' &&
+    session.sessionId.length > 0 &&
+    (!sessionId || session.sessionId === sessionId) &&
+    session.spaceId === spaceId &&
+    session.fileName === file.name &&
+    session.size === file.size &&
+    Number.isSafeInteger(session.chunkSize) &&
+    session.chunkSize > 0 &&
+    session.totalChunks === Math.ceil(file.size / session.chunkSize) &&
+    Array.isArray(session.uploadedChunks) &&
+    session.uploadedChunks.every(
+      (index) =>
+        Number.isSafeInteger(index) &&
+        index >= 0 &&
+        index < session.totalChunks,
+    )
+  );
+}
+
+function uploadSessionUnavailable(error: unknown) {
+  if (!error || typeof error !== 'object') return false;
+  const response = error as {
+    code?: number;
+    message?: string;
+    response?: { status?: number };
+    status?: number;
+  };
+  const status = response.status ?? response.response?.status ?? response.code;
+  return (
+    status === 403 ||
+    status === 404 ||
+    status === 410 ||
+    /上传会话不存在|无权访问该上传会话/.test(response.message ?? '')
+  );
 }
 
 export function beginResumableUpload(
@@ -261,10 +349,12 @@ export function uploadResumableChunk(
   index: number,
   totalChunks: number,
   chunk: Blob,
+  signal?: AbortSignal,
 ) {
   return requestClient.upload<ResumableUploadSession>(
     `/api/knowledge/documents/upload-sessions/${sessionId}/chunks/${index}?totalChunks=${totalChunks}`,
     { file: chunk },
+    ...(signal ? [{ signal }] : []),
   );
 }
 
@@ -287,30 +377,75 @@ export async function uploadDocumentResumable(
   spaceId: number,
   file: File,
   onProgress?: (percent: number) => void,
+  signal?: AbortSignal,
 ) {
-  const session = await beginResumableUpload(spaceId, {
-    contentType: file.type,
-    fileName: file.name,
-    size: file.size,
-  });
-  const uploaded = new Set(session.uploadedChunks);
-  for (let index = 0; index < session.totalChunks; index++) {
-    if (!uploaded.has(index)) {
-      const start = index * session.chunkSize;
-      const chunk = file.slice(
-        start,
-        Math.min(start + session.chunkSize, file.size),
-      );
-      await uploadResumableChunk(
-        session.sessionId,
-        index,
-        session.totalChunks,
-        chunk,
+  const key = uploadSessionKey(spaceId, file);
+  let session: ResumableUploadSession | undefined;
+  try {
+    signal?.throwIfAborted();
+    const previousId = savedUploadSession(key);
+    if (previousId) {
+      try {
+        const previous = await getResumableUploadSession(previousId);
+        if (matchesUploadSession(previous, spaceId, file, previousId)) {
+          session = previous;
+        } else {
+          forgetUploadSession(key);
+        }
+      } catch (error) {
+        if (!uploadSessionUnavailable(error)) throw error;
+        forgetUploadSession(key);
+      }
+    }
+    if (!session) {
+      session = await beginResumableUpload(spaceId, {
+        contentType: file.type,
+        fileName: file.name,
+        size: file.size,
+      });
+      if (!matchesUploadSession(session, spaceId, file)) {
+        throw new Error('上传会话与所选文件不匹配');
+      }
+      saveUploadSession(key, session.sessionId);
+    }
+    signal?.throwIfAborted();
+    const uploaded = new Set(session.uploadedChunks);
+    for (let index = 0; index < session.totalChunks; index++) {
+      signal?.throwIfAborted();
+      if (!uploaded.has(index)) {
+        const start = index * session.chunkSize;
+        const chunk = file.slice(
+          start,
+          Math.min(start + session.chunkSize, file.size),
+        );
+        await uploadResumableChunk(
+          session.sessionId,
+          index,
+          session.totalChunks,
+          chunk,
+          signal,
+        );
+      }
+      onProgress?.(
+        Math.min(98, Math.round(((index + 1) / session.totalChunks) * 100)),
       );
     }
-    onProgress?.(Math.round(((index + 1) / session.totalChunks) * 100));
+    signal?.throwIfAborted();
+    onProgress?.(99);
+    const result = await completeResumableUpload(session.sessionId);
+    forgetUploadSession(key);
+    return result;
+  } catch (error) {
+    if (signal?.aborted) {
+      const sessionId = session?.sessionId ?? savedUploadSession(key);
+      if (sessionId) {
+        await cancelResumableUpload(sessionId);
+        forgetUploadSession(key);
+      }
+      throw new DOMException('Upload cancelled', 'AbortError');
+    }
+    throw error;
   }
-  return completeResumableUpload(session.sessionId);
 }
 
 export function importDocumentFromUrl(

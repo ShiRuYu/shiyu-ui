@@ -12,6 +12,7 @@ export namespace PlatformApi {
   export interface PlatformItem {
     [key: string]: any;
     apiKey?: string;
+    clearApiKey?: boolean;
     adapterType?: 'OLLAMA' | 'OPENAI_COMPATIBLE';
     availableModels?: string;
     baseUrl?: string;

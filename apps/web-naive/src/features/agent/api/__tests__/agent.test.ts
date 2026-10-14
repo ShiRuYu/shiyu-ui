@@ -257,6 +257,22 @@ describe('agent feature transport facade', () => {
     });
   });
 
+  it('keeps the authenticated Agent cancellation alive through page unload', async () => {
+    const fetchMock = vi.fn(async () => new Response(null, { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await runtimeApi.cancelRuntimeRunOnUnload('run/1');
+
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+      'https://api.example.test/api/agent/runs/run%2F1/cancel',
+      {
+        method: 'POST',
+        headers: { Authorization: 'Bearer agent-token' },
+        keepalive: true,
+      },
+    );
+  });
+
   it('keeps version copy inputs in the request body', async () => {
     await versionApi.copyVersion('agent-1', 7, {
       versionNumber: 'v2',

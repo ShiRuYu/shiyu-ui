@@ -68,6 +68,18 @@ export function useSchema(): VbenFormSchema[] {
       },
     },
     {
+      component: 'Select',
+      fieldName: 'purpose',
+      label: '题目用途',
+      rules: z.string().min(1, '请选择题目用途'),
+      componentProps: {
+        options: [
+          { label: '公开练习', value: 'PRACTICE' },
+          { label: '保密考试', value: 'EXAM_PRIVATE' },
+        ],
+      },
+    },
+    {
       component: 'ApiSelect',
       componentProps: {
         allowClear: true,
@@ -153,6 +165,7 @@ export function useColumns(
     { field: 'id', title: 'ID', width: 80 },
     { field: 'code', title: $t('education.question.code'), width: 120 },
     { field: 'type', title: $t('education.question.type'), width: 100 },
+    { field: 'purpose', title: '题目用途', width: 110 },
     {
       field: 'title',
       title: $t('education.question.questionTitle'),

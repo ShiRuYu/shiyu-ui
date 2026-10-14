@@ -5,15 +5,20 @@ import type {
 } from '#/adapter/vxe-table';
 import type { EducationPlanApi } from '#/features/education/api';
 
+import { onMounted, ref } from 'vue';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { NButton } from 'naive-ui';
+import { NButton, NSelect, NSpace } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
-import { deletePlan, getPlansByStudent } from '#/features/education/api';
+import {
+  deletePlan,
+  getPlansByStudent,
+  getStudentOptions,
+} from '#/features/education/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -24,7 +29,14 @@ const [FormModal, formModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
-const { getCurrentStudentId } = useCurrentStudentId();
+const selectedStudentId = ref<null | number>(null);
+const studentOptions = ref<Array<{ label: string; value: number }>>([]);
+onMounted(async () => {
+  studentOptions.value = (await getStudentOptions()).map((student) => ({
+    label: student.name,
+    value: student.id,
+  }));
+});
 
 function onEdit(row: EducationPlanApi.StudyPlan) {
   formModalApi.setData(row).open();
@@ -66,7 +78,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getPlansByStudent(getCurrentStudentId());
+          if (!selectedStudentId.value) return { items: [], total: 0 };
+          const result = await getPlansByStudent(selectedStudentId.value);
           return { items: result, total: result.length };
         },
       },
@@ -89,14 +102,24 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('education.plan.list')">
       <template #toolbar-tools>
-        <NButton
-          type="primary"
-          @click="onCreate"
-          v-access:code="['edu:plan:create']"
-        >
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('education.plan.name')]) }}
-        </NButton>
+        <NSpace align="center">
+          <NSelect
+            v-model:value="selectedStudentId"
+            :options="studentOptions"
+            :placeholder="$t('education.wrongQuestion.selectStudent')"
+            clearable
+            class="w-[200px]"
+            @update:value="refreshGrid"
+          />
+          <NButton
+            type="primary"
+            @click="onCreate"
+            v-access:code="['edu:plan:create']"
+          >
+            <Plus class="size-5" />
+            {{ $t('ui.actionTitle.create', [$t('education.plan.name')]) }}
+          </NButton>
+        </NSpace>
       </template>
     </Grid>
   </Page>

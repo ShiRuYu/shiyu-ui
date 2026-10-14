@@ -133,6 +133,7 @@
     "adapterTypeOllama": "Ollama",
     "baseUrl": "Base URL",
     "apiKey": "API Key",
+    "clearApiKey": "Clear saved API key",
     "temperature": "Temperature",
     "maxTokens": "Max Tokens",
     "maxRetries": "Max Retries",

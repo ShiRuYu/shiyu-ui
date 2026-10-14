@@ -9,14 +9,12 @@ import { NButton } from 'naive-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { message } from '#/adapter/naive';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { createPlan, updatePlan } from '#/features/education/api';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
-const { getCurrentStudentId } = useCurrentStudentId();
 const formData = ref<EducationPlanApi.StudyPlan>();
 const getTitle = computed(() =>
   formData.value?.id
@@ -34,9 +32,6 @@ const [Modal, modalApi] = useVbenModal<EducationPlanApi.StudyPlan>({
     if (valid) {
       modalApi.lock();
       const data = await formApi.getValues();
-      if (!formData.value?.id) {
-        data.studentId = getCurrentStudentId();
-      }
       // 格式化日期: DatePicker 返回时间戳，转换为 yyyy-MM-dd 字符串
       if (data.startDate && typeof data.startDate === 'number') {
         const d = new Date(data.startDate);

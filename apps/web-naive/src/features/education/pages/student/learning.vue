@@ -1,26 +1,27 @@
 <script lang="ts" setup>
 import type { EducationCourseApi } from '#/features/education';
-import type { EducationSubjectApi } from '#/features/education';
 
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
 import { useAccessStore } from '@vben/stores';
 
 import {
+  NButton,
   NCard,
   NGi,
   NGrid,
+  NInput,
   NInputNumber,
-  NSelect,
+  NPagination,
   NSpace,
   NTabPane,
   NTabs,
   NTag,
 } from 'naive-ui';
 
-import { getCourseList, getSubjectList } from '#/features/education';
+import { getStudentCourseList } from '#/features/education';
 import { EducationAdminCoursePage as AdminCourseList } from '#/features/education';
 import { $t } from '#/locales';
 
@@ -28,34 +29,29 @@ const accessStore = useAccessStore();
 const router = useRouter();
 const loading = ref(false);
 const courses = ref<EducationCourseApi.Course[]>([]);
-const subjects = ref<EducationSubjectApi.Subject[]>([]);
+const pageNum = ref(1);
+const pageSize = 12;
+const total = ref(0);
+const pageCount = computed(() =>
+  Math.max(1, Math.ceil(total.value / pageSize)),
+);
 const activeTab = ref('student');
 const adminPermission = accessStore.accessCodes.includes('edu:course:list');
 
-const filterSubject = ref<null | string>(null);
+const filterSubject = ref('');
 const filterGrade = ref<null | number>(null);
-
-async function loadSubjects() {
-  try {
-    const result = await getSubjectList();
-    subjects.value = result?.items || result || [];
-  } catch (error) {
-    console.error('Failed to load subjects:', error);
-  }
-}
 
 async function loadCourses() {
   loading.value = true;
   try {
-    const result = await getCourseList();
-    let data = result?.items || result || [];
-    if (filterSubject.value) {
-      data = data.filter((c) => c.subjectCode === filterSubject.value);
-    }
-    if (filterGrade.value) {
-      data = data.filter((c) => c.grade === filterGrade.value);
-    }
-    courses.value = data;
+    const result = await getStudentCourseList(
+      pageNum.value,
+      pageSize,
+      filterSubject.value.trim(),
+      filterGrade.value ?? undefined,
+    );
+    courses.value = result.items;
+    total.value = result.total;
   } catch (error) {
     console.error('Failed to load courses:', error);
   } finally {
@@ -65,13 +61,21 @@ async function loadCourses() {
 
 function goToCourse(course: EducationCourseApi.Course) {
   router.push({
-    path: '/education-center/learning',
-    query: { courseId: String(course.id) },
+    path: `/education-center/learning/course/${course.id}`,
   });
 }
 
+function applyFilters() {
+  pageNum.value = 1;
+  loadCourses();
+}
+
+function changePage(page: number) {
+  pageNum.value = page;
+  loadCourses();
+}
+
 onMounted(() => {
-  loadSubjects();
   loadCourses();
 });
 </script>
@@ -82,21 +86,21 @@ onMounted(() => {
       <!-- 学生端：课程浏览 -->
       <NTabPane name="student" :tab="$t('page.learning.course')">
         <NSpace class="mb-4" justify="end">
-          <NSelect
+          <NInput
             v-model:value="filterSubject"
-            :options="subjects.map((s) => ({ label: s.name, value: s.code }))"
-            :placeholder="$t('education.course.subjectCode')"
+            placeholder="学科编码，如 MATH"
             clearable
             style="width: 150px"
-            @update:value="loadCourses"
+            @keyup.enter="applyFilters"
           />
           <NInputNumber
             v-model:value="filterGrade"
             :placeholder="$t('education.course.grade')"
             clearable
             style="width: 120px"
-            @update:value="loadCourses"
+            @update:value="applyFilters"
           />
+          <NButton @click="applyFilters">筛选</NButton>
         </NSpace>
 
         <NGrid cols="1 s:2 m:3 l:4" :x-gap="16" :y-gap="16" responsive="screen">
@@ -160,6 +164,13 @@ onMounted(() => {
         >
           {{ $t('common.noData') }}
         </div>
+        <NPagination
+          v-if="total > pageSize"
+          class="mt-4"
+          :page="pageNum"
+          :page-count="pageCount"
+          @update:page="changePage"
+        />
       </NTabPane>
 
       <!-- 管理端：课程管理 -->

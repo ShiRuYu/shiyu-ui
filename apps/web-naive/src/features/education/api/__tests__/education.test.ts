@@ -41,6 +41,7 @@ import {
   getAdminExamById,
   getAdminExamList,
   getAllQuestions,
+  getAvailableExams,
   getChapterById,
   getChapterKnowledgeIds,
   getChapterOptions,
@@ -54,6 +55,8 @@ import {
   getExamBySubject,
   getExamByTeacher,
   getExamList,
+  getExamPaper,
+  getExamResult,
   getOverview,
   getPlanById,
   getPlansByStudent,
@@ -89,7 +92,9 @@ import {
   getWrongQuestionById,
   getWrongQuestionsByStudent,
   replaceChapterKnowledgeIds,
+  startExamAttempt,
   startLearning,
+  submitExamAttempt,
   updateChapter,
   updateCourse,
   updateExam,
@@ -107,6 +112,32 @@ describe('education feature transport facades', () => {
     vi.clearAllMocks();
     requestMock.get.mockResolvedValue({ items: [] });
     requestMock.post.mockResolvedValue({});
+  });
+
+  it('sends student exam answers to the owned attempt and loads its result', async () => {
+    await getAvailableExams(2, 9, 'MATH');
+    await getExamPaper(12);
+    await startExamAttempt(12);
+    await submitExamAttempt(55, [{ questionId: 3, answer: 'B' }]);
+    await getExamResult(55);
+
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/education/exam/available',
+      { params: { pageNum: 2, pageSize: 9, subjectCode: 'MATH' } },
+    );
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/education/exam/12/paper',
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/education/exam/12/attempts',
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/education/exam/attempts/55/submit',
+      { answers: [{ questionId: 3, answer: 'B' }] },
+    );
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/education/exam/attempts/55',
+    );
   });
 
   it('keeps chapter calls tenant-scoped to the education API', async () => {

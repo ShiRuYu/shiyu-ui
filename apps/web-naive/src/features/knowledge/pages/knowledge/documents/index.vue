@@ -6,7 +6,16 @@ import type {
   KnowledgeDocument,
 } from '#/features/knowledge/api';
 
-import { h, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
+import {
+  computed,
+  h,
+  markRaw,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -63,7 +72,15 @@ const keyword = ref('');
 const lifecycleStatus = ref<string>();
 const loading = ref(false);
 const loadError = ref('');
-const uploading = ref(false);
+interface ActiveUpload {
+  cancelling: boolean;
+  controller: AbortController;
+  id: string;
+  name: string;
+  percent: number;
+}
+const activeUploads = ref<ActiveUpload[]>([]);
+const uploading = computed(() => activeUploads.value.length > 0);
 const drawer = ref(false);
 const versions = ref<DocumentVersion[]>([]);
 const selected = ref<KnowledgeDocument>();
@@ -133,12 +150,26 @@ async function upload({
 }: UploadCustomRequestOptions) {
   const spaceId = activeSpaceId.value;
   if (!spaceId || !file.file) return;
-  uploading.value = true;
+  const currentFile = file.file;
+  const activeUpload = reactive<ActiveUpload>({
+    cancelling: false,
+    controller: markRaw(new AbortController()),
+    id: file.id,
+    name: currentFile.name,
+    percent: 0,
+  });
+  activeUploads.value.push(activeUpload);
   onProgress({ percent: 0 });
   try {
-    const result = await uploadDocument(spaceId, file.file, (percent) => {
-      onProgress({ percent });
-    });
+    const result = await uploadDocument(
+      spaceId,
+      currentFile,
+      (percent) => {
+        activeUpload.percent = percent;
+        onProgress({ percent });
+      },
+      activeUpload.controller.signal,
+    );
     if (disposed) return;
     onProgress({ percent: 100 });
     onFinish();
@@ -147,12 +178,32 @@ async function upload({
       message.success(`文档已加入处理队列，任务 #${result.jobId}`);
     else message.success('文档上传成功');
     await load();
-  } catch {
+  } catch (error) {
     onError();
-    if (!disposed) message.error('文档上传失败，请稍后重试');
+    if (!disposed) {
+      if (activeUpload.controller.signal.aborted) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          message.info('已取消上传');
+        } else {
+          message.error('取消上传失败，请稍后重试');
+        }
+      } else {
+        message.error(
+          currentFile.size > 10 * 1024 * 1024
+            ? '上传中断，重新选择同一文件可继续上传'
+            : '文档上传失败，请稍后重试',
+        );
+      }
+    }
   } finally {
-    if (!disposed) uploading.value = false;
+    activeUploads.value = activeUploads.value.filter(
+      (item) => item !== activeUpload,
+    );
   }
+}
+function cancelUpload(activeUpload: ActiveUpload) {
+  activeUpload.cancelling = true;
+  activeUpload.controller.abort('user-cancel');
 }
 async function action(
   row: KnowledgeDocument,
@@ -539,6 +590,30 @@ onUnmounted(() => {
               选择文件导入
             </NButton>
           </NUpload>
+        </div>
+      </div>
+      <div v-if="activeUploads.length" class="mt-4 space-y-2">
+        <div
+          v-for="item in activeUploads"
+          :key="item.id"
+          class="flex items-center justify-between gap-3 text-sm"
+        >
+          <span class="min-w-0 truncate"
+            >{{ item.name }} · {{ item.percent }}%</span
+          >
+          <NButton
+            size="small"
+            :disabled="item.cancelling || item.percent >= 99"
+            @click="cancelUpload(item)"
+          >
+            {{
+              item.cancelling
+                ? '正在取消'
+                : item.percent >= 99
+                  ? '正在完成'
+                  : '取消上传'
+            }}
+          </NButton>
         </div>
       </div>
       <NDataTable

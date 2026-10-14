@@ -97,15 +97,18 @@ describe('knowledge feature transport facades', () => {
       expect.objectContaining({ onUploadProgress: expect.any(Function) }),
     );
 
+    const large = new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'large.bin');
     requestMock.post
       .mockResolvedValueOnce({
         sessionId: 'session-1',
-        chunkSize: 4,
+        spaceId: 3,
+        fileName: large.name,
+        size: large.size,
+        chunkSize: large.size,
         totalChunks: 1,
         uploadedChunks: [],
       })
       .mockResolvedValueOnce({ document: { id: 1 } });
-    const large = new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'large.bin');
     await uploadDocument(3, large, vi.fn());
     expect(requestMock.post).toHaveBeenCalledWith(
       '/api/knowledge/spaces/3/documents/upload-sessions',

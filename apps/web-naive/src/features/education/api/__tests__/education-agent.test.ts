@@ -1,139 +1,37 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const requestMock = vi.hoisted(() => ({
-  get: vi.fn(),
-  getBaseUrl: vi.fn<() => string | undefined>(() => 'https://api.example.test'),
-  post: vi.fn(),
-}));
-
+const requestMock = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn() }));
 vi.mock('#/shared/api/request', () => ({ requestClient: requestMock }));
-vi.mock('@vben/stores', () => ({
-  useAccessStore: () => ({ accessToken: 'education-token' }),
-}));
 
 import {
-  completeReviewTask,
-  generateExam,
   generatePlan,
   generateReport,
-  getTodayReviewTasks,
+  listTutorKnowledge,
   practice,
   teach,
-  teachStream,
 } from '../education-agent';
 
-describe('education agent transport facade', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    requestMock.get.mockResolvedValue({ data: [] });
-    requestMock.post.mockResolvedValue({ data: { ok: true } });
-  });
+describe('student tutor transport', () => {
+  beforeEach(() => vi.clearAllMocks());
 
-  it('keeps education agent commands under the education feature', async () => {
-    const payload = { studentId: 1, knowledgeId: 2 };
+  it('uses only student-scoped education endpoints and sends no student ID', async () => {
+    await listTutorKnowledge();
+    await teach({ knowledgeId: 2, style: 'textual' });
+    await practice({ knowledgeId: 2, difficulty: 2, count: 3 });
+    await generatePlan({ knowledgeId: 2, targetDate: '2026-11-01' });
+    await generateReport({ period: '30d' });
 
-    await teach(payload);
-    await practice({ ...payload, difficulty: 2, count: 5 });
-    await generateExam({ studentId: 1, knowledgeIds: [2], duration: 30 });
-    await getTodayReviewTasks();
-    await completeReviewTask({ taskId: 3, result: 1 });
-    await generatePlan({ ...payload, targetDate: '2026-09-12' });
-    await generateReport({ studentId: 1, period: 'weekly' });
-
-    expect(requestMock.post).toHaveBeenNthCalledWith(
-      1,
-      '/api/agent/executions/execute',
-      payload,
-      { params: { agentId: 'teacher' } },
-    );
     expect(requestMock.get).toHaveBeenCalledWith(
-      '/api/agent/agents/definitions',
+      '/api/education/student-tutor/knowledge',
     );
-  });
-
-  it('releases the teaching stream reader when reading fails', async () => {
-    const releaseLock = vi.fn();
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: {
-          getReader: () => ({
-            read: vi.fn().mockRejectedValue(new Error('stream interrupted')),
-            releaseLock,
-          }),
-        },
-        ok: true,
-        status: 200,
-      }),
-    );
-
-    await expect(
-      teachStream({ studentId: 1, knowledgeId: 2, style: 'guided' }, vi.fn()),
-    ).rejects.toThrow('stream interrupted');
-    expect(releaseLock).toHaveBeenCalledOnce();
-  });
-
-  it('cancels the teaching stream when its abort signal fires', async () => {
-    let resolveRead!: (result: { done: boolean; value?: Uint8Array }) => void;
-    const read = vi.fn(
-      () =>
-        new Promise<{ done: boolean; value?: Uint8Array }>((resolve) => {
-          resolveRead = resolve;
-        }),
-    );
-    const cancel = vi.fn(() => {
-      resolveRead({ done: true });
-      return Promise.resolve();
-    });
-    const releaseLock = vi.fn();
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: { getReader: () => ({ cancel, read, releaseLock }) },
-        ok: true,
-        status: 200,
-      }),
-    );
-    const controller = new AbortController();
-
-    const stream = teachStream({ studentId: 1, knowledgeId: 2 }, vi.fn(), {
-      signal: controller.signal,
-    });
-    await Promise.resolve();
-    controller.abort();
-    await expect(stream).rejects.toMatchObject({ name: 'AbortError' });
-
-    expect(cancel).toHaveBeenCalledOnce();
-    expect(releaseLock).toHaveBeenCalledOnce();
-  });
-
-  it('flushes a teaching stream decoder when UTF-8 spans chunks', async () => {
-    const chunks = [
-      new TextEncoder().encode('\u{1f600}').slice(0, 2),
-      new TextEncoder().encode('\u{1f600}').slice(2),
-    ];
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({
-        body: {
-          getReader: () => ({
-            read: vi
-              .fn()
-              .mockResolvedValueOnce({ done: false, value: chunks[0] })
-              .mockResolvedValueOnce({ done: true, value: chunks[1] }),
-            releaseLock: vi.fn(),
-          }),
-        },
-        ok: true,
-        status: 200,
-      }),
-    );
-    const received: string[] = [];
-
-    await teachStream({ studentId: 1, knowledgeId: 2 }, (chunk) =>
-      received.push(chunk),
-    );
-
-    expect(received.join('')).toBe('😀');
+    expect(requestMock.post.mock.calls.map(([url]) => url)).toEqual([
+      '/api/education/student-tutor/teach',
+      '/api/education/student-tutor/practice',
+      '/api/education/student-tutor/plan',
+      '/api/education/student-tutor/report',
+    ]);
+    for (const [, body] of requestMock.post.mock.calls) {
+      expect(body).not.toHaveProperty('studentId');
+    }
   });
 });

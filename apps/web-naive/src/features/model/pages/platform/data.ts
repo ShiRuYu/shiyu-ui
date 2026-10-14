@@ -71,8 +71,23 @@ export function useSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
+      componentProps: {
+        type: 'password',
+        showPasswordOnClick: true,
+        autocomplete: 'new-password',
+      },
       fieldName: 'apiKey',
       label: $t('system.platform.apiKey'),
+    },
+    {
+      component: 'Switch',
+      defaultValue: false,
+      dependencies: {
+        resolve: ({ values }) => ({ if: Boolean(values.id) }),
+        triggerFields: ['id'],
+      },
+      fieldName: 'clearApiKey',
+      label: $t('system.platform.clearApiKey'),
     },
     {
       component: 'InputNumber',

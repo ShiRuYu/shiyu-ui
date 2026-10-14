@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const useUserStoreMock = vi.hoisted(() => vi.fn());
+const getCurrentStudentMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@vben/stores', () => ({
-  useUserStore: useUserStoreMock,
+vi.mock('#/features/education/api/student', () => ({
+  getCurrentStudent: getCurrentStudentMock,
 }));
 
 import { useCurrentStudentId } from './useCurrentStudentId';
@@ -13,35 +13,26 @@ describe('useCurrentStudentId', () => {
     vi.clearAllMocks();
   });
 
-  it('falls back to the user field when extInfo contains malformed JSON', () => {
-    useUserStoreMock.mockReturnValue({
-      userInfo: { extInfo: '{malformed', studentId: 42 },
-    });
+  it('resolves the student from the authenticated server session', async () => {
+    getCurrentStudentMock.mockResolvedValue({ id: 42, name: 'Student' });
 
-    expect(useCurrentStudentId().getCurrentStudentId()).toBe(42);
+    await expect(useCurrentStudentId().getCurrentStudentId()).resolves.toBe(42);
+    expect(getCurrentStudentMock).toHaveBeenCalledOnce();
   });
 
-  it('uses the development default when no usable student id exists', () => {
-    useUserStoreMock.mockReturnValue({
-      userInfo: { extInfo: '{malformed' },
-    });
+  it('rejects missing enrollment instead of silently using another student', async () => {
+    getCurrentStudentMock.mockResolvedValue(null);
 
-    expect(useCurrentStudentId().getCurrentStudentId()).toBe(1);
+    await expect(useCurrentStudentId().getCurrentStudentId()).rejects.toThrow(
+      '当前账号未关联学生档案',
+    );
   });
 
-  it('normalizes numeric string metadata to a number', () => {
-    useUserStoreMock.mockReturnValue({
-      userInfo: { extInfo: JSON.stringify({ studentId: '42' }) },
-    });
+  it('rejects an invalid server student id', async () => {
+    getCurrentStudentMock.mockResolvedValue({ id: 0 });
 
-    expect(useCurrentStudentId().getCurrentStudentId()).toBe(42);
-  });
-
-  it('ignores invalid ids and falls back to a valid user field', () => {
-    useUserStoreMock.mockReturnValue({
-      userInfo: { extInfo: { studentId: 'not-a-number' }, studentId: 43 },
-    });
-
-    expect(useCurrentStudentId().getCurrentStudentId()).toBe(43);
+    await expect(useCurrentStudentId().getCurrentStudentId()).rejects.toThrow(
+      '当前账号未关联学生档案',
+    );
   });
 });

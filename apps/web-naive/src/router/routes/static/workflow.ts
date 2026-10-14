@@ -47,9 +47,39 @@ const routes: RouteRecordRaw[] = [
     },
     children: [
       {
+        name: 'EducationLearning',
+        path: 'learning',
+        children: [
+          {
+            name: 'EducationCourseDetail',
+            path: 'course/:id',
+            component: () =>
+              import('#/features/education/pages/student/course-detail.vue'),
+            meta: {
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              hideInTab: true,
+              title: '课程详情',
+            },
+          },
+        ],
+      },
+      {
         name: 'EducationPractice',
         path: 'practice',
         children: [
+          {
+            name: 'EducationQuestionPractice',
+            path: 'questions/:id',
+            component: () =>
+              import('#/features/education/pages/student/question-practice.vue'),
+            meta: {
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              hideInTab: true,
+              title: '题目练习',
+            },
+          },
           {
             name: 'EducationExamList',
             path: 'exams',
@@ -85,6 +115,33 @@ const routes: RouteRecordRaw[] = [
               hideInTab: true,
               title: '考试结果',
             },
+          },
+        ],
+      },
+      {
+        name: 'EducationTutor',
+        path: 'ai-tutor',
+        children: [
+          {
+            name: 'EducationTutorPractice',
+            path: 'practice',
+            component: () =>
+              import('#/features/education/pages/tutor/practice/index.vue'),
+            meta: { hideInMenu: true, title: 'AI 出题' },
+          },
+          {
+            name: 'EducationTutorPlanner',
+            path: 'planner',
+            component: () =>
+              import('#/features/education/pages/tutor/planner/index.vue'),
+            meta: { hideInMenu: true, title: '学习规划' },
+          },
+          {
+            name: 'EducationTutorReport',
+            path: 'report',
+            component: () =>
+              import('#/features/education/pages/tutor/report-gen/index.vue'),
+            meta: { hideInMenu: true, title: '学习报告' },
           },
         ],
       },

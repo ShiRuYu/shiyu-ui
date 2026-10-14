@@ -3,13 +3,27 @@ import type { RuntimeApproval } from '#/features/agent';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
-import { NAlert, NEmpty, NList, NListItem, NSpace, NTag } from 'naive-ui';
+import {
+  NAlert,
+  NButton,
+  NEmpty,
+  NList,
+  NListItem,
+  NSpace,
+  NTag,
+} from 'naive-ui';
 
-import { listRuntimeApprovals } from '#/features/agent';
+import {
+  approveAndResumeTool,
+  listRuntimeApprovals,
+  rejectAndCancelTool,
+} from '#/features/agent';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const approvals = ref<RuntimeApproval[]>([]);
 const error = ref(false);
+const actionError = ref('');
+const busyId = ref<null | string>(null);
 let disposed = false;
 let latestRequestId = 0;
 
@@ -23,6 +37,23 @@ async function loadApprovals() {
   } catch {
     if (disposed || requestId !== latestRequestId) return;
     error.value = true;
+  }
+}
+
+async function decide(item: RuntimeApproval, approved: boolean) {
+  if (busyId.value) return;
+  busyId.value = item.id;
+  actionError.value = '';
+  try {
+    if (approved) await approveAndResumeTool(item.id);
+    else await rejectAndCancelTool(item.id);
+  } catch {
+    actionError.value = approved
+      ? '审批已提交时可能仍需继续执行，请刷新列表后重试。'
+      : '拒绝操作未完成，请刷新列表后重试。';
+  } finally {
+    busyId.value = null;
+    await loadApprovals();
   }
 }
 
@@ -41,12 +72,45 @@ onUnmounted(() => {
     <NAlert v-if="error" type="warning" :bordered="false">
       审批列表暂时不可用，请稍后重试。
     </NAlert>
+    <NAlert v-if="actionError" type="warning" :bordered="false">
+      {{ actionError }}
+    </NAlert>
     <NEmpty v-if="!approvals.length" description="暂无待审批工具调用" />
     <NList v-else bordered>
       <NListItem v-for="item in approvals" :key="item.id">
         <NSpace justify="space-between" style="width: 100%">
-          <span>{{ item.toolName || item.id }}</span
-          ><NTag>{{ item.status }}</NTag>
+          <span>{{ item.toolName || item.id }}</span>
+          <NSpace align="center">
+            <NTag>{{ item.status }}</NTag>
+            <NButton
+              v-if="
+                item.status === 'PENDING' ||
+                item.status === 'APPROVED' ||
+                item.status === 'CLAIMED'
+              "
+              size="small"
+              type="primary"
+              :loading="busyId === item.id"
+              :disabled="!!busyId && busyId !== item.id"
+              @click="decide(item, true)"
+            >
+              {{
+                item.status === 'CLAIMED'
+                  ? '同步结果'
+                  : item.status === 'APPROVED'
+                    ? '继续执行'
+                    : '批准并继续'
+              }}
+            </NButton>
+            <NButton
+              v-if="item.status === 'PENDING' || item.status === 'EXPIRED'"
+              size="small"
+              :disabled="!!busyId"
+              @click="decide(item, false)"
+            >
+              {{ item.status === 'EXPIRED' ? '取消执行' : '拒绝' }}
+            </NButton>
+          </NSpace>
         </NSpace>
       </NListItem>
     </NList>

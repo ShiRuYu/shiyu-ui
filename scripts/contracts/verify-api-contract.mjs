@@ -27,6 +27,16 @@ const clientMethods = new Set([
 ]);
 const update = process.argv.includes('--update');
 
+function stableJson(value) {
+  if (Array.isArray(value)) return value.map(stableJson);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value)
+      .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+      .map(([key, entry]) => [key, stableJson(entry)]));
+  }
+  return value;
+}
+
 async function walk(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -241,6 +251,169 @@ function assertCoreSchemas(spec, failures) {
   }
 }
 
+function resolveSchema(schema, schemas) {
+  const ref = schema?.$ref;
+  if (ref?.startsWith('#/components/schemas/')) {
+    return schemas[ref.slice('#/components/schemas/'.length)];
+  }
+  return schema;
+}
+
+function responseSchema(operation, schemas) {
+  const response = operation?.responses?.['200'];
+  const content = response?.content ?? {};
+  const media = content['application/json'] ?? content['*/*'];
+  return resolveSchema(media?.schema, schemas);
+}
+
+function requestSchema(operation, schemas) {
+  return resolveSchema(operation?.requestBody?.content?.['application/json']?.schema,
+    schemas);
+}
+
+function fieldSchema(schema, field, schemas) {
+  const property = resolveSchema(schema, schemas)?.properties?.[field];
+  return resolveSchema(property?.type === 'array' ? property.items : property,
+    schemas);
+}
+
+function requireFields(schema, fields, label, failures) {
+  if (!schema || schema.type !== 'object') {
+    failures.push(`${label} 缺少对象响应/请求 schema`);
+    return;
+  }
+  for (const field of fields) {
+    if (!(field in (schema.properties ?? {})))
+      failures.push(`${label} 缺少 ${field}`);
+  }
+}
+
+function requirePropertyType(schema, field, type, format, label, failures) {
+  const property = schema?.properties?.[field];
+  if (property?.type !== type || (format && property?.format !== format)) {
+    failures.push(`${label}.${field} 类型应为 ${type}${format ? `/${format}` : ''}`);
+  }
+}
+
+function requireRequired(schema, fields, label, failures) {
+  for (const field of fields) {
+    if (!schema?.required?.includes(field)) failures.push(`${label}.${field} 应为必填`);
+  }
+}
+
+function assertJourneySchemas(spec, failures) {
+  const schemas = spec.components?.schemas ?? {};
+  const operation = (path, method) => {
+    const result = spec.paths?.[path]?.[method];
+    if (!result) failures.push(`${method.toUpperCase()} ${path} 缺失`);
+    return result;
+  };
+  const data = (path, method) => fieldSchema(responseSchema(operation(path, method), schemas),
+    'data', schemas);
+
+  const paper = data('/api/education/exam/{examId}/paper', 'get');
+  requireFields(paper, ['examId', 'attemptId', 'sections', 'deadlineAt'],
+    '学生试卷', failures);
+  const section = fieldSchema(paper, 'sections', schemas);
+  requireFields(section, ['id', 'name', 'orderNo', 'questions'], '试卷大题', failures);
+  const question = fieldSchema(section, 'questions', schemas);
+  requireFields(question, ['id', 'questionId', 'title', 'type', 'score', 'options'],
+    '试卷题目', failures);
+  requirePropertyType(question, 'questionId', 'integer', 'int64', '试卷题目', failures);
+  for (const secret of ['answer', 'correctAnswer', 'analysis']) {
+    if (secret in (question?.properties ?? {}))
+      failures.push(`试卷题目不应暴露 ${secret}`);
+  }
+  requireFields(fieldSchema(question, 'options', schemas), ['value', 'label'],
+    '试卷选项', failures);
+
+  const submitPath = '/api/education/exam/attempts/{attemptId}/submit';
+  const submit = operation(submitPath, 'post');
+  const request = requestSchema(submit, schemas);
+  requireFields(request, ['answers'], '交卷请求', failures);
+  requireRequired(request, ['answers'], '交卷请求', failures);
+  const submittedAnswer = fieldSchema(request, 'answers', schemas);
+  requireFields(submittedAnswer, ['questionId', 'answer'],
+    '交卷答案', failures);
+  requireRequired(submittedAnswer, ['questionId'], '交卷答案', failures);
+  requirePropertyType(submittedAnswer, 'questionId', 'integer', 'int64', '交卷答案', failures);
+  const result = fieldSchema(responseSchema(submit, schemas), 'data', schemas);
+  requireFields(result, ['attemptId', 'status', 'score', 'totalScore', 'questions'],
+    '交卷结果', failures);
+  requireFields(fieldSchema(result, 'questions', schemas),
+    ['questionId', 'answer', 'correctAnswer', 'score', 'maxScore'],
+    '题目结果', failures);
+  requireFields(data('/api/education/exam/attempts/{attemptId}', 'get'),
+    ['attemptId', 'status', 'score', 'questions'], '持久化结果', failures);
+
+  const practiceCheck = requestSchema(
+    operation('/api/education/student-learning/questions/{id}/check', 'post'), schemas);
+  requireRequired(practiceCheck, ['answer'], '练习校验请求', failures);
+  requirePropertyType(practiceCheck, 'answer', 'string', null, '练习校验请求', failures);
+  const practiceSubmit = operation(
+    '/api/education/student-learning/questions/{id}/submissions', 'post');
+  const practiceRequest = requestSchema(practiceSubmit, schemas);
+  requireRequired(practiceRequest, ['answer', 'submissionKey'], '练习提交请求', failures);
+  requirePropertyType(practiceRequest, 'answer', 'string', null,
+    '练习提交请求', failures);
+  requirePropertyType(practiceRequest, 'submissionKey', 'string', null,
+    '练习提交请求', failures);
+  if ('studentId' in (practiceRequest?.properties ?? {})) {
+    failures.push('练习提交请求不能接受 studentId');
+  }
+  const practiceResult = fieldSchema(responseSchema(practiceSubmit, schemas),
+    'data', schemas);
+  requireFields(practiceResult,
+    ['recordId', 'questionId', 'correct', 'correctAnswer', 'analysis'],
+    '练习提交结果', failures);
+  requirePropertyType(practiceResult, 'recordId', 'integer', 'int64',
+    '练习提交结果', failures);
+  requirePropertyType(practiceResult, 'correct', 'boolean', null,
+    '练习提交结果', failures);
+  const wrongPractice = data('/api/education/student-learning/wrong-questions', 'get');
+  requireFields(wrongPractice, ['id', 'questionId', 'title', 'correctTimes'],
+    '本人错题', failures);
+  const questionCreate = requestSchema(operation('/api/education/question', 'post'), schemas);
+  const purpose = questionCreate?.properties?.purpose;
+  if (purpose?.type !== 'string' ||
+      !['PRACTICE', 'EXAM_PRIVATE'].every((value) => purpose.enum?.includes(value))) {
+    failures.push('题目用途应声明 PRACTICE/EXAM_PRIVATE 枚举');
+  }
+
+  const tutorRequest = requestSchema(
+    operation('/api/education/student-tutor/teach', 'post'), schemas);
+  if ('studentId' in (tutorRequest?.properties ?? {})) {
+    failures.push('学生辅学请求不能接受 studentId');
+  }
+  requirePropertyType(tutorRequest, 'knowledgeId', 'integer', 'int64',
+    '辅学请求', failures);
+  const tutorReport = data('/api/education/student-tutor/report', 'post');
+  requirePropertyType(tutorReport, 'recordCount', 'integer', 'int32',
+    '辅学报告', failures);
+  requirePropertyType(tutorReport, 'insufficientData', 'boolean', null,
+    '辅学报告', failures);
+
+  const agentExecute = operation(
+    '/api/conversation/conversations/{conversationId}/agent-executions', 'post');
+  const agentRequest = requestSchema(agentExecute, schemas);
+  requireRequired(agentRequest, ['appId', 'prompt'], 'Agent 会话执行', failures);
+  requirePropertyType(agentRequest, 'appId', 'string', null,
+    'Agent 会话执行', failures);
+  requirePropertyType(agentRequest, 'sourceMessageId', 'string', null,
+    'Agent 会话执行', failures);
+  if ('userId' in (agentRequest?.properties ?? {})
+    || 'tenantId' in (agentRequest?.properties ?? {})) {
+    failures.push('Agent 会话执行不能接受用户或租户标识');
+  }
+
+  const stream = operation('/api/conversation/generations/{id}/events', 'get');
+  const streamSchema = resolveSchema(
+    stream?.responses?.['200']?.content?.['text/event-stream']?.schema, schemas);
+  requireFields(streamSchema,
+    ['generationRunId', 'sequence', 'type', 'payload', 'createdAt'],
+    '生成 SSE data 事件', failures);
+}
+
 async function loadSpec() {
   if (update) {
     const url =
@@ -248,7 +421,11 @@ async function loadSpec() {
     const response = await fetch(url);
     if (!response.ok)
       throw new Error(`无法读取 ${url}: HTTP ${response.status}`);
-    const text = `${JSON.stringify(await response.json(), null, 2)}\n`;
+    const live = await response.json();
+    // The process port is an environment detail, not part of the API contract.
+    live.servers = [{ description: 'Generated server url',
+      url: 'http://127.0.0.1:9000' }];
+    const text = `${JSON.stringify(stableJson(live), null, 2)}\n`;
     await writeFile(snapshotPath, text, 'utf8');
     console.log(`OpenAPI snapshot updated from ${url}`);
   }
@@ -294,6 +471,7 @@ for (const call of calls) {
   }
 }
 assertCoreSchemas(spec, failures);
+assertJourneySchemas(spec, failures);
 
 const uniqueCalls = new Set(
   calls.map((call) => `${call.method} ${call.route}`),

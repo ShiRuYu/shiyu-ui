@@ -5,6 +5,7 @@ import { ref } from 'vue';
 
 import {
   cancelRuntimeRun,
+  cancelRuntimeRunOnUnload,
   getRuntimeRunEvents,
   streamGenerationRuntimeEvents,
 } from '#/features/agent';
@@ -17,6 +18,8 @@ import {
 
 export interface GenerationStreamHandlers {
   onChunk?: (chunk: string) => void;
+  onInputMessageId?: (messageId: string) => void;
+  onAssistantMessageId?: (messageId: string) => void;
   onReasoning?: (delta: string) => void;
   onRunId?: (runId: string) => void;
   onRuntimeEvent?: (event: AiRunEvent) => void;
@@ -29,6 +32,9 @@ export function useGenerationStream() {
   const loading = ref(false);
   const activeRunId = ref<string>();
   let controller: AbortController | undefined;
+  let activeMode: RuntimeMode | undefined;
+  let cancelRequested = false;
+  let generationFinished = false;
 
   async function start(
     request: ChatApi.ChatRequest,
@@ -36,12 +42,15 @@ export function useGenerationStream() {
     handlers: GenerationStreamHandlers = {},
   ) {
     begin();
+    activeMode = mode;
     try {
       const generationId = await chatStream(
         request,
         handlers.onChunk ?? (() => {}),
         {
           signal: controller?.signal,
+          onInputMessageId: handlers.onInputMessageId,
+          onAssistantMessageId: handlers.onAssistantMessageId,
           onEvent: (event) => {
             if (event.type === 'REASONING_DELTA' && event.reasoningContent) {
               handlers.onReasoning?.(event.reasoningContent);
@@ -54,6 +63,7 @@ export function useGenerationStream() {
         },
       );
       activeRunId.value ??= generationId;
+      generationFinished = true;
       handlers.onRuntimeReset?.();
       try {
         if (mode === 'agent') {
@@ -99,6 +109,8 @@ export function useGenerationStream() {
 
   async function stop(mode: RuntimeMode) {
     const runId = activeRunId.value;
+    cancelRequested = true;
+    controller?.abort();
     if (runId) {
       try {
         if (mode === 'agent') await cancelRuntimeRun(runId);
@@ -107,10 +119,23 @@ export function useGenerationStream() {
         // Local abort still releases the UI when cancellation persistence fails.
       }
     }
-    controller?.abort();
   }
 
-  function dispose() {
+  function dispose(unloading = false) {
+    const runId = activeRunId.value;
+    if (
+      loading.value &&
+      !generationFinished &&
+      !cancelRequested &&
+      activeMode === 'agent' &&
+      runId
+    ) {
+      cancelRequested = true;
+      const cancellation = unloading
+        ? cancelRuntimeRunOnUnload(runId)
+        : cancelRuntimeRun(runId);
+      void cancellation.catch(() => {});
+    }
     controller?.abort();
   }
 
@@ -119,12 +144,16 @@ export function useGenerationStream() {
     loading.value = true;
     controller = new AbortController();
     activeRunId.value = undefined;
+    activeMode = undefined;
+    cancelRequested = false;
+    generationFinished = false;
   }
 
   function finish() {
     loading.value = false;
     controller = undefined;
     activeRunId.value = undefined;
+    activeMode = undefined;
   }
 
   return { activeRunId, dispose, loading, retry, start, stop };

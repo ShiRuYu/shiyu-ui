@@ -8,6 +8,7 @@ const conversationApi = vi.hoisted(() => ({
 }));
 const runtimeApi = vi.hoisted(() => ({
   cancelRuntimeRun: vi.fn(),
+  cancelRuntimeRunOnUnload: vi.fn(),
   getRuntimeRunEvents: vi.fn(),
   streamGenerationRuntimeEvents: vi.fn(),
 }));
@@ -59,6 +60,23 @@ describe('useGenerationStream', () => {
     expect(stream.activeRunId.value).toBeUndefined();
   });
 
+  it('forwards the durable input message ID before streaming completes', async () => {
+    const inputIds: string[] = [];
+    conversationApi.chatStream.mockImplementation(
+      async (_request, _onChunk, options) => {
+        options.onInputMessageId?.('server-input-1');
+        return 'generation-1';
+      },
+    );
+    const stream = useGenerationStream();
+
+    await stream.start({ prompt: 'hello' }, 'chat', {
+      onInputMessageId: (id) => inputIds.push(id),
+    });
+
+    expect(inputIds).toEqual(['server-input-1']);
+  });
+
   it('loads durable runtime events for agent runs and cancels the active run', async () => {
     conversationApi.chatStream.mockResolvedValue('generation-2');
     runtimeApi.getRuntimeRunEvents.mockResolvedValue([
@@ -90,6 +108,67 @@ describe('useGenerationStream', () => {
     expect(runtimeApi.cancelRuntimeRun).toHaveBeenCalledWith('run-3');
     stream.dispose();
     await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+  });
+
+  it('releases the active Agent stream before a slow cancel request returns', async () => {
+    let releaseCancel!: () => void;
+    runtimeApi.cancelRuntimeRun.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          releaseCancel = resolve;
+        }),
+    );
+    conversationApi.chatStream.mockImplementation(
+      (_request, _onChunk, options) => {
+        options.onRunId?.('slow-run');
+        return new Promise((_resolve, reject) => {
+          options.signal?.addEventListener('abort', () =>
+            reject(new DOMException('Aborted', 'AbortError')),
+          );
+        });
+      },
+    );
+    const stream = useGenerationStream();
+    const pending = stream.start(
+      { appId: 'app-1', prompt: 'stop', sceneType: 'agent' },
+      'agent',
+    );
+    await Promise.resolve();
+
+    const stopping = stream.stop('agent');
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+    expect(stream.loading.value).toBe(false);
+    expect(runtimeApi.cancelRuntimeRun).toHaveBeenCalledWith('slow-run');
+    releaseCancel();
+    await stopping;
+  });
+
+  it('persists cancellation when an active Agent tab closes', async () => {
+    conversationApi.chatStream.mockImplementation(
+      (_request, _onChunk, options) => {
+        options.onRunId?.('closing-run');
+        return new Promise((_resolve, reject) => {
+          options.signal?.addEventListener('abort', () =>
+            reject(new DOMException('Aborted', 'AbortError')),
+          );
+        });
+      },
+    );
+    runtimeApi.cancelRuntimeRunOnUnload.mockResolvedValue(undefined);
+    const stream = useGenerationStream();
+    const pending = stream.start(
+      { appId: 'app-1', prompt: 'close', sceneType: 'agent' },
+      'agent',
+    );
+    await Promise.resolve();
+
+    stream.dispose(true);
+    stream.dispose();
+    await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+    expect(runtimeApi.cancelRuntimeRunOnUnload).toHaveBeenCalledExactlyOnceWith(
+      'closing-run',
+    );
+    expect(runtimeApi.cancelRuntimeRun).not.toHaveBeenCalled();
   });
 
   it('retries a message and keeps runtime tracing failures observational', async () => {

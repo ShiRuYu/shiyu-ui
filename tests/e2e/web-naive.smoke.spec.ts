@@ -300,6 +300,174 @@ test.describe('web-naive critical journeys', () => {
     await expect(modelLabel).toHaveAttribute('title', 'DeepSeek V4 Flash');
   });
 
+  test('sends an Agent App without a chat model and shows a failed run', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.route('**/api/model/platforms/options', async (route) => {
+      await route.fulfill({
+        body: JSON.stringify({ code: 200, data: [], message: 'success' }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/api/agent/apps', async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [{ id: 'app-agent-e2e', name: '失败演练 App' }],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    let executionBody: Record<string, unknown> | undefined;
+    await page.route(
+      '**/api/conversation/conversations/*/agent-executions',
+      async (route) => {
+        executionBody = route.request().postDataJSON() as Record<
+          string,
+          unknown
+        >;
+        await route.fulfill({
+          body:
+            'data: {"status":"STARTED","executionId":"exec-e2e","inputMessageId":"input-e2e"}\n\n' +
+            'data: {"status":"FAILED","executionId":"exec-e2e","assistantMessageId":"assistant-e2e"}\n\n',
+          contentType: 'text/event-stream',
+          status: 200,
+        });
+      },
+    );
+
+    await page.goto('/workspace/chat');
+    await page.getByLabel('工作区模式').click();
+    await page.getByText('Agent 执行', { exact: true }).last().click();
+    await expect(page.getByLabel('AI 应用')).toBeVisible();
+    await expect(page.getByLabel(/AI 平台|AI platform/)).toHaveCount(0);
+    await page
+      .getByPlaceholder(/输入你的问题|Ask a question/)
+      .fill('agent failure check');
+    const send = page.getByRole('button', { name: /发送|Send/ });
+    await expect(send).toBeEnabled();
+    await send.click();
+
+    await expect(page.getByRole('log')).toContainText('对话请求失败，请重试');
+    expect(executionBody).toMatchObject({
+      appId: 'app-agent-e2e',
+      prompt: 'agent failure check',
+    });
+  });
+
+  test('stops an Agent stream locally before the cancel request completes', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.route('**/api/agent/apps', async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: [{ id: 'app-agent-slow', name: '慢速 Agent App' }],
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+    await page.route('**/api/conversation/conversations', async (route) => {
+      if (route.request().method() !== 'POST') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({ code: 200, data: { id: 'conversation-slow' } }),
+        contentType: 'application/json',
+      });
+    });
+    await page.addInitScript(() => {
+      const browser = window as typeof window & { __agentAbortSeen?: boolean };
+      const originalFetch = window.fetch.bind(window);
+      window.fetch = async (input, init) => {
+        const url =
+          typeof input === 'string'
+            ? input
+            : input instanceof URL
+              ? input.href
+              : input.url;
+        if (
+          !url.endsWith(
+            '/api/conversation/conversations/conversation-slow/agent-executions',
+          )
+        ) {
+          return originalFetch(input, init);
+        }
+        const body = new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.enqueue(
+              new TextEncoder().encode(
+                'data: {"status":"STARTED","runtimeRunId":"run-slow","inputMessageId":"input-slow"}\n\n',
+              ),
+            );
+            init?.signal?.addEventListener(
+              'abort',
+              () => {
+                browser.__agentAbortSeen = true;
+              },
+              { once: true },
+            );
+          },
+          cancel() {
+            browser.__agentAbortSeen = true;
+          },
+        });
+        return new Response(body, {
+          status: 200,
+          headers: { 'Content-Type': 'text/event-stream' },
+        });
+      };
+    });
+
+    let releaseCancel!: () => void;
+    const cancelGate = new Promise<void>((resolve) => {
+      releaseCancel = resolve;
+    });
+    await page.route('**/api/agent/runs/run-slow/cancel', async (route) => {
+      await cancelGate;
+      await route.fulfill({
+        body: JSON.stringify({ code: 200, message: 'success' }),
+        contentType: 'application/json',
+      });
+    });
+    try {
+      await page.goto('/workspace/chat');
+      await page.getByLabel('工作区模式').click();
+      await page.getByText('Agent 执行', { exact: true }).last().click();
+      await page
+        .getByPlaceholder(/输入你的问题|Ask a question/)
+        .fill('cancel while streaming');
+      await page.getByRole('button', { name: /发送|Send/ }).click();
+      const cancelRequest = page.waitForRequest(
+        '**/api/agent/runs/run-slow/cancel',
+      );
+      await page.getByRole('button', { name: '停止生成' }).click();
+      await cancelRequest;
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () =>
+              (window as typeof window & { __agentAbortSeen?: boolean })
+                .__agentAbortSeen,
+          ),
+        )
+        .toBe(true);
+      const composer = page.getByPlaceholder(/输入你的问题|Ask a question/);
+      await expect(composer).toBeEnabled();
+      await composer.fill('next prompt after local stop');
+      await expect(
+        page.getByRole('button', { name: /发送|Send/ }),
+      ).toBeEnabled();
+      await expect(page.getByRole('log')).not.toContainText('Agent 执行完成');
+    } finally {
+      releaseCancel();
+    }
+  });
+
   test('uses one unified workspace for Chat, Agent and RAG', async ({
     page,
   }) => {

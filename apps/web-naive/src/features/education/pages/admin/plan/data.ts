@@ -5,6 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { EducationPlanApi } from '#/features/education/api';
 
 import { z } from '#/adapter/form';
+import { getStudentOptions } from '#/features/education/api';
 import { $t } from '#/locales';
 
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -19,6 +20,18 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useSchema(): VbenFormSchema[] {
   return [
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getStudentOptions,
+        labelField: 'name',
+        valueField: 'id',
+        placeholder: $t('education.wrongQuestion.selectStudent'),
+      },
+      fieldName: 'studentId',
+      label: $t('education.wrongQuestion.student'),
+      rules: 'required',
+    },
     {
       component: 'Input',
       fieldName: 'name',

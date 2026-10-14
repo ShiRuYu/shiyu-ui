@@ -12,6 +12,7 @@ export namespace ChatApi {
     sceneType?: string;
     appId?: string;
     appVersionId?: string;
+    sourceMessageId?: string;
   }
 
   export interface ChatResponse {
@@ -21,6 +22,13 @@ export namespace ChatApi {
     reasoningContent?: string;
     payload?: string;
     errorMessage?: string;
+  }
+  export interface GenerationEvent {
+    createdAt: string;
+    generationRunId: string;
+    payload: string;
+    sequence: number;
+    type: string;
   }
   export interface Conversation {
     id: string;
@@ -33,6 +41,7 @@ export namespace ChatApi {
     id: string;
     role: 'ASSISTANT' | 'SYSTEM' | 'TOOL' | 'USER';
     contentParts?: Array<{ text?: string; type: string }>;
+    toolCall?: Record<string, unknown>;
   }
   export interface PromptPreview {
     messages: ConversationMessage[];
@@ -149,46 +158,106 @@ async function chatStream(
   data: ChatApi.ChatRequest,
   onMessage: (text: string) => void,
   options: {
+    onAssistantMessageId?: (messageId: string) => void;
     onEvent?: (
       event: ChatApi.ChatResponse & { payload?: string; type?: string },
     ) => void;
+    onInputMessageId?: (messageId: string) => void;
     onRunId?: (runId: string) => void;
     signal?: AbortSignal;
   } = {},
 ): Promise<string> {
   if (data.appId && data.sceneType === 'agent') {
-    const requestOptions = options.signal
-      ? { signal: options.signal }
-      : undefined;
-    const result = requestOptions
-      ? await requestClient.post<{
-          executionId: string;
-          output?: unknown;
-          runtimeRunId?: string;
-        }>(
-          `/api/agent/apps/${data.appId}/execute`,
-          {
-            prompt: data.prompt,
-            appVersionId: data.appVersionId,
-          },
-          requestOptions,
-        )
-      : await requestClient.post<{
-          executionId: string;
-          output?: unknown;
-          runtimeRunId?: string;
-        }>(`/api/agent/apps/${data.appId}/execute`, {
-          prompt: data.prompt,
+    const conversationId =
+      data.conversationId ??
+      (
+        await createConversation({
+          model: data.model,
+          platform: data.platform,
+          sceneType: 'agent',
+        })
+      ).id;
+    const token = useAccessStore().accessToken;
+    const baseURL = requestClient.getBaseUrl() ?? '';
+    const response = await fetch(
+      `${baseURL}/api/conversation/conversations/${conversationId}/agent-executions`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'text/event-stream',
+          Authorization: token ? `Bearer ${token}` : '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          appId: data.appId,
           appVersionId: data.appVersionId,
-        });
-
-    const output =
-      typeof result.output === 'string'
-        ? result.output
-        : JSON.stringify(result.output ?? '');
-    if (output) onMessage(output);
-    const runId = result.runtimeRunId ?? result.executionId;
-    options.onRunId?.(runId);
+          prompt: data.prompt,
+          sourceMessageId: data.sourceMessageId,
+        }),
+        signal: options.signal,
+      },
+    );
+    let runId = '';
+    let terminal = '';
+    let streamedContent = '';
+    await consumeEventStream(
+      response,
+      (frame) => {
+        const event = JSON.parse(frame.data) as {
+          assistantMessageId?: string;
+          content?: string;
+          executionId?: string;
+          inputMessageId?: string;
+          output?: unknown;
+          runtimeRunId?: string;
+          status?: string;
+        };
+        if (event.status === 'STARTED') {
+          runId = event.runtimeRunId ?? event.executionId ?? '';
+          if (runId) options.onRunId?.(runId);
+          if (event.inputMessageId)
+            options.onInputMessageId?.(event.inputMessageId);
+        } else if (event.status === 'DELTA') {
+          if (typeof event.content === 'string' && event.content) {
+            streamedContent += event.content;
+            onMessage(event.content);
+          }
+        } else if (event.status === 'COMPLETED') {
+          terminal = 'COMPLETED';
+          if (event.assistantMessageId)
+            options.onAssistantMessageId?.(event.assistantMessageId);
+          const output =
+            typeof event.output === 'string'
+              ? event.output
+              : event.output &&
+                  typeof event.output === 'object' &&
+                  'content' in event.output &&
+                  typeof event.output.content === 'string'
+                ? event.output.content
+                : JSON.stringify(event.output ?? '');
+          if (output && !streamedContent) onMessage(output);
+          else if (output.startsWith(streamedContent)) {
+            const remainder = output.slice(streamedContent.length);
+            if (remainder) onMessage(remainder);
+          }
+        } else if (event.status === 'FAILED' || event.status === 'CANCELLED') {
+          terminal = event.status;
+        } else if (event.status === 'PAUSED') {
+          terminal = 'PAUSED';
+          if (event.assistantMessageId)
+            options.onAssistantMessageId?.(event.assistantMessageId);
+          onMessage('工具调用等待审批，请前往工具审批页面处理。');
+        }
+      },
+      options.signal,
+    );
+    if (terminal === 'CANCELLED') {
+      throw new DOMException('Aborted', 'AbortError');
+    }
+    if (terminal === 'PAUSED') return runId;
+    if (terminal !== 'COMPLETED') {
+      throw new Error(`Agent 执行失败：${terminal || 'UNKNOWN'}`);
+    }
     return runId;
   }
   const conversation = data.conversationId
@@ -205,7 +274,10 @@ async function chatStream(
           ...(options.signal ? { signal: options.signal } : {}),
         },
       );
-  const run = await requestClient.post<{ id: string }>(
+  const run = await requestClient.post<{
+    id: string;
+    inputMessageId?: string;
+  }>(
     `/api/conversation/conversations/${conversation.id}/generations`,
     {
       content: data.prompt,
@@ -218,6 +290,7 @@ async function chatStream(
       ...(options.signal ? { signal: options.signal } : {}),
     },
   );
+  if (run.inputMessageId) options.onInputMessageId?.(run.inputMessageId);
   options.onRunId?.(run.id);
   await streamGeneration(run.id, onMessage, options.signal, options.onEvent);
   return run.id;
@@ -255,28 +328,29 @@ async function streamGeneration(
       ({ data: eventData, id }) => {
         if (id) lastEventId = id;
         if (!eventData || eventData === '[DONE]') return;
-        try {
-          const payload = JSON.parse(eventData) as ChatApi.ChatResponse & {
-            errorMessage?: string;
-            payload?: string;
-            type?: string;
-          };
-          onEvent?.(payload);
-          if (
-            payload.type === 'COMPLETED' ||
-            payload.type === 'FAILED' ||
-            payload.type === 'CANCELLED'
-          )
-            terminal = true;
-          if (!payload.success && payload.errorMessage)
-            throw new Error(payload.errorMessage);
-          if (payload.content) onMessage(payload.content);
-          else if (payload.type === 'DELTA' && payload.payload)
-            onMessage(payload.payload);
-        } catch (error) {
-          if (error instanceof SyntaxError) onMessage(eventData);
-          else throw error;
+        const payload = JSON.parse(eventData) as ChatApi.GenerationEvent;
+        if (
+          !payload ||
+          typeof payload.type !== 'string' ||
+          typeof payload.payload !== 'string'
+        ) {
+          throw new Error('Invalid generation event');
         }
+        onEvent?.({
+          content: payload.type === 'DELTA' ? payload.payload : '',
+          payload: payload.payload,
+          reasoningContent:
+            payload.type === 'REASONING_DELTA' ? payload.payload : undefined,
+          success: payload.type !== 'FAILED' && payload.type !== 'CANCELLED',
+          type: payload.type,
+        });
+        if (payload.type === 'DELTA' && payload.payload)
+          onMessage(payload.payload);
+        if (payload.type === 'COMPLETED') terminal = true;
+        if (payload.type === 'FAILED')
+          throw new Error(payload.payload || 'Generation failed');
+        if (payload.type === 'CANCELLED')
+          throw new DOMException('Generation cancelled', 'AbortError');
       },
       signal,
     );

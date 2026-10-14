@@ -133,6 +133,7 @@
     "adapterTypeOllama": "Ollama",
     "baseUrl": "Base URL",
     "apiKey": "API Key",
+    "clearApiKey": "清除已保存的 API Key",
     "temperature": "温度",
     "maxTokens": "最大 Token",
     "maxRetries": "最大重试",

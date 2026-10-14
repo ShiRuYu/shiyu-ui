@@ -44,6 +44,13 @@ async function getStudentById(id: number) {
   );
 }
 
+/** Resolve the enrolled student using the authenticated server-side user and tenant. */
+async function getCurrentStudent() {
+  return requestClient.get<EducationStudentApi.Student | null>(
+    '/api/education/students/me',
+  );
+}
+
 async function createStudent(data: EducationStudentApi.StudentRequest) {
   return requestClient.post<EducationStudentApi.Student>(
     '/api/education/students',
@@ -73,6 +80,7 @@ async function getStudentOptions() {
 export {
   createStudent,
   deleteStudent,
+  getCurrentStudent,
   getStudentById,
   getStudentList,
   getStudentOptions,

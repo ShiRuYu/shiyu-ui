@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 import type { AiAppSummary, AiRunEvent, RuntimeMode } from '#/features/agent';
 
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+} from 'vue';
 
 import { Page } from '@vben/common-ui';
 
@@ -36,8 +43,10 @@ import { $t } from '#/locales';
 import { renderSafeMarkdown } from '#/utils/markdown';
 
 interface ChatMessage {
+  appId?: string;
   content: string;
   id: string;
+  persisted: boolean;
   role: 'assistant' | 'system' | 'tool' | 'user';
   reasoning?: string;
   status?: 'error' | 'streaming';
@@ -46,7 +55,11 @@ interface ChatMessage {
 const messages = ref<ChatMessage[]>([]);
 const input = ref('');
 const messageId = ref(0);
-const conversations = ref<Array<{ id: string; title?: string }>>([]);
+const sending = ref(false);
+const switchingConversation = ref(false);
+const conversations = ref<
+  Array<{ id: string; sceneType?: string; title?: string }>
+>([]);
 const branches = ref<Array<{ id: string; title?: string }>>([]);
 const editingMessageId = ref<string>();
 const editingText = ref('');
@@ -82,6 +95,7 @@ let disposed = false;
 let latestPlatformRequest = 0;
 let latestModelRequest = 0;
 let latestConversationRequest = 0;
+let currentSendMode: RuntimeMode | undefined;
 const {
   dispose: disposeGenerationStream,
   loading,
@@ -89,6 +103,18 @@ const {
   start: startGenerationStream,
   stop: stopGenerationStream,
 } = useGenerationStream();
+const canSend = computed(
+  () =>
+    Boolean(input.value.trim()) &&
+    !sending.value &&
+    !loading.value &&
+    !switchingConversation.value &&
+    (mode.value === 'agent'
+      ? Boolean(selectedAppId.value)
+      : Boolean(selectedPlatformId.value && selectedModel.value) &&
+        !loadingPlatforms.value &&
+        !loadingModels.value),
+);
 
 async function loadModels(platformId: number) {
   const requestId = ++latestModelRequest;
@@ -154,144 +180,203 @@ async function scrollToLatest() {
 
 async function sendMessage(promptOverride?: string) {
   const prompt = (promptOverride ?? input.value).trim();
-  if (!prompt || loading.value) return;
+  if (!prompt || sending.value || loading.value || switchingConversation.value)
+    return;
 
   const platform = platformOptions.value.find(
     (item) => item.value === selectedPlatformId.value,
   )?.code;
-  if (!platform || !selectedModel.value) {
+  const model = selectedModel.value;
+  const sendMode = mode.value;
+  const appId = selectedAppId.value;
+  if (sendMode === 'agent' ? !appId : !platform || !model) {
     notice.warning($t('ai-tutor.selectionRequired'));
     return;
   }
 
-  if (!activeConversationId.value) {
-    try {
+  sending.value = true;
+  currentSendMode = sendMode;
+  let conversationId = activeConversationId.value;
+  try {
+    if (!conversationId) {
       const created = await createConversation({
         platform,
-        model: selectedModel.value,
+        model,
         title: prompt.slice(0, 40),
-        sceneType: mode.value,
+        sceneType: sendMode,
       });
       if (disposed) return;
-      activeConversationId.value = created.id;
+      conversationId = created.id;
+      activeConversationId.value = conversationId;
       conversations.value = [
-        { id: created.id, title: created.title },
+        { id: created.id, sceneType: created.sceneType, title: created.title },
         ...conversations.value,
       ];
-    } catch {
-      notice.error($t('ai-tutor.chatError'));
-      return;
     }
-  }
-  messages.value.push({
-    content: prompt,
-    id: String(++messageId.value),
-    role: 'user',
-  });
-  const assistant: ChatMessage = {
-    content: '',
-    id: String(++messageId.value),
-    role: 'assistant',
-    status: 'streaming',
-  };
-  messages.value.push(assistant);
-  input.value = '';
-  await scrollToLatest();
-
-  try {
-    await startGenerationStream(
-      {
-        model: selectedModel.value,
-        platform,
-        prompt,
-        conversationId: activeConversationId.value,
-        sceneType: mode.value,
-        appId: selectedAppId.value,
-      },
-      mode.value,
-      {
-        onChunk: (chunk) => {
-          assistant.content += chunk;
-          void scrollToLatest();
-        },
-        onReasoning: (delta) => {
-          assistant.reasoning = `${assistant.reasoning ?? ''}${delta}`;
-        },
-        onRuntimeEvent: (event) => {
-          runtimeEvents.value.push(event);
-        },
-        onRuntimeEvents: (events) => {
-          runtimeEvents.value = events;
-        },
-        onRuntimeReset: () => {
-          runtimeEvents.value = [];
-        },
-      },
-    );
-    if (!assistant.content) assistant.content = $t('ai-tutor.emptyResponse');
-    assistant.status = undefined;
-  } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      assistant.content ||= $t('ai-tutor.stopped');
-      assistant.status = undefined;
-    } else {
-      assistant.content ||= $t('ai-tutor.chatError');
-      assistant.status = 'error';
-    }
-  } finally {
+    const userMessage = reactive<ChatMessage>({
+      content: prompt,
+      id: `local-${++messageId.value}`,
+      persisted: false,
+      role: 'user',
+    });
+    const assistant = reactive<ChatMessage>({
+      content: '',
+      id: `local-${++messageId.value}`,
+      persisted: false,
+      role: 'assistant',
+      status: 'streaming',
+      appId: sendMode === 'agent' ? appId : undefined,
+    });
+    messages.value.push(userMessage, assistant);
+    input.value = '';
     await scrollToLatest();
+
+    try {
+      await startGenerationStream(
+        {
+          model,
+          platform,
+          prompt,
+          conversationId,
+          sceneType: sendMode,
+          appId,
+        },
+        sendMode,
+        {
+          onChunk: (chunk) => {
+            assistant.content += chunk;
+            void scrollToLatest();
+          },
+          onInputMessageId: (id) => {
+            userMessage.id = id;
+            userMessage.persisted = true;
+          },
+          onAssistantMessageId: (id) => {
+            assistant.id = id;
+            assistant.persisted = true;
+          },
+          onReasoning: (delta) => {
+            assistant.reasoning = `${assistant.reasoning ?? ''}${delta}`;
+          },
+          onRuntimeEvent: (event) => {
+            runtimeEvents.value.push(event);
+          },
+          onRuntimeEvents: (events) => {
+            runtimeEvents.value = events;
+          },
+          onRuntimeReset: () => {
+            runtimeEvents.value = [];
+          },
+        },
+      );
+      if (!assistant.content) assistant.content = $t('ai-tutor.emptyResponse');
+      assistant.status = undefined;
+    } catch (error) {
+      assistant.content ||=
+        error instanceof DOMException && error.name === 'AbortError'
+          ? $t('ai-tutor.stopped')
+          : $t('ai-tutor.chatError');
+      assistant.status = 'error';
+    } finally {
+      await scrollToLatest();
+    }
+  } catch {
+    if (!disposed) notice.error($t('ai-tutor.chatError'));
+  } finally {
+    sending.value = false;
+    currentSendMode = undefined;
   }
 }
 
-async function loadConversation(id: string) {
-  if (loading.value) return;
+async function loadConversation(id: string, allowBusy = false) {
+  if (!allowBusy && (sending.value || loading.value)) return;
   const requestId = ++latestConversationRequest;
-  activeConversationId.value = id;
+  switchingConversation.value = true;
   try {
     const [loadedBranches, remote] = await Promise.all([
       listBranches(id).catch(() => []),
       getConversationMessages(id),
     ]);
     if (disposed || requestId !== latestConversationRequest) return;
+    activeConversationId.value = id;
+    const selected =
+      conversations.value.find((item) => item.id === id) ??
+      loadedBranches.find((item) => item.id === id);
+    if (
+      selected?.sceneType === 'agent' ||
+      selected?.sceneType === 'rag' ||
+      selected?.sceneType === 'chat'
+    )
+      mode.value = selected.sceneType;
     branches.value = loadedBranches;
     messages.value = (remote ?? []).map((item) => ({
       id: item.id,
+      persisted: true,
       role: item.role.toLowerCase() as ChatMessage['role'],
       content: (item.contentParts ?? [])
         .map((part) => part.text ?? '')
         .join(''),
+      appId:
+        typeof item.toolCall?.appId === 'string'
+          ? item.toolCall.appId
+          : undefined,
+      status:
+        item.toolCall?.status === 'FAILED' ||
+        item.toolCall?.status === 'CANCELLED'
+          ? 'error'
+          : undefined,
     }));
+    const lastAgentApp = messages.value
+      .toReversed()
+      .find((item) => item.appId)?.appId;
+    if (lastAgentApp) selectedAppId.value = lastAgentApp;
+    editingMessageId.value = undefined;
+    editingText.value = '';
+    runtimeEvents.value = [];
     await scrollToLatest();
   } catch {
     if (!disposed && requestId === latestConversationRequest)
       notice.error($t('ai-tutor.chatError'));
+  } finally {
+    if (!disposed && requestId === latestConversationRequest)
+      switchingConversation.value = false;
   }
 }
 
 function beginEdit(message: ChatMessage) {
+  if (!message.persisted) return;
   editingMessageId.value = message.id;
   editingText.value = message.content;
 }
 
 async function saveEdit() {
   if (!editingMessageId.value || !editingText.value.trim()) return;
+  const message = messages.value.find(
+    (item) => item.id === editingMessageId.value && item.role === 'user',
+  );
+  const conversationId = activeConversationId.value;
+  if (!message?.persisted || !conversationId) return;
   try {
-    await editMessage(editingMessageId.value, editingText.value.trim());
+    await editMessage(message.id, editingText.value.trim());
     if (disposed) return;
     editingMessageId.value = undefined;
-    if (activeConversationId.value)
-      await loadConversation(activeConversationId.value);
+    if (activeConversationId.value === conversationId)
+      await loadConversation(conversationId);
   } catch {
     notice.error($t('ai-tutor.chatError'));
   }
 }
 
 function newConversation() {
-  if (loading.value) return;
+  if (sending.value || loading.value) return;
   latestConversationRequest += 1;
+  switchingConversation.value = false;
   activeConversationId.value = undefined;
   branches.value = [];
   messages.value = [];
+  editingMessageId.value = undefined;
+  editingText.value = '';
+  runtimeEvents.value = [];
 }
 
 async function loadConversationList() {
@@ -305,7 +390,7 @@ async function loadConversationList() {
 async function loadRuntimeApps() {
   try {
     runtimeApps.value = (await listRuntimeApps()) ?? [];
-    selectedAppId.value = runtimeApps.value[0]?.id;
+    selectedAppId.value ??= runtimeApps.value[0]?.id;
   } catch {
     // App selection is optional for the chat mode; keep the workspace usable.
     runtimeApps.value = [];
@@ -323,7 +408,7 @@ async function showPromptPreview() {
 }
 
 async function stopGeneration() {
-  await stopGenerationStream(mode.value);
+  await stopGenerationStream(currentSendMode ?? mode.value);
 }
 
 function openMobileContext(tab: 'context' | 'details' | 'trace') {
@@ -332,31 +417,106 @@ function openMobileContext(tab: 'context' | 'details' | 'trace') {
 }
 
 async function retryMessage(index: number) {
+  if (sending.value || loading.value || switchingConversation.value) return;
   const previous = [...messages.value.slice(0, index)]
     .toReversed()
     .find((item) => item.role === 'user');
   if (!previous) return;
-  if (!activeConversationId.value || previous.id.length < 10) {
+  const conversationId = activeConversationId.value;
+  if (!conversationId || !previous.persisted) {
     messages.value.splice(index, 1);
+    const userIndex = messages.value.findIndex(
+      (item) => item.id === previous.id,
+    );
+    if (userIndex >= 0) messages.value.splice(userIndex, 1);
     await sendMessage(previous.content);
+    return;
+  }
+  if (mode.value === 'agent') {
+    const appId = messages.value[index]?.appId ?? selectedAppId.value;
+    if (!appId) {
+      notice.warning($t('ai-tutor.selectionRequired'));
+      return;
+    }
+    sending.value = true;
+    currentSendMode = 'agent';
+    const repeated = reactive<ChatMessage>({
+      content: previous.content,
+      id: `local-${++messageId.value}`,
+      persisted: false,
+      role: 'user',
+    });
+    const assistant = reactive<ChatMessage>({
+      appId,
+      content: '',
+      id: `local-${++messageId.value}`,
+      persisted: false,
+      role: 'assistant',
+      status: 'streaming',
+    });
+    messages.value.push(repeated, assistant);
+    try {
+      await startGenerationStream(
+        {
+          appId,
+          conversationId,
+          model: selectedModel.value,
+          platform: platformOptions.value.find(
+            (item) => item.value === selectedPlatformId.value,
+          )?.code,
+          prompt: previous.content,
+          sceneType: 'agent',
+          sourceMessageId: previous.id,
+        },
+        'agent',
+        {
+          onChunk: (chunk) => {
+            assistant.content += chunk;
+            void scrollToLatest();
+          },
+          onInputMessageId: (id) => {
+            repeated.id = id;
+            repeated.persisted = true;
+          },
+          onAssistantMessageId: (id) => {
+            assistant.id = id;
+            assistant.persisted = true;
+          },
+          onRuntimeEvents: (events) => {
+            runtimeEvents.value = events;
+          },
+        },
+      );
+      await loadConversation(conversationId, true);
+    } catch {
+      assistant.status = 'error';
+      assistant.content ||= $t('ai-tutor.chatError');
+    } finally {
+      sending.value = false;
+      currentSendMode = undefined;
+    }
     return;
   }
   const platform = platformOptions.value.find(
     (item) => item.value === selectedPlatformId.value,
   )?.code;
-  if (!platform || !selectedModel.value || loading.value) return;
+  const model = selectedModel.value;
+  if (!platform || !model) return;
+  sending.value = true;
+  currentSendMode = 'chat';
   messages.value.splice(index, 1);
-  const assistant: ChatMessage = {
+  const assistant = reactive<ChatMessage>({
     content: '',
-    id: `retry-${Date.now()}`,
+    id: `local-${++messageId.value}`,
+    persisted: false,
     role: 'assistant',
     status: 'streaming',
-  };
+  });
   messages.value.push(assistant);
   try {
     await retryGenerationStream(
       previous.id,
-      { platform, model: selectedModel.value },
+      { platform, model },
       {
         onChunk: (chunk) => {
           assistant.content += chunk;
@@ -365,6 +525,7 @@ async function retryMessage(index: number) {
       },
     );
     assistant.status = undefined;
+    await loadConversation(conversationId, true);
   } catch (error) {
     assistant.status = 'error';
     assistant.content ||=
@@ -372,7 +533,8 @@ async function retryMessage(index: number) {
         ? $t('ai-tutor.stopped')
         : $t('ai-tutor.chatError');
   } finally {
-    await loadConversation(activeConversationId.value);
+    sending.value = false;
+    currentSendMode = undefined;
   }
 }
 
@@ -385,14 +547,20 @@ async function copyMessage(content: string) {
   }
 }
 
+function handlePageHide() {
+  disposeGenerationStream(true);
+}
+
 onBeforeUnmount(() => {
   disposed = true;
   latestPlatformRequest += 1;
   latestModelRequest += 1;
   latestConversationRequest += 1;
+  window.removeEventListener('pagehide', handlePageHide);
   disposeGenerationStream();
 });
 onMounted(async () => {
+  window.addEventListener('pagehide', handlePageHide);
   await Promise.all([
     loadPlatforms(),
     loadConversationList(),
@@ -406,7 +574,12 @@ onMounted(async () => {
     <div class="workspace-shell">
       <NCard class="conversation-sidebar" content-class="sidebar-content">
         <div class="sidebar-title">会话与分支</div>
-        <NButton size="small" block @click="newConversation">
+        <NButton
+          size="small"
+          block
+          :disabled="sending || loading"
+          @click="newConversation"
+        >
           新建会话
         </NButton>
         <NList v-if="conversations.length" clickable>
@@ -453,6 +626,7 @@ onMounted(async () => {
               v-model:value="mode"
               class="model-select"
               aria-label="工作区模式"
+              :disabled="sending || loading"
               :options="[
                 { label: 'Chat 对话', value: 'chat' },
                 { label: 'Agent 执行', value: 'agent' },
@@ -464,26 +638,29 @@ onMounted(async () => {
               v-model:value="selectedAppId"
               class="model-select"
               aria-label="AI 应用"
+              :disabled="sending || loading"
               :options="
                 runtimeApps.map((app) => ({ label: app.name, value: app.id }))
               "
               placeholder="选择已发布应用"
             />
             <NSelect
+              v-if="mode !== 'agent'"
               v-model:value="selectedPlatformId"
               class="model-select"
               :aria-label="$t('ai-tutor.platform')"
-              :disabled="loading"
+              :disabled="sending || loading"
               :loading="loadingPlatforms"
               :options="platformOptions"
               :placeholder="$t('ai-tutor.selectPlatform')"
               @update:value="onPlatformChange"
             />
             <NSelect
+              v-if="mode !== 'agent'"
               v-model:value="selectedModel"
               class="model-select"
               :aria-label="$t('ai-tutor.model')"
-              :disabled="loading || !selectedPlatformId"
+              :disabled="sending || loading || !selectedPlatformId"
               :loading="loadingModels"
               :options="modelOptions"
               :placeholder="$t('ai-tutor.selectModel')"
@@ -595,7 +772,11 @@ onMounted(async () => {
                 size="small"
               >
                 <NButton
-                  v-if="msg.role === 'user' && editingMessageId !== msg.id"
+                  v-if="
+                    msg.role === 'user' &&
+                    msg.persisted &&
+                    editingMessageId !== msg.id
+                  "
                   text
                   size="tiny"
                   @click="beginEdit(msg)"
@@ -603,7 +784,11 @@ onMounted(async () => {
                   编辑
                 </NButton>
                 <NButton
-                  v-if="msg.role === 'user' && editingMessageId === msg.id"
+                  v-if="
+                    msg.role === 'user' &&
+                    msg.persisted &&
+                    editingMessageId === msg.id
+                  "
                   text
                   size="tiny"
                   @click="saveEdit"
@@ -617,6 +802,7 @@ onMounted(async () => {
                   v-if="msg.status === 'error'"
                   text
                   size="tiny"
+                  :disabled="sending || loading || switchingConversation"
                   @click="retryMessage(index)"
                 >
                   {{ $t('ai-tutor.retry') }}
@@ -631,7 +817,7 @@ onMounted(async () => {
             v-model:value="input"
             type="textarea"
             :autosize="{ minRows: 1, maxRows: 6 }"
-            :disabled="loading"
+            :disabled="sending || loading || switchingConversation"
             :placeholder="$t('ai-tutor.promptPlaceholder')"
             @keydown.enter.exact.prevent="sendMessage()"
           />
@@ -642,13 +828,7 @@ onMounted(async () => {
             v-else
             attr-type="submit"
             type="primary"
-            :disabled="
-              !input.trim() ||
-              !selectedPlatformId ||
-              !selectedModel ||
-              loadingPlatforms ||
-              loadingModels
-            "
+            :disabled="!canSend"
           >
             {{ $t('ai-tutor.send') }}
           </NButton>

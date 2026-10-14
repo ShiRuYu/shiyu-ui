@@ -5,29 +5,25 @@ import { Page } from '@vben/common-ui';
 
 import { NButton, NCard, NSelect, NSpace } from 'naive-ui';
 
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import { generateReport } from '#/features/education';
 import { $t } from '#/locales';
 
-const period = ref('WEEKLY');
+const period = ref('7d');
 const reportContent = ref('');
 const loading = ref(false);
-const { getCurrentStudentId } = useCurrentStudentId();
 
 const periodOptions = [
-  { label: $t('analytics.periodWeekly'), value: 'WEEKLY' },
-  { label: $t('analytics.periodMonthly'), value: 'MONTHLY' },
+  { label: $t('analytics.periodWeekly'), value: '7d' },
+  { label: $t('analytics.periodMonthly'), value: '30d' },
 ];
 
 async function handleGenerate() {
   loading.value = true;
   try {
-    const res: unknown = await generateReport({
-      studentId: getCurrentStudentId(),
+    const res = await generateReport({
       period: period.value,
     });
-    reportContent.value =
-      typeof res === 'string' ? res : JSON.stringify(res, null, 2);
+    reportContent.value = res.content;
   } catch (error) {
     console.error('Failed to generate report:', error);
     reportContent.value = $t('analytics.reportError');

@@ -5,18 +5,20 @@ import type {
 } from '#/adapter/vxe-table';
 import type { EducationReviewApi } from '#/features/education/api';
 
+import { onMounted, ref } from 'vue';
+
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { NButton } from 'naive-ui';
+import { NButton, NSelect, NSpace } from 'naive-ui';
 
 import { message } from '#/adapter/naive';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { useCurrentStudentId } from '#/composables/useCurrentStudentId';
 import {
   completeReview,
   deleteReview,
   getReviewsByStatus,
+  getStudentOptions,
 } from '#/features/education/api';
 import { $t } from '#/locales';
 
@@ -28,7 +30,14 @@ const [FormModal, formModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
-const { getCurrentStudentId } = useCurrentStudentId();
+const selectedStudentId = ref<null | number>(null);
+const studentOptions = ref<Array<{ label: string; value: number }>>([]);
+onMounted(async () => {
+  studentOptions.value = (await getStudentOptions()).map((student) => ({
+    label: student.name,
+    value: student.id,
+  }));
+});
 
 function onEdit(row: EducationReviewApi.ReviewTask) {
   formModalApi.setData(row).open();
@@ -83,10 +92,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async () => {
-          const result = await getReviewsByStatus(
-            getCurrentStudentId(),
-            0 /* PENDING */,
-          );
+          if (!selectedStudentId.value) return { items: [], total: 0 };
+          const result = await getReviewsByStatus(selectedStudentId.value, 0);
           return { items: result, total: result.length };
         },
       },
@@ -109,14 +116,24 @@ function refreshGrid() {
     <FormModal @success="refreshGrid" />
     <Grid :table-title="$t('education.review.title')">
       <template #toolbar-tools>
-        <NButton
-          type="primary"
-          @click="onCreate"
-          v-access:code="['edu:review:create']"
-        >
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('education.review.title')]) }}
-        </NButton>
+        <NSpace align="center">
+          <NSelect
+            v-model:value="selectedStudentId"
+            :options="studentOptions"
+            :placeholder="$t('education.review.selectStudent')"
+            clearable
+            class="w-[200px]"
+            @update:value="refreshGrid"
+          />
+          <NButton
+            type="primary"
+            @click="onCreate"
+            v-access:code="['edu:review:create']"
+          >
+            <Plus class="size-5" />
+            {{ $t('ui.actionTitle.create', [$t('education.review.title')]) }}
+          </NButton>
+        </NSpace>
       </template>
     </Grid>
   </Page>

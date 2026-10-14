@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { DataTableColumns } from 'naive-ui';
 
-import { h, onMounted, ref } from 'vue';
+import { h, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Page } from '@vben/common-ui';
@@ -10,8 +10,7 @@ import { useAccessStore } from '@vben/stores';
 import {
   NButton,
   NDataTable,
-  NInputNumber,
-  NSelect,
+  NInput,
   NSpace,
   NTabPane,
   NTabs,
@@ -20,8 +19,9 @@ import {
 
 import {
   type EducationQuestionApi,
-  getQuestionBySubjectGrade,
-  getSubjectOptions,
+  getCurrentStudent,
+  getPracticeQuestions,
+  getWrongPracticeQuestions,
 } from '#/features/education';
 import { EducationAdminQuestionPage as AdminQuestionList } from '#/features/education';
 import { $t } from '#/locales';
@@ -29,27 +29,15 @@ import { $t } from '#/locales';
 const accessStore = useAccessStore();
 const router = useRouter();
 const loading = ref(false);
-const questions = ref<EducationQuestionApi.Question[]>([]);
+const questions = ref<EducationQuestionApi.PracticeQuestion[]>([]);
+const wrongQuestions = ref<EducationQuestionApi.WrongPracticeQuestion[]>([]);
 const activeTab = ref('student');
 const adminPermission = accessStore.accessCodes.includes('edu:question:list');
 
 const filterSubject = ref('MATH');
-const filterGrade = ref(7);
-const subjectOptions = ref<Array<{ label: string; value: string }>>([]);
+const grade = ref<null | number>(null);
 
-async function loadSubjectOptions() {
-  try {
-    const data = await getSubjectOptions();
-    subjectOptions.value = data.map((s) => ({
-      label: s.name,
-      value: s.code,
-    }));
-  } catch (error) {
-    console.error('Failed to load subject options:', error);
-  }
-}
-
-const columns: DataTableColumns<EducationQuestionApi.Question> = [
+const columns: DataTableColumns<EducationQuestionApi.PracticeQuestion> = [
   { title: 'ID', key: 'id', width: 60 },
   {
     title: '题型',
@@ -71,23 +59,7 @@ const columns: DataTableColumns<EducationQuestionApi.Question> = [
       );
     },
   },
-  {
-    title: '难度',
-    key: 'difficulty',
-    width: 60,
-    render(row) {
-      const color =
-        [
-          { maximum: 1, type: 'success' as const },
-          { maximum: 2, type: 'warning' as const },
-        ].find((item) => row.difficulty <= item.maximum)?.type ?? 'error';
-      return h(NTag, { type: color, size: 'small' }, () =>
-        String(row.difficulty),
-      );
-    },
-  },
   { title: '题目', key: 'title', minWidth: 300, ellipsis: { tooltip: true } },
-  { title: '能力维度', key: 'abilityDimension', width: 100 },
   {
     title: '操作',
     key: 'action',
@@ -102,12 +74,42 @@ const columns: DataTableColumns<EducationQuestionApi.Question> = [
   },
 ];
 
+const wrongColumns: DataTableColumns<EducationQuestionApi.WrongPracticeQuestion> =
+  [
+    { title: '题目', key: 'title', minWidth: 260 },
+    { title: '上次答案', key: 'lastAnswer', width: 100 },
+    { title: '连续答对', key: 'correctTimes', width: 100 },
+    {
+      title: '操作',
+      key: 'action',
+      width: 110,
+      render(row) {
+        return h(
+          NButton,
+          {
+            size: 'small',
+            onClick: () =>
+              router.push(
+                `/education-center/practice/questions/${row.questionId}`,
+              ),
+          },
+          () => '继续练习',
+        );
+      },
+    },
+  ];
+
 async function loadQuestions() {
   loading.value = true;
   try {
-    questions.value = await getQuestionBySubjectGrade(
+    if (grade.value === null) {
+      const student = await getCurrentStudent();
+      grade.value = student?.grade ?? null;
+    }
+    if (grade.value === null) throw new Error('当前账号未关联学生档案');
+    questions.value = await getPracticeQuestions(
       filterSubject.value,
-      filterGrade.value,
+      grade.value,
     );
   } catch (error) {
     console.error('Failed to load questions:', error);
@@ -116,20 +118,32 @@ async function loadQuestions() {
   }
 }
 
-function startPractice(row: EducationQuestionApi.Question) {
+function startPractice(row: EducationQuestionApi.PracticeQuestion) {
   router.push({
-    path: '/education-center/practice',
-    query: { questionId: String(row.id) },
+    path: `/education-center/practice/questions/${row.id}`,
   });
 }
 
-function questionRowKey(row: EducationQuestionApi.Question) {
+function questionRowKey(row: EducationQuestionApi.PracticeQuestion) {
+  return row.id;
+}
+
+function wrongRowKey(row: EducationQuestionApi.WrongPracticeQuestion) {
   return row.id;
 }
 
 onMounted(() => {
-  loadSubjectOptions();
   loadQuestions();
+});
+
+watch(activeTab, async (tab) => {
+  if (tab === 'wrong') {
+    try {
+      wrongQuestions.value = await getWrongPracticeQuestions();
+    } catch (error) {
+      console.error('Failed to load wrong questions:', error);
+    }
+  }
 });
 </script>
 
@@ -139,19 +153,13 @@ onMounted(() => {
       <!-- 学生端：题库练习 -->
       <NTabPane name="student" :tab="$t('page.practice.question')">
         <NSpace class="mb-4" justify="end">
-          <NSelect
+          <NInput
             v-model:value="filterSubject"
-            :options="subjectOptions"
-            style="width: 120px"
-            @update:value="loadQuestions"
+            placeholder="学科编码，如 MATH"
+            style="width: 180px"
+            @keyup.enter="loadQuestions"
           />
-          <NInputNumber
-            v-model:value="filterGrade"
-            :min="1"
-            :max="12"
-            style="width: 100px"
-            @update:value="loadQuestions"
-          />
+          <NButton @click="loadQuestions">筛选</NButton>
         </NSpace>
         <NDataTable
           :columns="columns"
@@ -159,6 +167,15 @@ onMounted(() => {
           :loading="loading"
           striped
           :row-key="questionRowKey"
+        />
+      </NTabPane>
+
+      <NTabPane name="wrong" tab="我的错题">
+        <NDataTable
+          :columns="wrongColumns"
+          :data="wrongQuestions"
+          :row-key="wrongRowKey"
+          striped
         />
       </NTabPane>
 

@@ -87,6 +87,16 @@ export function useSchema(): VbenFormSchema[] {
       fieldName: 'totalScore',
       label: $t('education.exam.totalScore'),
     },
+    {
+      component: 'Input',
+      fieldName: 'startTime',
+      label: '开始时间（YYYY-MM-DDTHH:mm:ss）',
+    },
+    {
+      component: 'Input',
+      fieldName: 'endTime',
+      label: '结束时间（YYYY-MM-DDTHH:mm:ss）',
+    },
   ];
 }
 
@@ -120,14 +130,27 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'delete'],
+        options: [
+          {
+            code: 'compose',
+            label: '组卷',
+            show: (row: EducationExamApi.Exam) => row.status === 0,
+          },
+          {
+            code: 'publish',
+            label: '发布',
+            show: (row: EducationExamApi.Exam) => row.status === 0,
+          },
+          'edit',
+          'delete',
+        ],
       },
       field: 'operation',
       fixed: 'right',
       headerAlign: 'center',
       showOverflow: false,
       title: $t('common.operation'),
-      width: 150,
+      width: 250,
     },
   ];
 }

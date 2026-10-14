@@ -2,6 +2,11 @@ name: Frontend quality gate
 
 on:
   workflow_dispatch:
+    inputs:
+      backend_ref:
+        description: Backend branch or commit SHA for the browser journey
+        required: false
+        type: string
   pull_request:
   push:
     branches:
@@ -48,3 +53,83 @@ jobs:
 
       - name: Build web-naive
         run: pnpm -F @vben/web-naive run build
+
+  education-journey:
+    name: Education browser journey with paired backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BACKEND_REF: ${{ inputs.backend_ref || vars.SHIYU_BACKEND_REF || 'master' }}
+      E2E_USERNAME: admin
+      # This password belongs to the seeded account in the disposable H2 database.
+      E2E_PASSWORD: '123456'
+      VITE_PROXY_TARGET: http://127.0.0.1:9000
+    steps:
+      - name: Checkout UI revision
+        uses: actions/checkout@v7
+
+      - name: Checkout matching backend branch or pinned SHA
+        uses: actions/checkout@v7
+        with:
+          repository: ShiRuYu/shiyu-ai
+          ref: ${{ env.BACKEND_REF }}
+          path: backend
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+
+      - name: Setup Node and pnpm
+        uses: ./.github/actions/setup-node
+
+      - name: Build paired backend without provider tests
+        working-directory: backend
+        run: mvn --batch-mode --no-transfer-progress -q -pl modules/applications/shiyu-ai-bootstrap -am package -Dmaven.test.skip=true -Ddependency-check.skip=true
+
+      - name: Start disposable H2 backend
+        run: |
+          mkdir -p "$RUNNER_TEMP/shiyu-education-e2e"
+          nohup java -Dapp.home="$RUNNER_TEMP/shiyu-education-e2e" \
+            -jar backend/modules/applications/shiyu-ai-bootstrap/target/shiyu-ai-bootstrap-1.0.0.jar \
+            --server.port=9000 --spring.profiles.active=dev,ai,h2 \
+            --shiyu.console.enabled=false > "$RUNNER_TEMP/shiyu-backend.log" 2>&1 &
+          for i in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:9000/v3/api-docs >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/shiyu-backend.log"
+          exit 1
+
+      - name: Start UI
+        run: |
+          nohup pnpm -F @vben/web-naive run dev --host 127.0.0.1 \
+            > "$RUNNER_TEMP/shiyu-ui.log" 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:5888/auth/login >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/shiyu-ui.log"
+          exit 1
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run provider-free education and Agent journeys
+        run: pnpm exec playwright test education-exam.real.spec.ts agent-chat.real.spec.ts iam-delegation.real.spec.ts --project=desktop-chromium
+
+      - name: Verify local Agent stop before a delayed cancel response
+        run: pnpm exec playwright test web-naive.smoke.spec.ts --grep 'stops an Agent stream locally' --project=desktop-chromium
+
+      - name: Upload journey logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: education-journey-logs
+          path: |
+            ${{ runner.temp }}/shiyu-backend.log
+            ${{ runner.temp }}/shiyu-ui.log
+            playwright-report

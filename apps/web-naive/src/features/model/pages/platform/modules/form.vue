@@ -43,6 +43,9 @@ const [Modal, modalApi] = useVbenModal<PlatformApi.PlatformItem>({
       const data = await formApi.getValues();
       try {
         const submitData = { ...data };
+        if (submitData.clearApiKey) {
+          submitData.apiKey = '';
+        }
         submitData.adapterType = submitData.adapterType || 'OPENAI_COMPATIBLE';
         if (submitData.status !== undefined) {
           submitData.status = String(submitData.status);

@@ -1,128 +1,77 @@
-import { useAccessStore } from '@vben/stores';
-
 import { requestClient } from '#/shared/api/request';
 
 export namespace EducationAgentApi {
   export interface TeachRequest {
-    studentId: number;
     knowledgeId: number;
     style?: string;
   }
   export interface PracticeRequest {
-    studentId: number;
     knowledgeId: number;
     difficulty: number;
     count: number;
   }
-  export interface ExamRequest {
-    studentId: number;
-    knowledgeIds: number[];
-    duration: number;
-  }
   export interface PlannerRequest {
-    studentId: number;
     knowledgeId: number;
     targetDate: string;
   }
   export interface ReportRequest {
-    studentId: number;
     period: string;
   }
-}
-
-async function teach(data: EducationAgentApi.TeachRequest) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'teacher' },
-  });
-}
-
-async function teachStream(
-  data: EducationAgentApi.TeachRequest,
-  onMessage: (chunk: string) => void,
-  options: { signal?: AbortSignal } = {},
-): Promise<void> {
-  const accessStore = useAccessStore();
-  const token = accessStore.accessToken;
-  const baseURL = requestClient.getBaseUrl() ?? '';
-  const response = await fetch(
-    `${baseURL}/api/agent/executions/execute-stream?agentId=${encodeURIComponent('teacher')}`,
-    {
-      body: JSON.stringify({ ...data, stream: true }),
-      headers: {
-        Accept: 'text/event-stream',
-        Authorization: token ? `Bearer ${token}` : '',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      signal: options.signal,
-    },
-  );
-  if (!response.ok || !response.body)
-    throw new Error(`Stream error: ${response.status}`);
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  const abort = () => {
-    void reader.cancel();
-  };
-  options.signal?.addEventListener('abort', abort, { once: true });
-  try {
-    while (true) {
-      if (options.signal?.aborted)
-        throw new DOMException('Aborted', 'AbortError');
-      const { done, value } = await reader.read();
-      if (options.signal?.aborted)
-        throw new DOMException('Aborted', 'AbortError');
-      const chunk = decoder.decode(value, { stream: !done });
-      if (chunk) onMessage(chunk);
-      if (done) break;
-    }
-  } finally {
-    options.signal?.removeEventListener('abort', abort);
-    reader.releaseLock();
+  export interface TutorKnowledge {
+    id: number;
+    name: string;
+    description: string;
+  }
+  export interface TutorResponse {
+    content: string;
+    knowledgeId: null | number;
+    knowledgeName: null | string;
+    period: null | string;
+    recordCount: number;
+    averageScore: null | number;
+    insufficientData: boolean;
+    sources: {
+      occurredAt: string;
+      questionId: null | number;
+      recordId: number;
+      recordType: string;
+      score: null | number;
+    }[];
   }
 }
 
-async function practice(data: EducationAgentApi.PracticeRequest) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'practice' },
-  });
+function listTutorKnowledge() {
+  return requestClient.get<EducationAgentApi.TutorKnowledge[]>(
+    '/api/education/student-tutor/knowledge',
+  );
 }
 
-async function generateExam(data: EducationAgentApi.ExamRequest) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'exam' },
-  });
+function teach(data: EducationAgentApi.TeachRequest) {
+  return requestClient.post<EducationAgentApi.TutorResponse>(
+    '/api/education/student-tutor/teach',
+    data,
+  );
 }
 
-async function getTodayReviewTasks() {
-  return requestClient.get('/api/agent/agents/definitions');
+function practice(data: EducationAgentApi.PracticeRequest) {
+  return requestClient.post<EducationAgentApi.TutorResponse>(
+    '/api/education/student-tutor/practice',
+    data,
+  );
 }
 
-async function completeReviewTask(data: { result: number; taskId: number }) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'review' },
-  });
+function generatePlan(data: EducationAgentApi.PlannerRequest) {
+  return requestClient.post<EducationAgentApi.TutorResponse>(
+    '/api/education/student-tutor/plan',
+    data,
+  );
 }
 
-async function generatePlan(data: EducationAgentApi.PlannerRequest) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'planner' },
-  });
+function generateReport(data: EducationAgentApi.ReportRequest) {
+  return requestClient.post<EducationAgentApi.TutorResponse>(
+    '/api/education/student-tutor/report',
+    data,
+  );
 }
 
-async function generateReport(data: EducationAgentApi.ReportRequest) {
-  return requestClient.post<unknown>('/api/agent/executions/execute', data, {
-    params: { agentId: 'report' },
-  });
-}
-
-export {
-  completeReviewTask,
-  generateExam,
-  generatePlan,
-  generateReport,
-  getTodayReviewTasks,
-  practice,
-  teach,
-  teachStream,
-};
+export { generatePlan, generateReport, listTutorKnowledge, practice, teach };

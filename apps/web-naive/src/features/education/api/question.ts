@@ -1,12 +1,38 @@
 import { requestClient } from '#/shared/api/request';
 
 export namespace EducationQuestionApi {
+  export interface PracticeQuestion {
+    id: number;
+    title: string;
+    type: 'CHOICE';
+    subjectCode: string;
+    grade: number;
+    options: { label: string; value: string }[];
+  }
+
+  export interface PracticeCheck {
+    questionId: number;
+    correct: boolean;
+    correctAnswer: string;
+    analysis: null | string;
+  }
+  export interface PracticeSubmission extends PracticeCheck {
+    recordId: number;
+  }
+  export interface WrongPracticeQuestion {
+    id: number;
+    questionId: number;
+    title: string;
+    lastAnswer: null | string;
+    correctTimes: number;
+  }
   /** 题目 */
   export interface Question {
     [key: string]: any;
     id: number;
     code?: string;
     type: string;
+    purpose: 'EXAM_PRIVATE' | 'PRACTICE';
     subjectCode: string;
     grade: number;
     difficulty: number;
@@ -17,6 +43,46 @@ export namespace EducationQuestionApi {
     analysis?: string;
     tags?: string;
   }
+}
+
+export async function getPracticeQuestions(
+  subjectCode: string,
+  grade?: number,
+) {
+  return requestClient.get<EducationQuestionApi.PracticeQuestion[]>(
+    '/api/education/student-learning/questions',
+    { params: { subjectCode, ...(grade ? { grade } : {}) } },
+  );
+}
+
+export async function getPracticeQuestion(id: number) {
+  return requestClient.get<EducationQuestionApi.PracticeQuestion>(
+    `/api/education/student-learning/questions/${id}`,
+  );
+}
+
+export async function getWrongPracticeQuestions() {
+  return requestClient.get<EducationQuestionApi.WrongPracticeQuestion[]>(
+    '/api/education/student-learning/wrong-questions',
+  );
+}
+
+export async function checkPracticeAnswer(id: number, answer: string) {
+  return requestClient.post<EducationQuestionApi.PracticeCheck>(
+    `/api/education/student-learning/questions/${id}/check`,
+    { answer },
+  );
+}
+
+export async function submitPracticeAnswer(
+  id: number,
+  answer: string,
+  submissionKey: string,
+) {
+  return requestClient.post<EducationQuestionApi.PracticeSubmission>(
+    `/api/education/student-learning/questions/${id}/submissions`,
+    { answer, submissionKey },
+  );
 }
 
 /** 分页获取题目 */
