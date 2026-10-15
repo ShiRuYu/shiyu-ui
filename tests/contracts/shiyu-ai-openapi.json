@@ -494,6 +494,8 @@
             "type": "string"
           },
           "apiKey": {
+            "maxLength": 340,
+            "minLength": 0,
             "type": "string"
           },
           "availableModels": {
@@ -501,6 +503,9 @@
           },
           "baseUrl": {
             "type": "string"
+          },
+          "clearApiKey": {
+            "type": "boolean"
           },
           "code": {
             "minLength": 1,
@@ -11193,8 +11198,8 @@
           },
           "threshold": {
             "format": "double",
-            "maximum": 1,
-            "minimum": 0,
+            "maximum": 1.0,
+            "minimum": 0.0,
             "type": "number"
           },
           "topK": {
@@ -12174,6 +12179,7 @@
             "enum": [
               "PENDING",
               "APPROVED",
+              "CLAIMED",
               "REJECTED",
               "EXPIRED"
             ],
@@ -13655,9 +13661,69 @@
         ]
       }
     },
+    "/api/agent/approvals/{id}/approve-and-resume": {
+      "post": {
+        "operationId": "approveAndResume",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultToolApproval"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "tool-approval-controller"
+        ]
+      }
+    },
     "/api/agent/approvals/{id}/reject": {
       "post": {
         "operationId": "reject_1",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultToolApproval"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "tool-approval-controller"
+        ]
+      }
+    },
+    "/api/agent/approvals/{id}/reject-and-cancel": {
+      "post": {
+        "operationId": "rejectAndCancel",
         "parameters": [
           {
             "in": "path",
@@ -29088,7 +29154,7 @@
   "servers": [
     {
       "description": "Generated server url",
-      "url": "http://127.0.0.1:9000"
+      "url": "http://127.0.0.1:19090"
     }
   ],
   "tags": [

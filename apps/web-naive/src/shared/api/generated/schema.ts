@@ -247,6 +247,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/agent/approvals/{id}/approve-and-resume': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['approveAndResume'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/agent/approvals/{id}/reject': {
     parameters: {
       query?: never;
@@ -257,6 +273,22 @@ export interface paths {
     get?: never;
     put?: never;
     post: operations['reject_1'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/agent/approvals/{id}/reject-and-cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['rejectAndCancel'];
     delete?: never;
     options?: never;
     head?: never;
@@ -6129,6 +6161,7 @@ export interface components {
       apiKey?: string;
       availableModels?: string;
       baseUrl?: string;
+      clearApiKey?: boolean;
       code: string;
       extraConfig?: string;
       isDefault?: string;
@@ -10551,7 +10584,7 @@ export interface components {
       ownerUserId?: number;
       runId?: string;
       /** @enum {string} */
-      status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
+      status?: 'PENDING' | 'APPROVED' | 'CLAIMED' | 'REJECTED' | 'EXPIRED';
       /** Format: int64 */
       tenantId?: number;
       toolName?: string;
@@ -11329,7 +11362,51 @@ export interface operations {
       };
     };
   };
+  approveAndResume: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultToolApproval'];
+        };
+      };
+    };
+  };
   reject_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultToolApproval'];
+        };
+      };
+    };
+  };
+  rejectAndCancel: {
     parameters: {
       query?: never;
       header?: never;

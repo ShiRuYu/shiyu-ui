@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      BACKEND_REF: ${{ inputs.backend_ref || vars.SHIYU_BACKEND_REF || 'master' }}
+      BACKEND_REF: ${{ inputs.backend_ref || vars.SHIYU_BACKEND_REF || github.head_ref || 'master' }}
       E2E_USERNAME: admin
       # This password belongs to the seeded account in the disposable H2 database.
       E2E_PASSWORD: '123456'
