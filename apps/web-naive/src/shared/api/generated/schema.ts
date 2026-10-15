@@ -263,6 +263,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/agent/approvals/{id}/confirm-completed': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['confirmClaimedSuccess'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/agent/approvals/{id}/confirm-not-executed': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['confirmClaimedNotExecuted'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/agent/approvals/{id}/reject': {
     parameters: {
       query?: never;
@@ -7610,6 +7642,12 @@ export interface components {
       /** Format: int32 */
       tokenBudget?: number;
     };
+    ManualNonExecutionResolutionRequest: {
+      externalNonExecutionConfirmed: boolean;
+    };
+    ManualResolutionRequest: {
+      externalSuccessConfirmed: boolean;
+    };
     McpToolDescriptor: {
       builtin?: boolean;
       category?: string;
@@ -10589,6 +10627,7 @@ export interface components {
         | 'APPROVED'
         | 'CLAIMED'
         | 'COMPLETED'
+        | 'NOT_EXECUTED'
         | 'REJECTED'
         | 'EXPIRED';
       /** Format: int64 */
@@ -11378,6 +11417,58 @@ export interface operations {
       cookie?: never;
     };
     requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultToolApproval'];
+        };
+      };
+    };
+  };
+  confirmClaimedSuccess: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ManualResolutionRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          '*/*': components['schemas']['ResultToolApproval'];
+        };
+      };
+    };
+  };
+  confirmClaimedNotExecuted: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ManualNonExecutionResolutionRequest'];
+      };
+    };
     responses: {
       /** @description OK */
       200: {

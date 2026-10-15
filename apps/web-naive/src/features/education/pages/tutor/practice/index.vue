@@ -7,13 +7,16 @@ import { NButton, NCard, NInputNumber, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { listTutorKnowledge, practice } from '#/features/education';
 import { $t } from '#/locales';
+import { accessibleCombobox as vAccessibleCombobox } from '#/shared/directives/accessible-combobox';
 
 import TutorNavigation from '../TutorNavigation.vue';
 
 const loading = ref(false);
 const result = ref('');
 const knowledgeId = ref<null | number>(null);
+const knowledgeSelectOpen = ref(false);
 const difficulty = ref(2);
+const difficultySelectOpen = ref(false);
 const count = ref(3);
 const knowledgeOptions = ref<Array<{ label: string; value: number }>>([]);
 onMounted(async () => {
@@ -66,13 +69,24 @@ async function handlePractice() {
       <NSpace class="mb-4" vertical>
         <NSpace wrap>
           <NSelect
+            v-accessible-combobox="{
+              label: $t('ai-tutor.selectKnowledge'),
+              expanded: knowledgeSelectOpen,
+            }"
             v-model:value="knowledgeId"
+            v-model:show="knowledgeSelectOpen"
             :options="knowledgeOptions"
             class="w-full sm:w-[250px]"
             :placeholder="$t('ai-tutor.selectKnowledge')"
+            style="width: 250px; max-width: 100%"
           />
           <NSelect
+            v-accessible-combobox="{
+              label: $t('ai-tutor.selectDifficulty'),
+              expanded: difficultySelectOpen,
+            }"
             v-model:value="difficulty"
+            v-model:show="difficultySelectOpen"
             :options="difficultyOptions"
             class="w-full sm:w-[140px]"
           />

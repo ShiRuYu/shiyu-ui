@@ -9,12 +9,15 @@ import {
   NEmpty,
   NList,
   NListItem,
+  NPopconfirm,
   NSpace,
   NTag,
 } from 'naive-ui';
 
 import {
   approveAndResumeTool,
+  confirmClaimedToolNotExecuted,
+  confirmClaimedToolSuccess,
   listRuntimeApprovals,
   rejectAndCancelTool,
 } from '#/features/agent';
@@ -57,6 +60,36 @@ async function decide(item: RuntimeApproval, approved: boolean) {
   }
 }
 
+async function confirmClaimedSuccess(item: RuntimeApproval) {
+  if (busyId.value) return;
+  busyId.value = item.id;
+  actionError.value = '';
+  try {
+    await confirmClaimedToolSuccess(item.id);
+  } catch {
+    actionError.value =
+      '无法完成核对。请确认运行已结束，并且外部系统已确认操作成功。';
+  } finally {
+    busyId.value = null;
+    await loadApprovals();
+  }
+}
+
+async function confirmClaimedNotExecuted(item: RuntimeApproval) {
+  if (busyId.value) return;
+  busyId.value = item.id;
+  actionError.value = '';
+  try {
+    await confirmClaimedToolNotExecuted(item.id);
+  } catch {
+    actionError.value =
+      '无法完成核对。请确认运行已结束，并且外部系统已确认操作未产生副作用。';
+  } finally {
+    busyId.value = null;
+    await loadApprovals();
+  }
+}
+
 onMounted(() => void loadApprovals());
 onUnmounted(() => {
   disposed = true;
@@ -83,24 +116,14 @@ onUnmounted(() => {
           <NSpace align="center">
             <NTag>{{ item.status }}</NTag>
             <NButton
-              v-if="
-                item.status === 'PENDING' ||
-                item.status === 'APPROVED' ||
-                item.status === 'CLAIMED'
-              "
+              v-if="item.status === 'PENDING' || item.status === 'APPROVED'"
               size="small"
               type="primary"
               :loading="busyId === item.id"
               :disabled="!!busyId && busyId !== item.id"
               @click="decide(item, true)"
             >
-              {{
-                item.status === 'CLAIMED'
-                  ? '同步结果'
-                  : item.status === 'APPROVED'
-                    ? '继续执行'
-                    : '批准并继续'
-              }}
+              {{ item.status === 'APPROVED' ? '继续执行' : '批准并继续' }}
             </NButton>
             <NButton
               v-if="item.status === 'PENDING' || item.status === 'EXPIRED'"
@@ -110,6 +133,42 @@ onUnmounted(() => {
             >
               {{ item.status === 'EXPIRED' ? '取消执行' : '拒绝' }}
             </NButton>
+            <NPopconfirm
+              v-if="item.status === 'CLAIMED'"
+              positive-text="已核实成功"
+              negative-text="返回"
+              @positive-click="confirmClaimedSuccess(item)"
+            >
+              <template #trigger>
+                <NButton
+                  size="small"
+                  type="warning"
+                  :loading="busyId === item.id"
+                  :disabled="!!busyId && busyId !== item.id"
+                >
+                  核实成功并关闭
+                </NButton>
+              </template>
+              仅当运行已结束且你已在外部系统确认操作成功时使用。此操作不会重新执行工具。
+            </NPopconfirm>
+            <NPopconfirm
+              v-if="item.status === 'CLAIMED'"
+              positive-text="确认未执行"
+              negative-text="返回"
+              @positive-click="confirmClaimedNotExecuted(item)"
+            >
+              <template #trigger>
+                <NButton
+                  size="small"
+                  type="error"
+                  :loading="busyId === item.id"
+                  :disabled="!!busyId && busyId !== item.id"
+                >
+                  核实未执行并关闭
+                </NButton>
+              </template>
+              仅当运行已结束且你已在外部系统确认操作没有产生副作用时使用。
+            </NPopconfirm>
           </NSpace>
         </NSpace>
       </NListItem>

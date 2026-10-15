@@ -7,6 +7,8 @@
   "report": "AI报告",
   "selectKnowledge": "选择知识点",
   "selectStyle": "讲解风格",
+  "selectDifficulty": "选择题目难度",
+  "selectReportPeriod": "选择报告周期",
   "styleVisual": "图文并茂",
   "styleTextual": "文字讲解",
   "styleInteractive": "互动教学",

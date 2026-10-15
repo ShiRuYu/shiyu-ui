@@ -7,6 +7,8 @@
   "report": "AI Report",
   "selectKnowledge": "Select a knowledge point",
   "selectStyle": "Explanation style",
+  "selectDifficulty": "Select question difficulty",
+  "selectReportPeriod": "Select report period",
   "styleVisual": "Visual",
   "styleTextual": "Text",
   "styleInteractive": "Interactive",

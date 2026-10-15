@@ -103,7 +103,6 @@ defineExpose({
         'cursor-wait': loading,
       }"
       :loading="loading"
-      aria-label="register"
       class="mt-2 w-full"
       @click="handleSubmit"
     >

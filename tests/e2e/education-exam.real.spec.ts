@@ -15,7 +15,7 @@ test('publishes, takes, and scores an exam as a regular student', async ({
   await page.locator('input').nth(0).fill(username);
   await page.locator('input').nth(1).fill(password);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: 'login', exact: true }).click();
+  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
   const login = await (await loginResponse).json();
   expect(login.code).toBe(200);
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };
@@ -98,7 +98,7 @@ test('publishes, takes, and scores an exam as a regular student', async ({
   const studentLoginResponse = studentPage.waitForResponse(
     '**/api/iam/auth/login',
   );
-  await studentPage.getByRole('button', { name: 'login', exact: true }).click();
+  await studentPage.getByRole('button', { name: /^(login|登录)$/i }).click();
   const studentLogin = await (await studentLoginResponse).json();
   expect(studentLogin.code).toBe(200);
   const studentHeaders = {

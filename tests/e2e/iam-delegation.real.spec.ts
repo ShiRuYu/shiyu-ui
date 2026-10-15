@@ -13,7 +13,7 @@ test('home administrator can view their detail after delegating to a child tenan
   await page.locator('input').nth(0).fill(username);
   await page.locator('input').nth(1).fill(password);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: 'login', exact: true }).click();
+  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
   const login = await (await loginResponse).json();
   expect(login.code).toBe(200);
   const homeTenantId = login.data.homeTenantId as number;

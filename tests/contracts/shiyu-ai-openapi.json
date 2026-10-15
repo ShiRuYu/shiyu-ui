@@ -4166,6 +4166,28 @@
         },
         "type": "object"
       },
+      "ManualNonExecutionResolutionRequest": {
+        "properties": {
+          "externalNonExecutionConfirmed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "externalNonExecutionConfirmed"
+        ],
+        "type": "object"
+      },
+      "ManualResolutionRequest": {
+        "properties": {
+          "externalSuccessConfirmed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "externalSuccessConfirmed"
+        ],
+        "type": "object"
+      },
       "McpToolDescriptor": {
         "properties": {
           "builtin": {
@@ -11198,8 +11220,8 @@
           },
           "threshold": {
             "format": "double",
-            "maximum": 1.0,
-            "minimum": 0.0,
+            "maximum": 1,
+            "minimum": 0,
             "type": "number"
           },
           "topK": {
@@ -12181,6 +12203,7 @@
               "APPROVED",
               "CLAIMED",
               "COMPLETED",
+              "NOT_EXECUTED",
               "REJECTED",
               "EXPIRED"
             ],
@@ -13675,6 +13698,86 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultToolApproval"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "tool-approval-controller"
+        ]
+      }
+    },
+    "/api/agent/approvals/{id}/confirm-completed": {
+      "post": {
+        "operationId": "confirmClaimedSuccess",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualResolutionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultToolApproval"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "tool-approval-controller"
+        ]
+      }
+    },
+    "/api/agent/approvals/{id}/confirm-not-executed": {
+      "post": {
+        "operationId": "confirmClaimedNotExecuted",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualNonExecutionResolutionRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "content": {
@@ -29155,7 +29258,7 @@
   "servers": [
     {
       "description": "Generated server url",
-      "url": "http://127.0.0.1:19090"
+      "url": "http://127.0.0.1:9000"
     }
   ],
   "tags": [

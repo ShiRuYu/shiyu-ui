@@ -202,3 +202,17 @@ export async function rejectAndCancelTool(id: string) {
     `/api/agent/approvals/${id}/reject-and-cancel`,
   );
 }
+
+export async function confirmClaimedToolSuccess(id: string) {
+  return requestClient.post<ToolApproval>(
+    `/api/agent/approvals/${id}/confirm-completed`,
+    { externalSuccessConfirmed: true },
+  );
+}
+
+export async function confirmClaimedToolNotExecuted(id: string) {
+  return requestClient.post<ToolApproval>(
+    `/api/agent/approvals/${id}/confirm-not-executed`,
+    { externalNonExecutionConfirmed: true },
+  );
+}

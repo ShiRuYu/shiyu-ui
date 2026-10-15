@@ -7,12 +7,14 @@ import { NButton, NCard, NSelect, NSpace, NSpin } from 'naive-ui';
 
 import { type EducationAgentApi, generateReport } from '#/features/education';
 import { $t } from '#/locales';
+import { accessibleCombobox as vAccessibleCombobox } from '#/shared/directives/accessible-combobox';
 
 import TutorNavigation from '../TutorNavigation.vue';
 
 const loading = ref(false);
 const result = ref('');
 const period = ref('7d');
+const periodSelectOpen = ref(false);
 const recordCount = ref<null | number>(null);
 const averageScore = ref<null | number>(null);
 const sources = ref<EducationAgentApi.TutorResponse['sources']>([]);
@@ -51,7 +53,12 @@ async function handleReport() {
     <NCard>
       <NSpace class="mb-4" wrap>
         <NSelect
+          v-accessible-combobox="{
+            label: $t('ai-tutor.selectReportPeriod'),
+            expanded: periodSelectOpen,
+          }"
           v-model:value="period"
+          v-model:show="periodSelectOpen"
           :options="periodOptions"
           class="w-full sm:w-[140px]"
         />

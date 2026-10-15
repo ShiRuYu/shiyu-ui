@@ -12,7 +12,7 @@ test('completes a real provider generation and persists its assistant message', 
   await page.locator('input').nth(0).fill(process.env.E2E_USERNAME!);
   await page.locator('input').nth(1).fill(process.env.E2E_PASSWORD!);
   const response = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: 'login', exact: true }).click();
+  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
   const login = await (await response).json();
   expect(login.code).toBe(200);
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };

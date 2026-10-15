@@ -224,6 +224,8 @@ describe('agent feature transport facade', () => {
     await runtimeApi.listRunApprovals('run-1');
     await runtimeApi.listRuntimeApprovals();
     await runtimeApi.decideApproval('approval-1', 'approve');
+    await runtimeApi.confirmClaimedToolSuccess('approval-1');
+    await runtimeApi.confirmClaimedToolNotExecuted('approval-1');
 
     const event = vi.fn();
     vi.stubGlobal(
@@ -238,6 +240,14 @@ describe('agent feature transport facade', () => {
     await runtimeApi.streamGenerationRuntimeEvents('generation-1', event);
     expect(requestMock.get).toHaveBeenCalled();
     expect(requestMock.post).toHaveBeenCalled();
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/approvals/approval-1/confirm-completed',
+      { externalSuccessConfirmed: true },
+    );
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/agent/approvals/approval-1/confirm-not-executed',
+      { externalNonExecutionConfirmed: true },
+    );
     expect(event).toHaveBeenCalledWith({
       runId: 'run-1',
       seq: 1,

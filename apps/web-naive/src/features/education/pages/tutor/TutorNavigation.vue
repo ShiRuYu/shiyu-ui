@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router';
 import { NButton, NSpace } from 'naive-ui';
 
 const links = [
-  { label: '知识讲解', path: '/education-center/ai-tutor' },
+  { label: '知识讲解', path: '/education-center/ai-tutor/teacher' },
   { label: 'AI 出题', path: '/education-center/ai-tutor/practice' },
   { label: '学习规划', path: '/education-center/ai-tutor/planner' },
   { label: '学习报告', path: '/education-center/ai-tutor/report' },

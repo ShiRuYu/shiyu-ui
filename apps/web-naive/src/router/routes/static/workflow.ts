@@ -123,6 +123,13 @@ const routes: RouteRecordRaw[] = [
         path: 'ai-tutor',
         children: [
           {
+            name: 'EducationTutorTeacher',
+            path: 'teacher',
+            component: () =>
+              import('#/features/education/pages/tutor/teacher/index.vue'),
+            meta: { hideInMenu: true, title: '知识讲解' },
+          },
+          {
             name: 'EducationTutorPractice',
             path: 'practice',
             component: () =>
