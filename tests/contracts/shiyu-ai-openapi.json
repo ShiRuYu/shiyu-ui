@@ -12180,6 +12180,7 @@
               "PENDING",
               "APPROVED",
               "CLAIMED",
+              "COMPLETED",
               "REJECTED",
               "EXPIRED"
             ],

@@ -10584,7 +10584,13 @@ export interface components {
       ownerUserId?: number;
       runId?: string;
       /** @enum {string} */
-      status?: 'PENDING' | 'APPROVED' | 'CLAIMED' | 'REJECTED' | 'EXPIRED';
+      status?:
+        | 'PENDING'
+        | 'APPROVED'
+        | 'CLAIMED'
+        | 'COMPLETED'
+        | 'REJECTED'
+        | 'EXPIRED';
       /** Format: int64 */
       tenantId?: number;
       toolName?: string;
