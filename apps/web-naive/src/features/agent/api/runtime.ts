@@ -55,6 +55,7 @@ export interface ToolApproval {
   runId: string;
   toolName: string;
   status: string;
+  argumentsRedacted?: string;
   reason?: string;
 }
 export type RuntimeApproval = ToolApproval;

@@ -30,6 +30,20 @@ const busyId = ref<null | string>(null);
 let disposed = false;
 let latestRequestId = 0;
 
+function formatApprovalArguments(value?: string) {
+  if (!value) return '{}';
+  try {
+    const parsed = JSON.parse(value) as { summary?: unknown };
+    const summary =
+      typeof parsed.summary === 'string'
+        ? JSON.parse(parsed.summary)
+        : parsed.summary;
+    return JSON.stringify(summary ?? parsed, null, 2);
+  } catch {
+    return value;
+  }
+}
+
 async function loadApprovals() {
   const requestId = ++latestRequestId;
   error.value = false;
@@ -112,7 +126,13 @@ onUnmounted(() => {
     <NList v-else bordered>
       <NListItem v-for="item in approvals" :key="item.id">
         <NSpace justify="space-between" style="width: 100%">
-          <span>{{ item.toolName || item.id }}</span>
+          <div style="min-width: 0; flex: 1">
+            <strong>{{ item.toolName || item.id }}</strong>
+            <div>调用参数（敏感字段已脱敏）</div>
+            <pre style="white-space: pre-wrap; overflow-wrap: anywhere">{{
+              formatApprovalArguments(item.argumentsRedacted)
+            }}</pre>
+          </div>
           <NSpace align="center">
             <NTag>{{ item.status }}</NTag>
             <NButton
