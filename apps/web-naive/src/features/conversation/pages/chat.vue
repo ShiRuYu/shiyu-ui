@@ -58,9 +58,17 @@ const messageId = ref(0);
 const sending = ref(false);
 const switchingConversation = ref(false);
 const conversations = ref<
-  Array<{ id: string; sceneType?: string; title?: string }>
+  Array<{
+    id: string;
+    model?: string;
+    platform?: string;
+    sceneType?: string;
+    title?: string;
+  }>
 >([]);
-const branches = ref<Array<{ id: string; title?: string }>>([]);
+const branches = ref<
+  Array<{ id: string; model?: string; platform?: string; title?: string }>
+>([]);
 const editingMessageId = ref<string>();
 const editingText = ref('');
 const activeConversationId = ref<string>();
@@ -116,7 +124,7 @@ const canSend = computed(
         !loadingModels.value),
 );
 
-async function loadModels(platformId: number) {
+async function loadModels(platformId: number, preferredModel?: string) {
   const requestId = ++latestModelRequest;
   loadingModels.value = true;
   selectedModel.value = undefined;
@@ -130,7 +138,9 @@ async function loadModels(platformId: number) {
         label: item.name || item.value || '',
         value: item.value || '',
       }));
-    selectedModel.value = modelOptions.value[0]?.value;
+    selectedModel.value =
+      modelOptions.value.find((item) => item.value === preferredModel)?.value ??
+      modelOptions.value[0]?.value;
   } catch {
     if (disposed || requestId !== latestModelRequest) return;
     catalogError.value = true;
@@ -209,7 +219,13 @@ async function sendMessage(promptOverride?: string) {
       conversationId = created.id;
       activeConversationId.value = conversationId;
       conversations.value = [
-        { id: created.id, sceneType: created.sceneType, title: created.title },
+        {
+          id: created.id,
+          model,
+          platform,
+          sceneType: created.sceneType,
+          title: created.title,
+        },
         ...conversations.value,
       ];
     }
@@ -308,6 +324,14 @@ async function loadConversation(id: string, allowBusy = false) {
       selected?.sceneType === 'chat'
     )
       mode.value = selected.sceneType;
+    const selectedPlatform = platformOptions.value.find(
+      (item) => item.code === selected?.platform,
+    );
+    if (selectedPlatform) {
+      selectedPlatformId.value = selectedPlatform.value;
+      await loadModels(selectedPlatform.value, selected?.model);
+      if (disposed || requestId !== latestConversationRequest) return;
+    }
     branches.value = loadedBranches;
     messages.value = (remote ?? []).map((item) => ({
       id: item.id,

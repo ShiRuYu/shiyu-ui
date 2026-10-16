@@ -67,6 +67,8 @@ interface ViewModel {
   }>;
   mode: string;
   selectedAppId?: string;
+  selectedModel?: string;
+  selectedPlatformId?: number;
   retryMessage: (index: number) => Promise<void>;
   saveEdit: () => Promise<void>;
   sendMessage: () => Promise<void>;
@@ -147,6 +149,35 @@ describe('chat page identity and selection', () => {
     await pending;
     expect(view.activeConversationId).toBe('second');
     expect(view.messages.map((message) => message.content)).toEqual(['second']);
+    wrapper.unmount();
+  });
+
+  it('restores the saved provider and model when opening a conversation', async () => {
+    api.getPlatformOptions.mockResolvedValue([
+      { code: 'OPENAI', id: 1, name: 'OpenAI' },
+      { code: 'DEEPSEEK', id: 2, name: 'DeepSeek' },
+    ]);
+    api.getModelOptions.mockImplementation(async (platformId: number) =>
+      platformId === 2
+        ? [{ name: 'DeepSeek Flash', value: 'deepseek-flash' }]
+        : [{ name: 'GPT-4o', value: 'gpt-4o' }],
+    );
+    api.listConversations.mockResolvedValue([
+      {
+        id: 'deepseek-conversation',
+        model: 'deepseek-flash',
+        platform: 'DEEPSEEK',
+        sceneType: 'chat',
+        title: 'DeepSeek',
+      },
+    ]);
+
+    const { view, wrapper } = mountChat();
+    await flushPromises();
+    await view.loadConversation('deepseek-conversation');
+
+    expect(view.selectedPlatformId).toBe(2);
+    expect(view.selectedModel).toBe('deepseek-flash');
     wrapper.unmount();
   });
 

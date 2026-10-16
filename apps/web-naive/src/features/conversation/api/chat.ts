@@ -32,6 +32,8 @@ export namespace ChatApi {
   }
   export interface Conversation {
     id: string;
+    model?: string;
+    platform?: string;
     title?: string;
     sceneType?: string;
     status?: string;
