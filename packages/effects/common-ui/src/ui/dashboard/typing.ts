@@ -4,7 +4,7 @@ interface AnalysisOverviewItem {
   icon: Component | string;
   title?: string;
   totalTitle: string;
-  totalValue: number;
+  totalValue: number | string;
   value?: number;
 }
 

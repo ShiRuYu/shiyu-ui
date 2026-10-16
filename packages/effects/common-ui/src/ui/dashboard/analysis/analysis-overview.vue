@@ -44,10 +44,12 @@ withDefaults(defineProps<Props>(), {
         <CardFooter class="justify-between">
           <span>{{ item.totalTitle }}</span>
           <VbenCountToAnimator
+            v-if="typeof item.totalValue === 'number'"
             :end-val="item.totalValue"
             :start-val="1"
             prefix=""
           />
+          <span v-else>{{ item.totalValue }}</span>
         </CardFooter>
       </Card>
     </template>

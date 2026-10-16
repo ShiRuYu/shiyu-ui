@@ -16,7 +16,11 @@ import {
   NStatistic,
 } from 'naive-ui';
 
-import { getDailyUsageApi, getUsageOverviewApi } from '#/features/governance';
+import {
+  formatUsageCost,
+  getDailyUsageApi,
+  getUsageOverviewApi,
+} from '#/features/governance';
 import { PlatformWorkspaceShell } from '#/shared';
 
 const router = useRouter();
@@ -28,7 +32,10 @@ let requestId = 0;
 let disposed = false;
 
 const totalCost = computed(() =>
-  Number(overview.value?.total_cost ?? 0).toFixed(4),
+  formatUsageCost(
+    overview.value?.total_cost,
+    overview.value?.unknown_cost_calls,
+  ),
 );
 const averageLatency = computed(() => {
   const value = overview.value?.avg_latency_ms;
@@ -103,8 +110,9 @@ onBeforeUnmount(() => {
               <strong>{{ item.date }}</strong>
               <small>
                 {{ item.call_count }} 次调用 · {{ item.total_tokens }} Token ·
-                成本 {{ Number(item.total_cost ?? 0).toFixed(4) }} · 延迟
-                {{ Math.round(item.avg_latency_ms ?? 0) }} ms
+                成本
+                {{ formatUsageCost(item.total_cost, item.unknown_cost_calls) }}
+                · 延迟 {{ Math.round(item.avg_latency_ms ?? 0) }} ms
               </small>
             </span>
           </NListItem>

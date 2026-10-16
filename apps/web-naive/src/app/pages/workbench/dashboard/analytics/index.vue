@@ -16,7 +16,7 @@ import {
   SvgDownloadIcon,
 } from '@vben/icons';
 
-import { getUsageOverviewApi } from '#/features/governance';
+import { formatUsageCost, getUsageOverviewApi } from '#/features/governance';
 import { $t } from '#/locales';
 
 import AnalyticsTrends from './analytics-trends.vue';
@@ -93,7 +93,10 @@ async function fetchData() {
           icon: icons.bell,
           title: '平均延迟',
           totalTitle: '总花费 ($)',
-          totalValue: Number((overview.total_cost || 0).toFixed(4)),
+          totalValue: formatUsageCost(
+            overview.total_cost,
+            overview.unknown_cost_calls,
+          ),
           value: Math.round(overview.avg_latency_ms || 0),
         },
       ];

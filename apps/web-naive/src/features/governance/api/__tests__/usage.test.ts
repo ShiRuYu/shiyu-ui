@@ -4,6 +4,7 @@ const requestMock = vi.hoisted(() => ({ get: vi.fn() }));
 vi.mock('#/shared/api/request', () => ({ requestClient: requestMock }));
 
 import {
+  formatUsageCost,
   getDailyUsageApi,
   getModelUsageApi,
   getMonthlyUsageApi,
@@ -45,5 +46,11 @@ describe('governance usage facade', () => {
       5,
       '/api/governance/usage/by-model',
     );
+  });
+
+  it('formats missing model prices as unknown and known prices as amounts', () => {
+    expect(formatUsageCost(null, 2)).toBe('未知（2 次未计价）');
+    expect(formatUsageCost(undefined)).toBe('未知');
+    expect(formatUsageCost(0)).toBe('0.0000');
   });
 });
