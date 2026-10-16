@@ -14,7 +14,7 @@ test('persists an Agent failure across reload and retries the owned input', asyn
   await page.locator('input').nth(0).fill(username);
   await page.locator('input').nth(1).fill(password);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
+  await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
   const login = await (await loginResponse).json();
   expect(login.code).toBe(200);
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };

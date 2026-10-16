@@ -95,7 +95,7 @@ async function signIn(page: Page): Promise<MenuNode[]> {
     (response) =>
       response.url().endsWith('/api/iam/menus/all') && response.ok(),
   );
-  await page.getByRole('button', { name: 'login', exact: true }).click();
+  await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
   await expect(page).not.toHaveURL(/\/auth\/login/, { timeout: 15_000 });
   const response = (await menuResponsePromise).json();
   return (await response).data ?? [];

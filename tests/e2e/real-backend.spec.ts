@@ -11,7 +11,7 @@ test('persists an App and publishes its Agent version through the real backend',
   await page.locator('input').nth(0).fill(process.env.E2E_USERNAME!);
   await page.locator('input').nth(1).fill(process.env.E2E_PASSWORD!);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
+  await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
   const login = await (await loginResponse).json();
   expect(login.code).toBe(200);
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };
@@ -49,7 +49,7 @@ for (const config of ['null', '[]', '"text"', '1', 'true']) {
     await page.goto('/auth/login');
     await page.locator('input').nth(0).fill(process.env.E2E_USERNAME!);
     await page.locator('input').nth(1).fill(process.env.E2E_PASSWORD!);
-    await page.getByRole('button', { name: /^(login|登录)$/i }).click();
+    await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
     await expect(page).not.toHaveURL(/\/auth\/login/);
     await page.goto('/app-studio/apps/edit?new=true');
     await page
@@ -82,7 +82,7 @@ test('creates a knowledge space, stores a document and reloads its content', asy
   await page.locator('input').nth(0).fill(process.env.E2E_USERNAME!);
   await page.locator('input').nth(1).fill(process.env.E2E_PASSWORD!);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
+  await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
   const login = await (await loginResponse).json();
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };
   await expect(page).not.toHaveURL(/\/auth\/login/);
@@ -192,7 +192,7 @@ test('persists conversations idempotently and records a real failed generation',
   await page.locator('input').nth(0).fill(process.env.E2E_USERNAME!);
   await page.locator('input').nth(1).fill(process.env.E2E_PASSWORD!);
   const loginResponse = page.waitForResponse('**/api/iam/auth/login');
-  await page.getByRole('button', { name: /^(login|登录)$/i }).click();
+  await page.getByRole('button', { name: /^(login|sign in|登录)$/i }).click();
   const login = await (await loginResponse).json();
   const headers = { Authorization: `Bearer ${login.data.accessToken}` };
   const idempotency = {
