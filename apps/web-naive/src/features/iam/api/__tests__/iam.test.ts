@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const accessStoreMock = vi.hoisted(() => ({
+  accessToken: null as null | string,
+}));
 const requestMock = vi.hoisted(() => ({
   get: vi.fn(),
   post: vi.fn(),
@@ -7,6 +10,9 @@ const requestMock = vi.hoisted(() => ({
   delete: vi.fn(),
   upload: vi.fn(),
   download: vi.fn(),
+}));
+vi.mock('@vben/stores', () => ({
+  useAccessStore: () => accessStoreMock,
 }));
 vi.mock('#/shared/api/request', () => ({
   baseRequestClient: requestMock,
@@ -94,6 +100,7 @@ import {
 describe('iAM feature transport facades', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    accessStoreMock.accessToken = 'current-token';
     requestMock.get.mockResolvedValue({});
     requestMock.post.mockResolvedValue({});
   });
@@ -272,6 +279,14 @@ describe('iAM feature transport facades', () => {
     requestMock.download.mockResolvedValue(new Blob(['data']));
     await refreshTokenApi('token');
     await logoutApi();
+    expect(requestMock.post).toHaveBeenCalledWith(
+      '/api/iam/auth/logout',
+      {},
+      {
+        headers: { Authorization: 'Bearer current-token' },
+        withCredentials: true,
+      },
+    );
     await getAccessCodesApi();
     await switchCurrentRoleApi(2);
     await getUserTenantsApi();

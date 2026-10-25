@@ -138,6 +138,10 @@ describe('knowledge feature transport facades', () => {
     await documentApi.replaceKnowledgePointDocuments(2, [1]);
     await documentApi.getDocumentVersions(1);
     await documentApi.previewDocument(1);
+    expect(requestMock.get).toHaveBeenCalledWith(
+      '/api/knowledge/documents/1/preview',
+      { responseReturn: 'body', responseType: 'blob' },
+    );
     await documentApi.rollbackDocument(1, 2);
     await documentApi.rejectDocument(1, 'needs changes');
     await documentApi.submitDocument(1);

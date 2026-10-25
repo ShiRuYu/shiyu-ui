@@ -92,7 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout(redirect = true, requestServer = true) {
     if (requestServer) {
       try {
-        await logoutApi();
+        await logoutApi(accessStore.accessToken);
       } catch {
         // Ignore logout failures and clear local state.
       }

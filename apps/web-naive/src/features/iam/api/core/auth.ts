@@ -1,3 +1,5 @@
+import { useAccessStore } from '@vben/stores';
+
 import { baseRequestClient, requestClient } from '#/shared/api/request';
 
 export interface TenantInfo {
@@ -40,11 +42,14 @@ export async function refreshTokenApi(accessToken?: string) {
   });
 }
 
-export async function logoutApi() {
+export async function logoutApi(accessToken = useAccessStore().accessToken) {
   return baseRequestClient.post(
     '/api/iam/auth/logout',
     {},
     {
+      headers: {
+        Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+      },
       withCredentials: true,
     },
   );

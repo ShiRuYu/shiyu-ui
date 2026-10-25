@@ -90,6 +90,7 @@ export function getDocumentVersions(id: number) {
 }
 export function previewDocument(id: number) {
   return requestClient.get<Blob>(`/api/knowledge/documents/${id}/preview`, {
+    responseReturn: 'body',
     responseType: 'blob',
   });
 }
