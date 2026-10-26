@@ -87,11 +87,11 @@ onUnmounted(() => {
       <h3>快捷操作</h3>
       <NButton block secondary @click="router.push('/knowledge-center/search')">
         检索实验室
-</NButton
-      ><NButton block secondary @click="router.push('/knowledge-center/graph')">
+      </NButton>
+      <NButton block secondary @click="router.push('/knowledge-center/graph')">
         图谱洞察
-</NButton
-      ><NButton
+      </NButton>
+      <NButton
         block
         secondary
         @click="router.push('/knowledge-center/documents')"

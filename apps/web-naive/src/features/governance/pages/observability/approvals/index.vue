@@ -126,10 +126,10 @@ onUnmounted(() => {
     <NList v-else bordered>
       <NListItem v-for="item in approvals" :key="item.id">
         <NSpace justify="space-between" style="width: 100%">
-          <div style="min-width: 0; flex: 1">
+          <div style="flex: 1; min-width: 0">
             <strong>{{ item.toolName || item.id }}</strong>
             <div>调用参数（敏感字段已脱敏）</div>
-            <pre style="white-space: pre-wrap; overflow-wrap: anywhere">{{
+            <pre style="overflow-wrap: anywhere; white-space: pre-wrap">{{
               formatApprovalArguments(item.argumentsRedacted)
             }}</pre>
           </div>

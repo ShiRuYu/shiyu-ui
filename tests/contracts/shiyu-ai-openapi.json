@@ -133,10 +133,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "agentId",
-          "name"
-        ],
+        "required": ["agentId", "name"],
         "type": "object"
       },
       "AgentStateFactoryAgentState": {},
@@ -386,9 +383,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "modelName"
-        ],
+        "required": ["modelName"],
         "type": "object"
       },
       "AiModelResponse": {
@@ -487,10 +482,7 @@
         "properties": {
           "adapterType": {
             "description": "平台接口适配器协议",
-            "enum": [
-              "OPENAI_COMPATIBLE",
-              "OLLAMA"
-            ],
+            "enum": ["OPENAI_COMPATIBLE", "OLLAMA"],
             "type": "string"
           },
           "apiKey": {
@@ -544,20 +536,14 @@
             "type": "number"
           }
         },
-        "required": [
-          "code",
-          "name"
-        ],
+        "required": ["code", "name"],
         "type": "object"
       },
       "AiPlatformResponse": {
         "properties": {
           "adapterType": {
             "description": "平台接口适配器协议",
-            "enum": [
-              "OPENAI_COMPATIBLE",
-              "OLLAMA"
-            ],
+            "enum": ["OPENAI_COMPATIBLE", "OLLAMA"],
             "type": "string"
           },
           "availableModels": {
@@ -619,10 +605,7 @@
         "properties": {
           "adapterType": {
             "description": "平台接口适配器协议",
-            "enum": [
-              "OPENAI_COMPATIBLE",
-              "OLLAMA"
-            ],
+            "enum": ["OPENAI_COMPATIBLE", "OLLAMA"],
             "type": "string"
           },
           "availableModels": {
@@ -757,13 +740,7 @@
             "type": "string"
           },
           "status": {
-            "enum": [
-              "CREATED",
-              "RUNNING",
-              "COMPLETED",
-              "FAILED",
-              "CANCELLED"
-            ],
+            "enum": ["CREATED", "RUNNING", "COMPLETED", "FAILED", "CANCELLED"],
             "type": "string"
           },
           "tenantId": {
@@ -912,9 +889,7 @@
             "type": "array"
           }
         },
-        "required": [
-          "tenantId"
-        ],
+        "required": ["tenantId"],
         "type": "object"
       },
       "AuthCodeOptionVO": {
@@ -997,9 +972,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "code"
-        ],
+        "required": ["code"],
         "type": "object"
       },
       "AuthCodeResponse": {
@@ -1083,9 +1056,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "fileName"
-        ],
+        "required": ["fileName"],
         "type": "object"
       },
       "CaptchaVO": {
@@ -1192,10 +1163,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "newPassword",
-          "oldPassword"
-        ],
+        "required": ["newPassword", "oldPassword"],
         "type": "object"
       },
       "ChannelObject": {
@@ -1256,10 +1224,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "name",
-          "textbookId"
-        ],
+        "required": ["name", "textbookId"],
         "type": "object"
       },
       "ChapterResponse": {
@@ -1438,11 +1403,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "captchaKey",
-          "code",
-          "phone"
-        ],
+        "required": ["captchaKey", "code", "phone"],
         "type": "object"
       },
       "CompileConfig": {},
@@ -1674,11 +1635,7 @@
             "type": "string"
           },
           "status": {
-            "enum": [
-              "ACTIVE",
-              "ARCHIVED",
-              "DELETED"
-            ],
+            "enum": ["ACTIVE", "ARCHIVED", "DELETED"],
             "type": "string"
           },
           "tenantId": {
@@ -1724,12 +1681,7 @@
             "type": "string"
           },
           "role": {
-            "enum": [
-              "SYSTEM",
-              "USER",
-              "ASSISTANT",
-              "TOOL"
-            ],
+            "enum": ["SYSTEM", "USER", "ASSISTANT", "TOOL"],
             "type": "string"
           },
           "sequence": {
@@ -1815,9 +1767,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object"
       },
       "CourseResponse": {
@@ -1878,9 +1828,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "question"
-        ],
+        "required": ["question"],
         "type": "object"
       },
       "CreateConversationRequest": {
@@ -1929,10 +1877,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "code",
-          "name"
-        ],
+        "required": ["code", "name"],
         "type": "object"
       },
       "CreateRequest": {
@@ -2003,10 +1948,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "code",
-          "name"
-        ],
+        "required": ["code", "name"],
         "type": "object"
       },
       "DailyTaskResponse": {
@@ -2383,10 +2325,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "sourceNodeId",
-          "targetNodeId"
-        ],
+        "required": ["sourceNodeId", "targetNodeId"],
         "type": "object"
       },
       "EditRequest": {
@@ -2550,11 +2489,7 @@
             "type": "number"
           },
           "confirmationPolicy": {
-            "enum": [
-              "AUTO",
-              "REQUIRED",
-              "DISABLED"
-            ],
+            "enum": ["AUTO", "REQUIRED", "DISABLED"],
             "type": "string"
           },
           "content": {
@@ -2600,10 +2535,7 @@
             "type": "number"
           }
         },
-        "required": [
-          "questionId",
-          "score"
-        ],
+        "required": ["questionId", "score"],
         "type": "object"
       },
       "ExamCompositionRequest": {
@@ -2616,9 +2548,7 @@
             "type": "array"
           }
         },
-        "required": [
-          "sections"
-        ],
+        "required": ["sections"],
         "type": "object"
       },
       "ExamCompositionSection": {
@@ -2635,10 +2565,7 @@
             "type": "array"
           }
         },
-        "required": [
-          "name",
-          "questions"
-        ],
+        "required": ["name", "questions"],
         "type": "object"
       },
       "ExamPaperOption": {
@@ -2915,9 +2842,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "questionId"
-        ],
+        "required": ["questionId"],
         "type": "object"
       },
       "ExamSummaryResponse": {
@@ -3079,12 +3004,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "captchaKey",
-          "code",
-          "email",
-          "newPassword"
-        ],
+        "required": ["captchaKey", "code", "email", "newPassword"],
         "type": "object"
       },
       "GenerateRequest": {
@@ -3189,13 +3109,7 @@
             "type": "string"
           },
           "status": {
-            "enum": [
-              "CREATED",
-              "RUNNING",
-              "COMPLETED",
-              "CANCELLED",
-              "FAILED"
-            ],
+            "enum": ["CREATED", "RUNNING", "COMPLETED", "CANCELLED", "FAILED"],
             "type": "string"
           },
           "updatedAt": {
@@ -3365,11 +3279,7 @@
             "type": "array"
           },
           "speakerPolicy": {
-            "enum": [
-              "MANUAL",
-              "ROUND_ROBIN",
-              "MODEL_ROUTED"
-            ],
+            "enum": ["MANUAL", "ROUND_ROBIN", "MODEL_ROUTED"],
             "type": "string"
           },
           "tokenBudget": {
@@ -3422,11 +3332,7 @@
             "type": "array"
           },
           "speakerPolicy": {
-            "enum": [
-              "MANUAL",
-              "ROUND_ROBIN",
-              "MODEL_ROUTED"
-            ],
+            "enum": ["MANUAL", "ROUND_ROBIN", "MODEL_ROUTED"],
             "type": "string"
           },
           "tokenBudget": {
@@ -3618,9 +3524,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object"
       },
       "ImportedMessage": {
@@ -3670,11 +3574,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "agentId",
-          "code",
-          "name"
-        ],
+        "required": ["agentId", "code", "name"],
         "type": "object"
       },
       "IntentDefVO": {
@@ -4042,10 +3942,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "password",
-          "username"
-        ],
+        "required": ["password", "username"],
         "type": "object"
       },
       "LoginResponseVO": {
@@ -4172,9 +4069,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "externalNonExecutionConfirmed"
-        ],
+        "required": ["externalNonExecutionConfirmed"],
         "type": "object"
       },
       "ManualResolutionRequest": {
@@ -4183,9 +4078,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "externalSuccessConfirmed"
-        ],
+        "required": ["externalSuccessConfirmed"],
         "type": "object"
       },
       "McpToolDescriptor": {
@@ -4239,11 +4132,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "principalId",
-          "principalType",
-          "spaceRole"
-        ],
+        "required": ["principalId", "principalType", "spaceRole"],
         "type": "object"
       },
       "MemberView": {
@@ -4289,23 +4178,14 @@
             "type": "string"
           },
           "graphType": {
-            "enum": [
-              "TEMPORAL",
-              "SEMANTIC",
-              "CAUSAL",
-              "ENTITY"
-            ],
+            "enum": ["TEMPORAL", "SEMANTIC", "CAUSAL", "ENTITY"],
             "type": "string"
           },
           "id": {
             "type": "string"
           },
           "origin": {
-            "enum": [
-              "RULE",
-              "DOMAIN",
-              "MODEL"
-            ],
+            "enum": ["RULE", "DOMAIN", "MODEL"],
             "type": "string"
           },
           "relationType": {
@@ -4338,11 +4218,7 @@
             "type": "number"
           },
           "confirmationPolicy": {
-            "enum": [
-              "AUTO",
-              "REQUIRED",
-              "DISABLED"
-            ],
+            "enum": ["AUTO", "REQUIRED", "DISABLED"],
             "type": "string"
           },
           "content": {
@@ -4376,12 +4252,7 @@
             "type": "string"
           },
           "status": {
-            "enum": [
-              "CANDIDATE",
-              "ACTIVE",
-              "SUPERSEDED",
-              "REVOKED"
-            ],
+            "enum": ["CANDIDATE", "ACTIVE", "SUPERSEDED", "REVOKED"],
             "type": "string"
           },
           "subjectId": {
@@ -4599,10 +4470,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "type"
-        ],
+        "required": ["name", "type"],
         "type": "object"
       },
       "MenuVO": {
@@ -5028,11 +4896,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "nodeId",
-          "nodeName",
-          "nodeType"
-        ],
+        "required": ["nodeId", "nodeName", "nodeType"],
         "type": "object"
       },
       "NodeInputParam": {
@@ -5111,10 +4975,7 @@
             "type": "string"
           },
           "direction": {
-            "enum": [
-              "ASC",
-              "DESC"
-            ],
+            "enum": ["ASC", "DESC"],
             "type": "string"
           }
         },
@@ -5701,9 +5562,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "answer"
-        ],
+        "required": ["answer"],
         "type": "object"
       },
       "PracticeCheckResponse": {
@@ -5763,10 +5622,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "answer",
-          "submissionKey"
-        ],
+        "required": ["answer", "submissionKey"],
         "type": "object"
       },
       "PracticeSubmissionResponse": {
@@ -6069,25 +5925,14 @@
           },
           "graphTypes": {
             "items": {
-              "enum": [
-                "TEMPORAL",
-                "SEMANTIC",
-                "CAUSAL",
-                "ENTITY"
-              ],
+              "enum": ["TEMPORAL", "SEMANTIC", "CAUSAL", "ENTITY"],
               "type": "string"
             },
             "type": "array",
             "uniqueItems": true
           },
           "intent": {
-            "enum": [
-              "SEMANTIC",
-              "TEMPORAL",
-              "CAUSAL",
-              "ENTITY",
-              "HYBRID"
-            ],
+            "enum": ["SEMANTIC", "TEMPORAL", "CAUSAL", "ENTITY", "HYBRID"],
             "type": "string"
           },
           "maxDepth": {
@@ -6188,10 +6033,7 @@
             "type": "string"
           },
           "purpose": {
-            "enum": [
-              "PRACTICE",
-              "EXAM_PRIVATE"
-            ],
+            "enum": ["PRACTICE", "EXAM_PRIVATE"],
             "pattern": "PRACTICE|EXAM_PRIVATE",
             "type": "string"
           },
@@ -6255,10 +6097,7 @@
             "type": "string"
           },
           "purpose": {
-            "enum": [
-              "PRACTICE",
-              "EXAM_PRIVATE"
-            ],
+            "enum": ["PRACTICE", "EXAM_PRIVATE"],
             "type": "string"
           },
           "subjectCode": {
@@ -6287,9 +6126,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "spaceId"
-        ],
+        "required": ["spaceId"],
         "type": "object"
       },
       "ReducerObject": {},
@@ -6302,9 +6139,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "accessToken"
-        ],
+        "required": ["accessToken"],
         "type": "object"
       },
       "RegisterAgentRequest": {
@@ -6341,14 +6176,7 @@
             "type": "integer"
           },
           "type": {
-            "enum": [
-              "PRE",
-              "NEXT",
-              "INCLUDE",
-              "RELATED",
-              "SIMILAR",
-              "BELONG"
-            ],
+            "enum": ["PRE", "NEXT", "INCLUDE", "RELATED", "SIMILAR", "BELONG"],
             "type": "string"
           },
           "weight": {
@@ -6356,11 +6184,7 @@
             "type": "number"
           }
         },
-        "required": [
-          "sourceId",
-          "targetId",
-          "type"
-        ],
+        "required": ["sourceId", "targetId", "type"],
         "type": "object"
       },
       "RelationView": {
@@ -6398,9 +6222,7 @@
             "type": "array"
           }
         },
-        "required": [
-          "relations"
-        ],
+        "required": ["relations"],
         "type": "object"
       },
       "ReplacePointsRequest": {
@@ -6416,9 +6238,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "pointIds"
-        ],
+        "required": ["pointIds"],
         "type": "object"
       },
       "ReplaceRequest": {
@@ -6434,9 +6254,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "documentIds"
-        ],
+        "required": ["documentIds"],
         "type": "object"
       },
       "Request": {
@@ -6456,10 +6274,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "appId",
-          "prompt"
-        ],
+        "required": ["appId", "prompt"],
         "type": "object"
       },
       "ResetPasswordRequest": {
@@ -6544,11 +6359,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "type",
-          "url"
-        ],
+        "required": ["name", "type", "url"],
         "type": "object"
       },
       "ResourceResponse": {
@@ -10879,10 +10690,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "knowledgeId",
-          "studentId"
-        ],
+        "required": ["knowledgeId", "studentId"],
         "type": "object"
       },
       "ReviewTaskResponse": {
@@ -10998,11 +10806,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "code",
-          "name",
-          "tenantId"
-        ],
+        "required": ["code", "name", "tenantId"],
         "type": "object"
       },
       "RoleVO": {
@@ -11231,10 +11035,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "query",
-          "spaceId"
-        ],
+        "required": ["query", "spaceId"],
         "type": "object"
       },
       "SearchResponse": {
@@ -11308,9 +11109,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "timezone"
-        ],
+        "required": ["timezone"],
         "type": "object"
       },
       "SourceRecord": {
@@ -11457,11 +11256,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "grade",
-          "name",
-          "userId"
-        ],
+        "required": ["grade", "name", "userId"],
         "type": "object"
       },
       "StudentResponse": {
@@ -11586,9 +11381,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "studentId"
-        ],
+        "required": ["studentId"],
         "type": "object"
       },
       "StudyPlanResponse": {
@@ -11669,11 +11462,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "knowledgeId",
-          "recordType",
-          "studentId"
-        ],
+        "required": ["knowledgeId", "recordType", "studentId"],
         "type": "object"
       },
       "StudyRecordResponse": {
@@ -11748,10 +11537,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "code",
-          "name"
-        ],
+        "required": ["code", "name"],
         "type": "object"
       },
       "SubjectResponse": {
@@ -11788,9 +11574,7 @@
             "type": "array"
           }
         },
-        "required": [
-          "answers"
-        ],
+        "required": ["answers"],
         "type": "object"
       },
       "SwitchContextResponse": {
@@ -11816,9 +11600,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "roleId"
-        ],
+        "required": ["roleId"],
         "type": "object"
       },
       "SwitchTenantRequest": {
@@ -11830,9 +11612,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "tenantId"
-        ],
+        "required": ["tenantId"],
         "type": "object"
       },
       "TenantContextVO": {
@@ -12004,10 +11784,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "code",
-          "name"
-        ],
+        "required": ["code", "name"],
         "type": "object"
       },
       "TenantVO": {
@@ -12126,12 +11903,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "grade",
-          "name",
-          "publisher",
-          "subjectCode"
-        ],
+        "required": ["grade", "name", "publisher", "subjectCode"],
         "type": "object"
       },
       "TextbookResponse": {
@@ -12591,10 +12363,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "tenantId",
-          "username"
-        ],
+        "required": ["tenantId", "username"],
         "type": "object"
       },
       "UserTenantAssignmentVO": {
@@ -12633,10 +12402,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "roleId",
-          "tenantId"
-        ],
+        "required": ["roleId", "tenantId"],
         "type": "object"
       },
       "UserVO": {
@@ -12779,9 +12545,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "versionNumber"
-        ],
+        "required": ["versionNumber"],
         "type": "object"
       },
       "VersionView": {
@@ -12921,10 +12685,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "questionId",
-          "studentId"
-        ],
+        "required": ["questionId", "studentId"],
         "type": "object"
       },
       "WrongQuestionResponse": {
@@ -13038,9 +12799,7 @@
           }
         },
         "summary": "Get Page",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       },
       "post": {
         "operationId": "create_22",
@@ -13067,9 +12826,7 @@
           }
         },
         "summary": "Create",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/definitions": {
@@ -13088,9 +12845,7 @@
           }
         },
         "summary": "List Agents",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/definitions/{agentId}": {
@@ -13119,9 +12874,7 @@
           }
         },
         "summary": "Delete Agent",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       },
       "get": {
         "operationId": "getAgent",
@@ -13148,9 +12901,7 @@
           }
         },
         "summary": "Get Agent",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/node-types": {
@@ -13169,9 +12920,7 @@
           }
         },
         "summary": "Get Node Types",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/node-types/detail": {
@@ -13200,9 +12949,7 @@
           }
         },
         "summary": "Get Node Type",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/options": {
@@ -13221,9 +12968,7 @@
           }
         },
         "summary": "List All Options",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/register": {
@@ -13252,9 +12997,7 @@
           }
         },
         "summary": "Register Agent",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/status": {
@@ -13293,9 +13036,7 @@
           }
         },
         "summary": "Update Status",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/version/switch": {
@@ -13332,9 +13073,7 @@
           }
         },
         "summary": "Switch Version",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/agents/{agentId}/versions": {
@@ -13363,9 +13102,7 @@
           }
         },
         "summary": "List Agent Versions",
-        "tags": [
-          "Agent Version CRUD"
-        ]
+        "tags": ["Agent Version CRUD"]
       },
       "post": {
         "operationId": "createVersion",
@@ -13402,9 +13139,7 @@
           }
         },
         "summary": "Create Agent Version",
-        "tags": [
-          "Agent Version CRUD"
-        ]
+        "tags": ["Agent Version CRUD"]
       }
     },
     "/api/agent/agents/{agentId}/versions/{versionId}": {
@@ -13442,9 +13177,7 @@
           }
         },
         "summary": "Delete Agent Version",
-        "tags": [
-          "Agent Version CRUD"
-        ]
+        "tags": ["Agent Version CRUD"]
       },
       "get": {
         "operationId": "getVersionDetail",
@@ -13480,9 +13213,7 @@
           }
         },
         "summary": "Get Agent Version",
-        "tags": [
-          "Agent Version CRUD"
-        ]
+        "tags": ["Agent Version CRUD"]
       },
       "put": {
         "operationId": "updateVersion",
@@ -13528,9 +13259,7 @@
           }
         },
         "summary": "Update Agent Version",
-        "tags": [
-          "Agent Version CRUD"
-        ]
+        "tags": ["Agent Version CRUD"]
       }
     },
     "/api/agent/agents/{id}": {
@@ -13560,9 +13289,7 @@
           }
         },
         "summary": "Delete",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       },
       "get": {
         "operationId": "getById_13",
@@ -13590,9 +13317,7 @@
           }
         },
         "summary": "Get by Id",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       },
       "put": {
         "operationId": "update_17",
@@ -13630,9 +13355,7 @@
           }
         },
         "summary": "Update",
-        "tags": [
-          "Agent Definition"
-        ]
+        "tags": ["Agent Definition"]
       }
     },
     "/api/agent/approvals": {
@@ -13650,9 +13373,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/approve": {
@@ -13680,9 +13401,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/approve-and-resume": {
@@ -13710,9 +13429,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/confirm-completed": {
@@ -13750,9 +13467,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/confirm-not-executed": {
@@ -13790,9 +13505,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/reject": {
@@ -13820,9 +13533,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/approvals/{id}/reject-and-cancel": {
@@ -13850,9 +13561,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/apps": {
@@ -13882,9 +13591,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       },
       "post": {
         "operationId": "createApp",
@@ -13910,9 +13617,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/apps/{id}/execute": {
@@ -13950,9 +13655,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/apps/{id}/preview": {
@@ -13990,9 +13693,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/apps/{id}/versions": {
@@ -14020,9 +13721,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       },
       "post": {
         "operationId": "version",
@@ -14058,9 +13757,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/apps/{id}/versions/{versionId}/archive": {
@@ -14096,9 +13793,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/apps/{id}/versions/{versionId}/publish": {
@@ -14134,9 +13829,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/evaluations/datasets": {
@@ -14164,9 +13857,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       }
     },
     "/api/agent/evaluations/datasets/{id}/cases": {
@@ -14194,9 +13885,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       },
       "post": {
         "operationId": "addCase",
@@ -14232,9 +13921,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       }
     },
     "/api/agent/evaluations/runs": {
@@ -14262,9 +13949,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       }
     },
     "/api/agent/evaluations/runs/{id}": {
@@ -14292,9 +13977,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       }
     },
     "/api/agent/evaluations/runs/{id}/results": {
@@ -14322,9 +14005,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "evaluation-controller"
-        ]
+        "tags": ["evaluation-controller"]
       }
     },
     "/api/agent/executions/cancel": {
@@ -14353,9 +14034,7 @@
           }
         },
         "summary": "Cancel Execution",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/detail": {
@@ -14384,9 +14063,7 @@
           }
         },
         "summary": "Get Execution Details",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/execute": {
@@ -14425,9 +14102,7 @@
           }
         },
         "summary": "Execute Agent",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/execute-stream": {
@@ -14469,9 +14144,7 @@
           }
         },
         "summary": "Execute Agent Stream",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/history": {
@@ -14510,9 +14183,7 @@
           }
         },
         "summary": "Get Execution History",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/pause": {
@@ -14541,9 +14212,7 @@
           }
         },
         "summary": "Pause Execution",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/resume": {
@@ -14572,9 +14241,7 @@
           }
         },
         "summary": "Resume Execution",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/executions/status": {
@@ -14603,9 +14270,7 @@
           }
         },
         "summary": "Get Execution Status",
-        "tags": [
-          "Execution"
-        ]
+        "tags": ["Execution"]
       }
     },
     "/api/agent/generations/{generationId}/runtime-events": {
@@ -14673,9 +14338,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/intents": {
@@ -14707,9 +14370,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       },
       "get": {
         "operationId": "page_5",
@@ -14779,9 +14440,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       },
       "post": {
         "operationId": "create_20",
@@ -14807,9 +14466,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       }
     },
     "/api/agent/intents/options": {
@@ -14827,9 +14484,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       }
     },
     "/api/agent/intents/{id}": {
@@ -14858,9 +14513,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       },
       "get": {
         "operationId": "detail",
@@ -14887,9 +14540,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       },
       "put": {
         "operationId": "update_16",
@@ -14926,9 +14577,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "intent-def-controller"
-        ]
+        "tags": ["intent-def-controller"]
       }
     },
     "/api/agent/runs": {
@@ -14958,9 +14607,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       },
       "post": {
         "operationId": "startRun",
@@ -14986,9 +14633,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}": {
@@ -15016,9 +14661,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}/cancel": {
@@ -15046,9 +14689,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}/event-history": {
@@ -15096,9 +14737,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}/events": {
@@ -15176,9 +14815,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}/prompt-snapshot": {
@@ -15206,9 +14843,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{id}/trajectory": {
@@ -15236,9 +14871,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "ai-runtime-controller"
-        ]
+        "tags": ["ai-runtime-controller"]
       }
     },
     "/api/agent/runs/{runId}/approvals": {
@@ -15266,9 +14899,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       },
       "post": {
         "operationId": "request",
@@ -15304,9 +14935,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tool-approval-controller"
-        ]
+        "tags": ["tool-approval-controller"]
       }
     },
     "/api/agent/versions/activate": {
@@ -15344,9 +14973,7 @@
           }
         },
         "summary": "Activate",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/archive": {
@@ -15384,9 +15011,7 @@
           }
         },
         "summary": "Archive",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/copy": {
@@ -15425,9 +15050,7 @@
           }
         },
         "summary": "Copy",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/canvas": {
@@ -15465,9 +15088,7 @@
           }
         },
         "summary": "Get Canvas",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/canvas-update": {
@@ -15515,9 +15136,7 @@
           }
         },
         "summary": "Update Canvas",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/detail": {
@@ -15555,9 +15174,7 @@
           }
         },
         "summary": "Get Graph",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/edge/create": {
@@ -15605,9 +15222,7 @@
           }
         },
         "summary": "Add Edge",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/edge/delete": {
@@ -15661,9 +15276,7 @@
           }
         },
         "summary": "Delete Edge",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/node/create": {
@@ -15711,9 +15324,7 @@
           }
         },
         "summary": "Add Node",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/node/delete": {
@@ -15759,9 +15370,7 @@
           }
         },
         "summary": "Delete Node",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/node/update": {
@@ -15817,9 +15426,7 @@
           }
         },
         "summary": "Update Node",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/update": {
@@ -15867,9 +15474,7 @@
           }
         },
         "summary": "Update Graph",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/graph/validate": {
@@ -15917,9 +15522,7 @@
           }
         },
         "summary": "Validate Graph",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/agent/versions/publish": {
@@ -15957,9 +15560,7 @@
           }
         },
         "summary": "Publish",
-        "tags": [
-          "Agent Version"
-        ]
+        "tags": ["Agent Version"]
       }
     },
     "/api/conversation/chat-products/characters": {
@@ -15977,9 +15578,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "post": {
         "operationId": "createCharacter",
@@ -16005,9 +15604,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/characters/import": {
@@ -16033,9 +15630,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object"
               }
             }
@@ -16053,9 +15648,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/characters/import/preview": {
@@ -16071,9 +15664,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object"
               }
             }
@@ -16091,9 +15682,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/characters/{id}": {
@@ -16121,9 +15710,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "get": {
         "operationId": "character",
@@ -16149,9 +15736,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/characters/{id}/png": {
@@ -16180,9 +15765,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/groups": {
@@ -16200,9 +15783,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "post": {
         "operationId": "createGroup",
@@ -16228,9 +15809,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/groups/{id}": {
@@ -16258,9 +15837,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "get": {
         "operationId": "group",
@@ -16286,9 +15863,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/groups/{id}/next-speaker": {
@@ -16325,9 +15900,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/groups/{id}/turn": {
@@ -16365,9 +15938,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/lorebooks": {
@@ -16385,9 +15956,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "post": {
         "operationId": "createLorebook",
@@ -16413,9 +15982,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/lorebooks/{id}": {
@@ -16443,9 +16010,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "get": {
         "operationId": "lorebook",
@@ -16471,9 +16036,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/personas": {
@@ -16491,9 +16054,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "post": {
         "operationId": "createPersona",
@@ -16519,9 +16080,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/personas/{id}": {
@@ -16549,9 +16108,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "get": {
         "operationId": "persona",
@@ -16577,9 +16134,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/prompt-studio/preview": {
@@ -16607,9 +16162,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/prompt-studio/templates": {
@@ -16637,9 +16190,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       },
       "post": {
         "operationId": "createPrompt",
@@ -16665,9 +16216,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/prompt-studio/templates/{templateId}/diff": {
@@ -16705,9 +16254,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/prompt-studio/templates/{templateId}/publish": {
@@ -16745,9 +16292,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat-products/prompt-studio/templates/{templateId}/test": {
@@ -16785,9 +16330,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Chat Product Assets"
-        ]
+        "tags": ["Chat Product Assets"]
       }
     },
     "/api/conversation/chat/completions": {
@@ -16820,9 +16363,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "open-ai-compatible-controller"
-        ]
+        "tags": ["open-ai-compatible-controller"]
       }
     },
     "/api/conversation/conversations": {
@@ -16862,9 +16403,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       },
       "post": {
         "operationId": "create_19",
@@ -16900,9 +16439,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/import": {
@@ -16935,9 +16472,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/import/preview": {
@@ -16965,9 +16500,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{conversationId}/agent-executions": {
@@ -17008,9 +16541,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "agent-conversation-controller"
-        ]
+        "tags": ["agent-conversation-controller"]
       }
     },
     "/api/conversation/conversations/{id}": {
@@ -17038,9 +16569,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       },
       "get": {
         "operationId": "detail_1",
@@ -17066,9 +16595,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       },
       "patch": {
         "operationId": "update_18",
@@ -17104,9 +16631,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/active-leaf": {
@@ -17151,9 +16676,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/branches": {
@@ -17181,9 +16704,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       },
       "post": {
         "operationId": "branch",
@@ -17217,9 +16738,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/export": {
@@ -17255,9 +16774,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/generations": {
@@ -17303,9 +16820,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/messages": {
@@ -17343,9 +16858,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       },
       "post": {
         "operationId": "message",
@@ -17389,9 +16902,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/conversations/{id}/prompt-preview": {
@@ -17419,9 +16930,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "Conversation Platform"
-        ]
+        "tags": ["Conversation Platform"]
       }
     },
     "/api/conversation/generations/{id}/cancel": {
@@ -17449,9 +16958,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "generation-controller"
-        ]
+        "tags": ["generation-controller"]
       }
     },
     "/api/conversation/generations/{id}/events": {
@@ -17516,9 +17023,7 @@
             "description": "Each SSE data event is a GenerationEvent"
           }
         },
-        "tags": [
-          "generation-controller"
-        ]
+        "tags": ["generation-controller"]
       }
     },
     "/api/conversation/messages/{messageId}/edits": {
@@ -17564,9 +17069,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "message-controller"
-        ]
+        "tags": ["message-controller"]
       }
     },
     "/api/conversation/messages/{messageId}/generations": {
@@ -17611,9 +17114,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "message-controller"
-        ]
+        "tags": ["message-controller"]
       }
     },
     "/api/conversation/prompts": {
@@ -17631,9 +17132,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "prompt-controller"
-        ]
+        "tags": ["prompt-controller"]
       },
       "post": {
         "operationId": "create_18",
@@ -17659,9 +17158,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "prompt-controller"
-        ]
+        "tags": ["prompt-controller"]
       }
     },
     "/api/conversation/prompts/preview": {
@@ -17689,9 +17186,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "prompt-controller"
-        ]
+        "tags": ["prompt-controller"]
       }
     },
     "/api/conversation/prompts/{id}/publish": {
@@ -17719,9 +17214,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "prompt-controller"
-        ]
+        "tags": ["prompt-controller"]
       }
     },
     "/api/conversation/responses": {
@@ -17754,9 +17247,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "open-ai-compatible-controller"
-        ]
+        "tags": ["open-ai-compatible-controller"]
       }
     },
     "/api/education/analytics/ability-radar": {
@@ -17794,9 +17285,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/overview": {
@@ -17825,9 +17314,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/record-create": {
@@ -17855,9 +17342,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/records": {
@@ -17886,9 +17371,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/records/knowledge": {
@@ -17926,9 +17409,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/trend": {
@@ -17957,9 +17438,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/analytics/weak-points": {
@@ -17988,9 +17467,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "analytics-controller"
-        ]
+        "tags": ["analytics-controller"]
       }
     },
     "/api/education/chapter": {
@@ -18018,9 +17495,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/children": {
@@ -18049,9 +17524,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/knowledge/bind": {
@@ -18094,9 +17567,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/knowledge/list": {
@@ -18125,9 +17596,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/textbook": {
@@ -18156,9 +17625,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/tree": {
@@ -18187,9 +17654,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/chapter/{id}": {
@@ -18218,9 +17683,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       },
       "get": {
         "operationId": "getById_12",
@@ -18247,9 +17710,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       },
       "put": {
         "operationId": "update_15",
@@ -18286,9 +17747,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "chapter-controller"
-        ]
+        "tags": ["chapter-controller"]
       }
     },
     "/api/education/course": {
@@ -18328,9 +17787,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       },
       "post": {
         "operationId": "create_16",
@@ -18356,9 +17813,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       }
     },
     "/api/education/course/grade": {
@@ -18387,9 +17842,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       }
     },
     "/api/education/course/learn": {
@@ -18427,9 +17880,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       }
     },
     "/api/education/course/subject": {
@@ -18457,9 +17908,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       }
     },
     "/api/education/course/{id}": {
@@ -18488,9 +17937,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       },
       "get": {
         "operationId": "getById_11",
@@ -18517,9 +17964,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       },
       "put": {
         "operationId": "update_14",
@@ -18556,9 +18001,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "course-controller"
-        ]
+        "tags": ["course-controller"]
       }
     },
     "/api/education/education-resources/{fileName}": {
@@ -18587,9 +18030,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "education-resource-content-controller"
-        ]
+        "tags": ["education-resource-content-controller"]
       }
     },
     "/api/education/exam": {
@@ -18629,9 +18070,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       },
       "post": {
         "operationId": "create_15",
@@ -18657,9 +18096,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       }
     },
     "/api/education/exam/attempts/{attemptId}": {
@@ -18688,9 +18125,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/attempts/{attemptId}/draft": {
@@ -18719,9 +18154,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       },
       "put": {
         "operationId": "saveDraft",
@@ -18758,9 +18191,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/attempts/{attemptId}/submit": {
@@ -18799,9 +18230,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/available": {
@@ -18849,9 +18278,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/available-summary": {
@@ -18899,9 +18326,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/history": {
@@ -18941,9 +18366,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/subject": {
@@ -18971,9 +18394,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       }
     },
     "/api/education/exam/teacher": {
@@ -19002,9 +18423,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       }
     },
     "/api/education/exam/{examId}/attempts": {
@@ -19033,9 +18452,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/{examId}/composition": {
@@ -19074,9 +18491,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-publishing-controller"
-        ]
+        "tags": ["exam-publishing-controller"]
       }
     },
     "/api/education/exam/{examId}/paper": {
@@ -19105,9 +18520,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-taking-controller"
-        ]
+        "tags": ["exam-taking-controller"]
       }
     },
     "/api/education/exam/{examId}/publish": {
@@ -19136,9 +18549,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-publishing-controller"
-        ]
+        "tags": ["exam-publishing-controller"]
       }
     },
     "/api/education/exam/{id}": {
@@ -19167,9 +18578,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       },
       "get": {
         "operationId": "getById_10",
@@ -19196,9 +18605,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       },
       "put": {
         "operationId": "update_13",
@@ -19235,9 +18642,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "exam-controller"
-        ]
+        "tags": ["exam-controller"]
       }
     },
     "/api/education/question": {
@@ -19277,9 +18682,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       },
       "post": {
         "operationId": "create_14",
@@ -19305,9 +18708,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       }
     },
     "/api/education/question/difficulty": {
@@ -19336,9 +18737,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       }
     },
     "/api/education/question/subject-grade": {
@@ -19375,9 +18774,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       }
     },
     "/api/education/question/type": {
@@ -19405,9 +18802,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       }
     },
     "/api/education/question/{id}": {
@@ -19436,9 +18831,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       },
       "get": {
         "operationId": "getById_9",
@@ -19465,9 +18858,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       },
       "put": {
         "operationId": "update_12",
@@ -19504,9 +18895,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "question-controller"
-        ]
+        "tags": ["question-controller"]
       }
     },
     "/api/education/recommend/hybrid": {
@@ -19536,9 +18925,7 @@
           }
         },
         "summary": "混合推荐 — 聚合知识点/题目/资源/复习 + AI 综合学习建议",
-        "tags": [
-          "智能推荐"
-        ]
+        "tags": ["智能推荐"]
       }
     },
     "/api/education/recommend/knowledge": {
@@ -19578,9 +18965,7 @@
           }
         },
         "summary": "推荐薄弱知识点 — 基于能力差距 + 遗忘紧迫度",
-        "tags": [
-          "智能推荐"
-        ]
+        "tags": ["智能推荐"]
       }
     },
     "/api/education/recommend/questions": {
@@ -19620,9 +19005,7 @@
           }
         },
         "summary": "推荐题目 — 基于薄弱知识点 + 难度匹配 + 能力维度",
-        "tags": [
-          "智能推荐"
-        ]
+        "tags": ["智能推荐"]
       }
     },
     "/api/education/recommend/resources": {
@@ -19662,9 +19045,7 @@
           }
         },
         "summary": "推荐学习资源 — 基于薄弱点 + 最近学习知识点",
-        "tags": [
-          "智能推荐"
-        ]
+        "tags": ["智能推荐"]
       }
     },
     "/api/education/recommend/review": {
@@ -19704,9 +19085,7 @@
           }
         },
         "summary": "推荐复习任务 — 基于遗忘曲线的到期/即将到期复习",
-        "tags": [
-          "智能推荐"
-        ]
+        "tags": ["智能推荐"]
       }
     },
     "/api/education/resource": {
@@ -19746,9 +19125,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       },
       "post": {
         "operationId": "create_13",
@@ -19774,9 +19151,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       }
     },
     "/api/education/resource/subject": {
@@ -19804,9 +19179,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       }
     },
     "/api/education/resource/type": {
@@ -19834,9 +19207,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       }
     },
     "/api/education/resource/{id}": {
@@ -19865,9 +19236,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       },
       "get": {
         "operationId": "getById_8",
@@ -19894,9 +19263,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       },
       "put": {
         "operationId": "update_11",
@@ -19933,9 +19300,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "resource-controller"
-        ]
+        "tags": ["resource-controller"]
       }
     },
     "/api/education/review": {
@@ -19973,9 +19338,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       },
       "post": {
         "operationId": "create_12",
@@ -20001,9 +19364,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       }
     },
     "/api/education/review/complete": {
@@ -20042,9 +19403,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       }
     },
     "/api/education/review/today": {
@@ -20073,9 +19432,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       }
     },
     "/api/education/review/{id}": {
@@ -20104,9 +19461,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       },
       "get": {
         "operationId": "getById_7",
@@ -20133,9 +19488,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       },
       "put": {
         "operationId": "update_10",
@@ -20172,9 +19525,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "review-controller"
-        ]
+        "tags": ["review-controller"]
       }
     },
     "/api/education/student-learning/courses": {
@@ -20231,9 +19582,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/courses/{id}": {
@@ -20262,9 +19611,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/questions": {
@@ -20301,9 +19648,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/questions/{id}": {
@@ -20332,9 +19677,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/questions/{id}/check": {
@@ -20373,9 +19716,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/questions/{id}/submissions": {
@@ -20414,9 +19755,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-learning/wrong-questions": {
@@ -20434,9 +19773,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-learning-controller"
-        ]
+        "tags": ["student-learning-controller"]
       }
     },
     "/api/education/student-tutor/knowledge": {
@@ -20454,9 +19791,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-tutor-controller"
-        ]
+        "tags": ["student-tutor-controller"]
       }
     },
     "/api/education/student-tutor/plan": {
@@ -20484,9 +19819,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-tutor-controller"
-        ]
+        "tags": ["student-tutor-controller"]
       }
     },
     "/api/education/student-tutor/practice": {
@@ -20514,9 +19847,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-tutor-controller"
-        ]
+        "tags": ["student-tutor-controller"]
       }
     },
     "/api/education/student-tutor/report": {
@@ -20544,9 +19875,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-tutor-controller"
-        ]
+        "tags": ["student-tutor-controller"]
       }
     },
     "/api/education/student-tutor/teach": {
@@ -20574,9 +19903,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-tutor-controller"
-        ]
+        "tags": ["student-tutor-controller"]
       }
     },
     "/api/education/students": {
@@ -20616,9 +19943,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       },
       "post": {
         "operationId": "create_11",
@@ -20644,9 +19969,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       }
     },
     "/api/education/students/me": {
@@ -20664,9 +19987,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       }
     },
     "/api/education/students/user": {
@@ -20695,9 +20016,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       }
     },
     "/api/education/students/{id}": {
@@ -20726,9 +20045,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       },
       "get": {
         "operationId": "getById_6",
@@ -20755,9 +20072,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       },
       "put": {
         "operationId": "update_9",
@@ -20794,9 +20109,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "student-controller"
-        ]
+        "tags": ["student-controller"]
       }
     },
     "/api/education/study-plan": {
@@ -20824,9 +20137,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       }
     },
     "/api/education/study-plan/active": {
@@ -20855,9 +20166,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       }
     },
     "/api/education/study-plan/student": {
@@ -20886,9 +20195,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       }
     },
     "/api/education/study-plan/today-tasks": {
@@ -20917,9 +20224,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       }
     },
     "/api/education/study-plan/{id}": {
@@ -20948,9 +20253,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       },
       "get": {
         "operationId": "getById_5",
@@ -20977,9 +20280,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       },
       "put": {
         "operationId": "update_8",
@@ -21016,9 +20317,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "study-plan-controller"
-        ]
+        "tags": ["study-plan-controller"]
       }
     },
     "/api/education/subject": {
@@ -21058,9 +20357,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       },
       "post": {
         "operationId": "create_9",
@@ -21086,9 +20383,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       }
     },
     "/api/education/subject/code": {
@@ -21116,9 +20411,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       }
     },
     "/api/education/subject/grade-level": {
@@ -21146,9 +20439,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       }
     },
     "/api/education/subject/{id}": {
@@ -21177,9 +20468,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       },
       "get": {
         "operationId": "getById_4",
@@ -21206,9 +20495,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       },
       "put": {
         "operationId": "update_7",
@@ -21245,9 +20532,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "subject-controller"
-        ]
+        "tags": ["subject-controller"]
       }
     },
     "/api/education/textbook": {
@@ -21287,9 +20572,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       },
       "post": {
         "operationId": "create_8",
@@ -21315,9 +20598,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       }
     },
     "/api/education/textbook/subject-grade": {
@@ -21354,9 +20635,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       }
     },
     "/api/education/textbook/{id}": {
@@ -21385,9 +20664,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       },
       "get": {
         "operationId": "getById_3",
@@ -21414,9 +20691,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       },
       "put": {
         "operationId": "update_6",
@@ -21453,9 +20728,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "textbook-controller"
-        ]
+        "tags": ["textbook-controller"]
       }
     },
     "/api/education/wrong-question": {
@@ -21483,9 +20756,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "wrong-question-controller"
-        ]
+        "tags": ["wrong-question-controller"]
       }
     },
     "/api/education/wrong-question/student": {
@@ -21514,9 +20785,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "wrong-question-controller"
-        ]
+        "tags": ["wrong-question-controller"]
       }
     },
     "/api/education/wrong-question/{id}": {
@@ -21545,9 +20814,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "wrong-question-controller"
-        ]
+        "tags": ["wrong-question-controller"]
       },
       "get": {
         "operationId": "getById_2",
@@ -21574,9 +20841,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "wrong-question-controller"
-        ]
+        "tags": ["wrong-question-controller"]
       },
       "put": {
         "operationId": "update_5",
@@ -21613,9 +20878,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "wrong-question-controller"
-        ]
+        "tags": ["wrong-question-controller"]
       }
     },
     "/api/governance/platform/usage/by-model": {
@@ -21634,9 +20897,7 @@
           }
         },
         "summary": "平台按模型用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/daily": {
@@ -21667,9 +20928,7 @@
           }
         },
         "summary": "平台按日用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/embedding/overview": {
@@ -21688,9 +20947,7 @@
           }
         },
         "summary": "平台 Embedding 用量概览",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/llm/daily": {
@@ -21721,9 +20978,7 @@
           }
         },
         "summary": "平台 LLM 按日用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/llm/monthly": {
@@ -21754,9 +21009,7 @@
           }
         },
         "summary": "平台 LLM 按月用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/llm/weekly": {
@@ -21787,9 +21040,7 @@
           }
         },
         "summary": "平台 LLM 按周用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/monthly": {
@@ -21820,9 +21071,7 @@
           }
         },
         "summary": "平台按月用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/overview": {
@@ -21841,9 +21090,7 @@
           }
         },
         "summary": "平台用量概览",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/platform/usage/weekly": {
@@ -21874,9 +21121,7 @@
           }
         },
         "summary": "平台按周用量",
-        "tags": [
-          "Platform Usage"
-        ]
+        "tags": ["Platform Usage"]
       }
     },
     "/api/governance/usage/by-model": {
@@ -21895,9 +21140,7 @@
           }
         },
         "summary": "LLM 按模型聚合",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/daily": {
@@ -21928,9 +21171,7 @@
           }
         },
         "summary": "按日聚合（所有类型，按 usage_type 分组）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/embedding/overview": {
@@ -21949,9 +21190,7 @@
           }
         },
         "summary": "Embedding 用量概览",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/llm/daily": {
@@ -21982,9 +21221,7 @@
           }
         },
         "summary": "LLM 按日聚合（含 token/cost）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/llm/monthly": {
@@ -22015,9 +21252,7 @@
           }
         },
         "summary": "LLM 按月聚合（含 token/cost）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/llm/weekly": {
@@ -22048,9 +21283,7 @@
           }
         },
         "summary": "LLM 按周聚合（含 token/cost）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/monthly": {
@@ -22081,9 +21314,7 @@
           }
         },
         "summary": "按月聚合（所有类型，按 usage_type 分组）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/overview": {
@@ -22102,9 +21333,7 @@
           }
         },
         "summary": "用量概览（所有类型）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/governance/usage/weekly": {
@@ -22135,9 +21364,7 @@
           }
         },
         "summary": "按周聚合（所有类型，按 usage_type 分组）",
-        "tags": [
-          "Usage"
-        ]
+        "tags": ["Usage"]
       }
     },
     "/api/iam/auth-codes": {
@@ -22166,9 +21393,7 @@
           }
         },
         "summary": "Page Auth Codes",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       },
       "post": {
         "operationId": "create_6",
@@ -22195,9 +21420,7 @@
           }
         },
         "summary": "Create Auth Code",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/options": {
@@ -22216,9 +21439,7 @@
           }
         },
         "summary": "Auth code options",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/roles/grant": {
@@ -22271,9 +21492,7 @@
           }
         },
         "summary": "Grant role auth codes",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/roles/list": {
@@ -22312,9 +21531,7 @@
           }
         },
         "summary": "List role auth codes",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/roles/replace": {
@@ -22366,9 +21583,7 @@
           }
         },
         "summary": "Replace role auth codes",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/roles/revoke": {
@@ -22416,9 +21631,7 @@
           }
         },
         "summary": "Revoke role auth code",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth-codes/{id}": {
@@ -22448,9 +21661,7 @@
           }
         },
         "summary": "Delete Auth Code",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       },
       "put": {
         "operationId": "update_4",
@@ -22488,9 +21699,7 @@
           }
         },
         "summary": "Update Auth Code",
-        "tags": [
-          "Auth Code"
-        ]
+        "tags": ["Auth Code"]
       }
     },
     "/api/iam/auth/captcha": {
@@ -22509,9 +21718,7 @@
           }
         },
         "summary": "Get Captcha",
-        "tags": [
-          "Captcha"
-        ]
+        "tags": ["Captcha"]
       }
     },
     "/api/iam/auth/captcha/validate": {
@@ -22540,9 +21747,7 @@
           }
         },
         "summary": "Validate Captcha",
-        "tags": [
-          "Captcha"
-        ]
+        "tags": ["Captcha"]
       }
     },
     "/api/iam/auth/code-login": {
@@ -22571,9 +21776,7 @@
           }
         },
         "summary": "Code Login",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/codes": {
@@ -22592,9 +21795,7 @@
           }
         },
         "summary": "Get Auth Codes",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/current-role": {
@@ -22623,9 +21824,7 @@
           }
         },
         "summary": "Switch Current Role",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/forget-password": {
@@ -22654,9 +21853,7 @@
           }
         },
         "summary": "Forget Password",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/login": {
@@ -22685,9 +21882,7 @@
           }
         },
         "summary": "Login",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/logout": {
@@ -22716,9 +21911,7 @@
           }
         },
         "summary": "Logout",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/refresh": {
@@ -22747,9 +21940,7 @@
           }
         },
         "summary": "Refresh Token",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/register": {
@@ -22778,9 +21969,7 @@
           }
         },
         "summary": "Register",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/switch-tenant": {
@@ -22809,9 +21998,7 @@
           }
         },
         "summary": "Switch Tenant",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/auth/tenants": {
@@ -22830,9 +22017,7 @@
           }
         },
         "summary": "Get User Tenants",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/iam/dicts": {
@@ -22861,9 +22046,7 @@
           }
         },
         "summary": "Get Dict List",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       },
       "post": {
         "operationId": "createDict",
@@ -22890,9 +22073,7 @@
           }
         },
         "summary": "Create Dict",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       }
     },
     "/api/iam/dicts/batch-delete": {
@@ -22925,9 +22106,7 @@
           }
         },
         "summary": "Delete Dicts",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       }
     },
     "/api/iam/dicts/type": {
@@ -22956,9 +22135,7 @@
           }
         },
         "summary": "Get Dict By Type",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       }
     },
     "/api/iam/dicts/{id}": {
@@ -22988,9 +22165,7 @@
           }
         },
         "summary": "Delete Dict",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       },
       "put": {
         "operationId": "updateDict",
@@ -23028,9 +22203,7 @@
           }
         },
         "summary": "Update Dict",
-        "tags": [
-          "Dict"
-        ]
+        "tags": ["Dict"]
       }
     },
     "/api/iam/files": {
@@ -23059,9 +22232,7 @@
           }
         },
         "summary": "删除文件",
-        "tags": [
-          "File"
-        ]
+        "tags": ["File"]
       },
       "get": {
         "operationId": "list_13",
@@ -23078,9 +22249,7 @@
           }
         },
         "summary": "获取文件列表",
-        "tags": [
-          "File"
-        ]
+        "tags": ["File"]
       }
     },
     "/api/iam/files/config": {
@@ -23099,9 +22268,7 @@
           }
         },
         "summary": "获取文件存储配置",
-        "tags": [
-          "File"
-        ]
+        "tags": ["File"]
       }
     },
     "/api/iam/files/download": {
@@ -23131,9 +22298,7 @@
           }
         },
         "summary": "下载文件",
-        "tags": [
-          "File"
-        ]
+        "tags": ["File"]
       }
     },
     "/api/iam/files/upload": {
@@ -23149,9 +22314,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object"
               }
             }
@@ -23170,9 +22333,7 @@
           }
         },
         "summary": "上传文件",
-        "tags": [
-          "File"
-        ]
+        "tags": ["File"]
       }
     },
     "/api/iam/menus": {
@@ -23201,9 +22362,7 @@
           }
         },
         "summary": "Get System Menu Page",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       },
       "post": {
         "operationId": "createMenu",
@@ -23230,9 +22389,7 @@
           }
         },
         "summary": "Create Menu",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/all": {
@@ -23251,9 +22408,7 @@
           }
         },
         "summary": "Get All Menus",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/children": {
@@ -23283,9 +22438,7 @@
           }
         },
         "summary": "Get Menu Children",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/list": {
@@ -23304,9 +22457,7 @@
           }
         },
         "summary": "Get System Menu List",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/name-exists": {
@@ -23344,9 +22495,7 @@
           }
         },
         "summary": "Is Menu Name Exists",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/path-exists": {
@@ -23384,9 +22533,7 @@
           }
         },
         "summary": "Is Menu Path Exists",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/permissions": {
@@ -23405,9 +22552,7 @@
           }
         },
         "summary": "Get Menu Permissions Tree",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/roots": {
@@ -23426,9 +22571,7 @@
           }
         },
         "summary": "Get Menu Roots",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/tree": {
@@ -23447,9 +22590,7 @@
           }
         },
         "summary": "Get All Tree",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/menus/{id}": {
@@ -23479,9 +22620,7 @@
           }
         },
         "summary": "Delete Menu",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       },
       "put": {
         "operationId": "updateMenu",
@@ -23519,9 +22658,7 @@
           }
         },
         "summary": "Update Menu",
-        "tags": [
-          "Menu"
-        ]
+        "tags": ["Menu"]
       }
     },
     "/api/iam/roles": {
@@ -23549,9 +22686,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       },
       "post": {
         "operationId": "createRole",
@@ -23577,9 +22712,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/roles/all": {
@@ -23616,9 +22749,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/roles/menus/replace": {
@@ -23670,9 +22801,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/roles/users/add": {
@@ -23711,9 +22840,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/roles/users/remove": {
@@ -23752,9 +22879,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/roles/{id}": {
@@ -23783,9 +22908,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       },
       "get": {
         "operationId": "getRoleDetail",
@@ -23821,9 +22944,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       },
       "put": {
         "operationId": "updateRole",
@@ -23860,9 +22981,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "role-controller"
-        ]
+        "tags": ["role-controller"]
       }
     },
     "/api/iam/tenants": {
@@ -23890,9 +23009,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       },
       "post": {
         "operationId": "createTenant",
@@ -23918,9 +23035,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       }
     },
     "/api/iam/tenants/tree": {
@@ -23938,9 +23053,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       }
     },
     "/api/iam/tenants/{id}": {
@@ -23969,9 +23082,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       },
       "get": {
         "operationId": "getTenantById",
@@ -23998,9 +23109,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       },
       "put": {
         "operationId": "updateTenant",
@@ -24037,9 +23146,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "tenant-controller"
-        ]
+        "tags": ["tenant-controller"]
       }
     },
     "/api/iam/timezone/current": {
@@ -24057,9 +23164,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "timezone-controller"
-        ]
+        "tags": ["timezone-controller"]
       }
     },
     "/api/iam/timezone/options": {
@@ -24077,9 +23182,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "timezone-controller"
-        ]
+        "tags": ["timezone-controller"]
       }
     },
     "/api/iam/timezone/set": {
@@ -24107,9 +23210,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "timezone-controller"
-        ]
+        "tags": ["timezone-controller"]
       }
     },
     "/api/iam/users": {
@@ -24137,9 +23238,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       },
       "post": {
         "operationId": "createUser",
@@ -24165,9 +23264,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/detail": {
@@ -24185,9 +23282,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/password/change": {
@@ -24226,9 +23321,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/password/reset": {
@@ -24267,9 +23360,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/tenant-assignments": {
@@ -24298,9 +23389,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/tenant-assignments/replace": {
@@ -24342,9 +23431,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/iam/users/{id}": {
@@ -24373,9 +23460,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       },
       "put": {
         "operationId": "updateUser",
@@ -24412,9 +23497,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "user-controller"
-        ]
+        "tags": ["user-controller"]
       }
     },
     "/api/knowledge/audits": {
@@ -24472,9 +23555,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识平台审计"
-        ]
+        "tags": ["知识平台审计"]
       }
     },
     "/api/knowledge/documents/upload-sessions/{sessionId}": {
@@ -24511,9 +23592,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       },
       "get": {
         "operationId": "uploadStatus",
@@ -24548,9 +23627,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/upload-sessions/{sessionId}/chunks/{index}": {
@@ -24603,9 +23680,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object"
               }
             }
@@ -24623,9 +23698,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/upload-sessions/{sessionId}/complete": {
@@ -24662,9 +23735,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{documentId}/points": {
@@ -24702,9 +23773,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       },
       "put": {
         "operationId": "replacePoints",
@@ -24750,9 +23819,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       }
     },
     "/api/knowledge/documents/{documentId}/relations": {
@@ -24790,9 +23857,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       },
       "put": {
         "operationId": "replaceDocumentRelations",
@@ -24838,9 +23903,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       }
     },
     "/api/knowledge/documents/{id}": {
@@ -24878,9 +23941,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       },
       "get": {
         "operationId": "get_3",
@@ -24916,9 +23977,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/approve": {
@@ -24964,9 +24023,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/archive": {
@@ -25012,9 +24069,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/preview": {
@@ -25053,9 +24108,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/publish": {
@@ -25101,9 +24154,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/reject": {
@@ -25149,9 +24200,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/submit": {
@@ -25197,9 +24246,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/versions": {
@@ -25237,9 +24284,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/documents/{id}/versions/{versionId}/rollback": {
@@ -25286,9 +24331,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/evaluations": {
@@ -25346,9 +24389,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识评测"
-        ]
+        "tags": ["知识评测"]
       },
       "post": {
         "operationId": "create_5",
@@ -25385,9 +24426,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识评测"
-        ]
+        "tags": ["知识评测"]
       }
     },
     "/api/knowledge/evaluations/run": {
@@ -25426,9 +24465,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识评测"
-        ]
+        "tags": ["知识评测"]
       }
     },
     "/api/knowledge/evaluations/{id}": {
@@ -25466,9 +24503,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识评测"
-        ]
+        "tags": ["知识评测"]
       }
     },
     "/api/knowledge/index-jobs/rebuild": {
@@ -25507,9 +24542,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识检索"
-        ]
+        "tags": ["知识检索"]
       }
     },
     "/api/knowledge/ingestion-jobs": {
@@ -25575,9 +24608,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识任务"
-        ]
+        "tags": ["知识任务"]
       }
     },
     "/api/knowledge/ingestion-jobs/{id}": {
@@ -25615,9 +24646,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识任务"
-        ]
+        "tags": ["知识任务"]
       }
     },
     "/api/knowledge/ingestion-jobs/{id}/cancel": {
@@ -25655,9 +24684,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识任务"
-        ]
+        "tags": ["知识任务"]
       }
     },
     "/api/knowledge/ingestion-jobs/{id}/retry": {
@@ -25695,9 +24722,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识任务"
-        ]
+        "tags": ["知识任务"]
       }
     },
     "/api/knowledge/points/path": {
@@ -25744,9 +24769,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识路径"
-        ]
+        "tags": ["知识路径"]
       }
     },
     "/api/knowledge/points/{id}": {
@@ -25784,9 +24807,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       },
       "get": {
         "operationId": "get_1",
@@ -25822,9 +24843,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       },
       "put": {
         "operationId": "update_3",
@@ -25870,9 +24889,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       }
     },
     "/api/knowledge/points/{id}/graph": {
@@ -25910,9 +24927,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       }
     },
     "/api/knowledge/points/{pointId}/documents": {
@@ -25950,9 +24965,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       },
       "put": {
         "operationId": "replace",
@@ -25998,9 +25011,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点文档关系"
-        ]
+        "tags": ["知识点文档关系"]
       }
     },
     "/api/knowledge/points/{pointId}/path": {
@@ -26038,9 +25049,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识路径"
-        ]
+        "tags": ["知识路径"]
       }
     },
     "/api/knowledge/points/{pointId}/prerequisites": {
@@ -26092,9 +25101,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识路径"
-        ]
+        "tags": ["知识路径"]
       }
     },
     "/api/knowledge/points/{pointId}/relations": {
@@ -26132,9 +25139,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识关系"
-        ]
+        "tags": ["知识关系"]
       },
       "post": {
         "operationId": "create_4",
@@ -26180,9 +25185,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识关系"
-        ]
+        "tags": ["知识关系"]
       }
     },
     "/api/knowledge/points/{pointId}/relations/{targetId}": {
@@ -26245,9 +25248,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识关系"
-        ]
+        "tags": ["知识关系"]
       }
     },
     "/api/knowledge/search": {
@@ -26286,9 +25287,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识检索"
-        ]
+        "tags": ["知识检索"]
       }
     },
     "/api/knowledge/spaces": {
@@ -26353,9 +25352,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       },
       "post": {
         "operationId": "create_2",
@@ -26392,9 +25389,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/default": {
@@ -26423,9 +25418,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/options": {
@@ -26443,9 +25436,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/{id}": {
@@ -26483,9 +25474,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       },
       "get": {
         "operationId": "get",
@@ -26521,9 +25510,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       },
       "put": {
         "operationId": "update_2",
@@ -26569,9 +25556,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/{id}/difficulty-scale": {
@@ -26609,9 +25594,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/{id}/members": {
@@ -26649,9 +25632,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       },
       "put": {
         "operationId": "replaceMembers",
@@ -26700,9 +25681,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识空间"
-        ]
+        "tags": ["知识空间"]
       }
     },
     "/api/knowledge/spaces/{spaceId}/documents": {
@@ -26784,9 +25763,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       },
       "post": {
         "operationId": "upload",
@@ -26828,9 +25805,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "file"
-                ],
+                "required": ["file"],
                 "type": "object"
               }
             }
@@ -26848,9 +25823,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/spaces/{spaceId}/documents/import-url": {
@@ -26898,9 +25871,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/spaces/{spaceId}/documents/upload-sessions": {
@@ -26948,9 +25919,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识文档"
-        ]
+        "tags": ["知识文档"]
       }
     },
     "/api/knowledge/spaces/{spaceId}/points": {
@@ -27024,9 +25993,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       },
       "post": {
         "operationId": "create_3",
@@ -27072,9 +26039,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识点"
-        ]
+        "tags": ["知识点"]
       }
     },
     "/api/knowledge/system/backup": {
@@ -27103,9 +26068,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识引擎运维"
-        ]
+        "tags": ["知识引擎运维"]
       }
     },
     "/api/knowledge/system/restore-check": {
@@ -27142,9 +26105,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识引擎运维"
-        ]
+        "tags": ["知识引擎运维"]
       }
     },
     "/api/knowledge/system/status": {
@@ -27173,9 +26134,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "知识引擎运维"
-        ]
+        "tags": ["知识引擎运维"]
       }
     },
     "/api/memory/admin/indexes/rebuild": {
@@ -27203,9 +26162,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/events": {
@@ -27233,9 +26190,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/events/{id}/confirm": {
@@ -27263,9 +26218,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/events/{id}/relations": {
@@ -27285,12 +26238,7 @@
             "name": "graphType",
             "required": true,
             "schema": {
-              "enum": [
-                "TEMPORAL",
-                "SEMANTIC",
-                "CAUSAL",
-                "ENTITY"
-              ],
+              "enum": ["TEMPORAL", "SEMANTIC", "CAUSAL", "ENTITY"],
               "type": "string"
             }
           },
@@ -27317,9 +26265,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/events/{id}/revoke": {
@@ -27347,9 +26293,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/events/{id}/supersede": {
@@ -27387,9 +26331,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/query": {
@@ -27417,9 +26359,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/memory/retrieval-traces/{traceId}": {
@@ -27447,9 +26387,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "MAGMA Memory Platform"
-        ]
+        "tags": ["MAGMA Memory Platform"]
       }
     },
     "/api/model/media/image/generate": {
@@ -27477,9 +26415,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "media-controller"
-        ]
+        "tags": ["media-controller"]
       }
     },
     "/api/model/media/image/understand": {
@@ -27507,9 +26443,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "media-controller"
-        ]
+        "tags": ["media-controller"]
       }
     },
     "/api/model/media/translate": {
@@ -27537,9 +26471,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "media-controller"
-        ]
+        "tags": ["media-controller"]
       }
     },
     "/api/model/media/tts": {
@@ -27567,9 +26499,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "media-controller"
-        ]
+        "tags": ["media-controller"]
       }
     },
     "/api/model/model-configurations": {
@@ -27619,9 +26549,7 @@
           }
         },
         "summary": "Get Page",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       },
       "post": {
         "operationId": "create_1",
@@ -27648,9 +26576,7 @@
           }
         },
         "summary": "Create",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/batch-delete": {
@@ -27683,9 +26609,7 @@
           }
         },
         "summary": "Delete Batch",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/options": {
@@ -27715,9 +26639,7 @@
           }
         },
         "summary": "Get Options",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/platform": {
@@ -27747,9 +26669,7 @@
           }
         },
         "summary": "Get by Platform Id",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/platform/by-code": {
@@ -27778,9 +26698,7 @@
           }
         },
         "summary": "Get by Platform Code",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/platform/default": {
@@ -27810,9 +26728,7 @@
           }
         },
         "summary": "Get Default By Platform Id",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/set-default": {
@@ -27842,9 +26758,7 @@
           }
         },
         "summary": "Set Default",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/model-configurations/{id}": {
@@ -27874,9 +26788,7 @@
           }
         },
         "summary": "Delete",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       },
       "get": {
         "operationId": "getById_1",
@@ -27904,9 +26816,7 @@
           }
         },
         "summary": "Get by Id",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       },
       "put": {
         "operationId": "update_1",
@@ -27944,9 +26854,7 @@
           }
         },
         "summary": "Update",
-        "tags": [
-          "Ai Model"
-        ]
+        "tags": ["Ai Model"]
       }
     },
     "/api/model/models": {
@@ -27965,9 +26873,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "open-ai-compatible-controller"
-        ]
+        "tags": ["open-ai-compatible-controller"]
       }
     },
     "/api/model/platforms": {
@@ -28024,9 +26930,7 @@
           }
         },
         "summary": "Get Page",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       },
       "post": {
         "operationId": "create",
@@ -28053,9 +26957,7 @@
           }
         },
         "summary": "Create",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/code": {
@@ -28084,9 +26986,7 @@
           }
         },
         "summary": "Get by Code",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/default": {
@@ -28105,9 +27005,7 @@
           }
         },
         "summary": "Get Default",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/enabled": {
@@ -28126,9 +27024,7 @@
           }
         },
         "summary": "Get All Enabled",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/options": {
@@ -28147,9 +27043,7 @@
           }
         },
         "summary": "Get Options",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/reload": {
@@ -28168,9 +27062,7 @@
           }
         },
         "summary": "Reload",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/set-default": {
@@ -28200,9 +27092,7 @@
           }
         },
         "summary": "Set Default",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/platforms/{id}": {
@@ -28232,9 +27122,7 @@
           }
         },
         "summary": "Delete",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       },
       "get": {
         "operationId": "getById",
@@ -28262,9 +27150,7 @@
           }
         },
         "summary": "Get by Id",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       },
       "put": {
         "operationId": "update",
@@ -28302,9 +27188,7 @@
           }
         },
         "summary": "Update",
-        "tags": [
-          "Ai Platform"
-        ]
+        "tags": ["Ai Platform"]
       }
     },
     "/api/model/providers": {
@@ -28322,9 +27206,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       }
     },
     "/api/model/providers/{id}/health": {
@@ -28352,9 +27234,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       }
     },
     "/api/model/providers/{provider}/{model}/health": {
@@ -28390,9 +27270,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       }
     },
     "/api/model/routes": {
@@ -28410,9 +27288,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       },
       "post": {
         "operationId": "save_1",
@@ -28438,9 +27314,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       }
     },
     "/api/model/routes/{id}/test": {
@@ -28477,9 +27351,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "model-gateway-controller"
-        ]
+        "tags": ["model-gateway-controller"]
       }
     },
     "/api/tooling/plugins": {
@@ -28498,9 +27370,7 @@
           }
         },
         "summary": "列出所有插件",
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/market": {
@@ -28518,9 +27388,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/market/publish": {
@@ -28559,9 +27427,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/market/{pluginId}/disable": {
@@ -28589,9 +27455,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/scan": {
@@ -28610,9 +27474,7 @@
           }
         },
         "summary": "重新扫描插件目录",
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/start": {
@@ -28641,9 +27503,7 @@
           }
         },
         "summary": "启动插件",
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/stop": {
@@ -28672,9 +27532,7 @@
           }
         },
         "summary": "停止插件",
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/plugins/uninstall": {
@@ -28703,9 +27561,7 @@
           }
         },
         "summary": "卸载插件",
-        "tags": [
-          "插件系统"
-        ]
+        "tags": ["插件系统"]
       }
     },
     "/api/tooling/tools/mcp/categories": {
@@ -28724,9 +27580,7 @@
           }
         },
         "summary": "获取工具分类",
-        "tags": [
-          "MCP 工具市场"
-        ]
+        "tags": ["MCP 工具市场"]
       }
     },
     "/api/tooling/tools/mcp/stats": {
@@ -28745,9 +27599,7 @@
           }
         },
         "summary": "获取工具统计",
-        "tags": [
-          "MCP 工具市场"
-        ]
+        "tags": ["MCP 工具市场"]
       }
     },
     "/api/tooling/tools/mcp/tools": {
@@ -28792,9 +27644,7 @@
           }
         },
         "summary": "列出所有工具",
-        "tags": [
-          "MCP 工具市场"
-        ]
+        "tags": ["MCP 工具市场"]
       }
     },
     "/api/tooling/tools/mcp/tools/detail": {
@@ -28823,9 +27673,7 @@
           }
         },
         "summary": "获取工具详情",
-        "tags": [
-          "MCP 工具市场"
-        ]
+        "tags": ["MCP 工具市场"]
       }
     },
     "/api/tooling/tools/mcp/tools/execute": {
@@ -28864,9 +27712,7 @@
           }
         },
         "summary": "执行工具",
-        "tags": [
-          "MCP 工具市场"
-        ]
+        "tags": ["MCP 工具市场"]
       }
     },
     "/console/api/config": {
@@ -28884,9 +27730,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "config-console-controller"
-        ]
+        "tags": ["config-console-controller"]
       },
       "post": {
         "operationId": "save",
@@ -28912,9 +27756,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "config-console-controller"
-        ]
+        "tags": ["config-console-controller"]
       }
     },
     "/console/api/config/restore-last-applied": {
@@ -28942,9 +27784,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "config-console-controller"
-        ]
+        "tags": ["config-console-controller"]
       }
     },
     "/console/api/config/validate": {
@@ -28972,9 +27812,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "config-console-controller"
-        ]
+        "tags": ["config-console-controller"]
       }
     },
     "/console/api/lifecycle/internal-link": {
@@ -28995,9 +27833,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-lifecycle-controller"
-        ]
+        "tags": ["runtime-lifecycle-controller"]
       }
     },
     "/console/api/lifecycle/internal-shutdown": {
@@ -29018,9 +27854,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-lifecycle-controller"
-        ]
+        "tags": ["runtime-lifecycle-controller"]
       }
     },
     "/console/api/lifecycle/restart": {
@@ -29039,9 +27873,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-lifecycle-controller"
-        ]
+        "tags": ["runtime-lifecycle-controller"]
       }
     },
     "/console/api/lifecycle/stop": {
@@ -29060,9 +27892,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-lifecycle-controller"
-        ]
+        "tags": ["runtime-lifecycle-controller"]
       }
     },
     "/console/api/logs/files": {
@@ -29080,9 +27910,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-console-controller"
-        ]
+        "tags": ["runtime-console-controller"]
       }
     },
     "/console/api/logs/tail": {
@@ -29146,9 +27974,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-console-controller"
-        ]
+        "tags": ["runtime-console-controller"]
       }
     },
     "/console/api/metrics": {
@@ -29166,9 +27992,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-console-controller"
-        ]
+        "tags": ["runtime-console-controller"]
       }
     },
     "/console/api/runtime": {
@@ -29186,9 +28010,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "runtime-console-controller"
-        ]
+        "tags": ["runtime-console-controller"]
       }
     },
     "/console/api/session": {
@@ -29206,9 +28028,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "console-session-controller"
-        ]
+        "tags": ["console-session-controller"]
       }
     },
     "/console/api/session/exchange": {
@@ -29236,9 +28056,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "console-session-controller"
-        ]
+        "tags": ["console-session-controller"]
       }
     },
     "/console/api/session/logout": {
@@ -29249,9 +28067,7 @@
             "description": "OK"
           }
         },
-        "tags": [
-          "console-session-controller"
-        ]
+        "tags": ["console-session-controller"]
       }
     }
   },

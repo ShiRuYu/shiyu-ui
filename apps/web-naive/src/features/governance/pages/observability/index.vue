@@ -125,8 +125,8 @@ onUnmounted(() => {
         <template #suffix>
           <NButton text type="primary" @click.stop="inspectRun(run)">
             查看 Trace
-</NButton
-          ><NTag
+          </NButton>
+          <NTag
             size="small"
             :type="
               run.status === 'FAILED'
@@ -163,8 +163,9 @@ onUnmounted(() => {
               >{{ event.type }}</span
             >
           </NListItem>
-</NList
-        ><NEmpty v-else description="暂无事件" /><NButton
+        </NList>
+        <NEmpty v-else description="暂无事件" />
+        <NButton
           text
           type="primary"
           @click="

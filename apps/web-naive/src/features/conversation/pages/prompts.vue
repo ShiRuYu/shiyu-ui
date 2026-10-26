@@ -124,8 +124,8 @@ onUnmounted(() => {
           <NSpace>
             <NButton type="primary" :loading="saving" @click="save">
               保存草稿
-</NButton
-            ><NButton :loading="previewing" @click="previewTemplate">
+            </NButton>
+            <NButton :loading="previewing" @click="previewTemplate">
               预览
             </NButton>
           </NSpace>

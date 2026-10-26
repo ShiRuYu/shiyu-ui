@@ -107,8 +107,8 @@ onUnmounted(() => {
         @click="search"
       >
         开始检索
-</NButton
-      ><NAlert v-if="error" type="warning" :bordered="false">{{ error }}</NAlert
+      </NButton>
+      <NAlert v-if="error" type="warning" :bordered="false">{{ error }}</NAlert
       ><NSpin v-if="loading" /><NEmpty
         v-else-if="!result?.hits?.length"
         description="输入问题开始检索"

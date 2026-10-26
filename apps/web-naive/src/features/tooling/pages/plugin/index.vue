@@ -59,8 +59,8 @@ onUnmounted(() => {
           ><NSpace>
             <NTag :type="plugin.signed ? 'success' : 'warning'">
               {{ plugin.signed ? '已签名' : '待校验' }}
-</NTag
-            ><NButton size="small">查看权限</NButton>
+            </NTag>
+            <NButton size="small">查看权限</NButton>
           </NSpace>
         </NSpace>
       </NListItem>
