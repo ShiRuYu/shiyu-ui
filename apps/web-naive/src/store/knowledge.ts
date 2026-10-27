@@ -56,6 +56,9 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   const loadedDomainCode = shallowRef<KnowledgeDomainCode>();
   let loadPromise: null | Promise<void> = null;
   let loadPromiseDomain: KnowledgeDomainCode | undefined;
+  let generation = 0;
+  let latestScaleRequest = 0;
+  let latestSwitchRequest = 0;
 
   const activeSpace = computed(() =>
     spaces.value.find((space) => space.id === activeSpaceId.value),
@@ -68,6 +71,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   );
 
   async function loadSpaces(force = false, domainCode?: KnowledgeDomainCode) {
+    const requestGeneration = generation;
     if (
       !force &&
       spaces.value.length > 0 &&
@@ -77,6 +81,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     if (loadPromise) {
       if (loadPromiseDomain === domainCode) return loadPromise;
       await loadPromise;
+      if (requestGeneration !== generation) return;
       return loadSpaces(force, domainCode);
     }
     loading.value = true;
@@ -88,6 +93,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
           pageNum: 1,
           pageSize: 100,
         });
+        if (requestGeneration !== generation) return;
         // The platform entry manages all non-education spaces. The education
         // entry is explicitly scoped by the server to EDUCATION.
         spaces.value = domainCode
@@ -123,9 +129,11 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
         // documents and graph) from loading.
         await loadDifficultyScale();
       } finally {
-        loading.value = false;
-        loadPromise = null;
-        loadPromiseDomain = undefined;
+        if (requestGeneration === generation) {
+          loading.value = false;
+          loadPromise = null;
+          loadPromiseDomain = undefined;
+        }
       }
     })();
     return loadPromise;
@@ -157,24 +165,30 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
 
   async function switchSpace(spaceId: number) {
     if (activeSpaceId.value === spaceId) return;
+    const requestId = ++latestSwitchRequest;
     switching.value = true;
     try {
       setActiveSpace(spaceId);
       await loadDifficultyScale(spaceId);
     } finally {
-      switching.value = false;
+      if (requestId === latestSwitchRequest) switching.value = false;
     }
   }
 
   async function loadDifficultyScale(spaceId = activeSpaceId.value) {
+    const requestId = ++latestScaleRequest;
+    difficultyScale.value = undefined;
     if (!spaceId) {
-      difficultyScale.value = undefined;
       return;
     }
     try {
-      difficultyScale.value = await getDifficultyScale(spaceId);
+      const result = await getDifficultyScale(spaceId);
+      if (requestId !== latestScaleRequest || activeSpaceId.value !== spaceId)
+        return;
+      difficultyScale.value = result;
     } catch (error) {
-      difficultyScale.value = undefined;
+      if (requestId !== latestScaleRequest || activeSpaceId.value !== spaceId)
+        return;
       // Keep space switching and graph loading usable when an older or newly
       // created space has no difficulty-scale seed data yet.
       console.warn(
@@ -185,6 +199,11 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
   }
 
   function $reset() {
+    generation += 1;
+    latestScaleRequest += 1;
+    latestSwitchRequest += 1;
+    loadPromise = null;
+    loadPromiseDomain = undefined;
     spaces.value = [];
     loadedDomainCode.value = undefined;
     difficultyScale.value = undefined;

@@ -53,6 +53,7 @@ const saving = ref(false);
 const editing = ref<KnowledgeSpace>();
 const formRef = ref<FormInst>();
 const members = ref<SpaceMember[]>([]);
+const membersLoaded = ref(false);
 const confirmCode = ref('');
 let disposed = false;
 let latestListRequest = 0;
@@ -150,12 +151,14 @@ async function open(row?: KnowledgeSpace) {
         },
   );
   members.value = [];
+  membersLoaded.value = false;
   show.value = true;
   if (!row) return;
   try {
     const result = await getSpaceMembers(row.id);
     if (disposed || requestId !== latestOpenRequest) return;
     members.value = result;
+    membersLoaded.value = true;
   } catch {
     if (!disposed && requestId === latestOpenRequest) {
       message.error('加载空间成员失败');
@@ -164,6 +167,10 @@ async function open(row?: KnowledgeSpace) {
 }
 
 async function save() {
+  if (editing.value && !membersLoaded.value) {
+    message.warning('空间成员尚未加载成功，请重新打开编辑后重试');
+    return;
+  }
   await formRef.value?.validate();
   if (form.chunkOverlap >= form.chunkSize) {
     message.warning('分块重叠长度必须小于分块大小');
@@ -544,7 +551,14 @@ onUnmounted(() => {
       <template #footer>
         <div class="flex justify-end gap-2">
           <NButton @click="show = false">取消</NButton>
-          <NButton type="primary" :loading="saving" @click="save">保存</NButton>
+          <NButton
+            type="primary"
+            :loading="saving"
+            :disabled="!!editing && !membersLoaded"
+            @click="save"
+          >
+            保存
+          </NButton>
         </div>
       </template>
     </NModal>

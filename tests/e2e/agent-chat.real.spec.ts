@@ -52,7 +52,7 @@ test('persists an Agent failure across reload and retries the owned input', asyn
   ).json();
   expect(publication.code).toBe(200);
 
-  // The disposable H2 seed gives simple-assistant ID 4. Disable it after
+  // The disposable database seed gives simple-assistant ID 4. Disable it after
   // publishing so execution fails before any model provider is reached.
   const statusUrl = '/api/agent/agents/status?id=4&status=';
   const disabled = await (
@@ -80,7 +80,13 @@ test('persists an Agent failure across reload and retries the owned input', asyn
     await page.getByRole('button', { name: /发送|Send/ }).click();
     const created = await (await conversationResponse).json();
     expect(created.code).toBe(200);
-    expect((await executionResponse).status()).toBe(409);
+    const execution = await executionResponse;
+    expect(execution.status()).toBe(200);
+    expect(execution.headers()['content-type']).toContain('text/event-stream');
+    const events = await execution.text();
+    expect(events).toContain('event:FAILED');
+    expect(events).toContain('"status":"FAILED"');
+    expect(events).toContain('"assistantMessageId":');
     const conversationId = created.data.id as string;
     await expect(page.getByRole('log')).toContainText('对话请求失败，请重试');
 
