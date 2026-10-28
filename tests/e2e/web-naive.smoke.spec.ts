@@ -62,11 +62,11 @@ async function mockConversationStream(
     await route.fulfill({
       body:
         'id: 0\n' +
-        'data: {"success":true,"type":"DELTA","content":"Hello "}\n\n' +
+        'data: {"type":"DELTA","payload":"Hello "}\n\n' +
         'id: 1\n' +
-        'data: {"success":true,"type":"DELTA","content":"**world**"}\n\n' +
+        'data: {"type":"DELTA","payload":"**world**"}\n\n' +
         'id: 2\n' +
-        'data: {"success":true,"type":"COMPLETED"}\n\n' +
+        'data: {"type":"COMPLETED","payload":""}\n\n' +
         'data: [DONE]\n\n',
       contentType: 'text/event-stream',
       status: 200,
@@ -252,7 +252,7 @@ test.describe('web-naive critical journeys', () => {
     await page.getByLabel(/AI 平台|AI platform/).click();
     await page.getByText('DeepSeek', { exact: true }).last().click();
     await page.getByLabel(/模型|Model/).click();
-    await page.getByText('DeepSeek V4 Flash', { exact: true }).last().click();
+    await page.getByText('DeepSeek Flash', { exact: true }).last().click();
     await page.getByPlaceholder(/输入你的问题|Ask a question/).fill('hello');
     await page.getByRole('button', { name: /发送|Send/ }).click();
     await expect(page.getByRole('log')).toContainText('Hello world');
@@ -260,7 +260,7 @@ test.describe('web-naive critical journeys', () => {
       page.getByRole('button', { name: /复制|Copy/ }).first(),
     ).toBeVisible();
     expect(requestBody).toMatchObject({
-      model: 'deepseek-v4-flash',
+      model: 'deepseek-flash',
       platform: 'DEEPSEEK',
       content: 'hello',
     });
@@ -292,12 +292,12 @@ test.describe('web-naive critical journeys', () => {
     await platformSelect.click();
     await page.getByText('DeepSeek', { exact: true }).last().click();
     await page.getByLabel(/模型|Model/).click();
-    await page.getByText('DeepSeek V4 Flash', { exact: true }).last().click();
+    await page.getByText('DeepSeek Flash', { exact: true }).last().click();
     const modelLabel = page
       .locator('.n-base-selection-input[title]')
-      .filter({ hasText: 'DeepSeek V4 Flash' })
+      .filter({ hasText: 'DeepSeek Flash' })
       .first();
-    await expect(modelLabel).toHaveAttribute('title', 'DeepSeek V4 Flash');
+    await expect(modelLabel).toHaveAttribute('title', 'DeepSeek Flash');
   });
 
   test('sends an Agent App without a chat model and shows a failed run', async ({
@@ -650,23 +650,17 @@ test.describe('web-naive critical journeys', () => {
       },
     );
     await page.route(
-      '**/api/agent/apps/app-published/execute',
+      '**/api/conversation/conversations/*/agent-executions',
       async (route) => {
         executionBody = route.request().postDataJSON() as Record<
           string,
           unknown
         >;
         await route.fulfill({
-          body: JSON.stringify({
-            code: 200,
-            data: {
-              executionId: 'execution-e2e',
-              runtimeRunId: 'run-e2e',
-              output: 'Agent response',
-            },
-            message: 'success',
-          }),
-          contentType: 'application/json',
+          body:
+            'data: {"status":"STARTED","executionId":"execution-e2e","runtimeRunId":"run-e2e"}\n\n' +
+            'data: {"status":"COMPLETED","output":"Agent response"}\n\n',
+          contentType: 'text/event-stream',
         });
       },
     );
@@ -675,6 +669,7 @@ test.describe('web-naive critical journeys', () => {
     await page.getByRole('button', { name: '开始执行' }).click();
     await expect(page.getByText('Agent response')).toBeVisible();
     expect(executionBody).toMatchObject({
+      appId: 'app-published',
       prompt: 'hello agent',
       appVersionId: 'version-published',
     });

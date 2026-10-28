@@ -48,8 +48,8 @@ jobs:
       - name: Typecheck web-naive
         run: pnpm -F @vben/web-naive run typecheck
 
-      - name: Run application contract tests
-        run: pnpm exec vitest run apps/web-naive/src
+      - name: Run application and shared component tests
+        run: pnpm test:unit
 
       - name: Build web-naive
         run: pnpm -F @vben/web-naive run build

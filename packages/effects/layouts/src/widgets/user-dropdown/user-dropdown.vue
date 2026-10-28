@@ -3,6 +3,8 @@ import type { Component } from 'vue';
 
 import type { AnyFunction } from '@vben/types';
 
+import type { ClassType } from '@vben-core/typings';
+
 import { computed, useTemplateRef, watch } from 'vue';
 
 import { useHoverToggle } from '@vben/hooks';
@@ -35,6 +37,8 @@ import { Preferences } from '../preferences';
 
 interface Props {
   avatar?: string;
+  avatarDot?: boolean;
+  avatarDotClass?: ClassType;
   description?: string;
   enableShortcutKey?: boolean;
   menus?: Array<{
@@ -56,6 +60,8 @@ defineOptions({ name: 'UserDropdown' });
 
 const props = withDefaults(defineProps<Props>(), {
   avatar: '',
+  avatarDot: true,
+  avatarDotClass: 'bottom-0 right-1 border-2 size-4 bg-green-500',
   currentRoleId: null,
   currentTenantId: null,
   description: '',
@@ -181,7 +187,13 @@ if (props.enableShortcutKey) {
     <DropdownMenuTrigger ref="refTrigger" :disabled="props.trigger === 'hover'">
       <div class="mr-2 ml-1 cursor-pointer rounded-full p-1.5 hover:bg-accent">
         <div class="flex-center hover:text-accent-foreground">
-          <VbenAvatar :alt="text" :src="avatar" class="size-8" dot />
+          <VbenAvatar
+            :alt="text"
+            :src="avatar"
+            :dot="avatarDot"
+            :dot-class="avatarDotClass"
+            class="size-8"
+          />
         </div>
       </div>
     </DropdownMenuTrigger>
@@ -192,8 +204,8 @@ if (props.enableShortcutKey) {
             :alt="text"
             :src="avatar"
             class="size-12"
-            dot
-            dot-class="bottom-0 right-1 border-2 size-4 bg-green-500"
+            :dot="avatarDot"
+            :dot-class="avatarDotClass"
           />
           <div class="ml-2 w-full">
             <div
