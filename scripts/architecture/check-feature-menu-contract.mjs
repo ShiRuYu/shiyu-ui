@@ -15,11 +15,11 @@ const backendCheckoutPresent =
 const navigationFiles = [
   path.join(
     backendRoot,
-    'modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql',
+    'modules/domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/02_auth.sql',
   ),
   path.join(
     backendRoot,
-    'modules/domains/iam/implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql',
+    'modules/domains/iam/shiyu-iam-implementation/src/main/resources/db/baseline/h2/seed/iam/05_navigation.sql',
   ),
 ];
 const navigationSnapshot = path.join(

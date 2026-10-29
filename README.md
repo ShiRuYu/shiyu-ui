@@ -45,6 +45,10 @@ pnpm exec vitest run apps/web-naive/src
 pnpm check:boundaries
 pnpm test:contract
 pnpm test:openapi
+pnpm test:menus
+
+# 功能源码覆盖率（包括未被测试导入的 TypeScript 和 Vue 文件）
+pnpm test:coverage
 
 # 生产构建
 pnpm -F @vben/web-naive run build
@@ -55,6 +59,10 @@ pnpm run test:e2e
 ```
 
 GitHub Actions 会执行“类型检查 → 应用单测 → 生产构建”，并使用一次性 H2 后端运行无模型依赖的考试浏览器流程。该流程使用 H2 种子账号 `admin/123456`，仅连接 CI 本机启动的临时服务；`SHIYU_BACKEND_REF` 仓库变量可指定配套后端分支或提交，未设置时使用前端同名分支。手动运行其他 Playwright 流程时，可通过 `PLAYWRIGHT_BASE_URL`、`E2E_USERNAME`、`E2E_PASSWORD` 配置目标环境。
+
+独立的覆盖率任务执行 `pnpm test:coverage`：逐个功能域要求行覆盖率 90%、分支覆盖率 80%，并核对实际源码清单，漏采集文件也会失败。只有纯类型、纯导出或空目录才允许按无运行逻辑跳过；测试通过不代表覆盖率达标。JSON 报告写入 `coverage/`，CI 即使失败也会上传报告，便于定位待补测文件。
+
+`pnpm test:menus` 在相邻 `shiyu-ai` 仓库存在时读取真实导航 SQL，否则使用契约快照；可通过 `SHIYU_BACKEND_ROOT` 指定配对后端。指定的后端缺少 SQL 时会报错，不回退掩盖错误。浏览器 CI 在检出配对后端后也会运行该检查。
 
 更新接口快照时，先启动上述配套后端，然后执行 `pnpm test:contract:update` 和 `pnpm exec node scripts/contracts/generate-openapi.mjs`，检查生成差异后运行 `pnpm test:contract && pnpm test:openapi`。新接口必须同时更新服务端与前端契约，避免单独从主分支拉取不匹配的后端版本。
 

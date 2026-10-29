@@ -43,6 +43,7 @@ jobs:
           pnpm check:boundaries
           pnpm test:contract
           pnpm test:openapi
+          pnpm test:menus
           pnpm exec vitest run scripts/architecture tests/architecture
 
       - name: Typecheck web-naive
@@ -53,6 +54,27 @@ jobs:
 
       - name: Build web-naive
         run: pnpm -F @vben/web-naive run build
+
+  coverage:
+    name: Feature source coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node and pnpm
+        uses: ./.github/actions/setup-node
+
+      - name: Collect every feature source and enforce coverage
+        run: pnpm test:coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: feature-coverage
+          path: coverage
 
   education-journey:
     name: Education browser journey with paired backend
@@ -85,6 +107,11 @@ jobs:
 
       - name: Setup Node and pnpm
         uses: ./.github/actions/setup-node
+
+      - name: Verify navigation against the paired backend
+        env:
+          SHIYU_BACKEND_ROOT: backend
+        run: pnpm test:menus
 
       - name: Build paired backend without provider tests
         working-directory: backend
