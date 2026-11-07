@@ -1024,7 +1024,7 @@ onMounted(async () => {
   grid-template-columns: 15rem minmax(34rem, 1fr) 22.5rem;
   gap: 0;
   height: 100%;
-  min-height: calc(100vh - 7rem);
+  min-height: 0;
   overflow: hidden;
   background: hsl(var(--background));
   border: 1px solid hsl(var(--border));
@@ -1051,7 +1051,7 @@ onMounted(async () => {
 .chat-shell {
   min-width: 0;
   height: 100%;
-  min-height: 32rem;
+  min-height: 0;
   border: 0;
   border-radius: 0;
 }
@@ -1111,7 +1111,7 @@ onMounted(async () => {
 
 .message-list {
   flex: 1;
-  min-height: 20rem;
+  min-height: 0;
   padding: 1.25rem clamp(0.75rem, 4vw, 3rem);
   overflow-y: auto;
 }
@@ -1330,7 +1330,8 @@ onMounted(async () => {
 @media (max-width: 639px) {
   .workspace-shell {
     display: block;
-    min-height: calc(100vh - 5rem);
+    height: 100%;
+    min-height: 0;
     border: 0;
     border-radius: 0;
   }
@@ -1340,7 +1341,8 @@ onMounted(async () => {
   }
 
   .chat-shell {
-    min-height: calc(100vh - 5rem);
+    height: 100%;
+    min-height: 0;
   }
 
   .context-panel {

@@ -151,6 +151,9 @@ jobs:
       - name: Verify local Agent stop before a delayed cancel response
         run: pnpm exec playwright test web-naive.smoke.spec.ts --grep 'stops an Agent stream locally' --project=desktop-chromium
 
+      - name: Verify page layout keeps content inside the viewport
+        run: pnpm exec playwright test web-naive.smoke.spec.ts --grep 'Agent Studio cards inside the page content height|chat composer and send button inside the viewport'
+
       - name: Upload journey logs on failure
         if: failure()
         uses: actions/upload-artifact@v6

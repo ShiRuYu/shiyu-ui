@@ -63,6 +63,39 @@ describe('generateAccessible - redirect normalization', () => {
     expect(findByName(result, 'DyeSets')?.redirect).toBeUndefined();
   });
 
+  it('不为首子路由包含动态参数(course/:id、questions/:id)的父级生成 redirect', async () => {
+    const routes = [
+      {
+        name: 'EducationLearning',
+        path: 'learning',
+        children: [
+          {
+            name: 'EducationCourseDetail',
+            path: 'course/:id',
+            meta: { hideInMenu: true, title: 'course-detail' },
+          },
+        ],
+        meta: { title: 'learning' },
+      },
+      {
+        name: 'EducationPractice',
+        path: 'practice',
+        children: [
+          {
+            name: 'EducationQuestionPractice',
+            path: 'questions/:id',
+            meta: { hideInMenu: true, title: 'question-practice' },
+          },
+        ],
+        meta: { title: 'practice' },
+      },
+    ] as unknown as RouteRecordRaw[];
+
+    const result = await generate(routes);
+    expect(findByName(result, 'EducationLearning')?.redirect).toBeUndefined();
+    expect(findByName(result, 'EducationPractice')?.redirect).toBeUndefined();
+  });
+
   it('父级为对象 redirect({name}) 且含 :id 子路由时不抛异常且不生成 redirect', async () => {
     const routes = [
       {

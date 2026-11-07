@@ -168,6 +168,91 @@ test.describe('web-naive critical journeys', () => {
     }
   });
 
+  test('resolves education list routes without an unfilled dynamic segment', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name === 'mobile-chromium',
+      'The compact layout hides the sidebar this regression navigates through.',
+    );
+    await signIn(page);
+    for (const [label, path] of [
+      ['学习', '/education-center/learning'],
+      ['练习', '/education-center/practice'],
+    ] as const) {
+      await page.goto('/workbench/overview');
+      await page.getByText('教育中心', { exact: true }).first().click();
+      await page.getByText(label, { exact: true }).first().click();
+      // 父级路由曾被自动重定向到未填充的 course/:id、questions/:id，
+      // 地址栏会出现字面量 ":id"（或编码后的 %3Aid）。
+      await expect(page).toHaveURL((url) => url.pathname === path, {
+        timeout: 10_000,
+      });
+      expect(decodeURIComponent(page.url())).not.toContain(':id');
+      await expect(page.getByText('404', { exact: true })).toHaveCount(0);
+    }
+  });
+
+  test('keeps Agent Studio cards inside the page content height', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.route('**/api/agent/agents?*', async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback();
+      await route.fulfill({
+        body: JSON.stringify({
+          code: 200,
+          data: {
+            items: [
+              {
+                id: 1,
+                agentId: 'practice',
+                name: 'AI 出题助手',
+                description: 'E2E agent',
+                currentVersion: '1.0.0',
+                status: 1,
+              },
+            ],
+            total: 1,
+          },
+          message: 'success',
+        }),
+        contentType: 'application/json',
+      });
+    });
+
+    await page.goto('/app-studio/agents');
+    await expect(
+      page.getByRole('button', { name: /新增 Agent|New Agent/ }),
+    ).toBeVisible();
+    const card = page.locator('.agent-card').first();
+    await expect(card).toBeVisible();
+    // 旧实现中 Page 的 autoContentHeight(contain: size) 会塌陷成一行高，
+    // 卡片被裁切在视口外；这里要求卡片几乎完整可见。
+    await expect(card).toBeInViewport({ ratio: 0.9 });
+  });
+
+  test('keeps the chat composer and send button inside the viewport', async ({
+    page,
+  }) => {
+    await signIn(page);
+    await page.goto('/workspace/chat');
+
+    const composer = page.getByPlaceholder(/输入你的问题|Ask a question/);
+    const send = page.getByRole('button', { name: /发送|Send/ });
+    await expect(composer).toBeVisible();
+    await expect(send).toBeVisible();
+    // 旧实现用 100vh 计算 min-height，导致输入区被推出视口（尤其是移动端）。
+    await expect(composer).toBeInViewport({ ratio: 1 });
+    await expect(send).toBeInViewport({ ratio: 1 });
+
+    const sendBottom = await send.evaluate(
+      (element) => element.getBoundingClientRect().bottom,
+    );
+    const viewportHeight = await page.evaluate(() => window.innerHeight);
+    expect(sendBottom).toBeLessThanOrEqual(viewportHeight);
+  });
+
   test('opens app and exam workflow routes from their parent pages', async ({
     page,
   }) => {

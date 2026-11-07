@@ -12,6 +12,7 @@ import {
   WorkbenchTodo,
   WorkbenchTrends,
 } from '@vben/common-ui';
+import { Activity, Cpu, Gauge, Server } from '@vben/icons';
 import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
 
@@ -153,7 +154,7 @@ onMounted(fetchData);
           <span
             class="h-8 w-8 rounded-md bg-blue-100 p-1.5 text-blue-600 dark:bg-blue-900 dark:text-blue-300"
           >
-            <span class="i-carbon:bare-metal-server h-full w-full block"></span>
+            <Server class="h-full w-full" />
           </span>
         </div>
         <p class="mt-2 text-2xl font-bold">
@@ -168,9 +169,7 @@ onMounted(fetchData);
           <span
             class="h-8 w-8 rounded-md bg-emerald-100 p-1.5 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300"
           >
-            <span
-              class="i-carbon:ibm-watson-machine-learning h-full w-full block"
-            ></span>
+            <Cpu class="h-full w-full" />
           </span>
         </div>
         <p class="mt-2 text-2xl font-bold">
@@ -185,7 +184,7 @@ onMounted(fetchData);
           <span
             class="h-8 w-8 rounded-md bg-amber-100 p-1.5 text-amber-600 dark:bg-amber-900 dark:text-amber-300"
           >
-            <span class="i-carbon:query-queue h-full w-full block"></span>
+            <Activity class="h-full w-full" />
           </span>
         </div>
         <p class="mt-2 text-2xl font-bold">
@@ -200,9 +199,7 @@ onMounted(fetchData);
           <span
             class="h-8 w-8 rounded-md bg-purple-100 p-1.5 text-purple-600 dark:bg-purple-900 dark:text-purple-300"
           >
-            <span
-              class="i-carbon:data-quality-definition h-full w-full block"
-            ></span>
+            <Gauge class="h-full w-full" />
           </span>
         </div>
         <p class="mt-2 text-2xl font-bold">

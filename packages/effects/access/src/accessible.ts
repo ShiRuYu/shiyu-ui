@@ -148,11 +148,15 @@ async function generateRoutes(
       return route;
     }
 
-    // fork 定制：如果第一个子路由是动态路由（如 :id），说明当前路由本身是一个
-    // “列表+详情”页面（渲染自身组件），不应自动重定向到未填充的动态参数，
-    // 否则地址栏会出现字面量 ":id" 或匹配失败导致 404。
+    // fork 定制：如果第一个子路由包含动态参数（如 :id、course/:id），说明当前
+    // 路由本身是一个“列表+详情”页面（渲染自身组件），不应自动重定向到未填充的
+    // 动态参数，否则地址栏会出现字面量 ":id" 或匹配失败导致 404。
+    // 动态参数可能出现在路径中间（course/:id），不能只判断首字符。
     // 详见对上游重构 commit f00a8812 的修复。
-    if (firstChild.path.startsWith(':')) {
+    const hasDynamicSegment = firstChild.path
+      .split('/')
+      .some((segment) => segment.startsWith(':'));
+    if (hasDynamicSegment) {
       return route;
     }
 
